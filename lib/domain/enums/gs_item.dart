@@ -1,0 +1,4 @@
+enum GsItem {
+  weapon,
+  character,
+}

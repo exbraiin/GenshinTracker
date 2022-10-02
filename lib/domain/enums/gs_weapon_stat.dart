@@ -1,0 +1,15 @@
+enum GsWeaponStat {
+  none,
+  hp,
+  atk,
+  def,
+  critDmg,
+  critRate,
+  physicalDmg,
+  elementalMastery,
+  energyRecharge,
+  healing,
+  hpPercent,
+  atkPercent,
+  defPercent,
+}

@@ -1,0 +1,189 @@
+import 'package:dartx/dartx.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/value_stream_builder.dart';
+import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/screen_filters/screen_filter.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
+import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
+import 'package:tracker/screens/wishes_screen/wish_utils.dart';
+
+class WishesScreen extends StatelessWidget {
+  static const id = 'wishes_screen';
+
+  final _key = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final banner = args as GsBanner?;
+    return ValueStreamBuilder<bool>(
+      stream: GsDatabase.instance.loaded,
+      builder: (context, snapshot) {
+        if (snapshot.data != true || banner == null) return SizedBox();
+
+        final db = GsDatabase.instance;
+        final sw = db.saveWishes;
+        final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
+        final banners = db.infoBanners.getInfoBannerByType(banner);
+
+        return ScreenDrawerBuilder<SaveWish>(
+          filter: () => saveWishFilter,
+          builder: (context, filter, drawer) {
+            return Scaffold(
+              key: _key,
+              appBar: GsAppBar(
+                label: Lang.of(context).getValue(Labels.wishes),
+                bottom: _header(context),
+                actions: [
+                  Tooltip(
+                    message: Lang.of(context).getValue(Labels.hideEmptyBanners),
+                    decoration: BoxDecoration(
+                      color: GsColors.mainColor0,
+                      borderRadius: kMainRadius,
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        filter.hasExtra('show')
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      onPressed: () {
+                        filter.toggleExtra('show');
+                        drawer.onNotify();
+                      },
+                    ),
+                  ),
+                  SizedBox(width: kSeparator2),
+                  IconButton(
+                    icon: Icon(Icons.menu),
+                    onPressed: () => _key.currentState?.openEndDrawer(),
+                  ),
+                ],
+              ),
+              body: CustomScrollView(
+                slivers: _slivers(banner, wishes, banners, filter),
+              ),
+              endDrawer: drawer,
+              endDrawerEnableOpenDragGesture: false,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  List<Widget> _slivers(
+    GsBanner gsBanner,
+    List<SaveWish> wishesList,
+    List<InfoBanner> bannersList,
+    ScreenFilter<SaveWish> filter,
+  ) {
+    final banners = bannersList.sortedDescending();
+    return banners.map(
+      (banner) {
+        final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
+        final filteredWishes = filter.match(bannerWishes);
+
+        final hide = !filter.hasExtra('show');
+        final showBanner = !hide || filteredWishes.isNotEmpty;
+        return SliverStickyHeader(
+          header: showBanner
+              ? BannerListItem(banner: banner, rolls: bannerWishes.length)
+              : SizedBox(),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final wish = filteredWishes[index];
+                var type = ListType.none;
+                if (filter.isDefault()) {
+                  final p = filteredWishes.elementAtOrNull(index - 1);
+                  final n = filteredWishes.elementAtOrNull(index + 1);
+
+                  final isTop = p?.date != wish.date && n?.date == wish.date;
+                  final isMid = p?.date == wish.date && n?.date == wish.date;
+                  final isBot = p?.date == wish.date && n?.date != wish.date;
+                  type = isTop
+                      ? ListType.top
+                      : isMid
+                          ? ListType.middle
+                          : isBot
+                              ? ListType.bottom
+                              : ListType.none;
+                }
+
+                return WishListItem(
+                  pity: getPity(wishesList, wish),
+                  wishState: gsBanner == GsBanner.character
+                      ? getWishState(wishesList, wish)
+                      : WishState.none,
+                  index: index,
+                  wish: wish,
+                  type: type,
+                );
+              },
+              childCount: filteredWishes.length,
+            ),
+          ),
+        );
+      },
+    ).toList();
+  }
+
+  PreferredSizeWidget _header(BuildContext context) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(44),
+      child: Container(
+        height: 44,
+        child: Row(
+          children: getSized([
+            Text(
+              Lang.of(context).getValue(Labels.time),
+              textAlign: TextAlign.center,
+              style: context.textTheme.headerButtonLabel,
+            ),
+            Text(
+              Lang.of(context).getValue(Labels.pity),
+              textAlign: TextAlign.center,
+              style: context.textTheme.headerButtonLabel,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 44),
+              child: Text(
+                Lang.of(context).getValue(Labels.name),
+                textAlign: TextAlign.center,
+                style: context.textTheme.headerButtonLabel,
+              ),
+            ),
+            SizedBox(),
+            Text(
+              Lang.of(context).getValue(Labels.rarity),
+              textAlign: TextAlign.center,
+              style: context.textTheme.headerButtonLabel,
+            ),
+            Text(
+              Lang.of(context).getValue(Labels.type),
+              textAlign: TextAlign.center,
+              style: context.textTheme.headerButtonLabel,
+            ),
+            Text(
+              Lang.of(context).getValue(Labels.roll),
+              textAlign: TextAlign.center,
+              style: context.textTheme.headerButtonLabel,
+            ),
+          ].map((widget) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Center(child: widget),
+              ))),
+        ),
+      ),
+    );
+  }
+}

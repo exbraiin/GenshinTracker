@@ -1,0 +1,30 @@
+import '../gs_domain.dart';
+
+class InfoCity implements IdData {
+  final String id;
+  final String name;
+  final String? image;
+  final GsElement element;
+  final List<int> reputation;
+
+  InfoCity({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.element,
+    required this.reputation,
+  });
+
+  factory InfoCity.fromMap(Map<String, dynamic> map) {
+    return InfoCity(
+      id: map['id'],
+      name: map['name'],
+      image: map['image'],
+      element: GsElement.values.elementAt(map['element']),
+      reputation: (map['reputation'] as String)
+          .split(',')
+          .map((e) => int.parse(e.trim()))
+          .toList(),
+    );
+  }
+}

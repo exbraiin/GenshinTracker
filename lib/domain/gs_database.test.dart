@@ -1,0 +1,108 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:tracker/domain/gs_database.dart';
+
+typedef _VoidCallback = void Function();
+
+class AchievementsData {
+  final _map = <AchievementCategory>[];
+
+  int get total => _map.expand((g) => g.groups.expand((r) => r.list)).length;
+
+  Future<void> read() async {
+    final src = await File('db/achievements.json').readAsString();
+    final obj = (jsonDecode(src) as Map)['achievements'];
+    _map.addAll((obj as List).map((e) => AchievementCategory.fromMap(e)));
+  }
+
+  Iterable<AchievementCategory> getItems() => _map.toList();
+}
+
+class AchievementsSaveData {
+  final _ids = <int>{};
+  final _VoidCallback onSave;
+
+  int get total => _ids.length;
+
+  AchievementsSaveData(this.onSave);
+
+  void saveAchievement(int id, bool own) {
+    if (own ? _ids.add(id) : _ids.remove(id)) {
+      if (!own) _validateGroup(id);
+      onSave.call();
+    }
+  }
+
+  void _validateGroup(int id) {
+    final categories = GsDatabase.instance.infoAchievements.getItems();
+    for (var category in categories) {
+      for (var group in category.groups) {
+        final idx = group.list.indexWhere((e) => e.id == id);
+        if (idx == -1) continue;
+        for (var i = idx + 1; i < group.list.length; ++i) {
+          _ids.remove(group.list[i].id);
+        }
+        return;
+      }
+    }
+  }
+
+  bool saved(int id) => _ids.contains(id);
+
+  int owned(AchievementCategory item) =>
+      item.groups.expand((e) => e.list).where((e) => saved(e.id)).length;
+}
+
+class AchievementCategory {
+  final String name;
+  final List<AchievementGroup> groups;
+
+  int get total => groups.expand((e) => e.list).length;
+
+  AchievementCategory._({
+    required this.name,
+    required this.groups,
+  });
+
+  factory AchievementCategory.fromMap(Map map) => AchievementCategory._(
+        name: map['name'],
+        groups: (map['achievements'] as List)
+            .map((e) => AchievementGroup.fromList(e))
+            .toList(),
+      );
+}
+
+class AchievementGroup {
+  final List<Achievement> list;
+  AchievementGroup._({required this.list});
+
+  factory AchievementGroup.fromList(List list) {
+    final data = list.map((e) => Achievement.fromMap(e)).toList();
+    return AchievementGroup._(list: data);
+  }
+}
+
+class Achievement {
+  final int id;
+  final int reward;
+  final String name;
+  final String desc;
+  final String version;
+
+  Achievement._({
+    required this.id,
+    required this.reward,
+    required this.name,
+    required this.desc,
+    required this.version,
+  });
+
+  factory Achievement.fromMap(Map map) => Achievement._(
+        id: map['id'],
+        reward: map['reward'],
+        name: map['name'],
+        desc: map['desc'],
+        version: map['ver'],
+      );
+}

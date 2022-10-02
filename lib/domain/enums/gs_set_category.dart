@@ -1,0 +1,4 @@
+enum GsSetCategory {
+  indoorSet,
+  outdoorSet,
+}
