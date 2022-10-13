@@ -25,6 +25,20 @@ extension SaveReputationExt on TableSaveData<SaveReputation> {
     return cities.getItem(id).reputation.lastIndexWhere((e) => e <= sRp) + 1;
   }
 
+  int getCityPreviousXpValue(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRP = getSavedReputation(id);
+    final rep = cities.getItem(id).reputation;
+    return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
+  }
+
+  int getCityNextXpValue(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRP = getSavedReputation(id);
+    final rep = cities.getItem(id).reputation;
+    return rep.firstWhere((e) => e > sRP, orElse: () => -1);
+  }
+
   int getCityNextLevelWeeks(String id) {
     final cities = GsDatabase.instance.infoCities;
     final sRp = getSavedReputation(id);

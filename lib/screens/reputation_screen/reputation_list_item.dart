@@ -36,6 +36,15 @@ class _ReputationListItemState extends State<ReputationListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final db = GsDatabase.instance.saveReputations;
+    final rp = db.getSavedReputation(widget.city.id);
+    final pRep = db.getCityPreviousXpValue(widget.city.id);
+    final nRep = db.getCityNextXpValue(widget.city.id);
+
+    final current = rp - pRep;
+    final total = nRep - pRep;
+    final pg = total < 1 ? 1.0 : (current / total).clamp(0.0, 1.0);
+
     return Container(
       width: 300,
       height: 100,
@@ -100,12 +109,39 @@ class _ReputationListItemState extends State<ReputationListItem> {
                       FilteringTextInputFormatter.digitsOnly,
                     ],
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(2),
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(vertical: 8),
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: GsColors.almostWhite),
                       ),
                     ),
                   ),
+                  LinearProgressIndicator(
+                    value: pg,
+                    minHeight: 2,
+                    color: Colors.green,
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        pRep.toString(),
+                        style: context.textTheme.subtitle2!.copyWith(
+                          fontSize: 10,
+                          color: GsColors.almostWhite,
+                        ),
+                      ),
+                      Spacer(),
+                      if (nRep != -1)
+                        Text(
+                          nRep.toString(),
+                          style: context.textTheme.subtitle2!.copyWith(
+                            fontSize: 10,
+                            color: GsColors.almostWhite,
+                          ),
+                        ),
+                    ],
+                  )
                 ],
               ),
             ),
