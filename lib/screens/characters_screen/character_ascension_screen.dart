@@ -117,10 +117,19 @@ class _CharacterAscensionListItem extends StatelessWidget {
                   .separate(SizedBox(width: kSeparator4)),
             SizedBox(width: kSeparator4),
             if (materials.isNotEmpty)
-              GsCircleIcon(
+              GsIconButton(
                 size: 24,
                 color: canAscend ? Colors.green : Colors.deepOrange,
                 icon: canAscend ? Icons.check : Icons.close,
+                onPress: canAscend
+                    ? () {
+                        materials.forEach((e) =>
+                            GsDatabase.instance.saveMaterials.changeAmount(
+                              e.material!.id,
+                              (e.owned - e.required).clamp(0, e.owned),
+                            ));
+                      }
+                    : null,
               ),
             SizedBox(width: kSeparator4),
           ],
