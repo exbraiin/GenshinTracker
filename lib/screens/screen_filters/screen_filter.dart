@@ -11,6 +11,7 @@ class FilterSection<T, I> {
   final Set<T> values;
   final Set<T> enabled;
   T Function(I item) match;
+  bool Function(I item)? filter;
   IconData? Function(T i)? _icon;
   String? Function(T i)? _asset;
   String Function(BuildContext c) title;
@@ -24,6 +25,7 @@ class FilterSection<T, I> {
     this.match,
     this.title,
     this._label, {
+    this.filter,
     String? Function(T i)? asset,
     IconData? Function(T i)? icon,
     this.comparator,
@@ -58,8 +60,9 @@ class ScreenFilter<I> {
 
     final filtered = items.where((e) =>
         (filter?.call(e) ?? true) &&
-        sections
-            .every((s) => s.enabled.isEmpty || s.enabled.contains(s.match(e))));
+        sections.every((s) =>
+            s.enabled.isEmpty ||
+            (s.filter?.call(e) ?? true) && s.enabled.contains(s.match(e))));
 
     if (chain != null && comparator != null) {
       return filtered.sortedWith(chain).thenWith(comparator);
@@ -109,275 +112,278 @@ class ScreenFilter<I> {
   }
 }
 
-final _db = GsDatabase.instance;
-final itemDataFilter = ScreenFilter<ItemData>(
-  sections: [
-    FilterSection<GsItem, ItemData>(
-      GsItem.values.toSet(),
-      (item) => item.type,
-      (c) => c.fromLabel(Labels.type),
-      (c, e) => c.fromLabel(e.getLabel()),
-      comparator: (a, b) => a.type.index.compareTo(b.type.index),
-    ),
-    FilterSection<int, ItemData>(
-      {3, 4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, e) => c.fromLabel(Labels.rarityStar, e),
-      comparator: (a, b) => a.rarity.compareTo(b.rarity),
-    ),
-  ],
-  filter: (e) => e.character?.version != null || e.type == GsItem.weapon,
-  comparators: [(a, b) => a.compareTo(b)],
-);
-final saveWishFilter = ScreenFilter<SaveWish>(
-  sections: [
-    FilterSection<GsItem, SaveWish>(
-      GsItem.values.toSet(),
-      (item) => getItemData(item.itemId).type,
-      (c) => c.fromLabel(Labels.type),
-      (c, e) => c.fromLabel(e.getLabel()),
-    ),
-    FilterSection<int, SaveWish>(
-      {3, 4, 5},
-      (item) => getItemData(item.itemId).rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, e) => c.fromLabel(Labels.rarityStar, e),
-    ),
-  ],
-  extras: {'show'},
-);
-final infoRecipeFilter = ScreenFilter<InfoRecipe>(
-  sections: [
-    FilterSection<int, InfoRecipe>(
-      {1, 2, 3, 4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, e) => c.fromLabel(Labels.rarityStar, e),
-      comparator: (a, b) => a.rarity.compareTo(b.rarity),
-    ),
-    FilterSection<GsRecipeBuff, InfoRecipe>(
-      GsRecipeBuff.values.toSet(),
-      (item) => item.effect,
-      (c) => c.fromLabel(Labels.status),
-      (c, i) => c.fromLabel(i.label),
-      asset: (i) => i.assetPath,
-    ),
-    FilterSection<String, InfoRecipe>(
-      {'1.x', '2.x', '3.x'},
-      (item) => '${item.version.split('.').firstOrNull ?? ''}.x',
-      (c) => c.fromLabel(Labels.version),
-      (c, i) => i,
-    ),
-    FilterSection<bool, InfoRecipe>(
-      {true, false},
-      (item) => _db.saveRecipes.exists(item.id),
-      (c) => c.fromLabel(Labels.status),
-      (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-    ),
-    FilterSection<bool, InfoRecipe>(
-      {true, false},
-      (item) =>
-          _db.saveRecipes.getItemOrNull(item.id)?.proficiency ==
-          item.maxProficiency,
-      (c) => c.fromLabel(Labels.proficiency),
-      (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
-    ),
-  ],
-  comparators: [
-    (a, b) => b.rarity.compareTo(a.rarity),
-    (a, b) => a.name.compareTo(b.name),
-  ],
-);
-final infoWeaponFilter = ScreenFilter<InfoWeapon>(
-  sections: [
-    FilterSection<GsWeapon, InfoWeapon>(
-      GsWeapon.values.toSet(),
-      (item) => item.type,
-      (c) => c.fromLabel(Labels.weapon),
-      (c, e) => c.fromLabel(e.getLabel()),
-      asset: (e) => e.assetPath,
-      comparator: (a, b) => a.type.index.compareTo(b.type.index),
-    ),
-    FilterSection<bool, InfoWeapon>(
-      {true, false},
-      (item) => _db.saveWishes.hasWeapon(item.id),
-      (c) => c.fromLabel(Labels.status),
-      (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-      comparator: (a, b) => _db.saveWishes
-          .hasWeapon(a.id)
-          .compareTo(_db.saveWishes.hasWeapon(b.id)),
-    ),
-    FilterSection<GsWeaponStat, InfoWeapon>(
-      GsWeaponStat.values.except([
-        GsWeaponStat.healing,
-        GsWeaponStat.hpPercent,
-        GsWeaponStat.atkPercent,
-        GsWeaponStat.defPercent,
-      ]).toSet(),
-      (item) => item.statType,
-      (c) => c.fromLabel(Labels.ndStat),
-      (c, i) => i.toPrettyShortString(c),
-      asset: (e) => e.assetPath,
-      comparator: (a, b) => a.statType.index.compareTo(b.statType.index),
-    ),
-    FilterSection<int, InfoWeapon>(
-      {1, 2, 3, 4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, e) => c.fromLabel(Labels.rarityStar, e),
-      comparator: (a, b) => a.rarity.compareTo(b.rarity),
-    ),
-  ],
-  comparators: [
-    (a, b) => b.rarity.compareTo(a.rarity),
-    (a, b) => a.name.compareTo(b.name),
-  ],
-);
-final infoArtifactFilter = ScreenFilter<InfoArtifact>(
-  sections: [
-    FilterSection<int, InfoArtifact>(
-      {3, 4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, i) => c.fromLabel(Labels.rarityStar, i),
-      comparator: (a, b) => a.rarity.compareTo(b.rarity),
-    ),
-  ],
-  comparators: [
-    (a, b) => b.rarity.compareTo(a.rarity),
-    (a, b) => a.name.compareTo(b.name),
-  ],
-);
-final infoCharacterFilter = ScreenFilter<InfoCharacter>(
-  sections: [
-    FilterSection<GsElement, InfoCharacter>(
-      GsElement.values.toSet(),
-      (item) => item.element,
-      (c) => c.fromLabel(Labels.element),
-      (c, i) => i.toPrettyString(c),
-      asset: (i) => i.assetPath,
-      comparator: (a, b) => a.element.index.compareTo(b.element.index),
-    ),
-    FilterSection<GsWeapon, InfoCharacter>(
-      GsWeapon.values.toSet(),
-      (item) => item.weapon,
-      (c) => c.fromLabel(Labels.weapon),
-      (c, i) => i.toPrettyString(c),
-      asset: (i) => i.assetPath,
-      comparator: (a, b) => a.weapon.index.compareTo(b.weapon.index),
-    ),
-    FilterSection<String, InfoCharacter>(
-      {'1.x', '2.x', '3.x'},
-      (item) => '${item.version.split('.').first}.x',
-      (c) => c.fromLabel(Labels.version),
-      (c, i) => i,
-    ),
-    FilterSection<GsRegion, InfoCharacter>(
-      GsRegion.values.toSet(),
-      (item) => item.region,
-      (c) => c.fromLabel(Labels.region),
-      (c, i) => i.toPrettyString(c),
-      comparator: (a, b) => a.region.index.compareTo(b.region.index),
-    ),
-    FilterSection<bool, InfoCharacter>(
-      {true, false},
-      (item) => _db.saveCharacters.getCharFriendship(item.id) == 10,
-      (c) => c.fromLabel(Labels.friendship),
-      (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
-      comparator: (a, b) => _db.saveCharacters
-          .getCharFriendship(a.id)
-          .compareTo(_db.saveCharacters.getCharFriendship(b.id)),
-    ),
-    FilterSection<bool, InfoCharacter>(
-      {true, false},
-      (item) => _db.saveWishes.hasCaracter(item.id),
-      (c) => c.fromLabel(Labels.status),
-      (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
-      comparator: (a, b) => _db.saveWishes
-          .hasCaracter(a.id)
-          .compareTo(_db.saveWishes.hasCaracter(b.id)),
-    ),
-    FilterSection<bool, InfoCharacter>(
-      {true, false},
-      (item) => _db.saveCharacters.getCharMaxAscended(item.id),
-      (c) => c.fromLabel(Labels.ascension),
-      (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
-      comparator: (a, b) => _db.saveCharacters
-          .getCharAscension(a.id)
-          .compareTo(_db.saveCharacters.getCharAscension(b.id)),
-    ),
-    FilterSection<int, InfoCharacter>(
-      {4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, i) => c.fromLabel(Labels.rarityStar, i),
-      comparator: (a, b) => a.rarity.compareTo(b.rarity),
-    ),
-  ],
-  filter: (i) => i.version.isNotEmpty,
-  comparators: [
-    (a, b) => b.rarity.compareTo(a.rarity),
-    (a, b) => a.name.compareTo(b.name),
-  ],
-);
-final infoSereniteaSetFilter = ScreenFilter<InfoSereniteaSet>(
-  sections: [
-    FilterSection<bool, InfoSereniteaSet>(
-      {true, false},
-      (item) => _db.saveSereniteaSets.isObtainable(item.id),
-      (c) => c.fromLabel(Labels.status),
-      (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
-      comparator: (a, b) => _db.saveSereniteaSets
-          .isObtainable(a.id)
-          .compareTo(_db.saveSereniteaSets.isObtainable(b.id)),
-    ),
-    FilterSection<GsSetCategory, InfoSereniteaSet>(
-      GsSetCategory.values.toSet(),
-      (item) => item.category,
-      (c) => c.fromLabel(Labels.type),
-      (c, e) => c.fromLabel(e.getLabel()),
-      comparator: (a, b) => a.category.index.compareTo(b.category.index),
-    ),
-  ],
-  comparators: [(a, b) => a.name.compareTo(b.name)],
-);
-final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
-  sections: [
-    FilterSection<bool, InfoSpincrystal>(
-      {true, false},
-      (item) => _db.saveSpincrystals.exists(item.id),
-      (c) => c.fromLabel(Labels.status),
-      (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-      comparator: (a, b) => _db.saveSpincrystals
-          .exists(a.id)
-          .compareTo(_db.saveSpincrystals.exists(b.id)),
-    ),
-  ],
-  comparators: [(a, b) => a.number.compareTo(b.number)],
-);
-final infoMaterialFilter = ScreenFilter<InfoMaterial>(
-  sections: [
-    FilterSection<int, InfoMaterial>(
-      {1, 2, 3, 4, 5},
-      (item) => item.rarity,
-      (c) => c.fromLabel(Labels.rarity),
-      (c, i) => c.fromLabel(Labels.rarityStar, i),
-    ),
-    FilterSection<String, InfoMaterial>(
-      InfoMaterialGroups.groups,
-      (item) => item.group,
-      (c) => c.fromLabel(Labels.category),
-      (c, i) => c.fromLabel(InfoMaterialGroups.getLabel(i)),
-    ),
-  ],
-  comparators: [
-    (a, b) => a.group.compareTo(b.group),
-    (a, b) => a.subgroup.compareTo(b.subgroup),
-    (a, b) => a.rarity.compareTo(b.rarity),
-    (a, b) => a.name.compareTo(b.name),
-  ],
-);
+class ScreenFilters {
+  static final _db = GsDatabase.instance;
+  static final itemDataFilter = ScreenFilter<ItemData>(
+    sections: [
+      FilterSection<GsItem, ItemData>(
+        GsItem.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.type),
+        (c, e) => c.fromLabel(e.getLabel()),
+        comparator: (a, b) => a.type.index.compareTo(b.type.index),
+      ),
+      FilterSection<int, ItemData>(
+        {3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, e) => c.fromLabel(Labels.rarityStar, e),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+    ],
+    filter: (e) => e.character?.version != null || e.type == GsItem.weapon,
+    comparators: [(a, b) => a.compareTo(b)],
+  );
+  static final saveWishFilter = ScreenFilter<SaveWish>(
+    sections: [
+      FilterSection<GsItem, SaveWish>(
+        GsItem.values.toSet(),
+        (item) => getItemData(item.itemId).type,
+        (c) => c.fromLabel(Labels.type),
+        (c, e) => c.fromLabel(e.getLabel()),
+      ),
+      FilterSection<int, SaveWish>(
+        {3, 4, 5},
+        (item) => getItemData(item.itemId).rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, e) => c.fromLabel(Labels.rarityStar, e),
+      ),
+    ],
+    extras: {'show'},
+  );
+  static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
+    sections: [
+      FilterSection<int, InfoRecipe>(
+        {1, 2, 3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, e) => c.fromLabel(Labels.rarityStar, e),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+      FilterSection<GsRecipeBuff, InfoRecipe>(
+        GsRecipeBuff.values.toSet(),
+        (item) => item.effect,
+        (c) => c.fromLabel(Labels.status),
+        (c, i) => c.fromLabel(i.label),
+        asset: (i) => i.assetPath,
+      ),
+      FilterSection<String, InfoRecipe>(
+        {'1.x', '2.x', '3.x'},
+        (item) => '${item.version.split('.').firstOrNull ?? ''}.x',
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
+      FilterSection<bool, InfoRecipe>(
+        {true, false},
+        (item) => _db.saveRecipes.exists(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
+      ),
+      FilterSection<bool, InfoRecipe>(
+        {true, false},
+        (item) =>
+            _db.saveRecipes.getItemOrNull(item.id)?.proficiency ==
+            item.maxProficiency,
+        (c) => c.fromLabel(Labels.proficiency),
+        (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
+      ),
+    ],
+    comparators: [
+      (a, b) => b.rarity.compareTo(a.rarity),
+      (a, b) => a.name.compareTo(b.name),
+    ],
+  );
+  static final infoWeaponFilter = ScreenFilter<InfoWeapon>(
+    sections: [
+      FilterSection<GsWeapon, InfoWeapon>(
+        GsWeapon.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.weapon),
+        (c, e) => c.fromLabel(e.getLabel()),
+        asset: (e) => e.assetPath,
+        comparator: (a, b) => a.type.index.compareTo(b.type.index),
+      ),
+      FilterSection<bool, InfoWeapon>(
+        {true, false},
+        (item) => _db.saveWishes.hasWeapon(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
+        comparator: (a, b) => _db.saveWishes
+            .hasWeapon(a.id)
+            .compareTo(_db.saveWishes.hasWeapon(b.id)),
+      ),
+      FilterSection<GsWeaponStat, InfoWeapon>(
+        GsWeaponStat.values.except([
+          GsWeaponStat.healing,
+          GsWeaponStat.hpPercent,
+          GsWeaponStat.atkPercent,
+          GsWeaponStat.defPercent,
+        ]).toSet(),
+        (item) => item.statType,
+        (c) => c.fromLabel(Labels.ndStat),
+        (c, i) => i.toPrettyShortString(c),
+        asset: (e) => e.assetPath,
+        comparator: (a, b) => a.statType.index.compareTo(b.statType.index),
+      ),
+      FilterSection<int, InfoWeapon>(
+        {1, 2, 3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, e) => c.fromLabel(Labels.rarityStar, e),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+    ],
+    comparators: [
+      (a, b) => b.rarity.compareTo(a.rarity),
+      (a, b) => a.name.compareTo(b.name),
+    ],
+  );
+  static final infoArtifactFilter = ScreenFilter<InfoArtifact>(
+    sections: [
+      FilterSection<int, InfoArtifact>(
+        {3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, i) => c.fromLabel(Labels.rarityStar, i),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+    ],
+    comparators: [
+      (a, b) => b.rarity.compareTo(a.rarity),
+      (a, b) => a.name.compareTo(b.name),
+    ],
+  );
+  static final infoCharacterFilter = ScreenFilter<InfoCharacter>(
+    sections: [
+      FilterSection<GsElement, InfoCharacter>(
+        GsElement.values.toSet(),
+        (item) => item.element,
+        (c) => c.fromLabel(Labels.element),
+        (c, i) => i.toPrettyString(c),
+        asset: (i) => i.assetPath,
+        comparator: (a, b) => a.element.index.compareTo(b.element.index),
+      ),
+      FilterSection<GsWeapon, InfoCharacter>(
+        GsWeapon.values.toSet(),
+        (item) => item.weapon,
+        (c) => c.fromLabel(Labels.weapon),
+        (c, i) => i.toPrettyString(c),
+        asset: (i) => i.assetPath,
+        comparator: (a, b) => a.weapon.index.compareTo(b.weapon.index),
+      ),
+      FilterSection<String, InfoCharacter>(
+        {'1.x', '2.x', '3.x'},
+        (item) => '${item.version.split('.').first}.x',
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
+      FilterSection<GsRegion, InfoCharacter>(
+        GsRegion.values.toSet(),
+        (item) => item.region,
+        (c) => c.fromLabel(Labels.region),
+        (c, i) => i.toPrettyString(c),
+        comparator: (a, b) => a.region.index.compareTo(b.region.index),
+      ),
+      FilterSection<bool, InfoCharacter>(
+        {true, false},
+        (item) => _db.saveCharacters.getCharFriendship(item.id) == 10,
+        (c) => c.fromLabel(Labels.friendship),
+        (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
+        filter: (i) => _db.saveWishes.getOwnedCharacter(i.id) != 0,
+        comparator: (a, b) => _db.saveCharacters
+            .getCharFriendship(a.id)
+            .compareTo(_db.saveCharacters.getCharFriendship(b.id)),
+      ),
+      FilterSection<bool, InfoCharacter>(
+        {true, false},
+        (item) => _db.saveWishes.hasCaracter(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
+        comparator: (a, b) => _db.saveWishes
+            .hasCaracter(a.id)
+            .compareTo(_db.saveWishes.hasCaracter(b.id)),
+      ),
+      FilterSection<bool, InfoCharacter>(
+        {true, false},
+        (item) => _db.saveCharacters.getCharMaxAscended(item.id),
+        (c) => c.fromLabel(Labels.ascension),
+        (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
+        comparator: (a, b) => _db.saveCharacters
+            .getCharAscension(a.id)
+            .compareTo(_db.saveCharacters.getCharAscension(b.id)),
+      ),
+      FilterSection<int, InfoCharacter>(
+        {4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, i) => c.fromLabel(Labels.rarityStar, i),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+    ],
+    filter: (i) => i.version.isNotEmpty,
+    comparators: [
+      (a, b) => b.rarity.compareTo(a.rarity),
+      (a, b) => a.name.compareTo(b.name),
+    ],
+  );
+  static final infoSereniteaSetFilter = ScreenFilter<InfoSereniteaSet>(
+    sections: [
+      FilterSection<bool, InfoSereniteaSet>(
+        {true, false},
+        (item) => _db.saveSereniteaSets.isObtainable(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
+        comparator: (a, b) => _db.saveSereniteaSets
+            .isObtainable(a.id)
+            .compareTo(_db.saveSereniteaSets.isObtainable(b.id)),
+      ),
+      FilterSection<GsSetCategory, InfoSereniteaSet>(
+        GsSetCategory.values.toSet(),
+        (item) => item.category,
+        (c) => c.fromLabel(Labels.type),
+        (c, e) => c.fromLabel(e.getLabel()),
+        comparator: (a, b) => a.category.index.compareTo(b.category.index),
+      ),
+    ],
+    comparators: [(a, b) => a.name.compareTo(b.name)],
+  );
+  static final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
+    sections: [
+      FilterSection<bool, InfoSpincrystal>(
+        {true, false},
+        (item) => _db.saveSpincrystals.exists(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
+        comparator: (a, b) => _db.saveSpincrystals
+            .exists(a.id)
+            .compareTo(_db.saveSpincrystals.exists(b.id)),
+      ),
+    ],
+    comparators: [(a, b) => a.number.compareTo(b.number)],
+  );
+  static final infoMaterialFilter = ScreenFilter<InfoMaterial>(
+    sections: [
+      FilterSection<int, InfoMaterial>(
+        {1, 2, 3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, i) => c.fromLabel(Labels.rarityStar, i),
+      ),
+      FilterSection<String, InfoMaterial>(
+        InfoMaterialGroups.groups,
+        (item) => item.group,
+        (c) => c.fromLabel(Labels.category),
+        (c, i) => c.fromLabel(InfoMaterialGroups.getLabel(i)),
+      ),
+    ],
+    comparators: [
+      (a, b) => a.group.compareTo(b.group),
+      (a, b) => a.subgroup.compareTo(b.subgroup),
+      (a, b) => a.rarity.compareTo(b.rarity),
+      (a, b) => a.name.compareTo(b.name),
+    ],
+  );
+}
 
 Comparator<E>? _chain<E>(Iterable<Comparator<E>> selectors) {
   return selectors.fold<Comparator<E>?>(null, (p, e) => p?.compose(e) ?? e);

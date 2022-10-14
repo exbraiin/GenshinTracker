@@ -21,7 +21,7 @@ class SpincrystalsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return SizedBox();
         return ScreenDrawerBuilder<InfoSpincrystal>(
-          filter: () => infoSpincrystalFilter,
+          filter: () => ScreenFilters.infoSpincrystalFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoSpincrystal.getItems();
             final spincrystals = filter.match(items);

@@ -34,7 +34,7 @@ class WishesScreen extends StatelessWidget {
         final banners = db.infoBanners.getInfoBannerByType(banner);
 
         return ScreenDrawerBuilder<SaveWish>(
-          filter: () => saveWishFilter,
+          filter: () => ScreenFilters.saveWishFilter,
           builder: (context, filter, drawer) {
             return Scaffold(
               key: _key,

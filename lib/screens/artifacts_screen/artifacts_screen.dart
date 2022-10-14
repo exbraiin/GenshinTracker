@@ -20,7 +20,7 @@ class ArtifactsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         final items = GsDatabase.instance.infoArtifacts.getItems();
         return ScreenDrawerBuilder<InfoArtifact>(
-          filter: () => infoArtifactFilter,
+          filter: () => ScreenFilters.infoArtifactFilter,
           builder: (context, filter, drawer) {
             final filtered = filter.match(items);
             return Scaffold(

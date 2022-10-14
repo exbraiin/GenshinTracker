@@ -41,7 +41,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
     final args = ModalRoute.of(context)?.settings.arguments;
     final banner = args as InfoBanner?;
     return ScreenDrawerBuilder<ItemData>(
-      filter: () => itemDataFilter,
+      filter: () => ScreenFilters.itemDataFilter,
       builder: (context, filter, drawer) {
         if (banner == null) return SizedBox();
         return Scaffold(

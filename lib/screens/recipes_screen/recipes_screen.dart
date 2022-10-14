@@ -21,7 +21,7 @@ class RecipesScreen extends StatelessWidget {
         if (snapshot.data != true) return SizedBox();
 
         return ScreenDrawerBuilder<InfoRecipe>(
-          filter: () => infoRecipeFilter,
+          filter: () => ScreenFilters.infoRecipeFilter,
           builder: (context, filter, drawer) {
             final db = GsDatabase.instance;
             final recipes = db.infoRecipes.getItems();

@@ -20,7 +20,7 @@ class SereniteaSetsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return SizedBox();
         return ScreenDrawerBuilder<InfoSereniteaSet>(
-          filter: () => infoSereniteaSetFilter,
+          filter: () => ScreenFilters.infoSereniteaSetFilter,
           builder: (context, filter, drawer) {
             final setsList = GsDatabase.instance.infoSereniteaSets.getItems();
             final filtered = filter.match(setsList);

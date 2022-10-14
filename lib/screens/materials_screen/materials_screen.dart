@@ -21,7 +21,7 @@ class MaterialsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return SizedBox();
         return ScreenDrawerBuilder<InfoMaterial>(
-          filter: () => infoMaterialFilter,
+          filter: () => ScreenFilters.infoMaterialFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoMaterials.getItems();
             final materials = filter.match(items);

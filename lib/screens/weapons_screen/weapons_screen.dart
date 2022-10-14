@@ -23,7 +23,7 @@ class WeaponsScreen extends StatelessWidget {
         if (snapshot.data != true) return SizedBox();
 
         return ScreenDrawerBuilder<InfoWeapon>(
-          filter: () => infoWeaponFilter,
+          filter: () => ScreenFilters.infoWeaponFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoWeapons.getItems();
             final weapons = filter.match(items);

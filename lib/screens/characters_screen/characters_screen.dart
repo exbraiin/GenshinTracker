@@ -26,7 +26,7 @@ class CharactersScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return SizedBox();
         return ScreenDrawerBuilder<InfoCharacter>(
-          filter: () => infoCharacterFilter,
+          filter: () => ScreenFilters.infoCharacterFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoCharacters.getItems();
             final characters = filter.match(items);
