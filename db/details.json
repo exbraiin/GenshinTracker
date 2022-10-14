@@ -1,0 +1,295 @@
+{
+    "characters": {
+        "kamisato_ayaka": {
+            "title": "Frostflake Heron",
+            "description": "Daughter of the Yashiro Commission's Kamisato Clan. Dignified and elegant, as well as wise and strong.",
+            "constellation": "Grus Nivis",
+            "affiliation": "Yashiro Commission",
+            "special_dish": "\"Snow on the Hearth\"",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/d/d0/Character_Kamisato_Ayaka_Full_Wish.png",
+            "ascension": [
+                {
+                    "level": 1,
+                    "values_before": {},
+                    "values_after": {
+                        "hp": 1001,
+                        "atk": 27,
+                        "def": 61,
+                        "critDmg": 0
+                    },
+                    "materials": {}
+                },
+                {
+                    "level": 20,
+                    "values_before": {
+                        "hp": 2597,
+                        "atk": 69,
+                        "def": 158,
+                        "critDmg": 0
+                    },
+                    "values_after": {
+                        "hp": 3455,
+                        "atk": 92,
+                        "def": 211,
+                        "critDmg": 0
+                    },
+                    "materials": {
+                        "mora": 20000,
+                        "shivada_jade_sliver": 1,
+                        "sakura_bloom": 3,
+                        "old_handguard": 3
+                    }
+                },
+                {
+                    "level": 40,
+                    "values_before": {
+                        "hp": 5170,
+                        "atk": 138,
+                        "def": 315,
+                        "critDmg": 0
+                    },
+                    "values_after": {
+                        "hp": 5779,
+                        "atk": 154,
+                        "def": 352,
+                        "critDmg": 9.6
+                    },
+                    "materials": {
+                        "perpetual_heart": 2,
+                        "mora": 40000,
+                        "shivada_jade_fragment": 3,
+                        "sakura_bloom": 10,
+                        "old_handguard": 15
+                    }
+                },
+                {
+                    "level": 50,
+                    "values_before": {
+                        "hp": 6649,
+                        "atk": 177,
+                        "def": 405,
+                        "critDmg": 9.6
+                    },
+                    "values_after": {
+                        "hp": 7462,
+                        "atk": 198,
+                        "def": 455,
+                        "critDmg": 19.2
+                    },
+                    "materials": {
+                        "perpetual_heart": 4,
+                        "mora": 60000,
+                        "shivada_jade_fragment": 6,
+                        "sakura_bloom": 20,
+                        "kageuchi_handguard": 12
+                    }
+                },
+                {
+                    "level": 60,
+                    "values_before": {
+                        "hp": 8341,
+                        "atk": 222,
+                        "def": 509,
+                        "critDmg": 19.2
+                    },
+                    "values_after": {
+                        "hp": 8951,
+                        "atk": 238,
+                        "def": 546,
+                        "critDmg": 19.2
+                    },
+                    "materials": {
+                        "perpetual_heart": 8,
+                        "mora": 80000,
+                        "shivada_jade_chunk": 3,
+                        "sakura_bloom": 30,
+                        "kageuchi_handguard": 18
+                    }
+                },
+                {
+                    "level": 70,
+                    "values_before": {
+                        "hp": 9838,
+                        "atk": 262,
+                        "def": 600,
+                        "critDmg": 19.2
+                    },
+                    "values_after": {
+                        "hp": 10448,
+                        "atk": 278,
+                        "def": 637,
+                        "critDmg": 28.8
+                    },
+                    "materials": {
+                        "perpetual_heart": 12,
+                        "mora": 100000,
+                        "shivada_jade_chunk": 6,
+                        "sakura_bloom": 45,
+                        "famed_handguard": 12
+                    }
+                },
+                {
+                    "level": 80,
+                    "values_before": {
+                        "hp": 11345,
+                        "atk": 302,
+                        "def": 692,
+                        "critDmg": 19.2
+                    },
+                    "values_after": {
+                        "hp": 11954,
+                        "atk": 318,
+                        "def": 729,
+                        "critDmg": 38.4
+                    },
+                    "materials": {
+                        "perpetual_heart": 20,
+                        "mora": 120000,
+                        "shivada_jade_gemstone": 6,
+                        "sakura_bloom": 60,
+                        "famed_handguard": 24
+                    }
+                },
+                {
+                    "level": 90,
+                    "values_before": {
+                        "hp": 12858,
+                        "atk": 342,
+                        "def": 784,
+                        "critDmg": 38.4
+                    },
+                    "values_after": {},
+                    "materials": {}
+                }
+            ],
+            "talents": [
+                {
+                    "name": "Kamisato Art: Kabuki",
+                    "type": "Normal Attack",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/6a/Sword_Cryo.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 5 rapid strikes.\n\n<b>Charged Attack</b>\nConsumes a certain amount of Stamina to unleash a flurry of sword ki.\n\n<b>Plunging Attack</b>\nPlunges from mid-air to strike the ground below, damaging enemies along the path and dealing AoE DMG upon impact."
+                },
+                {
+                    "name": "Kamisato Art: Hyouka",
+                    "type": "Elemental Skill",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/5/56/Talent_Kamisato_Art_Hyouka.png",
+                    "desc": "Summons blooming ice to launch nearby opponents, dealing <color=cryo>AoE Cryo DMG</color>."
+                },
+                {
+                    "name": "Kamisato Art: Soumetsu",
+                    "type": "Elemental Burst",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/1/11/Talent_Kamisato_Art_Soumetsu.png",
+                    "desc": "Summons forth a snowstorm with flawless poise, unleashing a Frostflake Seki no To that moves forward continuously.\n\n<b>Frostflake Seki no To</b>\n* A storm of whirling icy winds that slashes repeatedly at every enemy it touches, dealing <color=cryo>Cryo DMG</color>.\n* The snowstorm explodes after its duration ends, dealing <color=cryo>AoE Cryo DMG</color>."
+                },
+                {
+                    "name": "Kamisato Art: Senho",
+                    "type": "Alternate Sprint",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d8/Talent_Kamisato_Art_Senho.png",
+                    "desc": "<b>Alternate Sprint</b>\nAyaka consumes Stamina and cloaks herself in a frozen fog that moves with her.\n\nIn Senho form, she moves swiftly upon water.\nWhen she reappears, the following effects occur:\n* Ayaka unleashes frigid energy to apply <color=cryo>Cryo</color> on nearby opponents.\n* Coldness condenses around Ayaka's blade, infusing her attacks with <color=cryo>Cryo</color> for a brief period."
+                },
+                {
+                    "name": "Amatsumi Kunitsumi Sanctification",
+                    "type": "1st Ascension Passive",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d9/Talent_Amatsumi_Kunitsumi_Sanctification.png",
+                    "desc": "After using <color=skill>Kamisato Art: Hyouka</color>, Kamisato Ayaka's Normal and Charged attacks deal 30% increased DMG for 6s."
+                },
+                {
+                    "name": "Kanten Senmyou Blessing",
+                    "type": "4th Ascension Passive",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/db/Talent_Kanten_Senmyou_Blessing.png",
+                    "desc": "When the <color=cryo>Cryo</color> application at the end of <color=skill>Kamisato Art: Senho</color> hits an opponent, Kamisato Ayaka gains the following effects:\n* Restores 10 Stamina\n* Gains 18% <color=cryo>Cryo DMG Bonus</color> for 10s."
+                },
+                {
+                    "name": "Fruits of Shinsa",
+                    "type": "Utility Passive",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/02/Talent_Fruits_of_Shinsa.png",
+                    "desc": "When Ayaka crafts Weapon Ascension Materials, she has a 10% chance to receive double the product."
+                }
+            ],
+            "constellations": [
+                {
+                    "name": "Snowswept Sakura",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/e/eb/Constellation_Snowswept_Sakura.png",
+                    "desc": "When Kamisato Ayaka's Normal or Charged Attacks deal <color=cryo>Cryo DMG</color> to opponents, it has a 50% chance of decreasing the CD of <color=skill>Kamisato Art: Hyouka</color> by 0.3s. This effect can occur once every 0.1s."
+                },
+                {
+                    "name": "Blizzard Blade Seki no To",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Constellation_Blizzard_Blade_Seki_no_To.png",
+                    "desc": "When casting <color=skill>Kamisato Art: Soumetsu</color>, unleashes 2 smaller additional Frostflake Seki no To, each dealing 20% of the original storm's DMG."
+                },
+                {
+                    "name": "Frostbloom Kamifubuki",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d3/Constellation_Frostbloom_Kamifubuki.png",
+                    "desc": "Increases the Level of <color=skill>Kamisato Art: Soumetsu</color> by 3.\nMaximum upgrade level is 15."
+                },
+                {
+                    "name": "Ebb and Flow",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/f/f7/Constellation_Ebb_and_Flow.png",
+                    "desc": "Opponents damaged by <color=skill>Kamisato Art: Soumetsu</color>'s Frostflake Seki no To will have their DEF decreased by 30% for 6s."
+                },
+                {
+                    "name": "Blossom Cloud Irutsuki",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d2/Constellation_Blossom_Cloud_Irutsuki.png",
+                    "desc": "Increases the Level of <color=skill>Kamisato Art: Hyouka</color> by 3.\nMaximum upgrade level is 15."
+                },
+                {
+                    "name": "Dance of Suigetsu",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d5/Constellation_Dance_of_Suigetsu.png",
+                    "desc": "Kamisato Ayaka gains Usurahi Butou every 10s, increasing her <color=skill>Charged Attack</color> DMG by 298%. This buff will be cleared 0.5s after Ayaka's Charged ATK hits an opponent, after which the timer for this ability will restart."
+                }
+            ],
+            "talents_materials": [
+                {
+                    "mora": 12500,
+                    "teachings_of_elegance": 3,
+                    "old_handguard": 6
+                },
+                {
+                    "mora": 17500,
+                    "guide_to_elegance": 3,
+                    "kageuchi_handguard": 3
+                },
+                {
+                    "mora": 25000,
+                    "guide_to_elegance": 3,
+                    "kageuchi_handguard": 4
+                },
+                {
+                    "mora": 30000,
+                    "guide_to_elegance": 3,
+                    "kageuchi_handguard": 6
+                },
+                {
+                    "mora": 30000,
+                    "guide_to_elegance": 3,
+                    "kageuchi_handguard": 6
+                },
+                {
+                    "bloodjade_branch": 1,
+                    "mora": 37500,
+                    "philosophies_of_elegance": 3,
+                    "famed_handguard": 6
+                },
+                {
+                    "bloodjade_branch": 1,
+                    "mora": 120000,
+                    "philosophies_of_elegance": 3,
+                    "famed_handguard": 6
+                },
+                {
+                    "bloodjade_branch": 2,
+                    "mora": 260000,
+                    "philosophies_of_elegance": 3,
+                    "famed_handguard": 6
+                },
+                {
+                    "crown_of_insight": 1,
+                    "bloodjade_branch": 2,
+                    "mora": 700000,
+                    "philosophies_of_elegance": 3,
+                    "famed_handguard": 6
+                }
+            ]
+        }
+    }
+}

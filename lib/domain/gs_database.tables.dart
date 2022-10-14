@@ -1,5 +1,5 @@
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/domain/gs_db.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 typedef _VoidCallback = void Function();
 typedef _CreateItemCallback<T> = T Function(Map<String, Object?>);

@@ -14,12 +14,14 @@ class CachedImageWidget extends StatelessWidget {
     return '$url/revision/latest/scale-to-width-down/$w';
   }
 
-  final String? imageUrl;
   final BoxFit fit;
+  final String? imageUrl;
+  final Alignment alignment;
 
   CachedImageWidget(
     this.imageUrl, {
     this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
   });
 
   @override
@@ -32,6 +34,7 @@ class CachedImageWidget extends StatelessWidget {
         return CachedNetworkImage(
           imageUrl: _getScaleUrl(imageUrl!, layout.biggest.toCacheWidth),
           fit: fit,
+          alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
           memCacheHeight: layout.biggest.toCacheHeight,
         );

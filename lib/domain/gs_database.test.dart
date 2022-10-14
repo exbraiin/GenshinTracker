@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 typedef _VoidCallback = void Function();
 
@@ -105,4 +106,23 @@ class Achievement {
         desc: map['desc'],
         version: map['ver'],
       );
+}
+
+// =============================================================================
+
+class CharacterDetailsData {
+  final _map = <String, InfoCharacterDescription>{};
+
+  Future<void> read() async {
+    final file = File('db/details.json');
+    final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
+    final characters = data['characters'] as Map<String, dynamic>;
+    characters.entries
+        .map((e) => InfoCharacterDescription.fromMap(e.key, e.value))
+        .forEach((e) => _map[e.id] = e);
+  }
+
+  InfoCharacterDescription getItem(String id) => _map[id]!;
+  bool exists(String id) => _map.containsKey(id);
+  Iterable<InfoCharacterDescription> getItems() => _map.values;
 }

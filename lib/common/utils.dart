@@ -113,6 +113,18 @@ class InfoMaterialGroups {
 }
 
 extension GsElementExt on GsElement {
+  Color getColor() {
+    return const [
+      Colors.lightGreen,
+      Colors.amber,
+      Colors.purple,
+      Colors.green,
+      Colors.blue,
+      Colors.red,
+      Colors.cyan,
+    ][this.index];
+  }
+
   String getLabel() {
     return const [
       Labels.elAnemo,
@@ -205,8 +217,24 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.physicalDmg: Labels.wsPhysicaldmg,
       GsWeaponStat.elementalMastery: Labels.wsElementalmastery,
       GsWeaponStat.energyRecharge: Labels.wsEnergyrecharge,
+      GsWeaponStat.healing: Labels.wsNone,
+      GsWeaponStat.hpPercent: Labels.wsNone,
+      GsWeaponStat.atkPercent: Labels.wsNone,
+      GsWeaponStat.defPercent: Labels.wsNone,
     }[this]!;
     return Lang.of(context).getValue(key);
+  }
+
+  String toIntOrPercentage(double value) {
+    final percentage = {
+      GsWeaponStat.critDmg,
+      GsWeaponStat.critRate,
+      GsWeaponStat.hpPercent,
+      GsWeaponStat.atkPercent,
+      GsWeaponStat.defPercent,
+    };
+    if (!percentage.contains(this)) return '${value.toInt()}';
+    return '${value.toStringAsFixed(1)}%';
   }
 
   String toPrettyShortString(BuildContext context, [double value = 0]) {

@@ -59,6 +59,7 @@ flutter:
     - assets/image/rarity/
     - assets/image/element/
     - assets/image/icons/
+    - assets/image/backgrounds/
     - assets/image/recipe_buff/
     - assets/image/weapon_type/
     - assets/image/weapon_stat/

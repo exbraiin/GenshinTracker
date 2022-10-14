@@ -9,6 +9,7 @@ export 'enums/gs_weapon_stat.dart';
 export 'models/info_artifact.dart';
 export 'models/info_banner.dart';
 export 'models/info_character.dart';
+export 'models/info_character_description.dart';
 export 'models/info_character_details.dart';
 export 'models/info_city.dart';
 export 'models/info_data.dart';
@@ -26,7 +27,6 @@ export 'models/save_spincrystal.dart';
 export 'models/save_wish.dart';
 
 const kEnableAchievements = false;
-const kEnableCharacterDetails = false;
 
 class GsUtils {
   GsUtils._();

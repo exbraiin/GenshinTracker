@@ -3,7 +3,7 @@ import 'package:tracker/screens/achievements_screen/achievements_list_screen.dar
 import 'package:tracker/screens/achievements_screen/achievements_screen.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
-import 'package:tracker/screens/characters_screen/character_ascension_screen.dart';
+import 'package:tracker/screens/character_ascension/character_ascension_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';

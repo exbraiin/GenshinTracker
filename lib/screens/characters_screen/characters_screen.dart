@@ -8,7 +8,7 @@ import 'package:tracker/common/widgets/no_results.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/characters_screen/character_ascension_screen.dart';
+import 'package:tracker/screens/character_ascension/character_ascension_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -38,9 +38,7 @@ class CharactersScreen extends StatelessWidget {
                       final item = characters[index];
                       return CharacterListItem(
                         item,
-                        onTap: kEnableCharacterDetails
-                            ? () => _onCharacterTap(context, item)
-                            : null,
+                        onTap: () => _onCharacterTap(context, item),
                       );
                     },
                   );
