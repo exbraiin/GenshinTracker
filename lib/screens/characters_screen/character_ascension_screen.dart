@@ -122,13 +122,13 @@ class _CharacterAscensionListItem extends StatelessWidget {
                 color: canAscend ? Colors.green : Colors.deepOrange,
                 icon: canAscend ? Icons.check : Icons.close,
                 onPress: canAscend
-                    ? () {
-                        materials.forEach((e) =>
+                    ? () => materials
+                        .where((material) => material.material != null)
+                        .forEach((e) =>
                             GsDatabase.instance.saveMaterials.changeAmount(
                               e.material!.id,
                               (e.owned - e.required).clamp(0, e.owned),
-                            ));
-                      }
+                            ))
                     : null,
               ),
             SizedBox(width: kSeparator4),
