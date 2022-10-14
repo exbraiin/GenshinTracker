@@ -453,8 +453,11 @@ class _InfoCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: context.textTheme.bigTitle3
-                .copyWith(fontWeight: FontWeight.bold, letterSpacing: 0.5),
+            style: context.textTheme.bigTitle3.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'NotoSans',
+            ),
           ),
           Divider(
             color: GsColors.dimWhite,
