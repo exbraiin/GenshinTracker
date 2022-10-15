@@ -23,6 +23,9 @@ const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
 
 String getRarityBgImage(int r) => 'assets/image/rarity/Item_$r\_Star.png';
 
+String getElementBgImage(GsElement e) =>
+    'assets/image/backgrounds/${e.name}.gif';
+
 extension GsElementExt on GsElement {
   String get assetPath => 'assets/image/element/$name.png';
 }

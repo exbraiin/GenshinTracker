@@ -221,6 +221,13 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.hpPercent: Labels.wsNone,
       GsWeaponStat.atkPercent: Labels.wsNone,
       GsWeaponStat.defPercent: Labels.wsNone,
+      GsWeaponStat.anemoDmgBonus: Labels.wsNone,
+      GsWeaponStat.geoDmgBonus: Labels.wsNone,
+      GsWeaponStat.electroDmgBonus: Labels.wsNone,
+      GsWeaponStat.dendroDmgBonus: Labels.wsNone,
+      GsWeaponStat.hydroDmgBonus: Labels.wsNone,
+      GsWeaponStat.pyroDmgBonus: Labels.wsNone,
+      GsWeaponStat.cryoDmgBonus: Labels.wsNone,
     }[this]!;
     return Lang.of(context).getValue(key);
   }
@@ -232,6 +239,13 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.hpPercent,
       GsWeaponStat.atkPercent,
       GsWeaponStat.defPercent,
+      GsWeaponStat.anemoDmgBonus,
+      GsWeaponStat.geoDmgBonus,
+      GsWeaponStat.electroDmgBonus,
+      GsWeaponStat.dendroDmgBonus,
+      GsWeaponStat.hydroDmgBonus,
+      GsWeaponStat.pyroDmgBonus,
+      GsWeaponStat.cryoDmgBonus,
     };
     if (!percentage.contains(this)) return '${value.toInt()}';
     return '${value.toStringAsFixed(1)}%';
@@ -252,6 +266,13 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.hpPercent: Labels.wsNone,
       GsWeaponStat.atkPercent: Labels.wsNone,
       GsWeaponStat.defPercent: Labels.wsNone,
+      GsWeaponStat.anemoDmgBonus: Labels.wsNone,
+      GsWeaponStat.geoDmgBonus: Labels.wsNone,
+      GsWeaponStat.electroDmgBonus: Labels.wsNone,
+      GsWeaponStat.dendroDmgBonus: Labels.wsNone,
+      GsWeaponStat.hydroDmgBonus: Labels.wsNone,
+      GsWeaponStat.pyroDmgBonus: Labels.wsNone,
+      GsWeaponStat.cryoDmgBonus: Labels.wsNone,
     }[this]!;
     final label = Lang.of(context).getValue(key);
     final integer = value.toInt();

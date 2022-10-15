@@ -100,7 +100,8 @@ class CharacterAscensionMaterialsScreen extends StatelessWidget {
     );
   }
 
-  List<AscensionMaterial> _getMaterials() {
+  List<AscendMaterial> _getMaterials() {
+    final savedMats = GsDatabase.instance.saveMaterials;
     final wishes = GsDatabase.instance.saveWishes;
     final saved = GsDatabase.instance.saveCharacters;
     final items = GsDatabase.instance.infoCharacters.getItems();
@@ -110,29 +111,19 @@ class CharacterAscensionMaterialsScreen extends StatelessWidget {
         .thenByDescending((e) => e.rarity)
         .thenBy((e) => e.name)
         .toList();
-
     return characters
-        .expand((char) =>
-            AscMat.values.expand((e) => AscensionMaterial.getMats(e, char)))
-        .groupBy((e) => e.key)
+        .expand(
+            (e) => getAscendMaterials(e.id, saved.getCharAscension(e.id) + 1))
+        .where((e) => e.material != null)
+        .groupBy((e) => e.material!.id)
         .entries
         .map((e) {
-          final mat = GsDatabase.instance.infoMaterials.getItem(e.key);
-          final db = GsDatabase.instance.saveMaterials;
-          final total = e.value.sumBy((e) => e.value).toInt();
-          final owned = db.getItemOrNull(mat.id)?.amount ?? 0;
-          final craft = owned < total ? db.getCraftableAmount(mat) : 0;
-          return AscensionMaterial(
-            material: mat,
-            craftable: craft,
-            owned: owned,
-            required: total,
-          );
-        })
-        .sortedBy((e) => e.material!.group)
-        .thenBy((e) => e.material!.subgroup)
-        .thenBy((e) => e.material!.rarity)
-        .thenBy((e) => e.material!.name)
-        .toList();
+      final material = e.value.first.material;
+      final owned = e.value.first.owned;
+      final required = e.value.sumBy((e) => e.required).toInt();
+      final craftable =
+          owned < required ? savedMats.getCraftableAmount(material!.id) : 0;
+      return AscendMaterial(owned, required, craftable, material);
+    }).toList();
   }
 }

@@ -47,10 +47,10 @@ class _CharacterAscensionMaterialState
   Widget build(BuildContext context) {
     const radius = BorderRadius.all(Radius.circular(6));
     final im = GsDatabase.instance.infoMaterials;
-    final material = im.exists(widget.id) ? im.getItem(widget.id) : null;
+    final material = im.getItemOrNull(widget.id);
     final db = GsDatabase.instance.saveMaterials;
     final owned = db.getItemOrNull(widget.id)?.amount ?? 0;
-    final craftable = material != null ? db.getCraftableAmount(material) : 0;
+    final craftable = db.getCraftableAmount(widget.id);
     return Container(
       width: 64,
       height: 64 + 24,

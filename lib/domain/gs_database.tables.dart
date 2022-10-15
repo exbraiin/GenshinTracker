@@ -19,6 +19,7 @@ class TableData<T extends IdData> {
   }
 
   T getItem(String id) => _map[id]!;
+  T? getItemOrNull(String id) => _map[id];
   bool exists(String id) => _map.containsKey(id);
   Iterable<T> getItems() => _map.values;
 }
@@ -29,8 +30,6 @@ class TableSaveData<T extends IdSaveData> extends TableData<T> {
 
   TableSaveData(String table, _CreateItemCallback<T> create, [this.onUpdate])
       : super(table, create);
-
-  T? getItemOrNull(String id) => _map[id];
 
   void insertItem(T item) {
     _map[item.id] = item;

@@ -23,7 +23,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (!snapshot.data! || info == null) return SizedBox();
-        final ic = GsDatabase.instance.infoCharacterDescriptions;
+        final ic = GsDatabase.instance.infoCharacterDetails;
         final details = ic.exists(info.id) ? ic.getItem(info.id) : null;
         return Scaffold(
           appBar: GsAppBar(
@@ -33,7 +33,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  'assets/image/backgrounds/${info.element.name}.gif',
+                  getElementBgImage(info.element),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,78 +68,74 @@ class CharacterDetailsScreen extends StatelessWidget {
     final ascension = db.getCharAscension(info.id);
     return SizedBox(
       height: 260,
-      child: Stack(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned(
-            top: -100,
-            right: 60,
-            child: SizedBox(
-              width: 460,
-              height: 460,
-              child: CachedImageWidget(
-                desc?.fullImage,
-                fit: BoxFit.fitWidth,
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              borderRadius: kMainRadius.copyWith(
+                bottomRight: Radius.circular(24),
+              ),
+              image: DecorationImage(
+                image: AssetImage(getRarityBgImage(info.rarity)),
+                fit: BoxFit.contain,
               ),
             ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  borderRadius: kMainRadius.copyWith(
-                    bottomRight: Radius.circular(24),
-                  ),
-                  image: DecorationImage(
-                    image: AssetImage(getRarityBgImage(info.rarity)),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: kMainRadius.copyWith(
-                    bottomRight: Radius.circular(24),
-                  ),
-                  child: CachedImageWidget(info.image),
-                ),
+            child: ClipRRect(
+              borderRadius: kMainRadius.copyWith(
+                bottomRight: Radius.circular(24),
               ),
-              SizedBox(width: 18),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              child: CachedImageWidget(info.image),
+            ),
+          ),
+          SizedBox(width: 18),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          info.name,
-                          style: Theme.of(context).textTheme.bigTitle2,
-                        ),
-                        SizedBox(width: 8),
-                        Image.asset(
-                          info.element.assetPath,
-                          width: 24,
-                          height: 24,
-                        ),
-                      ],
+                    Text(
+                      info.name,
+                      style: Theme.of(context).textTheme.bigTitle2,
                     ),
-                    InkWell(
-                      onTap: GsDatabase.instance.saveWishes
-                                  .getOwnedCharacter(info.id) !=
-                              0
-                          ? () => db.increaseAscension(info.id)
-                          : null,
-                      child: Text(
-                        '${'✦' * ascension}${'✧' * (6 - ascension)}',
-                        style: context.textTheme.bigTitle3,
-                      ),
+                    SizedBox(width: 8),
+                    Image.asset(
+                      info.element.assetPath,
+                      width: 24,
+                      height: 24,
                     ),
                   ],
                 ),
-              )
-            ],
+                InkWell(
+                  onTap: GsDatabase.instance.saveWishes
+                              .getOwnedCharacter(info.id) !=
+                          0
+                      ? () => db.increaseAscension(info.id)
+                      : null,
+                  child: Text(
+                    '${'✦' * ascension}${'✧' * (6 - ascension)}',
+                    style: context.textTheme.bigTitle3,
+                  ),
+                ),
+                SizedBox(height: kSeparator4),
+                Text(
+                  desc?.description ?? '',
+                  style: context.textTheme.description2,
+                ),
+              ],
+            ),
           ),
+          SizedBox(
+            width: 460,
+            child: CachedImageWidget(
+              desc?.fullImage,
+              fit: BoxFit.fitWidth,
+            ),
+          )
         ],
       ),
     );
@@ -363,10 +359,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                       SizedBox(width: kSeparator8),
                       Text(
                         '(${e.type})',
-                        style: context.textTheme.subtitle2!.copyWith(
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: context.textTheme.description2
+                            .copyWith(fontStyle: FontStyle.italic),
                       ),
                     ],
                   ),

@@ -235,7 +235,13 @@ extension SaveMaterialExt on TableSaveData<SaveMaterial> {
 
   int getMaterialAmount(String id) => getItemOrNull(id)?.amount ?? 0;
 
-  int getCraftableAmount(InfoMaterial mat) {
+  int getCraftableAmount(String id) {
+    final info = GsDatabase.instance.infoMaterials.getItemOrNull(id);
+    if (info == null) return 0;
+    return _getCraftableAmount(info);
+  }
+
+  int _getCraftableAmount(InfoMaterial mat) {
     int getCraftable(InfoMaterial e) =>
         getMaterialAmount(e.id) ~/ pow(3, mat.rarity - e.rarity);
 

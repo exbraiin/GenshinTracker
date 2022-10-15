@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -112,17 +113,28 @@ class Achievement {
 
 class CharacterDetailsData {
   final _map = <String, InfoCharacterDescription>{};
+  final _ascensionHerosWit = <int>[];
 
   Future<void> read() async {
-    final file = File('db/details.json');
+    final path = kDebugMode
+        ? 'D:/Software/Tracker_Genshin/db/details.json'
+        : 'db/details.json';
+
+    final file = File(path);
     final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
     final characters = data['characters'] as Map<String, dynamic>;
     characters.entries
         .map((e) => InfoCharacterDescription.fromMap(e.key, e.value))
         .forEach((e) => _map[e.id] = e);
+
+    final values = (data['ascension_heros_wit'] as List).cast<int>();
+    _ascensionHerosWit.addAll(values);
   }
 
+  int getAscensionHerosWit(int level) => _ascensionHerosWit[level];
+
   InfoCharacterDescription getItem(String id) => _map[id]!;
+  InfoCharacterDescription? getItemOrNull(String id) => _map[id];
   bool exists(String id) => _map.containsKey(id);
   Iterable<InfoCharacterDescription> getItems() => _map.values;
 }

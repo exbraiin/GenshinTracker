@@ -213,12 +213,7 @@ class ScreenFilters {
             .compareTo(_db.saveWishes.hasWeapon(b.id)),
       ),
       FilterSection<GsWeaponStat, InfoWeapon>(
-        GsWeaponStat.values.except([
-          GsWeaponStat.healing,
-          GsWeaponStat.hpPercent,
-          GsWeaponStat.atkPercent,
-          GsWeaponStat.defPercent,
-        ]).toSet(),
+        GsWeaponStat.values.take(9).toSet(),
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
         (c, i) => i.toPrettyShortString(c),

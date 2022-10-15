@@ -6,6 +6,7 @@ class InfoCharacterDescription implements IdData {
   final String constellation;
   final String affiliation;
   final String specialDish;
+  final String description;
   final String fullImage;
   final List<InfoCharacterTalent> talents;
   final List<InfoCharacterAscension> ascension;
@@ -17,6 +18,7 @@ class InfoCharacterDescription implements IdData {
     required this.constellation,
     required this.affiliation,
     required this.specialDish,
+    required this.description,
     required this.fullImage,
     required this.talents,
     required this.ascension,
@@ -31,6 +33,7 @@ class InfoCharacterDescription implements IdData {
       constellation: map['constellation'],
       affiliation: map['affiliation'],
       specialDish: map['special_dish'],
+      description: map['description'],
       fullImage: map['full_image'],
       talents: (map['talents'] as List)
           .map((e) => InfoCharacterTalent.fromMap(e))

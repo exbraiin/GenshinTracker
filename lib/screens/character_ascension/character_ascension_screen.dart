@@ -5,13 +5,14 @@ import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/file_image.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
 import 'package:tracker/common/widgets/no_results.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension/character_ascension_material.dart';
 import 'package:tracker/screens/character_ascension/character_ascension_materials_screen.dart';
+
+const radius = BorderRadius.all(Radius.circular(6));
 
 class CharacterAscensionScreen extends StatelessWidget {
   static const id = 'character_ascension_screen';
@@ -72,43 +73,61 @@ class _CharacterAscensionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sw = GsDatabase.instance.saveWishes;
     final sc = GsDatabase.instance.saveCharacters;
     final saved = sc.getItemOrNull(item.id);
     final ascension = saved?.ascension ?? 0;
     final maxAscend = sc.getCharMaxAscended(item.id);
-    final materials = !maxAscend
-        ? AscMat.values.map((e) => AscensionMaterial.fromAscension(e, item))
-        : <AscensionMaterial>[];
+    final materials =
+        !maxAscend ? getAscendMaterials(item.id, ascension + 1) : [];
     final canAscend = materials.all((e) => e.hasRequired);
     return Opacity(
       opacity: maxAscend ? kDisableOpacity : 1,
       child: Container(
         decoration: BoxDecoration(
-          color: GsColors.getRarityColor(item.rarity),
+          color: Colors.white.withOpacity(0.1),
           borderRadius: radius,
         ),
         padding: EdgeInsets.symmetric(vertical: kSeparator4),
         child: Row(
           children: [
+            SizedBox(width: kSeparator4),
             Container(
-              width: 64,
-              height: 64,
-              margin: EdgeInsets.all(kSeparator4).copyWith(bottom: 0),
-              child: CachedImageWidget(
-                item.image,
-                fit: BoxFit.cover,
+              width: 88,
+              height: 88,
+              decoration: BoxDecoration(
+                borderRadius: kMainRadius.copyWith(
+                  bottomRight: Radius.circular(24),
+                ),
+                image: DecorationImage(
+                  image: AssetImage(getRarityBgImage(item.rarity)),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: kMainRadius.copyWith(
+                  bottomRight: Radius.circular(24),
+                ),
+                child: CachedImageWidget(item.image),
               ),
             ),
             SizedBox(width: kSeparator4),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.name),
+                Text(
+                  item.name,
+                  style: context.textTheme.bigTitle3,
+                ),
                 SizedBox(height: kSeparator2),
-                ItemCardLabel(
-                  label: '$ascension✦',
-                  onTap: () => GsDatabase.instance.saveCharacters
-                      .increaseAscension(item.id),
+                InkWell(
+                  onTap: sw.getOwnedCharacter(item.id) != 0
+                      ? () => sc.increaseAscension(item.id)
+                      : null,
+                  child: Text(
+                    '${'✦' * ascension}${'✧' * (6 - ascension)}',
+                    style: context.textTheme.bigTitle3,
+                  ),
                 ),
               ],
             ),
@@ -144,28 +163,18 @@ class _CharacterAscensionListItem extends StatelessWidget {
   }
 }
 
-const animate = false;
-const radius = BorderRadius.all(Radius.circular(6));
-
-enum AscMat {
-  books,
-  gems,
-  boss,
-  region,
-  mobs,
+List<AscendMaterial> getAscendMaterials(String charId, int level) {
+  final db = GsDatabase.instance;
+  final char = db.infoCharacterDetails.getItemOrNull(charId);
+  if (char == null) return [];
+  final witsAmount = db.infoCharacterDetails.getAscensionHerosWit(level);
+  return (char.ascension[level].materials.entries.toList()
+        ..insert(0, MapEntry('heros_wit', witsAmount)))
+      .map((e) => AscendMaterial.fromId(e.key, e.value))
+      .toList();
 }
 
-class AscensionMaterial {
-  static const _values = {
-    AscMat.books: [6, 28, 29, 42, 59, 80],
-    AscMat.gems: [1, 3, 6, 3, 6, 6],
-    AscMat.boss: [0, 2, 4, 8, 12, 20],
-    AscMat.region: [3, 10, 20, 30, 45, 60, 171],
-    AscMat.mobs: [3, 15, 12, 18, 12, 24],
-  };
-
-  static List<AscMat> get keys => _values.keys.toList();
-
+class AscendMaterial {
   final int owned;
   final int required;
   final int craftable;
@@ -173,69 +182,18 @@ class AscensionMaterial {
 
   bool get hasRequired => owned + craftable >= required;
 
-  AscensionMaterial({
+  AscendMaterial(
+    this.owned,
+    this.required,
+    this.craftable,
     this.material,
-    this.owned = 0,
-    this.required = 0,
-    this.craftable = 0,
-  });
+  );
 
-  static String _getId(AscMat key, InfoCharacterDetails info, int ascension) {
-    ascension = ascension - 1;
-    if (key == AscMat.books) return 'heros_wit';
-    if (key == AscMat.gems && info.gems.length > 3) {
-      return info.gems[(ascension + 1) ~/ 2];
-    }
-    if (key == AscMat.boss) return info.boss;
-    if (key == AscMat.region) return info.region;
-    if (key == AscMat.mobs && info.mobs.length > 2) {
-      return info.mobs[ascension ~/ 2];
-    }
-    return '';
-  }
-
-  factory AscensionMaterial.fromAscension(AscMat key, InfoCharacter char) {
+  factory AscendMaterial.fromId(String id, int required) {
     final db = GsDatabase.instance;
-    final sc = db.saveCharacters.getItemOrNull(char.id);
-    final sd = db.infoCharacterDetails.exists(char.id)
-        ? db.infoCharacterDetails.getItem(char.id)
-        : null;
-    if (sd == null) return AscensionMaterial();
-
-    final ascension = (sc?.ascension ?? 0) + 1;
-    final id = _getId(key, sd, ascension);
-    if (!db.infoMaterials.exists(id)) return AscensionMaterial();
-    final mat = db.infoMaterials.getItem(id);
-
-    final owned = db.saveMaterials.getItemOrNull(mat.id)?.amount ?? 0;
-    final total = _values[key]?[ascension - 1] ?? 0;
-    final craft = owned < total ? db.saveMaterials.getCraftableAmount(mat) : 0;
-
-    return AscensionMaterial(
-      material: mat,
-      owned: owned,
-      required: total,
-      craftable: craft,
-    );
-  }
-
-  static Iterable<MapEntry<String, int>> getMats(
-    AscMat key,
-    InfoCharacter char,
-  ) sync* {
-    final db = GsDatabase.instance;
-    final sc = db.saveCharacters.getItemOrNull(char.id);
-    final sd = db.infoCharacterDetails.exists(char.id)
-        ? db.infoCharacterDetails.getItem(char.id)
-        : null;
-    if (sd == null) return;
-    final ascension = (sc?.ascension ?? 0) + 1;
-    for (var i = 0; i < 7 - ascension; ++i) {
-      final asc = i + ascension;
-      final id = _getId(key, sd, asc);
-      if (!db.infoMaterials.exists(id)) continue;
-      final total = _values[key]?[asc - 1] ?? 0;
-      yield MapEntry(id, total);
-    }
+    final owned = db.saveMaterials.getMaterialAmount(id);
+    final craft = db.saveMaterials.getCraftableAmount(id);
+    final material = db.infoMaterials.getItemOrNull(id);
+    return AscendMaterial(owned, required, craft, material);
   }
 }

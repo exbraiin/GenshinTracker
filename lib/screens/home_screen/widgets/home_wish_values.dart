@@ -143,7 +143,7 @@ class HomeWishesValues extends StatelessWidget {
                   constraints: BoxConstraints.tightFor(),
                   icon: AnimatedRotation(
                     turns: expanded ? 0.5 : 1,
-                    duration: Duration(milliseconds: 400),
+                    duration: Duration(milliseconds: 200),
                     child: Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: Colors.white,
