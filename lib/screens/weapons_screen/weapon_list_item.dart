@@ -59,7 +59,8 @@ class WeaponListItem extends StatelessWidget {
                           borderRadius: kMainRadius,
                         ),
                         child: ItemCardLabel(
-                          label: weapon.valueString,
+                          label: weapon.statType
+                              .toIntOrPercentage(weapon.statValue),
                           asset: weapon.statType.assetPath,
                         ),
                       ),

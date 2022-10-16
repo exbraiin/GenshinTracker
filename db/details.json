@@ -286,37 +286,37 @@
             ]
         },
         "aloy": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Savior From Another World",
+            "description": "Formerly an outcast, now a hunter of unparalleled skill. Ready to do the right thing at any time.",
+            "constellation": "Nora Fortis",
+            "affiliation": "Wandering Heroine",
+            "special_dish": "Satiety Gel",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/2/2c/Character_Aloy_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 848,
+                        "atk": 18,
+                        "def": 53,
+                        "cryoDmgBonus": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2201,
+                        "atk": 47,
+                        "def": 137,
+                        "cryoDmgBonus": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2928,
+                        "atk": 63,
+                        "def": 182,
+                        "cryoDmgBonus": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -328,16 +328,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 4382,
+                        "atk": 94,
+                        "def": 272,
+                        "cryoDmgBonus": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 4899,
+                        "atk": 105,
+                        "def": 304,
+                        "cryoDmgBonus": 7.2
                     },
                     "materials": {
                         "crystalline_bloom": 2,
@@ -350,16 +350,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5636,
+                        "atk": 121,
+                        "def": 350,
+                        "cryoDmgBonus": 7.2
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6325,
+                        "atk": 136,
+                        "def": 393,
+                        "cryoDmgBonus": 14.4
                     },
                     "materials": {
                         "crystalline_bloom": 4,
@@ -372,16 +372,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7070,
+                        "atk": 152,
+                        "def": 439,
+                        "cryoDmgBonus": 14.4
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7587,
+                        "atk": 163,
+                        "def": 471,
+                        "cryoDmgBonus": 14.4
                     },
                     "materials": {
                         "crystalline_bloom": 8,
@@ -394,16 +394,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8339,
+                        "atk": 179,
+                        "def": 517,
+                        "cryoDmgBonus": 14.4
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8856,
+                        "atk": 190,
+                        "def": 550,
+                        "cryoDmgBonus": 21.6
                     },
                     "materials": {
                         "crystalline_bloom": 12,
@@ -416,16 +416,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9616,
+                        "atk": 206,
+                        "def": 597,
+                        "cryoDmgBonus": 21.6
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10133,
+                        "atk": 217,
+                        "def": 629,
+                        "cryoDmgBonus": 28.8
                     },
                     "materials": {
                         "crystalline_bloom": 20,
@@ -438,10 +438,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10899,
+                        "atk": 234,
+                        "def": 676,
+                        "cryoDmgBonus": 28.8
                     },
                     "values_after": {},
                     "materials": {}
@@ -449,72 +449,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Rapid Fire",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/a/a9/Bow_Cryo.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 4 consecutive shots with a bow.\n\n<b>Charged Attack</b>\nPerform a more precise Aimed Shot with increased DMG.\nWhile aiming, biting frost will accumulate on the arrowhead. A fully charged frost arrow will deal <color=cryo>Cryo DMG</color>.\n\n<b>Plunging Attack</b>\nFires off a shower of arrows in mid-air before falling and striking the ground, dealing AoE DMG upon impact."
                 },
                 {
-                    "name": "",
+                    "name": "Frozen Wilds",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Talent_Frozen_Wilds.png",
+                    "desc": "Aloy throws a Freeze Bomb in the targeted direction that explodes on impact, dealing <color=cryo>Cryo DMG</color>. After it explodes, the Freeze Bomb will split up into many Chillwater Bomblets that explode on contact with opponents or after a short delay, dealing <color=cryo>Cryo DMG</color>.\nWhen a Freeze Bomb or Chillwater Bomblet hits an opponent, the opponent's ATK is decreased and Aloy receives 1 Coil stack.\nAloy can gain up to 1 Coil stack every 0.1s.\n\n<b>Coil</b>\n* Each stack increases Aloy's Normal Attack DMG.\n* When Aloy has 4 Coil stacks, all stacks of Coil are cleared. She then enters the Rushing Ice state, which further increases the DMG dealt by her Normal Attacks and converts her Normal Attack DMG to Cryo DMG.\n\nWhile in the Rushing Ice state, Aloy cannot obtain new Coil stacks.\nCoil effects will be cleared 30s after Aloy leaves the field."
                 },
                 {
-                    "name": "",
+                    "name": "Prophecies of Dawn",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/b/b4/Talent_Prophecies_of_Dawn.png",
+                    "desc": "Aloy throws a Power Cell filled with Cryo in the targeted direction, then detonates it with an arrow, dealing <color=cryo>AoE Cryo DMG</color>."
                 },
                 {
-                    "name": "",
+                    "name": "Combat Override",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/01/Talent_Combat_Override.png",
+                    "desc": "When Aloy receives the Coil effect from Frozen Wilds, her ATK is increased by 16%, while nearby party members' ATK is increased by 8%. This effect lasts 10s."
                 },
                 {
-                    "name": "",
+                    "name": "Strong Strike",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/b/ba/Talent_Strong_Strike.png",
+                    "desc": "When Aloy is in the Rushing Ice state conferred by Frozen Wilds, her <color=cryo>Cryo DMG Bonus</color> increases by 3.5% every 1s. A maximum <color=cryo>Cryo DMG Bonus</color> increase of 35% can be gained in this way."
                 },
                 {
-                    "name": "",
+                    "name": "Easy Does It",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/0f/Talent_Easy_Does_It.png",
+                    "desc": "When Aloy is in the party, animals who produce Fowl, Raw Meat, or Chilled Meat will not be startled when party members approach them."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (1)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (2)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (3)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (4)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (5)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Another World (6)",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Constellation_Star_of_Another_World.png",
+                    "desc": "The time has not yet come for this person's corner of the night sky to light up."
                 }
             ],
             "talents_materials": [
@@ -571,37 +571,37 @@
             ]
         },
         "amber": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Gliding Champion",
+            "description": "Always energetic and full of life, Amber's the best — albeit only — Outrider of the Knights of Favonius.",
+            "constellation": "Lepus",
+            "affiliation": "Knights of Favonius",
+            "special_dish": "Outrider's Champion Steak!",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/1/1c/Character_Amber_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 793,
+                        "atk": 19,
+                        "def": 50,
+                        "atkPercent": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2038,
+                        "atk": 48,
+                        "def": 129,
+                        "atkPercent": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2630,
+                        "atk": 62,
+                        "def": 167,
+                        "atkPercent": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -613,16 +613,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 3940,
+                        "atk": 93,
+                        "def": 250,
+                        "atkPercent": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 4361,
+                        "atk": 103,
+                        "def": 277,
+                        "atkPercent": 6
                     },
                     "materials": {
                         "everflame_seed": 2,
@@ -635,16 +635,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5016,
+                        "atk": 118,
+                        "def": 318,
+                        "atkPercent": 6
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5578,
+                        "atk": 131,
+                        "def": 354,
+                        "atkPercent": 12
                     },
                     "materials": {
                         "everflame_seed": 4,
@@ -657,16 +657,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6233,
+                        "atk": 147,
+                        "def": 396,
+                        "atkPercent": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6654,
+                        "atk": 157,
+                        "def": 422,
+                        "atkPercent": 12
                     },
                     "materials": {
                         "everflame_seed": 8,
@@ -679,16 +679,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7309,
+                        "atk": 172,
+                        "def": 464,
+                        "atkPercent": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7730,
+                        "atk": 182,
+                        "def": 491,
+                        "atkPercent": 18
                     },
                     "materials": {
                         "everflame_seed": 12,
@@ -701,16 +701,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8385,
+                        "atk": 198,
+                        "def": 532,
+                        "atkPercent": 18
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8806,
+                        "atk": 208,
+                        "def": 559,
+                        "atkPercent": 24
                     },
                     "materials": {
                         "everflame_seed": 20,
@@ -723,10 +723,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9461,
+                        "atk": 223,
+                        "def": 601,
+                        "atkPercent": 24
                     },
                     "values_after": {},
                     "materials": {}
@@ -734,72 +734,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Sharpshooter",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/7f/Bow_Pyro.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 5 consecutive shots with a bow.\n\n<b>Charged Attack</b>\nPerform a more precise Aimed Shot with increased DMG.\nWhile aiming, flames will accumulate on the arrowhead. A fully charged flaming arrow will deal <color=pyro>Pyro DMG</color>.\n\n<b>Plunging Attack</b>\nFires off a shower of arrows in mid-air before falling and striking the ground, dealing AoE DMG upon impact."
                 },
                 {
-                    "name": "",
+                    "name": "Explosive Puppet",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/e/e0/Talent_Explosive_Puppet.png",
+                    "desc": "The ever-reliable Baron Bunny takes the stage.\n\n<b>Baron Bunny</b>\nContinuously taunts the enemy, drawing their fire.\nBaron Bunny's HP scales with Amber's Max HP.\nWhen destroyed or when its timer expires, Baron Bunny explodes, dealing <color=pyro>AoE Pyro DMG</color>.\n\n<b>Hold</b>\nAdjusts the throwing direction of Baron Bunny.\nThe longer the button is held, the further the throw."
                 },
                 {
-                    "name": "",
+                    "name": "Fiery Rain",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/6c/Talent_Fiery_Rain.png",
+                    "desc": "Fires off a shower of arrows, dealing continuous <color=pyro>AoE Pyro DMG</color>."
                 },
                 {
-                    "name": "",
+                    "name": "Every Arrow Finds Its Target",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/5/54/Talent_Every_Arrow_Finds_Its_Target.png",
+                    "desc": "Increases the CRIT Rate of <color=skill>Fiery Rain</color> by 10% and widens its AoE by 30%."
                 },
                 {
-                    "name": "",
+                    "name": "Precise Shot",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Talent_Precise_Shot.png",
+                    "desc": "<color=skill>Aimed Shot</color> hits on weak spots increase ATK by 15% for 10s."
                 },
                 {
-                    "name": "",
+                    "name": "Gliding Champion",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/df/Talent_Gliding_Champion.png",
+                    "desc": "Decreases gliding Stamina consumption for your own party members by 20%.\nNot stackable with Passive Talents that provide the exact same effects."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "One Arrow to Rule Them All",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/c/c9/Constellation_One_Arrow_to_Rule_Them_All.png",
+                    "desc": "Fires 2 arrows per Aimed Shot. The second arrow deals 20% of the first arrow's DMG."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Bunny Triggered",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/75/Constellation_Bunny_Triggered.png",
+                    "desc": "Baron Bunny, new and improved! Hitting <color=skill>Baron Bunny</color>'s foot with a fully-charged <color=skill>Aimed Shot</color> manually detonates it.Explosion via manual detonation deals 200% additional DMG."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "It Burns!",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/9/93/Constellation_It_Burns%21.png",
+                    "desc": "Increases the Level of <color=skill>Fiery Rain</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "It's Not Just Any Doll...",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d6/Constellation_It%27s_Not_Just_Any_Doll....png",
+                    "desc": "Decreases <color=skill>Explosive Puppet</color>'s CD by 20%. Adds 1 additional charge."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "It's Baron Bunny!",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/9/95/Constellation_It%27s_Baron_Bunny%21.png",
+                    "desc": "Increases the Level of <color=skill>Explosive Puppet</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Wildfire",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/1/1b/Constellation_Wildfire.png",
+                    "desc": "<color=skill>Fiery Rain</color> increases all party members' Movement SPD by 15% and ATK by 15% for 10s."
                 }
             ],
             "talents_materials": [
@@ -856,37 +856,37 @@
             ]
         },
         "arataki_itto": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Hanamizaka Heroics",
+            "description": "The first and greatest head of the Arataki Gang, famed throughout Inazuma City's Hanamizaka... Wait, what? You've never heard of them? Are you trying to be funny here?",
+            "constellation": "Taurus Iracundus",
+            "affiliation": "Arataki Gang",
+            "special_dish": "Way of the Strong",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/c/c3/Character_Arataki_Itto_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 1001,
+                        "atk": 18,
+                        "def": 75,
+                        "critRate": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2597,
+                        "atk": 46,
+                        "def": 194,
+                        "critRate": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 3455,
+                        "atk": 61,
+                        "def": 258,
+                        "critRate": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -898,16 +898,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5170,
+                        "atk": 91,
+                        "def": 386,
+                        "critRate": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5779,
+                        "atk": 102,
+                        "def": 431,
+                        "critRate": 4.8
                     },
                     "materials": {
                         "riftborn_regalia": 2,
@@ -920,16 +920,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6649,
+                        "atk": 117,
+                        "def": 496,
+                        "critRate": 4.8
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7462,
+                        "atk": 132,
+                        "def": 557,
+                        "critRate": 9.6
                     },
                     "materials": {
                         "riftborn_regalia": 4,
@@ -942,16 +942,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8341,
+                        "atk": 147,
+                        "def": 622,
+                        "critRate": 9.6
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8951,
+                        "atk": 158,
+                        "def": 668,
+                        "critRate": 9.6
                     },
                     "materials": {
                         "riftborn_regalia": 8,
@@ -964,16 +964,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9839,
+                        "atk": 174,
+                        "def": 734,
+                        "critRate": 9.6
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10448,
+                        "atk": 185,
+                        "def": 779,
+                        "critRate": 14.4
                     },
                     "materials": {
                         "riftborn_regalia": 12,
@@ -986,16 +986,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 11345,
+                        "atk": 200,
+                        "def": 846,
+                        "critRate": 14.4
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 11954,
+                        "atk": 211,
+                        "def": 892,
+                        "critRate": 19.2
                     },
                     "materials": {
                         "riftborn_regalia": 20,
@@ -1008,10 +1008,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 12858,
+                        "atk": 227,
+                        "def": 959,
+                        "critRate": 19.2
                     },
                     "values_after": {},
                     "materials": {}
@@ -1019,72 +1019,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Fight Club Legend",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/65/Claymore_Geo.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 4 consecutive strikes.\nWhen the 2nd and 4th strikes hit opponents, Itto will gain 1 and 2 stacks of Superlative Superstrength, respectively.\nMax 5 stacks. Triggering this effect will refresh the current duration of any existing stacks.                    \n\nAdditionally, Itto's Normal Attack combo does not immediately reset after sprinting or using his Elemental Skill, \"<color=skill>Masatsu Zetsugi: Akaushi Burst!</color>\"                    \n\n<b>Charged Attack</b>\nWhen holding to perform a Charged Attack, Itto unleashes a series of Arataki Kesagiri slashes without consuming Stamina. Instead, each Arataki Kesagiri slash consumes 1 stack of Superlative Superstrength. When the final stack is consumed, Itto delivers a powerful final slash.\nIf no stacks of Superlative Superstrength are available, Itto will perform a single Saichimonji Slash.                    \n\n<b>Plunging Attack</b>\nPlunges from mid-air to strike the ground, damaging opponents along the path and dealing AoE DMG upon impact."
                 },
                 {
-                    "name": "",
+                    "name": "Masatsu Zetsugi: Akaushi Burst!",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21.png",
+                    "desc": "Hurls <color=skill>Ushi</color>, the young akaushi bull and auxiliary member of the Arataki Gang, dealing <color=geo>Geo DMG</color> to opponents on hit.\nWhen Ushi hits opponents, Arataki Itto gains 1 stack of Superlative Superstrength.                    \n\nUshi will remain on the field and provide support in the following ways:\n* Taunts surrounding opponents and draws their attacks.\n* Inherits HP based on a percentage of Arataki Itto's Max HP.\n* When Ushi takes DMG, Arataki Itto gains 1 stack of Superlative Superstrength. Only 1 stack can be gained in this way every 2s.\n* Ushi will flee when its HP reaches 0 or its duration ends. It will grant Arataki Itto 1 stack of Superlative Superstrength when it leaves.\n\n<b>Hold</b>\nAdjust throwing angle.                    \n\nUshi is considered a <color=geo>Geo Construct</color>. Arataki Itto can only deploy 1 Ushi on the field at any one time."
                 },
                 {
-                    "name": "",
+                    "name": "Royal Descent: Behold, Itto the Evil!",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/5/50/Talent_Royal_Descent_Behold%2C_Itto_the_Evil%21.png",
+                    "desc": "Time to show 'em the might of the Arataki Gang! For a time, Itto lets out his inner Raging Oni King, wielding his Oni King's Kanabou in battle.\nThis state has the following special properties:\n* Converts Itto's Normal, Charged, and Plunging Attacks to <color=geo>Geo DMG</color>. This cannot be overridden.\n* Increases Itto's Normal Attack SPD. Also increases his ATK based on his DEF.\n* On hit, the 1st and 3rd strikes of his attack combo will each grant Arataki Itto 1 stack of Superlative Superstrength.\n* Decreases Itto's Elemental and Physical RES by 20%.\n\nThe Raging Oni King state will be cleared when Itto leaves the field."
                 },
                 {
-                    "name": "",
+                    "name": "Arataki Ichiban",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/a/a5/Talent_Arataki_Ichiban.png",
+                    "desc": "When Arataki Itto uses consecutive <color=skill>Arataki Kesagiri</color>, he obtains the following effects:\n* Each slash increases the ATK SPD of the next slash by 10%. Max ATK SPD increase is 30%.\n* Increases his resistance to interruption.\n\nThese effects will be cleared once he stops performing consecutive slashes."
                 },
                 {
-                    "name": "",
+                    "name": "Bloodline of the Crimson Oni",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/db/Talent_Bloodline_of_the_Crimson_Oni.png",
+                    "desc": "<color=skill>Arataki Kesagiri</color> DMG is increased by 35% of Arataki Itto's DEF."
                 },
                 {
-                    "name": "",
+                    "name": "Woodchuck Chucked",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/4/47/Talent_Woodchuck_Chucked.png",
+                    "desc": "When a party member uses attacks to obtain wood from a tree, they have a 25% chance to obtain an additional log of wood."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Stay a While and Listen Up",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/64/Constellation_Stay_a_While_and_Listen_Up.png",
+                    "desc": "After using <color=skill>Royal Descent: Behold, Itto the Evil!</color>, Arataki Itto gains 2 stacks of Superlative Superstrength. After 1s, Itto will gain 1 stack of Superlative Superstrength every 0.5s for 1.5s."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Gather 'Round, It's a Brawl!",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/09/Constellation_Gather_%27Round%2C_It%27s_a_Brawl%21.png",
+                    "desc": "After using <color=skill>Royal Descent: Behold, Itto the Evil!</color>, each party member whose Element is <color=geo>Geo</color> will decrease that skill's CD by 1.5s and restore 6 Energy to Arataki Itto.\nCD can be decreased by up to 4.5s in this manner. Max 18 Energy can be restored in this manner."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Horns Lowered, Coming Through",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/a/a5/Constellation_Horns_Lowered%2C_Coming_Through.png",
+                    "desc": "Increases the Level of <color=skill>Masatsu Zetsugi: Akaushi Burst!</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Jailhouse Bread and Butter",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Constellation_Jailhouse_Bread_and_Butter.png",
+                    "desc": "When the Raging Oni King state caused by <color=skill>Royal Descent: Behold, Itto the Evil!</color> ends, all nearby party members gain 20% DEF and 20% ATK for 10s."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "10 Years of Hanamizaka Fame",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/f/f3/Constellation_10_Years_of_Hanamizaka_Fame.png",
+                    "desc": "Increases the Level of <color=skill>Royal Descent: Behold, Itto the Evil!</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Arataki Itto, Present!",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/8/89/Constellation_Arataki_Itto%2C_Present%21.png",
+                    "desc": "Arataki Itto's Charged Attacks deal +70% Crit DMG. Additionally, when he uses <color=skill>Arataki Kesagiri</color>, he has a 50% chance to not consume stacks of Superlative Superstrength."
                 }
             ],
             "talents_materials": [
@@ -1141,37 +1141,37 @@
             ]
         },
         "barbara": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Shining Idol",
+            "description": "Every citizen of Mondstadt adores Barbara. She learned the word \"idol\" from a magazine.",
+            "constellation": "Crater",
+            "affiliation": "Church of Favonius",
+            "special_dish": "Spicy Stew",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/7/76/Character_Barbara_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 821,
+                        "atk": 13,
+                        "def": 56,
+                        "hpPercent": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2108,
+                        "atk": 34,
+                        "def": 144,
+                        "hpPercent": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2721,
+                        "atk": 44,
+                        "def": 186,
+                        "hpPercent": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -1183,16 +1183,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 4076,
+                        "atk": 66,
+                        "def": 279,
+                        "hpPercent": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 4512,
+                        "atk": 73,
+                        "def": 308,
+                        "hpPercent": 6
                     },
                     "materials": {
                         "cleansing_heart": 2,
@@ -1205,16 +1205,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5189,
+                        "atk": 84,
+                        "def": 355,
+                        "hpPercent": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5770,
+                        "atk": 94,
+                        "def": 394,
+                        "hpPercent": 12
                     },
                     "materials": {
                         "cleansing_heart": 4,
@@ -1227,16 +1227,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6448,
+                        "atk": 105,
+                        "def": 441,
+                        "hpPercent": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6884,
+                        "atk": 112,
+                        "def": 470,
+                        "hpPercent": 12
                     },
                     "materials": {
                         "cleansing_heart": 8,
@@ -1249,16 +1249,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7561,
+                        "atk": 123,
+                        "def": 517,
+                        "hpPercent": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7996,
+                        "atk": 130,
+                        "def": 546,
+                        "hpPercent": 18
                     },
                     "materials": {
                         "cleansing_heart": 12,
@@ -1271,16 +1271,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8674,
+                        "atk": 141,
+                        "def": 593,
+                        "hpPercent": 18
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9110,
+                        "atk": 148,
+                        "def": 623,
+                        "hpPercent": 24
                     },
                     "materials": {
                         "cleansing_heart": 20,
@@ -1293,10 +1293,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9787,
+                        "atk": 159,
+                        "def": 669,
+                        "hpPercent": 24
                     },
                     "values_after": {},
                     "materials": {}
@@ -1304,72 +1304,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Whisper of Water",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/77/Catalyst_Hydro.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 4 water splash attacks that deal <color=hydro>Hydro DMG</color>.\n\n<b>Charged Attack</b>\nConsumes a certain amount of Stamina to deal <color=hydro>AoE Hydro DMG</color> after a short casting time.\n\n<b>Plunging Attack</b>\nGathering the might of Hydro, Barbara plunges towards the ground from mid-air, damaging all opponents in her path. Deals <color=hydro>AoE Hydro DMG</color> upon impact with the ground."
                 },
                 {
-                    "name": "",
+                    "name": "Let the Show Begin♪",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/9/95/Talent_Let_the_Show_Begin%E2%99%AA.png",
+                    "desc": "Summons water droplets resembling musical notes that form a Melody Loop, dealing <color=hydro>Hydro DMG</color> to surrounding opponents and applying the <color=hydro>Wet</color> status to them.\n\n<b>Melody Loop</b>\n* On hit, Barbara's Normal Attacks heal your own party members and nearby teammates for a certain amount of HP, which scales with Barbara's Max HP.\n* On hit, Barbara's Charged Attack generates 4 times the amount of healing.\n* Periodically regenerates your own active character's HP.\n* Applies the <color=hydro>Wet</color> status to the character and to opponents who come in contact with them."
                 },
                 {
-                    "name": "",
+                    "name": "Shining Miracle♪",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/c/cb/Talent_Shining_Miracle%E2%99%AA.png",
+                    "desc": "Heals your own party members and nearby teammates for a large amount of HP that scales with Barbara's Max HP."
                 },
                 {
-                    "name": "",
+                    "name": "Glorious Season",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/4/49/Talent_Glorious_Season.png",
+                    "desc": "The Stamina Consumption of characters within <color=skill>Let the Show Begin♪</color>'s Melody Loop is reduced by 12%."
                 },
                 {
-                    "name": "",
+                    "name": "Encore",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/3/3f/Talent_Encore.png",
+                    "desc": "When your active character gains an Elemental Orb/Particle, the duration of the Melody Loop of <color=skill>Let the Show Begin♪</color> is extended by 1s.\nThe maximum extension is 5s."
                 },
                 {
-                    "name": "",
+                    "name": "With My Whole Heart♪",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/4/4f/Talent_With_My_Whole_Heart%E2%99%AA.png",
+                    "desc": "When a Perfect Cooking is achieved on a dish with restorative effects, Barbara has a 12% chance to obtain double the product."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Gleeful Songs",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/b/b7/Constellation_Gleeful_Songs.png",
+                    "desc": "Barbara regenerates 1 Energy every 10s."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Vitality Burst",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/1/14/Constellation_Vitality_Burst.png",
+                    "desc": "Decreases the CD of <color=skill>Let the Show Begin♪</color> by 15%.\nDuring the ability's duration, your active character gains a 15% <color=hydro>Hydro DMG Bonus</color>."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Star of Tomorrow",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/67/Constellation_Star_of_Tomorrow.png",
+                    "desc": "Increases the Level of <color=skill>Shining Miracle♪</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Attentiveness be My Power",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/69/Constellation_Attentiveness_be_My_Power.png",
+                    "desc": "Every opponent Barbara hits with her Charged Attack regenerates 1 Energy for her.\nA maximum of 5 energy can be regenerated in this manner with any one Charged Attack."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "The Purest Companionship",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/69/Constellation_The_Purest_Companionship.png",
+                    "desc": "Increases the Level of <color=skill>Let the Show Begin♪</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Dedicating Everything to You",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/a/a0/Constellation_Dedicating_Everything_to_You.png",
+                    "desc": "When Barbara is in the party but not on the field, and one of your own party members falls:\n* Automatically revives the fallen character.\n* Fully restores the revived character's HP to 100%.\nThis effect can only occur once every 15 mins."
                 }
             ],
             "talents_materials": [
@@ -1426,37 +1426,37 @@
             ]
         },
         "beidou": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Uncrowned Lord of the Ocean",
+            "description": "Captain of her crew, The Crux. She's quite an unbound and forthright woman.",
+            "constellation": "Victor Mare",
+            "affiliation": "The Crux",
+            "special_dish": "Flash-Fried Filet",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/f/ff/Character_Beidou_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 1094,
+                        "atk": 19,
+                        "def": 54,
+                        "electroDmgBonus": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2811,
+                        "atk": 48,
+                        "def": 140,
+                        "electroDmgBonus": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 3628,
+                        "atk": 63,
+                        "def": 180,
+                        "electroDmgBonus": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -1468,16 +1468,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5435,
+                        "atk": 94,
+                        "def": 270,
+                        "electroDmgBonus": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6015,
+                        "atk": 104,
+                        "def": 299,
+                        "electroDmgBonus": 6
                     },
                     "materials": {
                         "lightning_prism": 2,
@@ -1490,16 +1490,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6919,
+                        "atk": 119,
+                        "def": 344,
+                        "electroDmgBonus": 6
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7694,
+                        "atk": 133,
+                        "def": 382,
+                        "electroDmgBonus": 12
                     },
                     "materials": {
                         "lightning_prism": 4,
@@ -1512,16 +1512,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8597,
+                        "atk": 148,
+                        "def": 427,
+                        "electroDmgBonus": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9178,
+                        "atk": 158,
+                        "def": 456,
+                        "electroDmgBonus": 12
                     },
                     "materials": {
                         "lightning_prism": 8,
@@ -1534,16 +1534,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10081,
+                        "atk": 174,
+                        "def": 501,
+                        "electroDmgBonus": 12
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10662,
+                        "atk": 184,
+                        "def": 530,
+                        "electroDmgBonus": 18
                     },
                     "materials": {
                         "lightning_prism": 12,
@@ -1556,16 +1556,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 11565,
+                        "atk": 200,
+                        "def": 575,
+                        "electroDmgBonus": 18
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 12146,
+                        "atk": 210,
+                        "def": 603,
+                        "electroDmgBonus": 24
                     },
                     "materials": {
                         "lightning_prism": 20,
@@ -1578,10 +1578,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 13050,
+                        "atk": 225,
+                        "def": 648,
+                        "electroDmgBonus": 24
                     },
                     "values_after": {},
                     "materials": {}
@@ -1589,72 +1589,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Oceanborne",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/0f/Claymore_Electro.png",
+                    "desc": "<b>Normal Attack</b>\nPerform up to 5 consecutive strikes.\n\n<b>Charged Attack</b>\nDrains Stamina over time to perform continuous slashes.\nAt the end of the sequence, perform a more powerful slash.\n\n<b>Plunging Attack</b>\nPlunges from mid-air to strike the ground, damaging opponents along the path and dealing AoE DMG upon impact."
                 },
                 {
-                    "name": "",
+                    "name": "Tidecaller",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/9/92/Talent_Tidecaller.png",
+                    "desc": "Nothing to worry about. Should anyone raise a hand against her or her men, she will avenge it ten-fold with sword and thunder.\n\n<b>Press</b>\nAccumulating the power of lightning, Beidou swings her blade forward fiercely, dealing <color=electro>Electro DMG</color>.\n\n<b>Hold</b>\nLifts her weapon up as a shield. Max DMG absorbed scales off Beidou's Max HP.\nAttacks using the energy stored within the greatsword upon release or once this ability's duration expires, dealing <color=electro>Electro DMG</color>. DMG dealt scales with the number of times Beidou is attacked in the skill's duration. The greatest DMG Bonus will be attained once this effect is triggered twice.\nThe shield possesses the following properties:\n* Has 250% <color=electro>Electro DMG</color> Absorption Efficiency.\n* Applies the <color=electro>Electro element</color> to Beidou upon activation."
                 },
                 {
-                    "name": "",
+                    "name": "Stormbreaker",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/3/33/Talent_Stormbreaker.png",
+                    "desc": "Recalling her slaying of the great beast Haishan, Beidou calls upon that monstrous strength and the lightning to create a Thunderbeast's Targe around herself, dealing <color=electro>Electro DMG</color> to nearby opponents.\n\n<b>Thunderbeast's Targe</b>\n* When Normal and Charged Attacks hit, they create a lightning discharge that can jump between opponents, dealing <color=electro>Electro DMG</color>.\n* Increases the character's resistance to interruption, and decreases DMG taken.\n\nA maximum of 1 lightning discharge can be triggered per second."
                 },
                 {
-                    "name": "",
+                    "name": "Retribution",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/69/Talent_Retribution.png",
+                    "desc": "Counterattacking with <color=skill>Tidecaller</color> at the precise moment when the character is hit grants the maximum DMG Bonus."
                 },
                 {
-                    "name": "",
+                    "name": "Lightning Storm",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/8/8a/Talent_Lightning_Storm.png",
+                    "desc": "Gain the following effects for 10s after unleashing <ccolor=skill>Tidecaller</color> with its maximum DMG Bonus:\n* DMG dealt by Normal and Charged Attacks is increased by 15%. ATK SPD of Normal and Charged Attacks is increased by 15%.\n* Greatly reduced delay before unleashing Charged Attacks."
                 },
                 {
-                    "name": "",
+                    "name": "Conqueror of Tides",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/d3/Talent_Conqueror_of_Tides.png",
+                    "desc": "Decreases swimming Stamina consumption of your characters in the party by 20%.\nNot stackable with Passive Talents that provide the exact same effects."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Sea Beast's Scourge",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Constellation_Sea_Beast%27s_Scourge.png",
+                    "desc": "When <color=skill>Stormbreaker</color> is used:\nCreates a shield that absorbs up to 16% of Beidou's Max HP for 15s.\nThis shield absorbs <color=electro>Electro DMG</color> 250% more effectively."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Upon the Turbulent Sea, the Thunder Arises",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/d/df/Constellation_Upon_the_Turbulent_Sea%2C_the_Thunder_Arises.png",
+                    "desc": "<color=skill>Stormbreaker</color>'s arc lightning can jump to 2 additional targets."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Summoner of Storm",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/8/8e/Constellation_Summoner_of_Storm.png",
+                    "desc": "Increases the Level of <color=skill>Tidecaller</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Stunning Revenge",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/63/Constellation_Stunning_Revenge.png",
+                    "desc": "Upon being attacked, Beidou's Normal Attacks gain an additional instance of 20% <color=electro>Electro DMG</color> for 10s."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Crimson Tidewalker",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Constellation_Crimson_Tidewalker.png",
+                    "desc": "Increases the Level of <color=skill>Stormbreaker</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Bane of Evil",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/c/c5/Constellation_Bane_of_Evil.png",
+                    "desc": "During the duration of <color=skill>Stormbreaker</color>, the <color=electro>Electro RES</color> of surrounding opponents is decreased by 15%."
                 }
             ],
             "talents_materials": [
@@ -1711,37 +1711,37 @@
             ]
         },
         "bennett": {
-            "title": "",
-            "description": "",
-            "constellation": "",
-            "affiliation": "",
-            "special_dish": "",
-            "full_image": "",
+            "title": "Trial by Fire",
+            "description": "A good-natured adventurer from Mondstadt who's unfortunately extremely unlucky.",
+            "constellation": "Rota Calamitas",
+            "affiliation": "Adventurers' Guild",
+            "special_dish": "Teyvat Charred Egg",
+            "full_image": "https://static.wikia.nocookie.net/gensin-impact/images/2/27/Character_Bennett_Full_Wish.png",
             "ascension": [
                 {
                     "level": 1,
                     "values_before": {},
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 1039,
+                        "atk": 16,
+                        "def": 65,
+                        "energyRecharge": 0
                     },
                     "materials": {}
                 },
                 {
                     "level": 20,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 2670,
+                        "atk": 41,
+                        "def": 166,
+                        "energyRecharge": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 3447,
+                        "atk": 53,
+                        "def": 214,
+                        "energyRecharge": 0
                     },
                     "materials": {
                         "mora": 20000,
@@ -1753,16 +1753,16 @@
                 {
                     "level": 40,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5163,
+                        "atk": 80,
+                        "def": 321,
+                        "energyRecharge": 0
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 5715,
+                        "atk": 88,
+                        "def": 356,
+                        "energyRecharge": 6.7
                     },
                     "materials": {
                         "everflame_seed": 2,
@@ -1775,16 +1775,16 @@
                 {
                     "level": 50,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 6573,
+                        "atk": 101,
+                        "def": 409,
+                        "energyRecharge": 6.7
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 7309,
+                        "atk": 113,
+                        "def": 455,
+                        "energyRecharge": 13.3
                     },
                     "materials": {
                         "everflame_seed": 4,
@@ -1797,16 +1797,16 @@
                 {
                     "level": 60,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8168,
+                        "atk": 126,
+                        "def": 508,
+                        "energyRecharge": 13.3
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 8719,
+                        "atk": 134,
+                        "def": 542,
+                        "energyRecharge": 13.3
                     },
                     "materials": {
                         "everflame_seed": 8,
@@ -1819,16 +1819,16 @@
                 {
                     "level": 70,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 9577,
+                        "atk": 148,
+                        "def": 596,
+                        "energyRecharge": 13.3
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10129,
+                        "atk": 156,
+                        "def": 630,
+                        "energyRecharge": 20
                     },
                     "materials": {
                         "everflame_seed": 12,
@@ -1841,16 +1841,16 @@
                 {
                     "level": 80,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 10987,
+                        "atk": 169,
+                        "def": 684,
+                        "energyRecharge": 20
                     },
                     "values_after": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 11539,
+                        "atk": 178,
+                        "def": 718,
+                        "energyRecharge": 26.7
                     },
                     "materials": {
                         "everflame_seed": 20,
@@ -1863,10 +1863,10 @@
                 {
                     "level": 90,
                     "values_before": {
-                        "hp": 0,
-                        "atk": 0,
-                        "def": 0,
-                        "stat": 0
+                        "hp": 12397,
+                        "atk": 191,
+                        "def": 771,
+                        "energyRecharge": 26.7
                     },
                     "values_after": {},
                     "materials": {}
@@ -1874,72 +1874,72 @@
             ],
             "talents": [
                 {
-                    "name": "",
+                    "name": "Strike of Fortune",
                     "type": "Normal Attack",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/0d/Sword_Pyro.png",
+                    "desc": "<b>Normal Attack</b>\nPerforms up to 5 rapid strikes.\n\n<b>Charged Attack</b>\nConsumes a certain amount of Stamina to unleash 2 rapid sword strikes.\n\n<b>Plunging Attack</b>\nPlunges from mid-air to strike the ground below, damaging opponents along the path and dealing AoE DMG upon impact."
                 },
                 {
-                    "name": "",
+                    "name": "Passion Overload",
                     "type": "Elemental Skill",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/6/66/Talent_Passion_Overload.png",
+                    "desc": "Bennett puts all his fire and passion for adventuring into his sword.\nResults may vary based on how fired up he is...\n\n<b>Press</b>\nA single, swift flame strike that deals <color=pyro>Pyro DMG</color>.\n\n<b>Hold (Short)</b>\nCharges up, resulting in different effects when unleashed based on the Charge Level.\n* Level 1: Strikes twice, dealing <color=pyro>Pyro DMG</color> and launching opponents.\n* Level 2: Unleashes 3 consecutive attacks that deal impressive <color=pyro>Pyro DMG</color>, but the last attack triggers an explosion that launches both Bennett and the enemy.\n\nBennett takes no damage from being launched."
                 },
                 {
-                    "name": "",
+                    "name": "Fantastic Voyage",
                     "type": "Elemental Burst",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/a/a2/Talent_Fantastic_Voyage.png",
+                    "desc": "Bennett performs a jumping attack that deals <color=pyro>Pyro DMG</color>, creating an Inspiration Field.\n\n<b>Inspiration Field</b>\n* If the health of a character within the AoE is equal to or falls below 70%, their health will continuously regenerate. The amount of HP restored scales off Bennett's Max HP.\n* If the health of a character within the AoE is higher than 70%, they gain an ATK Bonus that is based on Bennett's Base ATK.\n* Imbues characters within the AoE with <color=pyro>Pyro</color>."
                 },
                 {
-                    "name": "",
+                    "name": "Rekindle",
                     "type": "1st Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/7/77/Talent_Rekindle.png",
+                    "desc": "Decreases <color=skill>Passion Overload</color>'s CD by 20%."
                 },
                 {
-                    "name": "",
+                    "name": "Fearnaught",
                     "type": "4th Ascension Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/1/1a/Talent_Fearnaught.png",
+                    "desc": "When inside <color=skill>Fantastic Voyage</color>'s circle, <color=skill>Passion Overload</color>'s CD is decreased by 50% and Bennett cannot be launched by this skill's explosion."
                 },
                 {
-                    "name": "",
+                    "name": "It Should Be Safe...",
                     "type": "Utility Passive",
-                    "icon": "",
-                    "desc": ""
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/2/2a/Talent_It_Should_Be_Safe....png",
+                    "desc": "When dispatched on an expedition in Mondstadt, time consumed is reduced by 25%."
                 }
             ],
             "constellations": [
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Grand Expectation",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/c/c0/Constellation_Grand_Expectation.png",
+                    "desc": "<color=skill>Fantastic Voyage</color>'s ATK increase no longer has an HP restriction, and gains an additional 20% of Bennett's Base ATK."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Impasse Conqueror",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/8/87/Constellation_Impasse_Conqueror.png",
+                    "desc": "When Bennett's HP falls below 70%, his Energy Recharge is increased by 30%."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Unstoppable Fervor",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/e/ed/Constellation_Unstoppable_Fervor.png",
+                    "desc": "Increases the Level of <color=skill>Passion Overload</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Unexpected Odyssey",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/0/0e/Constellation_Unexpected_Odyssey.png",
+                    "desc": "Using a Normal Attack when executing the second attack of Passion Overload's Charge Level 1 allows an additional attack to be performed.\nThis additional attack does 135% of the second attack's DMG."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "True Explorer",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/3/39/Constellation_True_Explorer.png",
+                    "desc": "Increases the Level of <color=skill>Fantastic Voyage</color> by 3.\nMaximum upgrade level is 15."
                 },
                 {
-                    "name": "",
-                    "icon": "",
-                    "desc": ""
+                    "name": "Fire Ventures With Me",
+                    "icon": "https://static.wikia.nocookie.net/gensin-impact/images/3/3a/Constellation_Fire_Ventures_With_Me.png",
+                    "desc": "Sword, Claymore, or Polearm-wielding characters inside <color=skill>Fantastic Voyage</color>'s radius gain a 15% <color=pyro>Pyro DMG Bonus</color> and their weapons are infused with <color=pyro>Pyro</color>."
                 }
             ],
             "talents_materials": [
@@ -16536,5 +16536,15 @@
                 }
             ]
         }
-    }
+    },
+    "ascension_heros_wit": [
+        0,
+        6,
+        28,
+        29,
+        42,
+        59,
+        80,
+        0
+    ]
 }

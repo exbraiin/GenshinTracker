@@ -10,12 +10,6 @@ class InfoWeapon implements IdData {
   final GsWeapon type;
   final GsWeaponStat statType;
 
-  String get valueString {
-    final i = statValue.toInt();
-    if (statValue == i) return i.toString();
-    return statValue.toString();
-  }
-
   InfoWeapon({
     required this.id,
     required this.name,

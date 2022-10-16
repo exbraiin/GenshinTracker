@@ -213,10 +213,10 @@ class ScreenFilters {
             .compareTo(_db.saveWishes.hasWeapon(b.id)),
       ),
       FilterSection<GsWeaponStat, InfoWeapon>(
-        GsWeaponStat.values.take(9).toSet(),
+        GsWeaponStat.values.weaponStats,
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
-        (c, i) => i.toPrettyShortString(c),
+        (c, i) => i.toPrettyString(c),
         asset: (e) => e.assetPath,
         comparator: (a, b) => a.statType.index.compareTo(b.statType.index),
       ),

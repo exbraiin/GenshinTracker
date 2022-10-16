@@ -262,47 +262,53 @@ class Labels {
 	/// DEF
 	static const wsDef = 'ws_def';
 
-	/// Energy Recharge
-	static const wsEnergyrecharge = 'ws_energyRecharge';
-
-	/// Physical DMG
-	static const wsPhysicaldmg = 'ws_physicalDmg';
-
 	/// Crit DMG
 	static const wsCritdmg = 'ws_critDmg';
 
 	/// Crit Rate
 	static const wsCritrate = 'ws_critRate';
 
+	/// Physical DMG
+	static const wsPhysicaldmg = 'ws_physicalDmg';
+
 	/// Elemental Mastery
 	static const wsElementalmastery = 'ws_elementalMastery';
 
-	/// 
-	static const wsShNone = 'ws_sh_none';
+	/// Energy Recharge
+	static const wsEnergyrecharge = 'ws_energyRecharge';
+
+	/// Healing
+	static const wsHealing = 'ws_healing';
 
 	/// HP
-	static const wsShHp = 'ws_sh_hp';
+	static const wsHpPercent = 'ws_hp_percent';
 
 	/// ATK
-	static const wsShAtk = 'ws_sh_atk';
+	static const wsAtkPercent = 'ws_atk_percent';
 
 	/// DEF
-	static const wsShDef = 'ws_sh_def';
+	static const wsDefPercent = 'ws_def_percent';
 
-	/// ER
-	static const wsShEnergyrecharge = 'ws_sh_energyRecharge';
+	/// Anemo DMG
+	static const wsAnemoDmg = 'ws_anemo_dmg';
 
-	/// P.DMG
-	static const wsShPhysicaldmg = 'ws_sh_physicalDmg';
+	/// Geo DMG
+	static const wsGeoBonus = 'ws_geo_bonus';
 
-	/// C.DMG
-	static const wsShCritdmg = 'ws_sh_critDmg';
+	/// Electro DMG
+	static const wsElectroBonus = 'ws_electro_bonus';
 
-	/// C.Rate
-	static const wsShCritrate = 'ws_sh_critRate';
+	/// Dendro DMG
+	static const wsDendroBonus = 'ws_dendro_bonus';
 
-	/// EM
-	static const wsShElementalmastery = 'ws_sh_elementalMastery';
+	/// Hydro DMG
+	static const wsHydroBonus = 'ws_hydro_bonus';
+
+	/// Pyro DMG
+	static const wsPyroBonus = 'ws_pyro_bonus';
+
+	/// Cryo DMG
+	static const wsCryoBonus = 'ws_cryo_bonus';
 
 	/// Resource Calculator
 	static const resourceCalculator = 'resource_calculator';

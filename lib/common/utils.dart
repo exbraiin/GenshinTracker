@@ -205,6 +205,22 @@ extension GsWeaponExt on GsWeapon {
   }
 }
 
+extension GsWeaponStatListExt on List<GsWeaponStat> {
+  Set<GsWeaponStat> get weaponStats {
+    return {
+      GsWeaponStat.none,
+      GsWeaponStat.hpPercent,
+      GsWeaponStat.atkPercent,
+      GsWeaponStat.defPercent,
+      GsWeaponStat.critDmg,
+      GsWeaponStat.critRate,
+      GsWeaponStat.physicalDmg,
+      GsWeaponStat.energyRecharge,
+      GsWeaponStat.elementalMastery,
+    };
+  }
+}
+
 extension GsWeaponStatExt on GsWeaponStat {
   String toPrettyString(BuildContext context) {
     final key = const {
@@ -217,17 +233,17 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.physicalDmg: Labels.wsPhysicaldmg,
       GsWeaponStat.elementalMastery: Labels.wsElementalmastery,
       GsWeaponStat.energyRecharge: Labels.wsEnergyrecharge,
-      GsWeaponStat.healing: Labels.wsNone,
-      GsWeaponStat.hpPercent: Labels.wsNone,
-      GsWeaponStat.atkPercent: Labels.wsNone,
-      GsWeaponStat.defPercent: Labels.wsNone,
-      GsWeaponStat.anemoDmgBonus: Labels.wsNone,
-      GsWeaponStat.geoDmgBonus: Labels.wsNone,
-      GsWeaponStat.electroDmgBonus: Labels.wsNone,
-      GsWeaponStat.dendroDmgBonus: Labels.wsNone,
-      GsWeaponStat.hydroDmgBonus: Labels.wsNone,
-      GsWeaponStat.pyroDmgBonus: Labels.wsNone,
-      GsWeaponStat.cryoDmgBonus: Labels.wsNone,
+      GsWeaponStat.healing: Labels.wsHealing,
+      GsWeaponStat.hpPercent: Labels.wsHp,
+      GsWeaponStat.atkPercent: Labels.wsAtk,
+      GsWeaponStat.defPercent: Labels.wsDef,
+      GsWeaponStat.anemoDmgBonus: Labels.wsAnemoDmg,
+      GsWeaponStat.geoDmgBonus: Labels.wsGeoBonus,
+      GsWeaponStat.electroDmgBonus: Labels.wsElectroBonus,
+      GsWeaponStat.dendroDmgBonus: Labels.wsDendroBonus,
+      GsWeaponStat.hydroDmgBonus: Labels.wsHydroBonus,
+      GsWeaponStat.pyroDmgBonus: Labels.wsPyroBonus,
+      GsWeaponStat.cryoDmgBonus: Labels.wsCryoBonus,
     }[this]!;
     return Lang.of(context).getValue(key);
   }
@@ -239,6 +255,8 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.hpPercent,
       GsWeaponStat.atkPercent,
       GsWeaponStat.defPercent,
+      GsWeaponStat.energyRecharge,
+      GsWeaponStat.physicalDmg,
       GsWeaponStat.anemoDmgBonus,
       GsWeaponStat.geoDmgBonus,
       GsWeaponStat.electroDmgBonus,
@@ -248,37 +266,8 @@ extension GsWeaponStatExt on GsWeaponStat {
       GsWeaponStat.cryoDmgBonus,
     };
     if (!percentage.contains(this)) return '${value.toInt()}';
+    if (value == value.toInt()) return '${value.toInt()}%';
     return '${value.toStringAsFixed(1)}%';
-  }
-
-  String toPrettyShortString(BuildContext context, [double value = 0]) {
-    final key = const {
-      GsWeaponStat.none: Labels.wsNone,
-      GsWeaponStat.hp: Labels.wsShHp,
-      GsWeaponStat.atk: Labels.wsShAtk,
-      GsWeaponStat.def: Labels.wsShDef,
-      GsWeaponStat.critDmg: Labels.wsShCritdmg,
-      GsWeaponStat.critRate: Labels.wsShCritrate,
-      GsWeaponStat.physicalDmg: Labels.wsShPhysicaldmg,
-      GsWeaponStat.elementalMastery: Labels.wsShElementalmastery,
-      GsWeaponStat.energyRecharge: Labels.wsShEnergyrecharge,
-      GsWeaponStat.healing: Labels.wsNone,
-      GsWeaponStat.hpPercent: Labels.wsNone,
-      GsWeaponStat.atkPercent: Labels.wsNone,
-      GsWeaponStat.defPercent: Labels.wsNone,
-      GsWeaponStat.anemoDmgBonus: Labels.wsNone,
-      GsWeaponStat.geoDmgBonus: Labels.wsNone,
-      GsWeaponStat.electroDmgBonus: Labels.wsNone,
-      GsWeaponStat.dendroDmgBonus: Labels.wsNone,
-      GsWeaponStat.hydroDmgBonus: Labels.wsNone,
-      GsWeaponStat.pyroDmgBonus: Labels.wsNone,
-      GsWeaponStat.cryoDmgBonus: Labels.wsNone,
-    }[this]!;
-    final label = Lang.of(context).getValue(key);
-    final integer = value.toInt();
-    if (value == 0) return label;
-    if (value == integer) return '$integer $label';
-    return '${value.toStringAsFixed(1)}% $label';
   }
 }
 
