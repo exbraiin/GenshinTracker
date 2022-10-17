@@ -78,9 +78,12 @@ class _CharacterAscensionListItem extends StatelessWidget {
     final saved = sc.getItemOrNull(item.id);
     final ascension = saved?.ascension ?? 0;
     final maxAscend = sc.getCharMaxAscended(item.id);
-    final materials =
-        !maxAscend ? getAscendMaterials(item.id, ascension + 1) : [];
-    final canAscend = materials.all((e) => e.hasRequired);
+    final materials = !maxAscend
+        ? getAscendMaterials(item.id, ascension + 1)
+        : <AscendMaterial>[];
+    final canAscend = materials
+        .where((e) => e.material?.id != 'mora')
+        .all((e) => e.hasRequired);
     return Opacity(
       opacity: maxAscend ? kDisableOpacity : 1,
       child: Container(

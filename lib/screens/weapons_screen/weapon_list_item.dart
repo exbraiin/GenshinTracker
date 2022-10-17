@@ -47,9 +47,9 @@ class WeaponListItem extends StatelessWidget {
                 children: [
                   ItemCardLabel(
                     label: '${weapon.atk}',
-                    asset: GsWeaponStat.atk.assetPath,
+                    asset: GsAttributeStat.atk.assetPath,
                   ),
-                  if (weapon.statType != GsWeaponStat.none)
+                  if (weapon.statType != GsAttributeStat.none)
                     Padding(
                       padding: EdgeInsets.only(top: kSeparator2),
                       child: Tooltip(

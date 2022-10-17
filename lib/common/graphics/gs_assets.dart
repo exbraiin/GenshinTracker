@@ -34,9 +34,9 @@ extension GsWeaponExt on GsWeapon {
   String get assetPath => 'assets/image/weapon_type/$name.png';
 }
 
-extension GsWeaponStatExt on GsWeaponStat {
+extension GsWeaponStatExt on GsAttributeStat {
   String get assetPath {
-    if (this == GsWeaponStat.none) return '';
+    if (this == GsAttributeStat.none) return '';
     return 'assets/image/weapon_stat/$name.png';
   }
 }

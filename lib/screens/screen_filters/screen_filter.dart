@@ -212,8 +212,8 @@ class ScreenFilters {
             .hasWeapon(a.id)
             .compareTo(_db.saveWishes.hasWeapon(b.id)),
       ),
-      FilterSection<GsWeaponStat, InfoWeapon>(
-        GsWeaponStat.values.weaponStats,
+      FilterSection<GsAttributeStat, InfoWeapon>(
+        GsAttributeStat.values.weaponStats,
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
         (c, i) => i.toPrettyString(c),

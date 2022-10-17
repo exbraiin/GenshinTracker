@@ -205,66 +205,66 @@ extension GsWeaponExt on GsWeapon {
   }
 }
 
-extension GsWeaponStatListExt on List<GsWeaponStat> {
-  Set<GsWeaponStat> get weaponStats {
+extension GsWeaponStatListExt on List<GsAttributeStat> {
+  Set<GsAttributeStat> get weaponStats {
     return {
-      GsWeaponStat.none,
-      GsWeaponStat.hpPercent,
-      GsWeaponStat.atkPercent,
-      GsWeaponStat.defPercent,
-      GsWeaponStat.critDmg,
-      GsWeaponStat.critRate,
-      GsWeaponStat.physicalDmg,
-      GsWeaponStat.energyRecharge,
-      GsWeaponStat.elementalMastery,
+      GsAttributeStat.none,
+      GsAttributeStat.hpPercent,
+      GsAttributeStat.atkPercent,
+      GsAttributeStat.defPercent,
+      GsAttributeStat.critDmg,
+      GsAttributeStat.critRate,
+      GsAttributeStat.physicalDmg,
+      GsAttributeStat.energyRecharge,
+      GsAttributeStat.elementalMastery,
     };
+  }
+
+  Set<GsAttributeStat> get characterStats {
+    return GsAttributeStat.values.except([
+      GsAttributeStat.hp,
+      GsAttributeStat.atk,
+      GsAttributeStat.def,
+    ]).toSet();
   }
 }
 
-extension GsWeaponStatExt on GsWeaponStat {
+extension GsWeaponStatExt on GsAttributeStat {
   String toPrettyString(BuildContext context) {
     final key = const {
-      GsWeaponStat.none: Labels.wsNone,
-      GsWeaponStat.hp: Labels.wsHp,
-      GsWeaponStat.atk: Labels.wsAtk,
-      GsWeaponStat.def: Labels.wsDef,
-      GsWeaponStat.critDmg: Labels.wsCritdmg,
-      GsWeaponStat.critRate: Labels.wsCritrate,
-      GsWeaponStat.physicalDmg: Labels.wsPhysicaldmg,
-      GsWeaponStat.elementalMastery: Labels.wsElementalmastery,
-      GsWeaponStat.energyRecharge: Labels.wsEnergyrecharge,
-      GsWeaponStat.healing: Labels.wsHealing,
-      GsWeaponStat.hpPercent: Labels.wsHp,
-      GsWeaponStat.atkPercent: Labels.wsAtk,
-      GsWeaponStat.defPercent: Labels.wsDef,
-      GsWeaponStat.anemoDmgBonus: Labels.wsAnemoDmg,
-      GsWeaponStat.geoDmgBonus: Labels.wsGeoBonus,
-      GsWeaponStat.electroDmgBonus: Labels.wsElectroBonus,
-      GsWeaponStat.dendroDmgBonus: Labels.wsDendroBonus,
-      GsWeaponStat.hydroDmgBonus: Labels.wsHydroBonus,
-      GsWeaponStat.pyroDmgBonus: Labels.wsPyroBonus,
-      GsWeaponStat.cryoDmgBonus: Labels.wsCryoBonus,
+      GsAttributeStat.none: Labels.wsNone,
+      GsAttributeStat.hp: Labels.wsHp,
+      GsAttributeStat.atk: Labels.wsAtk,
+      GsAttributeStat.def: Labels.wsDef,
+      GsAttributeStat.critDmg: Labels.wsCritdmg,
+      GsAttributeStat.critRate: Labels.wsCritrate,
+      GsAttributeStat.physicalDmg: Labels.wsPhysicaldmg,
+      GsAttributeStat.elementalMastery: Labels.wsElementalmastery,
+      GsAttributeStat.energyRecharge: Labels.wsEnergyrecharge,
+      GsAttributeStat.healing: Labels.wsHealing,
+      GsAttributeStat.hpPercent: Labels.wsHp,
+      GsAttributeStat.atkPercent: Labels.wsAtk,
+      GsAttributeStat.defPercent: Labels.wsDef,
+      GsAttributeStat.anemoDmgBonus: Labels.wsAnemoDmg,
+      GsAttributeStat.geoDmgBonus: Labels.wsGeoBonus,
+      GsAttributeStat.electroDmgBonus: Labels.wsElectroBonus,
+      GsAttributeStat.dendroDmgBonus: Labels.wsDendroBonus,
+      GsAttributeStat.hydroDmgBonus: Labels.wsHydroBonus,
+      GsAttributeStat.pyroDmgBonus: Labels.wsPyroBonus,
+      GsAttributeStat.cryoDmgBonus: Labels.wsCryoBonus,
     }[this]!;
     return Lang.of(context).getValue(key);
   }
 
   String toIntOrPercentage(double value) {
-    final percentage = {
-      GsWeaponStat.critDmg,
-      GsWeaponStat.critRate,
-      GsWeaponStat.hpPercent,
-      GsWeaponStat.atkPercent,
-      GsWeaponStat.defPercent,
-      GsWeaponStat.energyRecharge,
-      GsWeaponStat.physicalDmg,
-      GsWeaponStat.anemoDmgBonus,
-      GsWeaponStat.geoDmgBonus,
-      GsWeaponStat.electroDmgBonus,
-      GsWeaponStat.dendroDmgBonus,
-      GsWeaponStat.hydroDmgBonus,
-      GsWeaponStat.pyroDmgBonus,
-      GsWeaponStat.cryoDmgBonus,
-    };
+    final percentage = GsAttributeStat.values.except({
+      GsAttributeStat.none,
+      GsAttributeStat.hp,
+      GsAttributeStat.atk,
+      GsAttributeStat.def,
+      GsAttributeStat.elementalMastery,
+    });
+
     if (!percentage.contains(this)) return '${value.toInt()}';
     if (value == value.toInt()) return '${value.toInt()}%';
     return '${value.toStringAsFixed(1)}%';

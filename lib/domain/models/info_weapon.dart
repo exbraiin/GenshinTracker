@@ -8,7 +8,7 @@ class InfoWeapon implements IdData {
   final int rarity;
   final double statValue;
   final GsWeapon type;
-  final GsWeaponStat statType;
+  final GsAttributeStat statType;
 
   InfoWeapon({
     required this.id,
@@ -29,7 +29,7 @@ class InfoWeapon implements IdData {
       image: map['image'],
       type: GsWeapon.values.elementAt(map['type']),
       rarity: map['rarity'],
-      statType: GsWeaponStat.values.elementAt(map['stat_type']),
+      statType: GsAttributeStat.values.elementAt(map['stat_type']),
       statValue: map['stat_value'],
     );
   }

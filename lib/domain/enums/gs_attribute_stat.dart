@@ -1,4 +1,4 @@
-enum GsWeaponStat {
+enum GsAttributeStat {
   none,
   hp,
   atk,
@@ -8,12 +8,10 @@ enum GsWeaponStat {
   physicalDmg,
   elementalMastery,
   energyRecharge,
-  // No weapons stats
   healing,
   hpPercent,
   atkPercent,
   defPercent,
-  // Elemental bonus
   anemoDmgBonus,
   geoDmgBonus,
   electroDmgBonus,

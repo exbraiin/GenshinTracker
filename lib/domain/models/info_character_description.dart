@@ -12,6 +12,8 @@ class InfoCharacterDescription implements IdData {
   final List<InfoCharacterAscension> ascension;
   final List<InfoCharacterConstellation> constellations;
 
+  GsAttributeStat get specialStat => ascension.first.valuesAfter.keys.last;
+
   InfoCharacterDescription({
     required this.id,
     required this.title,
@@ -74,8 +76,8 @@ class InfoCharacterTalent {
 class InfoCharacterAscension {
   final int level;
   final Map<String, int> materials;
-  final Map<GsWeaponStat, double> valuesAfter;
-  final Map<GsWeaponStat, double> valuesBefore;
+  final Map<GsAttributeStat, double> valuesAfter;
+  final Map<GsAttributeStat, double> valuesBefore;
 
   InfoCharacterAscension({
     required this.level,
@@ -90,18 +92,18 @@ class InfoCharacterAscension {
       materials: (map['materials'] as Map).cast<String, int>(),
       valuesAfter: (map['values_after'] as Map? ?? {}).map(
         (key, value) => MapEntry(
-          GsWeaponStat.values.firstWhere(
+          GsAttributeStat.values.firstWhere(
             (e) => e.name == key,
-            orElse: () => GsWeaponStat.none,
+            orElse: () => GsAttributeStat.none,
           ),
           _toDouble(value),
         ),
       ),
       valuesBefore: (map['values_before'] as Map? ?? {}).map(
         (key, value) => MapEntry(
-          GsWeaponStat.values.firstWhere(
+          GsAttributeStat.values.firstWhere(
             (e) => e.name == key,
-            orElse: () => GsWeaponStat.none,
+            orElse: () => GsAttributeStat.none,
           ),
           _toDouble(value),
         ),
