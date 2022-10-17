@@ -13,6 +13,24 @@ class GsConsts {
 }
 
 extension DateTimeExt on DateTime {
+  String toPrettyDate() {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return '${months[month - 1]} $day${year != 0 ? ', $year' : ''}';
+  }
+
   String format([bool showHour = true]) {
     final str = toString().split('.').first;
     if (showHour) return str;
@@ -268,7 +286,7 @@ extension GsWeaponStatExt on GsAttributeStat {
     late final String str;
     if (format) {
       final dc = value.toStringAsFixed(1).split('.').last;
-      str = '${value.toInt().format()}${dc != '0' ? '.' + dc : ''}';
+      str = '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}';
     } else {
       str = value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     }

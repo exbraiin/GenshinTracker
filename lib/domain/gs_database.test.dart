@@ -112,7 +112,7 @@ class Achievement {
 // =============================================================================
 
 class CharacterDetailsData {
-  final _map = <String, InfoCharacterDescription>{};
+  final _map = <String, InfoCharacterDetails>{};
   final _ascensionHerosWit = <int>[];
 
   Future<void> read() async {
@@ -124,7 +124,7 @@ class CharacterDetailsData {
     final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
     final characters = data['characters'] as Map<String, dynamic>;
     characters.entries
-        .map((e) => InfoCharacterDescription.fromMap(e.key, e.value))
+        .map((e) => InfoCharacterDetails.fromMap(e.key, e.value))
         .forEach((e) => _map[e.id] = e);
 
     final values = (data['ascension_heros_wit'] as List).cast<int>();
@@ -133,8 +133,8 @@ class CharacterDetailsData {
 
   int getAscensionHerosWit(int level) => _ascensionHerosWit[level];
 
-  InfoCharacterDescription getItem(String id) => _map[id]!;
-  InfoCharacterDescription? getItemOrNull(String id) => _map[id];
+  InfoCharacterDetails getItem(String id) => _map[id]!;
+  InfoCharacterDetails? getItemOrNull(String id) => _map[id];
   bool exists(String id) => _map.containsKey(id);
-  Iterable<InfoCharacterDescription> getItems() => _map.values;
+  Iterable<InfoCharacterDetails> getItems() => _map.values;
 }

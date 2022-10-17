@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/text_style_parser.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/file_image.dart';
@@ -62,7 +63,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getInfo(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDescription? desc,
+    InfoCharacterDetails? desc,
   ) {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = db.getCharAscension(info.id);
@@ -144,11 +145,12 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getAttributes(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDescription? desc,
+    InfoCharacterDetails? desc,
   ) {
     final style = context.textTheme.subtitle2!;
     final stLabel = style.copyWith(color: GsColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
+    final unknown = context.fromLabel(Labels.wsNone);
     return _InfoCard(
       title: 'Attributes',
       children: [
@@ -169,7 +171,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text('Name', style: stLabel),
                 Text(info.name, style: stStyle),
                 Text('Birthday', style: stLabel),
-                Text(info.birthday, style: stStyle),
+                Text(desc?.birthday.toPrettyDate() ?? unknown, style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -180,9 +182,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Text('Constellation', style: stLabel),
-                Text(desc?.constellation ?? 'Unknown', style: stStyle),
+                Text(desc?.constellation ?? unknown, style: stStyle),
                 Text('Title', style: stLabel),
-                Text(desc?.title ?? 'Unknown', style: stStyle),
+                Text(desc?.title ?? unknown, style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -195,7 +197,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text('Vision', style: stLabel),
                 Text(info.element.toPrettyString(context), style: stStyle),
                 Text('Affiliation', style: stLabel),
-                Text(desc?.affiliation ?? 'Unknown', style: stStyle),
+                Text(desc?.affiliation ?? unknown, style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -219,9 +221,10 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Text('Special Dish', style: stLabel),
-                Text(desc?.specialDish ?? 'Unknown', style: stStyle),
-                SizedBox(),
-                SizedBox(),
+                Text(desc?.specialDish ?? unknown, style: stStyle),
+                Text('Release Date', style: stLabel),
+                Text(desc?.releaseDate.toPrettyDate() ?? unknown,
+                    style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -238,7 +241,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getAscension(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDescription desc,
+    InfoCharacterDetails desc,
   ) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
     final values = desc.ascension
@@ -332,7 +335,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getTalents(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDescription desc,
+    InfoCharacterDetails desc,
   ) {
     return _InfoCard(
       title: 'Talents',
@@ -384,7 +387,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getConstellations(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDescription desc,
+    InfoCharacterDetails desc,
   ) {
     return _InfoCard(
       title: 'Contellation',
