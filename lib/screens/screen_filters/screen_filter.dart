@@ -279,6 +279,15 @@ class ScreenFilters {
         (c, i) => i.toPrettyString(c),
         comparator: (a, b) => a.region.index.compareTo(b.region.index),
       ),
+      FilterSection<GsAttributeStat, InfoCharacter>(
+        GsAttributeStat.values.characterStats,
+        (item) =>
+            _db.infoCharacterDetails.getItemOrNull(item.id)?.specialStat ??
+            GsAttributeStat.none,
+        (c) => 'Special Stat',
+        (c, i) => i.toPrettyString(c),
+        comparator: (a, b) => a.region.index.compareTo(b.region.index),
+      ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
         (item) => _db.saveCharacters.getCharFriendship(item.id) == 10,
