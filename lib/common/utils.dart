@@ -256,7 +256,7 @@ extension GsWeaponStatExt on GsAttributeStat {
     return Lang.of(context).getValue(key);
   }
 
-  String toIntOrPercentage(double value) {
+  String toIntOrPercentage(double value, [bool format = true]) {
     final percentage = GsAttributeStat.values.except({
       GsAttributeStat.none,
       GsAttributeStat.hp,
@@ -265,9 +265,16 @@ extension GsWeaponStatExt on GsAttributeStat {
       GsAttributeStat.elementalMastery,
     });
 
-    if (!percentage.contains(this)) return '${value.toInt()}';
-    if (value == value.toInt()) return '${value.toInt()}%';
-    return '${value.toStringAsFixed(1)}%';
+    late final String str;
+    if (format) {
+      final dc = value.toStringAsFixed(1).split('.').last;
+      str = '${value.toInt().format()}${dc != '0' ? '.' + dc : ''}';
+    } else {
+      str = value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    }
+
+    if (!percentage.contains(this)) return str;
+    return '$str%';
   }
 }
 
