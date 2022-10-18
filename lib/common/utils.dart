@@ -133,13 +133,13 @@ class InfoMaterialGroups {
 extension GsElementExt on GsElement {
   Color getColor() {
     return const [
-      Colors.lightGreen,
-      Colors.amber,
-      Colors.purple,
-      Colors.green,
-      Colors.blue,
-      Colors.red,
-      Colors.cyan,
+      Color(0xFF33CCB3),
+      Color(0xFFCFA726),
+      Color(0xFFD376F0),
+      Color(0xFF77AD2D),
+      Color(0xFF1C72FD),
+      Color(0xFFE2311D),
+      Color(0xFF98C8E8),
     ][this.index];
   }
 
