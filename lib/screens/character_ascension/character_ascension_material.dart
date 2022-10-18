@@ -38,6 +38,7 @@ class _CharacterAscensionMaterialState
 
   @override
   void dispose() {
+    _controller.dispose();
     _node.dispose();
     _sub.cancel();
     super.dispose();
@@ -104,7 +105,9 @@ class _CharacterAscensionMaterialState
                     textAlign: TextAlign.center,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(4),
+                      LengthLimitingTextInputFormatter(
+                        (material?.maxAmount ?? 0).toString().length,
+                      ),
                     ],
                     decoration: InputDecoration(
                       isDense: true,

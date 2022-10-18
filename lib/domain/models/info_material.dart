@@ -8,6 +8,8 @@ class InfoMaterial implements IdData {
   final int rarity;
   final int subgroup;
 
+  int get maxAmount => id == 'mora' ? 9999999999 : 9999;
+
   InfoMaterial({
     required this.id,
     required this.name,
