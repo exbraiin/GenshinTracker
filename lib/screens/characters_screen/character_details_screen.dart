@@ -25,7 +25,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.data! || info == null) return SizedBox();
         final ic = GsDatabase.instance.infoDetails;
-        final details = ic.exists(info.id) ? ic.getItem(info.id) : null;
+        final details = ic.existsChar(info.id) ? ic.getCharItem(info.id) : null;
         return Scaffold(
           appBar: GsAppBar(
             label: info.name,

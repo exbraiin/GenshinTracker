@@ -79,7 +79,7 @@ class TestWidgets {
       context,
       ['Character Id', 'Missing info'],
       items.map((e) {
-        final details = info.getItemOrNull(e.id);
+        final details = info.getCharItemOrNull(e.id);
         final temp = <String, bool>{
           'title': details?.title.isEmpty ?? true,
           'constellation': details?.constellation.isEmpty ?? true,

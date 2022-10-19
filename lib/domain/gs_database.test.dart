@@ -140,8 +140,13 @@ class JsonDetailsData {
 
   int getAscensionHerosWit(int level) => _ascensionHerosWit[level];
 
-  InfoCharacterDetails getItem(String id) => _characters[id]!;
-  InfoCharacterDetails? getItemOrNull(String id) => _characters[id];
-  bool exists(String id) => _characters.containsKey(id);
-  Iterable<InfoCharacterDetails> getItems() => _characters.values;
+  InfoCharacterDetails getCharItem(String id) => _characters[id]!;
+  InfoCharacterDetails? getCharItemOrNull(String id) => _characters[id];
+  bool existsChar(String id) => _characters.containsKey(id);
+  Iterable<InfoCharacterDetails> getCharItems() => _characters.values;
+
+  InfoArtifactDetails getArtfItem(String id) => _artifacts[id]!;
+  InfoArtifactDetails? getArtfItemOrNull(String id) => _artifacts[id];
+  bool existsArtf(String id) => _artifacts.containsKey(id);
+  Iterable<InfoArtifactDetails> getArtfItems() => _artifacts.values;
 }
