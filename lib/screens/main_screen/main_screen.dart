@@ -1,4 +1,5 @@
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -17,6 +18,7 @@ import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/tests_screen/tests_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
@@ -277,6 +279,12 @@ final _menus = [
       label: Labels.achievements,
       icon: menuIconAchievements,
       initialPage: AchievementsScreen.id,
+    ),
+  if (kDebugMode)
+    Menu(
+      label: Labels.wsNone,
+      icon: menuIconAchievements,
+      initialPage: TestsScreen.id,
     ),
 ];
 

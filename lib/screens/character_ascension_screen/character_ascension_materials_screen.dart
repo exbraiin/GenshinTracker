@@ -11,7 +11,7 @@ import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/item_card_button.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/character_ascension/character_ascension_screen.dart';
+import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
 
 class CharacterAscensionMaterialsScreen extends StatelessWidget {
   @override

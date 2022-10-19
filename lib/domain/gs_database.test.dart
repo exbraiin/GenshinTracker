@@ -111,8 +111,9 @@ class Achievement {
 
 // =============================================================================
 
-class CharacterDetailsData {
-  final _map = <String, InfoCharacterDetails>{};
+class JsonDetailsData {
+  final _artifacts = <String, InfoArtifactDetails>{};
+  final _characters = <String, InfoCharacterDetails>{};
   final _ascensionHerosWit = <int>[];
 
   Future<void> read() async {
@@ -122,10 +123,16 @@ class CharacterDetailsData {
 
     final file = File(path);
     final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
+
     final characters = data['characters'] as Map<String, dynamic>;
     characters.entries
         .map((e) => InfoCharacterDetails.fromMap(e.key, e.value))
-        .forEach((e) => _map[e.id] = e);
+        .forEach((e) => _characters[e.id] = e);
+
+    final artifacts = data['artifacts'] as Map<String, dynamic>;
+    artifacts.entries
+        .map((e) => InfoArtifactDetails.fromMap(e.key, e.value))
+        .forEach((e) => _artifacts[e.id] = e);
 
     final values = (data['ascension_heros_wit'] as List).cast<int>();
     _ascensionHerosWit.addAll(values);
@@ -133,8 +140,8 @@ class CharacterDetailsData {
 
   int getAscensionHerosWit(int level) => _ascensionHerosWit[level];
 
-  InfoCharacterDetails getItem(String id) => _map[id]!;
-  InfoCharacterDetails? getItemOrNull(String id) => _map[id];
-  bool exists(String id) => _map.containsKey(id);
-  Iterable<InfoCharacterDetails> getItems() => _map.values;
+  InfoCharacterDetails getItem(String id) => _characters[id]!;
+  InfoCharacterDetails? getItemOrNull(String id) => _characters[id];
+  bool exists(String id) => _characters.containsKey(id);
+  Iterable<InfoCharacterDetails> getItems() => _characters.values;
 }

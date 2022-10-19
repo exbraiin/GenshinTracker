@@ -3,7 +3,7 @@ import 'package:tracker/screens/achievements_screen/achievements_list_screen.dar
 import 'package:tracker/screens/achievements_screen/achievements_screen.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
-import 'package:tracker/screens/character_ascension/character_ascension_screen.dart';
+import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
@@ -12,6 +12,7 @@ import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/tests_screen/tests_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
@@ -34,6 +35,7 @@ class TrackerRouter {
     SpincrystalsScreen.id: () => SpincrystalsScreen(),
     AchievementsScreen.id: () => AchievementsScreen(),
     AchievementsListScreen.id: () => AchievementsListScreen(),
+    TestsScreen.id: () => TestsScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {

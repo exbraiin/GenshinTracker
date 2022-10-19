@@ -121,7 +121,7 @@ class InfoMaterialGroups {
     'talent_materials_inazuma': Labels.matTalentMaterialsInazuma,
     'talent_materials_sumeru': Labels.matTalentMaterialsSumeru,
     'weekly_boss_drops': Labels.matWeeklyBossDrops,
-    'crown': Labels.matCrown,
+    'talent_materials': Labels.talents,
   };
 
   static Set<String> get groups => _infoMaterialGroups.keys.toSet();

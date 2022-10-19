@@ -5,7 +5,6 @@ class InfoCharacter implements IdData {
   final String name;
   final String? image;
   final String version;
-  final String birthday;
   final GsRegion region;
   final GsWeapon weapon;
   final GsElement element;
@@ -16,7 +15,6 @@ class InfoCharacter implements IdData {
     required this.name,
     required this.image,
     required this.version,
-    required this.birthday,
     required this.region,
     required this.weapon,
     required this.element,
@@ -32,7 +30,6 @@ class InfoCharacter implements IdData {
       region: GsRegion.values.elementAt(map['region']),
       weapon: GsWeapon.values.elementAt(map['weapon']),
       element: GsElement.values.elementAt(map['element']),
-      birthday: map['birthdate'] ?? '01-01',
       rarity: map['rarity'],
     );
   }

@@ -7,6 +7,7 @@ export 'enums/gs_region.dart';
 export 'enums/gs_set_category.dart';
 export 'enums/gs_weapon.dart';
 export 'models/info_artifact.dart';
+export 'models/info_artifact_details.dart';
 export 'models/info_banner.dart';
 export 'models/info_character.dart';
 export 'models/info_character_details.dart';

@@ -9,8 +9,8 @@ import 'package:tracker/common/widgets/no_results.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/character_ascension/character_ascension_material.dart';
-import 'package:tracker/screens/character_ascension/character_ascension_materials_screen.dart';
+import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
+import 'package:tracker/screens/character_ascension_screen/character_ascension_materials_screen.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
@@ -166,9 +166,9 @@ class _CharacterAscensionListItem extends StatelessWidget {
 
 List<AscendMaterial> getAscendMaterials(String charId, int level) {
   final db = GsDatabase.instance;
-  final char = db.infoCharacterDetails.getItemOrNull(charId);
+  final char = db.infoDetails.getItemOrNull(charId);
   if (char == null) return [];
-  final witsAmount = db.infoCharacterDetails.getAscensionHerosWit(level);
+  final witsAmount = db.infoDetails.getAscensionHerosWit(level);
   return (char.ascension[level].materials.entries.toList()
         ..insert(0, MapEntry('heros_wit', witsAmount)))
       .map((e) => AscendMaterial.fromId(e.key, e.value))

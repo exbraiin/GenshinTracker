@@ -282,7 +282,7 @@ class ScreenFilters {
       FilterSection<GsAttributeStat, InfoCharacter>(
         GsAttributeStat.values.characterStats,
         (item) =>
-            _db.infoCharacterDetails.getItemOrNull(item.id)?.specialStat ??
+            _db.infoDetails.getItemOrNull(item.id)?.specialStat ??
             GsAttributeStat.none,
         (c) => 'Special Stat',
         (c, i) => i.toPrettyString(c),

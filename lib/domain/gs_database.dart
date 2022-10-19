@@ -47,7 +47,7 @@ class GsDatabase {
     'Artifacts',
     (m) => InfoArtifact.fromMap(m),
   );
-  final infoCharacterDetails = CharacterDetailsData();
+  final infoDetails = JsonDetailsData();
   final infoAchievements = AchievementsData();
 
   bool _saveLoaded = false;
@@ -128,7 +128,7 @@ class GsDatabase {
       infoMaterials.read(db),
       infoSpincrystal.read(db),
       infoArtifacts.read(db),
-      infoCharacterDetails.read(),
+      infoDetails.read(),
       if (kEnableAchievements) infoAchievements.read(),
     ]);
   }
