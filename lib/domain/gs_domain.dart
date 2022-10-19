@@ -26,35 +26,6 @@ export 'models/save_serenitea_set.dart';
 export 'models/save_spincrystal.dart';
 export 'models/save_wish.dart';
 
-class GsUtils {
-  GsUtils._();
-
-  static List<String> parseIds(String? value, [String separator = ',']) {
-    if (value == null) return [];
-    return value
-        .split(separator)
-        .map((e) => e.trim())
-        .where((e) => e.isNotEmpty)
-        .toList();
-  }
-
-  static List<int> parseWeekdays(String? value, [String separator = ',']) {
-    const values = {
-      'mo': DateTime.monday,
-      'tu': DateTime.tuesday,
-      'we': DateTime.wednesday,
-      'th': DateTime.thursday,
-      'fr': DateTime.friday,
-      'sa': DateTime.saturday,
-      'su': DateTime.sunday,
-    };
-    return parseIds(value, separator)
-        .map((e) => values[e])
-        .whereType<int>()
-        .toList();
-  }
-}
-
 extension ListEnumExt<T extends Enum> on List<T> {
   T fromName(String name, [T? defaultValue]) {
     return firstWhere(

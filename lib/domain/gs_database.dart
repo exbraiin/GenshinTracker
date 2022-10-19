@@ -3,7 +3,6 @@ import 'package:tracker/domain/gs_database.test.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
-export 'package:tracker/domain/gs_database.tables.dart';
 
 class GsDatabase {
   static final instance = GsDatabase._();
