@@ -7,7 +7,6 @@ import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/achievements_screen/achievements_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
@@ -274,12 +273,6 @@ final _menus = [
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
   ),
-  if (kEnableAchievements)
-    Menu(
-      label: Labels.achievements,
-      icon: menuIconAchievements,
-      initialPage: AchievementsScreen.id,
-    ),
   if (kDebugMode)
     Menu(
       label: Labels.wsNone,

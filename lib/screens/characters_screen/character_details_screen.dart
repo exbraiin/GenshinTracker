@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/cards/gs_info_container.dart';
+import 'package:tracker/common/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/text_style_parser.dart';
@@ -18,39 +20,35 @@ class CharacterDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final info = args as InfoCharacter?;
+    final details = args as InfoCharacter;
 
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (!snapshot.data! || info == null) return SizedBox();
-        final ic = GsDatabase.instance.infoDetails;
-        final details = ic.existsChar(info.id) ? ic.getCharItem(info.id) : null;
+        if (!snapshot.data!) return SizedBox();
         return Scaffold(
           appBar: GsAppBar(
-            label: info.name,
+            label: details.name,
           ),
           body: Stack(
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  getElementBgImage(info.element),
+                  getElementBgImage(details.element),
                   fit: BoxFit.cover,
                 ),
               ),
               ListView(
                 padding: EdgeInsets.all(kSeparator4),
                 children: [
-                  _getInfo(context, info, details),
-                  _getAttributes(context, info, details),
-                  if (details != null) ...[
-                    SizedBox(height: kSeparator8),
-                    _getAscension(context, info, details),
-                    SizedBox(height: kSeparator8),
-                    _getTalents(context, info, details),
-                    SizedBox(height: kSeparator8),
-                    _getConstellations(context, info, details),
-                  ],
+                  _getInfo(context, details),
+                  _getAttributes(context, details),
+                  SizedBox(height: kSeparator8),
+                  _getAscension(context, details),
+                  SizedBox(height: kSeparator8),
+                  _getTalents(context, details),
+                  SizedBox(height: kSeparator8),
+                  _getConstellations(context, details),
                 ],
               ),
             ],
@@ -60,11 +58,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getInfo(
-    BuildContext context,
-    InfoCharacter info,
-    InfoCharacterDetails? desc,
-  ) {
+  Widget _getInfo(BuildContext context, InfoCharacter info) {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = db.getCharAscension(info.id);
     return SizedBox(
@@ -72,24 +66,10 @@ class CharacterDetailsScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: kMainRadius.copyWith(
-                bottomRight: Radius.circular(24),
-              ),
-              image: DecorationImage(
-                image: AssetImage(getRarityBgImage(info.rarity)),
-                fit: BoxFit.contain,
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: kMainRadius.copyWith(
-                bottomRight: Radius.circular(24),
-              ),
-              child: CachedImageWidget(info.image),
-            ),
+          GsRarityItemCard(
+            size: 120,
+            image: info.image,
+            rarity: info.rarity,
           ),
           SizedBox(width: 18),
           Expanded(
@@ -124,16 +104,16 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: kSeparator4),
                 Text(
-                  desc?.description ?? '',
+                  info.description,
                   style: context.textTheme.description2,
                 ),
               ],
             ),
           ),
           SizedBox(
-            width: 460,
+            width: 360,
             child: CachedImageWidget(
-              desc?.fullImage,
+              info.fullImage,
               fit: BoxFit.fitWidth,
             ),
           )
@@ -142,17 +122,12 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAttributes(
-    BuildContext context,
-    InfoCharacter info,
-    InfoCharacterDetails? desc,
-  ) {
+  Widget _getAttributes(BuildContext context, InfoCharacter info) {
     final style = context.textTheme.subtitle2!;
     final stLabel = style.copyWith(color: GsColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
-    final unknown = context.fromLabel(Labels.wsNone);
-    return _InfoCard(
-      title: 'Attributes',
+    return GsInfoContainer(
+      title: context.fromLabel(Labels.attributes),
       children: [
         Table(
           columnWidths: {
@@ -168,10 +143,10 @@ class CharacterDetailsScreen extends StatelessWidget {
           children: [
             TableRow(
               children: [
-                Text('Name', style: stLabel),
+                Text(context.fromLabel(Labels.name), style: stLabel),
                 Text(info.name, style: stStyle),
-                Text('Birthday', style: stLabel),
-                Text(desc?.birthday.toPrettyDate() ?? unknown, style: stStyle),
+                Text(context.fromLabel(Labels.birthday), style: stLabel),
+                Text(info.birthday.toPrettyDate(), style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -181,10 +156,10 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text('Constellation', style: stLabel),
-                Text(desc?.constellation ?? unknown, style: stStyle),
-                Text('Title', style: stLabel),
-                Text(desc?.title ?? unknown, style: stStyle),
+                Text(context.fromLabel(Labels.constellation), style: stLabel),
+                Text(info.constellation, style: stStyle),
+                Text(context.fromLabel(Labels.title), style: stLabel),
+                Text(info.title, style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -194,10 +169,10 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text('Vision', style: stLabel),
+                Text(context.fromLabel(Labels.vision), style: stLabel),
                 Text(info.element.toPrettyString(context), style: stStyle),
-                Text('Affiliation', style: stLabel),
-                Text(desc?.affiliation ?? unknown, style: stStyle),
+                Text(context.fromLabel(Labels.affiliation), style: stLabel),
+                Text(info.affiliation, style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -207,9 +182,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text('Weapon', style: stLabel),
+                Text(context.fromLabel(Labels.weapon), style: stLabel),
                 Text(info.weapon.toPrettyString(context), style: stStyle),
-                Text('Version', style: stLabel),
+                Text(context.fromLabel(Labels.version), style: stLabel),
                 Text(info.version, style: stStyle),
               ]
                   .map((e) => Padding(
@@ -220,11 +195,10 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text('Special Dish', style: stLabel),
-                Text(desc?.specialDish ?? unknown, style: stStyle),
-                Text('Release Date', style: stLabel),
-                Text(desc?.releaseDate.toPrettyDate() ?? unknown,
-                    style: stStyle),
+                Text(context.fromLabel(Labels.specialDish), style: stLabel),
+                Text(info.specialDish, style: stStyle),
+                Text(context.fromLabel(Labels.releaseDate), style: stLabel),
+                Text(info.releaseDate.toPrettyDate(), style: stStyle),
               ]
                   .map((e) => Padding(
                         padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -238,21 +212,17 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAscension(
-    BuildContext context,
-    InfoCharacter info,
-    InfoCharacterDetails desc,
-  ) {
+  Widget _getAscension(BuildContext context, InfoCharacter info) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
-    final values = desc.ascension
+    final values = info.ascension
         .expand((e) => [
               ...e.valuesAfter.keys,
               ...e.valuesBefore.keys,
             ])
         .toSet()
         .take(4);
-    return _InfoCard(
-      title: 'Ascension',
+    return GsInfoContainer(
+      title: context.fromLabel(Labels.ascension),
       children: [
         Table(
           columnWidths: {
@@ -272,7 +242,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: kSeparator4),
                   child: Center(
-                    child: Text('Level', style: style),
+                    child: Text(context.fromLabel(Labels.level), style: style),
                   ),
                 ),
                 ...values.map(
@@ -283,10 +253,15 @@ class CharacterDetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(child: Text('Materials', style: style)),
+                Center(
+                  child: Text(
+                    context.fromLabel(Labels.materials),
+                    style: style,
+                  ),
+                ),
               ],
             ),
-            ...desc.ascension.map(
+            ...info.ascension.map(
               (e) => TableRow(
                 children: [
                   Container(
@@ -332,14 +307,10 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getTalents(
-    BuildContext context,
-    InfoCharacter info,
-    InfoCharacterDetails desc,
-  ) {
-    return _InfoCard(
-      title: 'Talents',
-      children: desc.talents
+  Widget _getTalents(BuildContext context, InfoCharacter info) {
+    return GsInfoContainer(
+      title: context.fromLabel(Labels.talents),
+      children: info.talents
           .map<Widget>((e) {
             return Padding(
               padding: EdgeInsets.all(kSeparator4),
@@ -384,14 +355,10 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getConstellations(
-    BuildContext context,
-    InfoCharacter info,
-    InfoCharacterDetails desc,
-  ) {
-    return _InfoCard(
-      title: 'Contellation',
-      children: desc.constellations
+  Widget _getConstellations(BuildContext context, InfoCharacter info) {
+    return GsInfoContainer(
+      title: context.fromLabel(Labels.constellation),
+      children: info.constellations
           .map<Widget>((e) {
             return Padding(
               padding: EdgeInsets.all(kSeparator4),
@@ -427,41 +394,6 @@ class CharacterDetailsScreen extends StatelessWidget {
             thickness: 0.4,
           ))
           .toList(),
-    );
-  }
-}
-
-class _InfoCard extends StatelessWidget {
-  final String title;
-  final List<Widget> children;
-
-  _InfoCard({required this.title, this.children = const []});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(kSeparator8),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.4),
-        borderRadius: kMainRadius,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: context.textTheme.bigTitle3.copyWith(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'NotoSans',
-            ),
-          ),
-          Divider(
-            color: GsColors.dimWhite,
-          ),
-          ...children,
-        ],
-      ),
     );
   }
 }

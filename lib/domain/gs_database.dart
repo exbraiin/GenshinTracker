@@ -19,10 +19,6 @@ class GsDatabase {
     'Banners',
     (m) => InfoBanner.fromMap(m),
   );
-  final infoCharacters = TableData(
-    'Characters',
-    (m) => InfoCharacter.fromMap(m),
-  );
   final infoRecipes = TableData(
     'Recipes',
     (m) => InfoRecipe.fromMap(m),
@@ -43,12 +39,14 @@ class GsDatabase {
     'Spincrystals',
     (m) => InfoSpincrystal.fromMap(m),
   );
-  final infoArtifacts = TableData(
-    'Artifacts',
-    (m) => InfoArtifact.fromMap(m),
+
+  final infoDetails = JsonDetails();
+  final infoArtifacts = JsonDetailsData(
+    (id, map) => InfoArtifact.fromMap(id, map),
   );
-  final infoDetails = JsonDetailsData();
-  final infoAchievements = AchievementsData();
+  final infoCharacters = JsonDetailsData(
+    (id, map) => InfoCharacter.fromMap(id, map),
+  );
 
   bool _saveLoaded = false;
   final saveWishes = TableSaveData(
@@ -86,9 +84,6 @@ class GsDatabase {
     (m) => SaveMaterial.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
-  final saveAchievements = AchievementsSaveData(
-    () => GsDatabase.instance._notify(),
-  );
 
   final _loaded = BehaviorSubject<bool>();
   final _saving = BehaviorSubject<bool>.seeded(false);
@@ -121,15 +116,16 @@ class GsDatabase {
     await Future.wait([
       infoCities.read(db),
       infoBanners.read(db),
-      infoCharacters.read(db),
       infoRecipes.read(db),
       infoSereniteaSets.read(db),
       infoWeapons.read(db),
       infoMaterials.read(db),
       infoSpincrystal.read(db),
-      infoArtifacts.read(db),
-      infoDetails.read(),
-      if (kEnableAchievements) infoAchievements.read(),
+      JsonDetailsData.readJsonFile().then((map) {
+        infoDetails.parse(map['details']);
+        infoArtifacts.parse(map['artifacts']);
+        infoCharacters.parse(map['characters']);
+      }),
     ]);
   }
 

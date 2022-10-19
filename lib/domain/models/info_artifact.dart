@@ -1,24 +1,71 @@
-import '../gs_domain.dart';
+import 'package:dartx/dartx.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 class InfoArtifact implements IdData {
   final String id;
   final String name;
-  final String? image;
+  final String domain;
+  final String desc1Pc;
+  final String desc2Pc;
+  final String desc4Pc;
   final int rarity;
+  final List<InfoArtifactPiece> pieces;
+
+  String get image => pieces.firstOrNull?.icon ?? '';
 
   InfoArtifact({
     required this.id,
     required this.name,
-    required this.image,
+    required this.domain,
+    required this.desc1Pc,
+    required this.desc2Pc,
+    required this.desc4Pc,
     required this.rarity,
+    required this.pieces,
   });
 
-  factory InfoArtifact.fromMap(Map<String, dynamic> map) {
+  factory InfoArtifact.fromMap(String id, Map<String, dynamic> map) {
     return InfoArtifact(
-      id: map['id'],
+      id: id,
       name: map['name'],
-      image: map['image'],
+      domain: map['domain'],
+      desc1Pc: map['1pc'] ?? '',
+      desc2Pc: map['2pc'] ?? '',
+      desc4Pc: map['4pc'] ?? '',
       rarity: map['rarity'],
+      pieces: (map['pieces'] as Map<String, dynamic>)
+          .entries
+          .map((e) => InfoArtifactPiece.fromMap(e.key, e.value))
+          .toList(),
+    );
+  }
+}
+
+class InfoArtifactPiece {
+  final String name;
+  final String icon;
+  final String desc;
+  final GsArtifactPieces type;
+
+  InfoArtifactPiece({
+    required this.name,
+    required this.icon,
+    required this.desc,
+    required this.type,
+  });
+
+  factory InfoArtifactPiece.fromMap(String id, Map<String, dynamic> map) {
+    return InfoArtifactPiece(
+      name: map['name'],
+      icon: map['icon'],
+      desc: map['desc'],
+      type: {
+        'flower_of_life': GsArtifactPieces.flowerOfLife,
+        'plume_of_death': GsArtifactPieces.plumeOfDeath,
+        'sands_of_eon': GsArtifactPieces.sandsOfEon,
+        'goblet_of_eonothem': GsArtifactPieces.gobletOfEonothem,
+        'circlet_of_logos': GsArtifactPieces.circletOfLogos,
+      }[id]!,
     );
   }
 }

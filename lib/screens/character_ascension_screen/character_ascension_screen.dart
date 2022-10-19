@@ -166,7 +166,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
 
 List<AscendMaterial> getAscendMaterials(String charId, int level) {
   final db = GsDatabase.instance;
-  final char = db.infoDetails.getCharItemOrNull(charId);
+  final char = db.infoCharacters.getItemOrNull(charId);
   if (char == null) return [];
   final witsAmount = db.infoDetails.getAscensionHerosWit(level);
   return (char.ascension[level].materials.entries.toList()

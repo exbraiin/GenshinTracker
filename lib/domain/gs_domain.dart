@@ -8,11 +8,9 @@ export 'enums/gs_region.dart';
 export 'enums/gs_set_category.dart';
 export 'enums/gs_weapon.dart';
 export 'models/info_artifact.dart';
-export 'models/info_artifact_details.dart';
-export 'models/info_artifact_piece.dart';
 export 'models/info_banner.dart';
 export 'models/info_character.dart';
-export 'models/info_character_details.dart';
+export 'models/info_character.dart';
 export 'models/info_city.dart';
 export 'models/info_data.dart';
 export 'models/info_material.dart';
@@ -27,8 +25,6 @@ export 'models/save_reputation.dart';
 export 'models/save_serenitea_set.dart';
 export 'models/save_spincrystal.dart';
 export 'models/save_wish.dart';
-
-const kEnableAchievements = false;
 
 class GsUtils {
   GsUtils._();

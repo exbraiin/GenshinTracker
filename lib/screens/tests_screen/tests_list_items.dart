@@ -72,14 +72,14 @@ class TestWidgets {
   }
 
   static Widget getCharacterListItem(BuildContext context) {
-    final info = GsDatabase.instance.infoDetails;
+    final info = GsDatabase.instance.infoCharacters;
     final items = GsDatabase.instance.infoCharacters.getItems();
 
     return _container(
       context,
       ['Character Id', 'Missing info'],
       items.map((e) {
-        final details = info.getCharItemOrNull(e.id);
+        final details = info.getItemOrNull(e.id);
         final temp = <String, bool>{
           'title': details?.title.isEmpty ?? true,
           'constellation': details?.constellation.isEmpty ?? true,

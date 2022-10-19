@@ -7,11 +7,12 @@ void main() async {
   final file = File('assets/lang/en.json');
   final data = await file.readAsString();
   final map = (jsonDecode(data) as Map).cast<String, String>();
-  _generateLabelsClass(map);
+  await _generateLabelsClass(map);
   // _generateExtensions(map);
+  File('assets/lang/labels.dart').rename('lib/common/lang/labels.dart');
 }
 
-void _generateLabelsClass(Map<String, dynamic> map) {
+Future<void> _generateLabelsClass(Map<String, dynamic> map) async {
   final buffer = StringBuffer();
   buffer.writeln('class Labels {');
   buffer.writeln('\tLabels._();');
@@ -24,7 +25,7 @@ void _generateLabelsClass(Map<String, dynamic> map) {
 
   buffer.writeln('}');
   final end = File('assets/lang/labels.dart');
-  end.writeAsString(buffer.toString());
+  await end.writeAsString(buffer.toString());
 }
 
 void _generateExtensions(Map<String, String> map) {

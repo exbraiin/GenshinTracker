@@ -471,4 +471,40 @@ class Labels {
 
 	/// Crown
 	static const matCrown = 'mat_crown';
+
+	/// {n} Piece Bonus
+	static const nPieceBonus = 'n_piece_bonus';
+
+	/// Artifact Set
+	static const artifactSet = 'artifact_set';
+
+	/// Artifact Pieces
+	static const artifactPieces = 'artifact_pieces';
+
+	/// Attributes
+	static const attributes = 'attributes';
+
+	/// Birthday
+	static const birthday = 'birthday';
+
+	/// Constellation
+	static const constellation = 'constellation';
+
+	/// Title
+	static const title = 'title';
+
+	/// Vision
+	static const vision = 'vision';
+
+	/// Affiliation
+	static const affiliation = 'affiliation';
+
+	/// Special Dish
+	static const specialDish = 'special_dish';
+
+	/// Release Date
+	static const releaseDate = 'release_date';
+
+	/// Level
+	static const level = 'level';
 }

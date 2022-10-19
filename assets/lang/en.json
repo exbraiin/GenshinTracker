@@ -26,7 +26,7 @@
     "all": "All",
     "filter": "Filter",
     "talents": "Talents",
-    "constellations": "Constelations",
+    "constellations": "Constellations",
     "owned": "Owned",
     "unowned": "Unowned",
     "element": "Element",
@@ -155,5 +155,17 @@
     "mat_talent_materials_inazuma": "Talents Inazuma",
     "mat_talent_materials_sumeru": "Talents Sumeru",
     "mat_weekly_boss_drops": "Weekly Boss Drops",
-    "mat_crown": "Crown"
+    "mat_crown": "Crown",
+    "n_piece_bonus": "{n} Piece Bonus",
+    "artifact_set": "Artifact Set",
+    "artifact_pieces": "Artifact Pieces",
+    "attributes": "Attributes",
+    "birthday": "Birthday",
+    "constellation": "Constellation",
+    "title": "Title",
+    "vision": "Vision",
+    "affiliation": "Affiliation",
+    "special_dish": "Special Dish",
+    "release_date": "Release Date",
+    "level": "Level"
 }
