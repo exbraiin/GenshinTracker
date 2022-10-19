@@ -17,9 +17,9 @@ class SereniteaSetListItem extends StatelessWidget {
   bool _hasCharacterFromWishes(String id) =>
       GsDatabase.instance.saveWishes.hasCaracter(id);
 
-  String get _setImage => set.category == GsSetCategory.indoorSet
+  String get _setImage => set.category == GsSetCategory.indoor
       ? imageIndoorSet
-      : set.category == GsSetCategory.outdoorSet
+      : set.category == GsSetCategory.outdoor
           ? imageOutdoorSet
           : '';
 
@@ -41,9 +41,9 @@ class SereniteaSetListItem extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
-                color: set.category == GsSetCategory.indoorSet
+                color: set.category == GsSetCategory.indoor
                     ? Color(0xFFa01f2e)
-                    : set.category == GsSetCategory.outdoorSet
+                    : set.category == GsSetCategory.outdoor
                         ? Color(0xFF303671)
                         : GsColors.mainColor1,
                 borderRadius: BorderRadius.circular(100),

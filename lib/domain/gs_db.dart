@@ -1,26 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:sqflite_common/sqlite_api.dart' show Database;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-export 'package:sqflite_common/sqlite_api.dart' show Database;
 export 'package:sqflite_common/sql.dart' show ConflictAlgorithm;
+export 'package:sqflite_common/sqlite_api.dart' show Database;
 
 class GsDB {
-  static Database? _save, _info;
+  static Database? _save;
 
   GsDB._();
-
-  static Future<Database> getInfoDB() async {
-    if (_info == null) {
-      final db = File(
-        kDebugMode ? 'D:/Software/Tracker_Genshin/db/data.db' : 'db/data.db',
-      ).absolute;
-      _info = await databaseFactoryFfi.openDatabase(db.path);
-    }
-    return _info!;
-  }
 
   static Future<Database> getSaveDB() async {
     if (_save == null) {

@@ -1,7 +1,5 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:tracker/domain/gs_database.tables.dart';
 import 'package:tracker/domain/gs_database.test.dart';
-import 'package:tracker/domain/gs_db.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
@@ -11,77 +9,79 @@ class GsDatabase {
   static final instance = GsDatabase._();
 
   bool _dataLoaded = false;
-  final infoCities = TableData(
-    'Cities',
-    (m) => InfoCity.fromMap(m),
-  );
-  final infoBanners = TableData(
-    'Banners',
-    (m) => InfoBanner.fromMap(m),
-  );
-  final infoRecipes = TableData(
-    'Recipes',
-    (m) => InfoRecipe.fromMap(m),
-  );
-  final infoSereniteaSets = TableData(
-    'SereniteaSets',
-    (m) => InfoSereniteaSet.fromMap(m),
-  );
-  final infoWeapons = TableData(
-    'Weapons',
-    (m) => InfoWeapon.fromMap(m),
-  );
-  final infoMaterials = TableData(
-    'Materials',
-    (m) => InfoMaterial.fromMap(m),
-  );
-  final infoSpincrystal = TableData(
-    'Spincrystals',
-    (m) => InfoSpincrystal.fromMap(m),
-  );
 
   final infoDetails = JsonDetails();
-  final infoArtifacts = JsonDetailsData(
+  final infoCities = JsonInfoDetails<InfoCity>(
+    'cities',
+    (id, map) => InfoCity.fromMap(id, map),
+  );
+  final infoBanners = JsonInfoDetails<InfoBanner>(
+    'banners',
+    (id, map) => InfoBanner.fromMap(id, map),
+  );
+  final infoArtifacts = JsonInfoDetails<InfoArtifact>(
+    'artifacts',
     (id, map) => InfoArtifact.fromMap(id, map),
   );
-  final infoCharacters = JsonDetailsData(
+  final infoMaterials = JsonInfoDetails<InfoMaterial>(
+    'materials',
+    (id, map) => InfoMaterial.fromMap(id, map),
+  );
+  final infoRecipes = JsonInfoDetails<InfoRecipe>(
+    'recipes',
+    (id, map) => InfoRecipe.fromMap(id, map),
+  );
+  final infoWeapons = JsonInfoDetails<InfoWeapon>(
+    'weapons',
+    (id, map) => InfoWeapon.fromMap(id, map),
+  );
+  final infoCharacters = JsonInfoDetails<InfoCharacter>(
+    'characters',
     (id, map) => InfoCharacter.fromMap(id, map),
+  );
+  final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
+    'spincrystals',
+    (id, map) => InfoSpincrystal.fromMap(id, map),
+  );
+  final infoSereniteaSets = JsonInfoDetails<InfoSereniteaSet>(
+    'serenitea_sets',
+    (id, map) => InfoSereniteaSet.fromMap(id, map),
   );
 
   bool _saveLoaded = false;
-  final saveWishes = TableSaveData(
-    'Wishes',
-    (m) => SaveWish.fromMap(m),
+  final saveWishes = JsonSaveDetails<SaveWish>(
+    'wishes',
+    (id, m) => SaveWish.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveRecipes = TableSaveData(
-    'Recipes',
-    (m) => SaveRecipe.fromMap(m),
+  final saveRecipes = JsonSaveDetails<SaveRecipe>(
+    'recipes',
+    (id, m) => SaveRecipe.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveCharacters = TableSaveData(
-    'Characters',
-    (m) => SaveCharacter.fromMap(m),
+  final saveCharacters = JsonSaveDetails<SaveCharacter>(
+    'characters',
+    (id, m) => SaveCharacter.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveReputations = TableSaveData(
-    'Reputation',
-    (m) => SaveReputation.fromMap(m),
+  final saveReputations = JsonSaveDetails<SaveReputation>(
+    'reputation',
+    (id, m) => SaveReputation.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveSereniteaSets = TableSaveData(
-    'SereniteaSets',
-    (m) => SaveSereniteaSet.fromMap(m),
+  final saveSereniteaSets = JsonSaveDetails<SaveSereniteaSet>(
+    'serenitea_sets',
+    (id, m) => SaveSereniteaSet.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveSpincrystals = TableSaveData(
-    'Spincrystals',
-    (m) => SaveSpincrystal.fromMap(m),
+  final saveSpincrystals = JsonSaveDetails<SaveSpincrystal>(
+    'spincrystals',
+    (id, m) => SaveSpincrystal.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
-  final saveMaterials = TableSaveData(
-    'Materials',
-    (m) => SaveMaterial.fromMap(m),
+  final saveMaterials = JsonSaveDetails<SaveMaterial>(
+    'materials',
+    (id, m) => SaveMaterial.fromMap(id, m),
     () => GsDatabase.instance._notify(),
   );
 
@@ -112,48 +112,45 @@ class GsDatabase {
   Future<void> _loadData() async {
     if (_dataLoaded) return;
     _dataLoaded = true;
-    final db = await GsDB.getInfoDB();
-    await Future.wait([
-      infoCities.read(db),
-      infoBanners.read(db),
-      infoRecipes.read(db),
-      infoSereniteaSets.read(db),
-      infoWeapons.read(db),
-      infoMaterials.read(db),
-      infoSpincrystal.read(db),
-      JsonDetailsData.readJsonFile().then((map) {
-        infoDetails.parse(map['details']);
-        infoArtifacts.parse(map['artifacts']);
-        infoCharacters.parse(map['characters']);
-      }),
-    ]);
+    await JsonInfoDetails.loadInfo().then((info) {
+      infoCities.load(info);
+      infoBanners.load(info);
+      infoDetails.load(info);
+      infoRecipes.load(info);
+      infoWeapons.load(info);
+      infoArtifacts.load(info);
+      infoMaterials.load(info);
+      infoCharacters.load(info);
+      infoSpincrystal.load(info);
+      infoSereniteaSets.load(info);
+    });
   }
 
   Future<void> _loadSave() async {
     if (_saveLoaded) return;
     _saveLoaded = true;
-    final db = await GsDB.getSaveDB();
-    await Future.wait([
-      saveWishes.read(db),
-      saveRecipes.read(db),
-      saveCharacters.read(db),
-      saveReputations.read(db),
-      saveSereniteaSets.read(db),
-      saveSpincrystals.read(db),
-      saveMaterials.read(db),
-    ]);
+    JsonSaveDetails.loadSave().then((map) {
+      saveWishes.load(map);
+      saveRecipes.load(map);
+      saveCharacters.load(map);
+      saveReputations.load(map);
+      saveSereniteaSets.load(map);
+      saveSpincrystals.load(map);
+      saveMaterials.load(map);
+    });
   }
 
   Future<void> _saveAll() async {
     _saving.add(false);
-    final db = await GsDB.getSaveDB();
-    saveWishes.write(db);
-    saveRecipes.write(db);
-    saveCharacters.write(db);
-    saveReputations.write(db);
-    saveSereniteaSets.write(db);
-    saveSpincrystals.write(db);
-    saveMaterials.write(db);
+    await JsonSaveDetails.saveInfo([
+      saveWishes,
+      saveRecipes,
+      saveCharacters,
+      saveReputations,
+      saveSereniteaSets,
+      saveSpincrystals,
+      saveMaterials,
+    ]);
   }
 
   Future<void> _notify() async {

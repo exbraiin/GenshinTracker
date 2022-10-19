@@ -54,3 +54,12 @@ class GsUtils {
         .toList();
   }
 }
+
+extension ListEnumExt<T extends Enum> on List<T> {
+  T fromName(String name, [T? defaultValue]) {
+    return firstWhere(
+      (e) => e.name == name,
+      orElse: () => defaultValue ?? first,
+    );
+  }
+}

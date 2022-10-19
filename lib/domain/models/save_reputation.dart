@@ -9,15 +9,14 @@ class SaveReputation implements IdSaveData {
     required this.reputation,
   });
 
-  factory SaveReputation.fromMap(Map<String, dynamic> map) {
+  factory SaveReputation.fromMap(String id, Map<String, dynamic> map) {
     return SaveReputation(
-      id: map['id'],
+      id: id,
       reputation: map['reputation'],
     );
   }
 
   Map<String, dynamic> toMap() => {
-        'id': id,
         'reputation': reputation,
       };
 }

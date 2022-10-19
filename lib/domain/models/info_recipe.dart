@@ -4,9 +4,9 @@ class InfoRecipe implements IdData {
   final String id;
   final String name;
   final String version;
-  final String? image;
-  final GsRecipeBuff effect;
+  final String image;
   final int rarity;
+  final GsRecipeBuff effect;
 
   int get maxProficiency => (rarity * 5).clamp(0, 25);
 
@@ -19,14 +19,14 @@ class InfoRecipe implements IdData {
     required this.version,
   });
 
-  factory InfoRecipe.fromMap(Map<String, dynamic> map) {
+  factory InfoRecipe.fromMap(String id, Map<String, dynamic> map) {
     return InfoRecipe(
-      id: map['id'],
+      id: id,
       name: map['name'],
       image: map['image'],
       rarity: map['rarity'],
       version: map['version'],
-      effect: GsRecipeBuff.values.elementAt(map['effect'] ?? 0),
+      effect: GsRecipeBuff.values.fromName(map['effect']),
     );
   }
 }

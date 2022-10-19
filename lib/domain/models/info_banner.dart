@@ -3,7 +3,7 @@ import '../gs_domain.dart';
 class InfoBanner extends Comparable<InfoBanner> implements IdData {
   final String id;
   final String name;
-  final String? image;
+  final String image;
   final DateTime dateStart;
   final DateTime dateEnd;
   final List<String> feature4;
@@ -21,16 +21,16 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
     required this.type,
   });
 
-  factory InfoBanner.fromMap(Map<String, dynamic> map) {
+  factory InfoBanner.fromMap(String id, Map<String, dynamic> map) {
     return InfoBanner(
-      id: map['id'],
+      id: id,
       name: map['name'],
       image: map['image'],
       dateStart: DateTime.parse(map['date_start']),
       dateEnd: DateTime.parse(map['date_end']),
-      feature4: GsUtils.parseIds(map['feature_4']),
-      feature5: GsUtils.parseIds(map['feature_5']),
-      type: GsBanner.values.elementAt(map['type']),
+      feature4: (map['feature_4'] as List).cast<String>(),
+      feature5: (map['feature_5'] as List).cast<String>(),
+      type: GsBanner.values.fromName(map['type']),
     );
   }
 

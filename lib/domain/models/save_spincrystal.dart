@@ -1,27 +1,20 @@
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveSpincrystal implements IdSaveData {
-  final int number;
+  final String id;
   final bool obtained;
 
-  @override
-  String get id => number.toString();
-
   SaveSpincrystal({
-    required this.number,
+    required this.id,
     required this.obtained,
   });
 
-  factory SaveSpincrystal.fromMap(Map<String, dynamic> map) {
+  factory SaveSpincrystal.fromMap(String id, Map<String, dynamic> map) {
     return SaveSpincrystal(
-      number: map['number'],
-      obtained: GsConsts.toBool(map['obtained']),
+      id: id,
+      obtained: map['obtained'],
     );
   }
 
-  Map<String, dynamic> toMap() => {
-        'number': number,
-        'obtained': GsConsts.fromBool(obtained),
-      };
+  Map<String, dynamic> toMap() => {'obtained': obtained};
 }

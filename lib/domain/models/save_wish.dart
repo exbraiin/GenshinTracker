@@ -17,9 +17,9 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData {
     required this.bannerId,
   }) : bannerDate = _getBannerDate(bannerId);
 
-  factory SaveWish.fromMap(Map<String, dynamic> map) {
+  factory SaveWish.fromMap(String id, Map<String, dynamic> map) {
     return SaveWish(
-      id: map['id'],
+      id: id,
       date: DateTime.parse(map['date']),
       number: map['number'],
       itemId: map['item'],
@@ -28,7 +28,6 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData {
   }
 
   Map<String, dynamic> toMap() => {
-        'id': id,
         'date': date.toString().split('.').first,
         'number': number,
         'item': itemId,

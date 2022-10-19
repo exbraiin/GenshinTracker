@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
@@ -18,14 +18,14 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final sv = db.saveSpincrystals
             .getItems()
             .where((e) => e.obtained)
-            .map((e) => e.number);
+            .map((e) => e.id);
 
         final world = spins.where((e) => !e.fromChubby);
-        final ownedWorld = world.where((e) => sv.contains(e.number)).length;
+        final ownedWorld = world.where((e) => sv.contains(e.id)).length;
         final totalWorld = world.length;
 
         final chubby = spins.where((e) => e.fromChubby);
-        final ownedChubby = chubby.where((e) => sv.contains(e.number)).length;
+        final ownedChubby = chubby.where((e) => sv.contains(e.id)).length;
         final totalChubby = chubby.length;
 
         final ownedAll = sv.length;

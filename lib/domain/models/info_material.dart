@@ -4,7 +4,7 @@ class InfoMaterial implements IdData {
   final String id;
   final String name;
   final String group;
-  final String? image;
+  final String image;
   final int rarity;
   final int subgroup;
 
@@ -19,9 +19,9 @@ class InfoMaterial implements IdData {
     required this.subgroup,
   });
 
-  factory InfoMaterial.fromMap(Map<String, dynamic> map) {
+  factory InfoMaterial.fromMap(String id, Map<String, dynamic> map) {
     return InfoMaterial(
-      id: map['id'],
+      id: id,
       name: map['name'],
       image: map['image'],
       group: map['group'],

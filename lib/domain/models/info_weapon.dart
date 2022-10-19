@@ -21,15 +21,15 @@ class InfoWeapon implements IdData {
     required this.statValue,
   });
 
-  factory InfoWeapon.fromMap(Map<String, dynamic> map) {
+  factory InfoWeapon.fromMap(String id, Map<String, dynamic> map) {
     return InfoWeapon(
-      id: map['id'],
+      id: id,
       atk: map['atk'],
       name: map['name'],
       image: map['image'],
-      type: GsWeapon.values.elementAt(map['type']),
+      type: GsWeapon.values.fromName(map['type']),
       rarity: map['rarity'],
-      statType: GsAttributeStat.values.elementAt(map['stat_type']),
+      statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
     );
   }

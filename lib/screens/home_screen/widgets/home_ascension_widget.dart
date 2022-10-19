@@ -54,7 +54,8 @@ class HomeAscensionWidget extends StatelessWidget {
                 rows: characters.map((e) {
                   return [
                     HomeRow(e.name),
-                    HomeRow('${e.rarity}★', color: GsColors.getRarityColor(e.rarity)),
+                    HomeRow('${e.rarity}★',
+                        color: GsColors.getRarityColor(e.rarity)),
                     HomeRow('${sc.getCharAscension(e.id)} ✦'),
                   ];
                 }).toList(),

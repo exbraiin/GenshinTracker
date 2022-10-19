@@ -196,8 +196,8 @@ extension GsItemExt on GsItem {
 extension GsSetCategoryExt on GsSetCategory {
   String getLabel() {
     return const {
-      GsSetCategory.indoorSet: Labels.indoor,
-      GsSetCategory.outdoorSet: Labels.outdoor,
+      GsSetCategory.indoor: Labels.indoor,
+      GsSetCategory.outdoor: Labels.outdoor,
     }[this]!;
   }
 

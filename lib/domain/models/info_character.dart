@@ -60,18 +60,9 @@ class InfoCharacter implements IdData {
       birthday: DateTime.tryParse(map['birthday'] ?? '') ?? DateTime(0),
       releaseDate: DateTime.tryParse(map['release_date'] ?? '') ?? DateTime(0),
       rarity: map['rarity'],
-      region: GsRegion.values.firstWhere(
-        (e) => e.name == map['region'],
-        orElse: () => GsRegion.none,
-      ),
-      weapon: GsWeapon.values.firstWhere(
-        (e) => e.name == map['weapon'],
-        orElse: () => GsWeapon.sword,
-      ),
-      element: GsElement.values.firstWhere(
-        (e) => e.name == map['element'],
-        orElse: () => GsElement.anemo,
-      ),
+      region: GsRegion.values.fromName(map['region']),
+      weapon: GsWeapon.values.fromName(map['weapon']),
+      element: GsElement.values.fromName(map['element']),
       talents: (map['talents'] as List)
           .map((e) => InfoCharacterTalent.fromMap(e))
           .toList(),

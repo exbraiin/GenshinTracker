@@ -3,7 +3,7 @@ import '../gs_domain.dart';
 class InfoSereniteaSet implements IdData {
   final String id;
   final String name;
-  final String? image;
+  final String image;
   final int energy;
   final GsSetCategory category;
   final List<String> chars;
@@ -17,14 +17,14 @@ class InfoSereniteaSet implements IdData {
     required this.chars,
   });
 
-  factory InfoSereniteaSet.fromMap(Map<String, dynamic> map) {
+  factory InfoSereniteaSet.fromMap(String id, Map<String, dynamic> map) {
     return InfoSereniteaSet(
-      id: map['id'],
+      id: id,
       name: map['name'],
       image: map['image'],
       energy: map['energy'],
-      category: GsSetCategory.values.elementAt(map['category']),
-      chars: GsUtils.parseIds(map['chars'] as String),
+      category: GsSetCategory.values.fromName(map['category']),
+      chars: (map['chars'] as List).cast<String>(),
     );
   }
 }

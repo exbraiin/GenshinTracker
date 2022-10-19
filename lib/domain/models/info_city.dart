@@ -15,16 +15,13 @@ class InfoCity implements IdData {
     required this.reputation,
   });
 
-  factory InfoCity.fromMap(Map<String, dynamic> map) {
+  factory InfoCity.fromMap(String id, Map<String, dynamic> map) {
     return InfoCity(
-      id: map['id'],
+      id: id,
       name: map['name'],
       image: map['image'],
-      element: GsElement.values.elementAt(map['element']),
-      reputation: (map['reputation'] as String)
-          .split(',')
-          .map((e) => int.parse(e.trim()))
-          .toList(),
+      element: GsElement.values.fromName(map['element']),
+      reputation: (map['reputation'] as List).cast<int>(),
     );
   }
 }

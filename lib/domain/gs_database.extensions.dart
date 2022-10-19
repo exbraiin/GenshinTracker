@@ -2,18 +2,31 @@ import 'dart:math';
 
 import 'package:dartx/dartx_io.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_database.test.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-extension InfoBannerExt on TableData<InfoBanner> {
+// =============== Info extensions ===============
+
+extension InfoBannerExt on JsonInfoDetails<InfoBanner> {
   List<InfoBanner> getInfoBannerByType(GsBanner type) =>
       getItems().where((e) => e.type == type).toList();
 }
 
-extension InfoCityExt on TableData<InfoCity> {
+extension InfoCityExt on JsonInfoDetails<InfoCity> {
   int getCityMaxLevel(String id) => getItem(id).reputation.length;
 }
 
-extension SaveReputationExt on TableSaveData<SaveReputation> {
+extension InfoMaterialExt on JsonInfoDetails<InfoMaterial> {
+  Iterable<InfoMaterial> getSubGroup(InfoMaterial material) {
+    return getItems().where((element) =>
+        element.group == material.group &&
+        element.subgroup == material.subgroup);
+  }
+}
+
+// =============== Save extensions ===============
+
+extension SaveReputationExt on JsonSaveDetails<SaveReputation> {
   int getSavedReputation(String id) => getItemOrNull(id)?.reputation ?? 0;
 
   void setSavedReputation(String id, int reputation) =>
@@ -57,7 +70,7 @@ extension SaveReputationExt on TableSaveData<SaveReputation> {
   }
 }
 
-extension SaveWishesExt on TableSaveData<SaveWish> {
+extension SaveWishesExt on JsonSaveDetails<SaveWish> {
   List<SaveWish> getBannerWishes(String banner) =>
       getItems().where((e) => e.bannerId == banner).toList();
 
@@ -130,7 +143,7 @@ extension SaveWishesExt on TableSaveData<SaveWish> {
   }
 }
 
-extension SaveSereniteaSetExt on TableSaveData<SaveSereniteaSet> {
+extension SaveSereniteaSetExt on JsonSaveDetails<SaveSereniteaSet> {
   void setSetCharacter(String set, String char, bool owned) {
     final sv = getItemOrNull(set) ?? SaveSereniteaSet(id: set, chars: []);
     final hasCharacter = sv.chars.contains(char);
@@ -152,14 +165,17 @@ extension SaveSereniteaSetExt on TableSaveData<SaveSereniteaSet> {
   }
 }
 
-extension SaveSpincrystalExt on TableSaveData<SaveSpincrystal> {
+extension SaveSpincrystalExt on JsonSaveDetails<SaveSpincrystal> {
   void updateSpincrystal(int number, {required bool obtained}) {
-    final spin = SaveSpincrystal(number: number, obtained: obtained);
+    final spin = SaveSpincrystal(
+      id: number.toString(),
+      obtained: obtained,
+    );
     insertItem(spin);
   }
 }
 
-extension SaveRecipeExt on TableSaveData<SaveRecipe> {
+extension SaveRecipeExt on JsonSaveDetails<SaveRecipe> {
   void ownRecipe(String id, bool own) async {
     final contains = exists(id);
     if (own && !contains) {
@@ -174,7 +190,7 @@ extension SaveRecipeExt on TableSaveData<SaveRecipe> {
   }
 }
 
-extension SaveCharacterExt on TableSaveData<SaveCharacter> {
+extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
   int getCharFriendship(String key) {
     final char = getItemOrNull(key);
     return char?.friendship.coerceAtLeast(1) ?? 1;
@@ -220,15 +236,7 @@ extension SaveCharacterExt on TableSaveData<SaveCharacter> {
   }
 }
 
-extension InfoMaterialExt on TableData<InfoMaterial> {
-  Iterable<InfoMaterial> getSubGroup(InfoMaterial material) {
-    return getItems().where((element) =>
-        element.group == material.group &&
-        element.subgroup == material.subgroup);
-  }
-}
-
-extension SaveMaterialExt on TableSaveData<SaveMaterial> {
+extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
   void changeAmount(String id, int amount) {
     insertItem(SaveMaterial(id: id, amount: amount));
   }
