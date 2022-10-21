@@ -10,6 +10,8 @@ class ItemCardButton extends StatelessWidget {
   final String label;
   final bool disable;
   final int? maxLines;
+  final double? width;
+  final double? height;
   final Widget? subChild;
   final Widget? child;
   final String? imageUrlPath;
@@ -21,6 +23,8 @@ class ItemCardButton extends StatelessWidget {
     this.onTap,
     this.rarity,
     this.child,
+    this.width,
+    this.height,
     this.subChild,
     this.maxLines,
     this.imageUrlPath,
@@ -59,6 +63,8 @@ class ItemCardButton extends StatelessWidget {
 
   Widget _getContent(BuildContext context, bool animate) {
     return AnimatedContainer(
+      width: width,
+      height: height,
       duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: GsColors.mainColor2,

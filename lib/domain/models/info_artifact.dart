@@ -35,7 +35,7 @@ class InfoArtifact implements IdData {
       rarity: map['rarity'],
       pieces: (map['pieces'] as Map<String, dynamic>)
           .entries
-          .map((e) => InfoArtifactPiece.fromMap(e.key, e.value))
+          .map((e) => InfoArtifactPiece.fromMap(e.value..['id'] = e.key))
           .toList(),
     );
   }
@@ -54,18 +54,12 @@ class InfoArtifactPiece {
     required this.type,
   });
 
-  factory InfoArtifactPiece.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoArtifactPiece.fromMap(Map<String, dynamic> map) {
     return InfoArtifactPiece(
       name: map['name'],
       icon: map['icon'],
       desc: map['desc'],
-      type: {
-        'flower_of_life': GsArtifactPieces.flowerOfLife,
-        'plume_of_death': GsArtifactPieces.plumeOfDeath,
-        'sands_of_eon': GsArtifactPieces.sandsOfEon,
-        'goblet_of_eonothem': GsArtifactPieces.gobletOfEonothem,
-        'circlet_of_logos': GsArtifactPieces.circletOfLogos,
-      }[id]!,
+      type: GsArtifactPieces.values.fromId(map['id']),
     );
   }
 }
