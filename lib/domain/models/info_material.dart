@@ -21,9 +21,9 @@ class InfoMaterial implements IdData {
     required this.subgroup,
   });
 
-  factory InfoMaterial.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoMaterial.fromMap(Map<String, dynamic> map) {
     return InfoMaterial(
-      id: id,
+      id: map['id'],
       name: map['name'],
       image: map['image'],
       version: map['version'] ?? '',

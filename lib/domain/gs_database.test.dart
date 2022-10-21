@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-typedef ItemFromMap<T> = T Function(String id, Map<String, dynamic> map);
+typedef ItemFromMap<T> = T Function(Map<String, dynamic> map);
 
 class JsonInfoDetails<T extends IdData> {
   final String name;
@@ -26,7 +26,7 @@ class JsonInfoDetails<T extends IdData> {
 
   Future<void> load(Map<String, dynamic> data) async {
     final map = data[name] as Map<String, dynamic>;
-    _map.addAll(map.map((k, v) => MapEntry(k, create(k, v))));
+    _map.addAll(map.map((k, v) => MapEntry(k, create(v..['id'] = k))));
   }
 
   T getItem(String id) => _map[id]!;

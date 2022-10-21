@@ -21,9 +21,9 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
     required this.type,
   });
 
-  factory InfoBanner.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoBanner.fromMap(Map<String, dynamic> map) {
     return InfoBanner(
-      id: id,
+      id: map['id'],
       name: map['name'],
       image: map['image'],
       dateStart: DateTime.parse(map['date_start']),

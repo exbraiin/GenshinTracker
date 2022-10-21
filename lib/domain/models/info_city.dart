@@ -3,7 +3,7 @@ import '../gs_domain.dart';
 class InfoCity implements IdData {
   final String id;
   final String name;
-  final String? image;
+  final String image;
   final GsElement element;
   final List<int> reputation;
 
@@ -15,9 +15,9 @@ class InfoCity implements IdData {
     required this.reputation,
   });
 
-  factory InfoCity.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoCity.fromMap(Map<String, dynamic> map) {
     return InfoCity(
-      id: id,
+      id: map['id'],
       name: map['name'],
       image: map['image'],
       element: GsElement.values.fromName(map['element']),

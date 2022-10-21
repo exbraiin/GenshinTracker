@@ -19,9 +19,9 @@ class InfoSereniteaSet implements IdData {
     required this.chars,
   });
 
-  factory InfoSereniteaSet.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoSereniteaSet.fromMap(Map<String, dynamic> map) {
     return InfoSereniteaSet(
-      id: id,
+      id: map['id'],
       name: map['name'],
       image: map['image'],
       version: map['version'] ?? '',

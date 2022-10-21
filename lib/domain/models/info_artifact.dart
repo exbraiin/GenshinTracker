@@ -24,9 +24,9 @@ class InfoArtifact implements IdData {
     required this.pieces,
   });
 
-  factory InfoArtifact.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoArtifact.fromMap(Map<String, dynamic> map) {
     return InfoArtifact(
-      id: id,
+      id: map['id'],
       name: map['name'],
       domain: map['domain'],
       desc1Pc: map['1pc'] ?? '',

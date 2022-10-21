@@ -23,9 +23,9 @@ class InfoWeapon implements IdData {
     required this.statValue,
   });
 
-  factory InfoWeapon.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoWeapon.fromMap(Map<String, dynamic> map) {
     return InfoWeapon(
-      id: id,
+      id: map['id'],
       atk: map['atk'],
       name: map['name'],
       image: map['image'],

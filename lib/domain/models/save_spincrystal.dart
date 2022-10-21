@@ -9,12 +9,15 @@ class SaveSpincrystal implements IdSaveData {
     required this.obtained,
   });
 
-  factory SaveSpincrystal.fromMap(String id, Map<String, dynamic> map) {
+  factory SaveSpincrystal.fromMap(Map<String, dynamic> map) {
     return SaveSpincrystal(
-      id: id,
+      id: map['id'],
       obtained: map['obtained'],
     );
   }
 
-  Map<String, dynamic> toMap() => {'obtained': obtained};
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'obtained': obtained,
+      };
 }

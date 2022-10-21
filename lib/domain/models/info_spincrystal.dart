@@ -17,9 +17,9 @@ class InfoSpincrystal implements IdData {
     required this.version,
   });
 
-  factory InfoSpincrystal.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoSpincrystal.fromMap(Map<String, dynamic> map) {
     return InfoSpincrystal(
-      id: id,
+      id: map['id'],
       name: map['name'],
       number: map['number'],
       source: map['source'],

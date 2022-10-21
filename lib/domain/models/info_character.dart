@@ -45,9 +45,9 @@ class InfoCharacter implements IdData {
     required this.constellations,
   });
 
-  factory InfoCharacter.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoCharacter.fromMap(Map<String, dynamic> map) {
     return InfoCharacter(
-      id: id,
+      id: map['id'],
       name: map['name'],
       title: map['title'],
       version: map['version'],

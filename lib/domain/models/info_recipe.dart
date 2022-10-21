@@ -19,9 +19,9 @@ class InfoRecipe implements IdData {
     required this.version,
   });
 
-  factory InfoRecipe.fromMap(String id, Map<String, dynamic> map) {
+  factory InfoRecipe.fromMap(Map<String, dynamic> map) {
     return InfoRecipe(
-      id: id,
+      id: map['id'],
       name: map['name'],
       image: map['image'],
       rarity: map['rarity'],

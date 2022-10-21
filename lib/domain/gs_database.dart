@@ -12,75 +12,75 @@ class GsDatabase {
   final infoDetails = JsonDetails();
   final infoCities = JsonInfoDetails<InfoCity>(
     'cities',
-    (id, map) => InfoCity.fromMap(id, map),
+    (map) => InfoCity.fromMap(map),
   );
   final infoBanners = JsonInfoDetails<InfoBanner>(
     'banners',
-    (id, map) => InfoBanner.fromMap(id, map),
+    (map) => InfoBanner.fromMap(map),
   );
   final infoArtifacts = JsonInfoDetails<InfoArtifact>(
     'artifacts',
-    (id, map) => InfoArtifact.fromMap(id, map),
+    (map) => InfoArtifact.fromMap(map),
   );
   final infoMaterials = JsonInfoDetails<InfoMaterial>(
     'materials',
-    (id, map) => InfoMaterial.fromMap(id, map),
+    (map) => InfoMaterial.fromMap(map),
   );
   final infoRecipes = JsonInfoDetails<InfoRecipe>(
     'recipes',
-    (id, map) => InfoRecipe.fromMap(id, map),
+    (map) => InfoRecipe.fromMap(map),
   );
   final infoWeapons = JsonInfoDetails<InfoWeapon>(
     'weapons',
-    (id, map) => InfoWeapon.fromMap(id, map),
+    (map) => InfoWeapon.fromMap(map),
   );
   final infoCharacters = JsonInfoDetails<InfoCharacter>(
     'characters',
-    (id, map) => InfoCharacter.fromMap(id, map),
+    (map) => InfoCharacter.fromMap(map),
   );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
-    (id, map) => InfoSpincrystal.fromMap(id, map),
+    (map) => InfoSpincrystal.fromMap(map),
   );
   final infoSereniteaSets = JsonInfoDetails<InfoSereniteaSet>(
     'serenitea_sets',
-    (id, map) => InfoSereniteaSet.fromMap(id, map),
+    (map) => InfoSereniteaSet.fromMap(map),
   );
 
   bool _saveLoaded = false;
   final saveWishes = JsonSaveDetails<SaveWish>(
     'wishes',
-    (id, m) => SaveWish.fromMap(id, m),
+    (m) => SaveWish.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveRecipes = JsonSaveDetails<SaveRecipe>(
     'recipes',
-    (id, m) => SaveRecipe.fromMap(id, m),
+    (m) => SaveRecipe.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveCharacters = JsonSaveDetails<SaveCharacter>(
     'characters',
-    (id, m) => SaveCharacter.fromMap(id, m),
+    (m) => SaveCharacter.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveReputations = JsonSaveDetails<SaveReputation>(
     'reputation',
-    (id, m) => SaveReputation.fromMap(id, m),
+    (m) => SaveReputation.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveSereniteaSets = JsonSaveDetails<SaveSereniteaSet>(
     'serenitea_sets',
-    (id, m) => SaveSereniteaSet.fromMap(id, m),
+    (m) => SaveSereniteaSet.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveSpincrystals = JsonSaveDetails<SaveSpincrystal>(
     'spincrystals',
-    (id, m) => SaveSpincrystal.fromMap(id, m),
+    (m) => SaveSpincrystal.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveMaterials = JsonSaveDetails<SaveMaterial>(
     'materials',
-    (id, m) => SaveMaterial.fromMap(id, m),
+    (m) => SaveMaterial.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
 

@@ -9,14 +9,15 @@ class SaveRecipe implements IdSaveData {
     required this.proficiency,
   });
 
-  factory SaveRecipe.fromMap(String id, Map<String, dynamic> map) {
+  factory SaveRecipe.fromMap(Map<String, dynamic> map) {
     return SaveRecipe(
-      id: id,
+      id: map['id'],
       proficiency: map['proficiency'],
     );
   }
 
   Map<String, dynamic> toMap() => {
+        'id': id,
         'proficiency': proficiency,
       };
 }

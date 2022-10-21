@@ -13,9 +13,9 @@ class SaveCharacter implements IdSaveData {
     this.friendship = 1,
   });
 
-  factory SaveCharacter.fromMap(String id, Map<String, dynamic> map) {
+  factory SaveCharacter.fromMap(Map<String, dynamic> map) {
     return SaveCharacter(
-      id: id,
+      id: map['id'],
       owned: map['owned'],
       ascension: map['ascension'],
       friendship: map['friendship'],
@@ -23,6 +23,7 @@ class SaveCharacter implements IdSaveData {
   }
 
   Map<String, dynamic> toMap() => {
+        'id': id,
         'owned': owned,
         'ascension': ascension,
         'friendship': friendship,
