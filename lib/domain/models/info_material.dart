@@ -5,6 +5,7 @@ class InfoMaterial implements IdData {
   final String name;
   final String group;
   final String image;
+  final String version;
   final int rarity;
   final int subgroup;
 
@@ -14,6 +15,7 @@ class InfoMaterial implements IdData {
     required this.id,
     required this.name,
     required this.image,
+    required this.version,
     required this.group,
     required this.rarity,
     required this.subgroup,
@@ -24,6 +26,7 @@ class InfoMaterial implements IdData {
       id: id,
       name: map['name'],
       image: map['image'],
+      version: map['version'] ?? '',
       group: map['group'],
       rarity: map['rarity'],
       subgroup: map['subgroup'],

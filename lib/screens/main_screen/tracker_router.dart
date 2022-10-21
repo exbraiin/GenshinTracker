@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_details_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
+import 'package:tracker/screens/changelog_screen/changelog_screen.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
@@ -33,6 +34,7 @@ class TrackerRouter {
     CharacterDetailsScreen.id: () => CharacterDetailsScreen(),
     CharacterAscensionScreen.id: () => CharacterAscensionScreen(),
     SpincrystalsScreen.id: () => SpincrystalsScreen(),
+    ChangelogScreen.id: () => ChangelogScreen(),
     TestsScreen.id: () => TestsScreen(),
   };
 

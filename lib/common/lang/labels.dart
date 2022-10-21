@@ -82,7 +82,7 @@ class Labels {
 	/// Talents
 	static const talents = 'talents';
 
-	/// Constelations
+	/// Constellations
 	static const constellations = 'constellations';
 
 	/// Owned
@@ -507,4 +507,7 @@ class Labels {
 
 	/// Level
 	static const level = 'level';
+
+	/// Changelog
+	static const changelog = 'changelog';
 }

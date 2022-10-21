@@ -9,6 +9,7 @@ class ItemCardButton extends StatelessWidget {
   final int? rarity;
   final String label;
   final bool disable;
+  final int? maxLines;
   final Widget? subChild;
   final Widget? child;
   final String? imageUrlPath;
@@ -21,6 +22,7 @@ class ItemCardButton extends StatelessWidget {
     this.rarity,
     this.child,
     this.subChild,
+    this.maxLines,
     this.imageUrlPath,
     this.imageFilePath,
     this.imageAssetPath,
@@ -135,7 +137,7 @@ class ItemCardButton extends StatelessWidget {
                   if (label.isNotEmpty)
                     Text(
                       label,
-                      maxLines: subChild != null ? 1 : 2,
+                      maxLines: subChild != null ? 1 : (maxLines ?? 2),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: context.textTheme.cardLabel,

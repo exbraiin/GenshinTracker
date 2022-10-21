@@ -167,5 +167,6 @@
     "affiliation": "Affiliation",
     "special_dish": "Special Dish",
     "release_date": "Release Date",
-    "level": "Level"
+    "level": "Level",
+    "changelog": "Changelog"
 }
