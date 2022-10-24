@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:dartx/dartx_io.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_database.test.dart';
+import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 // =============== Info extensions ===============

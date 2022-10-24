@@ -1,11 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tracker/domain/gs_database.test.dart';
+import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
 
 class GsDatabase {
   static final instance = GsDatabase._();
+  static const dataPath = kDebugMode
+      ? 'D:/Software/Tracker_Genshin/db/details.json'
+      : 'db/details.json';
+  static const savePath = 'db/save.json';
 
   bool _dataLoaded = false;
 
@@ -128,7 +136,7 @@ class GsDatabase {
   Future<void> _loadSave() async {
     if (_saveLoaded) return;
     _saveLoaded = true;
-    JsonSaveDetails.loadSave().then((map) {
+    _loadInfo().then((map) {
       saveWishes.load(map);
       saveRecipes.load(map);
       saveCharacters.load(map);
@@ -141,7 +149,7 @@ class GsDatabase {
 
   Future<void> _saveAll() async {
     _saving.add(false);
-    await JsonSaveDetails.saveInfo([
+    await _saveInfo([
       saveWishes,
       saveRecipes,
       saveCharacters,
@@ -161,4 +169,23 @@ class GsDatabase {
     _loaded.close();
     _saving.close();
   }
+
+  Future<Map<String, dynamic>> _loadInfo() async {
+    return File(GsDatabase.savePath)
+        .readAsString()
+        .then((data) => jsonDecode(data) as Map<String, dynamic>);
+  }
+
+  Future<void> _saveInfo(Iterable<JsonSaveDetails> data) async {
+    final map = data.toMap(
+      (e) => e.name,
+      (e) => e.getItems().toMap((e) => e.id, (e) => e.toMap()..remove('id')),
+    );
+    await File(savePath).writeAsString(jsonEncode(map));
+  }
+}
+
+extension<T> on Iterable<T> {
+  Map<K, V> toMap<K, V>(K Function(T e) key, V Function(T e) value) =>
+      Map.fromEntries(map((e) => MapEntry(key(e), value(e))));
 }

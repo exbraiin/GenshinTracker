@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 typedef ItemFromMap<T> = T Function(Map<String, dynamic> map);
@@ -15,11 +16,7 @@ class JsonInfoDetails<T extends IdData> {
   JsonInfoDetails(this.name, this.create);
 
   static Future<Map<String, dynamic>> loadInfo() {
-    final path = kDebugMode
-        ? 'D:/Software/Tracker_Genshin/db/details.json'
-        : 'db/details.json';
-
-    return File(path)
+    return File(GsDatabase.dataPath)
         .readAsString()
         .then((value) => jsonDecode(value) as Map<String, dynamic>);
   }
@@ -40,22 +37,6 @@ class JsonSaveDetails<T extends IdSaveData> extends JsonInfoDetails<T> {
 
   JsonSaveDetails(String name, ItemFromMap<T> create, this._onUpdate)
       : super(name, create);
-
-  static Future<Map<String, dynamic>> loadSave() async {
-    return File('db/save.json')
-        .readAsString()
-        .then((value) => jsonDecode(value) as Map<String, dynamic>);
-  }
-
-  static Future<void> saveInfo(Iterable<JsonSaveDetails> data) async {
-    final map = <String, dynamic>{};
-
-    data.forEach((e) => map[e.name.toLowerCase()] = Map.fromEntries(
-        e.getItems().map((e) => MapEntry(e.id, e.toMap()..remove('id')))));
-
-    final encoded = jsonEncode(map);
-    await File('db/save.json').writeAsString(encoded);
-  }
 
   void insertItem(T item) {
     _map[item.id] = item;
