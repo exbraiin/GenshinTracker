@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/file_image.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';

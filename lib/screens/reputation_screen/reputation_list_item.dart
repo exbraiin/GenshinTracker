@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/circle.dart';
-import 'package:tracker/common/widgets/file_image.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -80,7 +80,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                             .copyWith(color: Colors.white),
                       ),
                       SizedBox(width: kSeparator4),
-                      Circle(
+                      CircleWidget(
                         size: 16,
                         color: GsColors.mainColor1,
                         child: Padding(

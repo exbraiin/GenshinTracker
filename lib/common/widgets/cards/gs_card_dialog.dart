@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 
-class CardDialog extends StatelessWidget {
+class GsCardDialog extends StatelessWidget {
   final String title;
   final Widget? child;
   final BoxConstraints constraints;
 
-  CardDialog({
+  GsCardDialog({
     required this.title,
     this.child,
     this.constraints = const BoxConstraints.tightFor(width: 350),

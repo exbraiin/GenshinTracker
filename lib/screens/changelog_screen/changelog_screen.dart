@@ -1,11 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/cards/gs_info_container.dart';
+import 'package:tracker/common/widgets/gs_info_container.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -160,7 +160,7 @@ class ChangelogScreen extends StatelessWidget {
                 .map((e) => SizedBox(
                       width: 80,
                       height: 96,
-                      child: ItemCardButton(
+                      child: GsItemCardButton(
                         label: name(e),
                         imageUrlPath: image?.call(e),
                         imageAssetPath: asset?.call(e),

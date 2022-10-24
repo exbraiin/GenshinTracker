@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 
 class GsInfoContainer extends StatelessWidget {
   final String title;

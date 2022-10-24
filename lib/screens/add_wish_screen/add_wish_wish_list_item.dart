@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 

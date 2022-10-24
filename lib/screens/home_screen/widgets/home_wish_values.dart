@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/wish_state_icon.dart';
+import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
@@ -191,7 +191,7 @@ class HomeWishesValues extends StatelessWidget {
                             ),
                             if (guaranteed)
                               WidgetSpan(
-                                child: WishStateIcon(WishState.guaranteed),
+                                child: GsWishStateIcon(WishState.guaranteed),
                               ),
                           ],
                         ),

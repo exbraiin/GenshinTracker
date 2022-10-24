@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class Incrementer extends StatefulWidget {
+class GsIncrementer extends StatefulWidget {
   final Widget? child;
   final void Function()? onTap;
   final void Function(int ticks)? onHold;
 
-  Incrementer({this.onTap, this.onHold, this.child});
+  GsIncrementer({this.onTap, this.onHold, this.child});
 
   @override
-  State<Incrementer> createState() => _IncrementerState();
+  State<GsIncrementer> createState() => _GsIncrementerState();
 }
 
-class _IncrementerState extends State<Incrementer> {
+class _GsIncrementerState extends State<GsIncrementer> {
   Timer? _timer;
 
   @override

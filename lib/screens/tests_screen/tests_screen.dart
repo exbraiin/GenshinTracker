@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/screens/tests_screen/tests_list_items.dart';
 

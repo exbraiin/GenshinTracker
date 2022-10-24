@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -19,7 +19,7 @@ class RecipesListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: savedRecipe != null ? 1 : kDisableOpacity,
-      child: ItemCardButton(
+      child: GsItemCardButton(
         label: recipe.name,
         rarity: recipe.rarity,
         imageUrlPath: recipe.image,
@@ -30,7 +30,7 @@ class RecipesListItem extends StatelessWidget {
               Positioned(
                 top: 2,
                 left: 2,
-                child: ItemCardLabel(
+                child: GsItemCardLabel(
                   asset: recipe.effect.assetPath,
                 ),
               ),

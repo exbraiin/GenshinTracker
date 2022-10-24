@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
-import 'package:tracker/common/widgets/no_results.dart';
-import 'package:tracker/common/widgets/time_dialog.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
+import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dart';
@@ -121,7 +121,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
   }
 
   void _saveWishes(InfoBanner banner) async {
-    final date = await TimeDialog.show(context);
+    final date = await GsTimeDialog.show(context);
     if (date == null) return;
 
     final ids = _wishes.value.reversed.map((e) => e.id);
@@ -136,7 +136,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
 
   Widget _getItemsList(BuildContext context, ScreenFilter<ItemData> filter) {
     final filtered = filter.match(getEveryItemData());
-    if (filtered.isEmpty) return NoResultsState();
+    if (filtered.isEmpty) return GsNoResultsState();
 
     return Expanded(
       child: GsGridView.builder(

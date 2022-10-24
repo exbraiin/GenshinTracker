@@ -1,11 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 // ignore: unused_element
 Widget checkBannerFeature(BuildContext context) {
@@ -46,7 +46,7 @@ Widget getEnumValues<T>(
     itemCount: list.length,
     itemBuilder: (c, i) {
       final ii = icon?.call(list[i]);
-      return ItemCardButton(
+      return GsItemCardButton(
         label: name(list[i]),
         rarity: 1,
         imageAssetPath: asset(list[i]),
@@ -57,7 +57,7 @@ Widget getEnumValues<T>(
               child: Container(
                 padding: EdgeInsets.all(2),
                 alignment: Alignment.topLeft,
-                child: ItemCardLabel(
+                child: GsItemCardLabel(
                   label: i.toString(),
                 ),
               ),

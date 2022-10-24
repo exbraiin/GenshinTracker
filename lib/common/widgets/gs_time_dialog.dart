@@ -1,27 +1,27 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/card_dialog.dart';
+import 'package:tracker/common/widgets/cards/gs_card_dialog.dart';
 
-class TimeDialog extends StatefulWidget {
+class GsTimeDialog extends StatefulWidget {
   final DateTime? date;
 
-  TimeDialog._(this.date);
+  GsTimeDialog._(this.date);
 
   static Future<DateTime?> show(BuildContext context, [DateTime? date]) {
     return showDialog<DateTime?>(
       context: context,
-      builder: (_) => TimeDialog._(date),
+      builder: (_) => GsTimeDialog._(date),
     );
   }
 
   @override
-  _TimeDialogState createState() => _TimeDialogState();
+  _GsTimeDialogState createState() => _GsTimeDialogState();
 }
 
-class _TimeDialogState extends State<TimeDialog>
+class _GsTimeDialogState extends State<GsTimeDialog>
     with SingleTickerProviderStateMixin {
   static DateTime? _savedTime;
   late final AnimationController _animation;
@@ -104,7 +104,7 @@ class _TimeDialogState extends State<TimeDialog>
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
 
     return Center(
-      child: CardDialog(
+      child: GsCardDialog(
         title: Lang.of(context).getValue(Labels.selectDate),
         constraints: BoxConstraints(maxHeight: 190, maxWidth: 280),
         child: Column(

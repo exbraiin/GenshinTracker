@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Circle extends StatelessWidget {
+class CircleWidget extends StatelessWidget {
   final Color color;
   final double? size;
   final Widget? child;
   final Color? borderColor;
   final double? borderSize;
 
-  Circle({
+  CircleWidget({
     this.size,
     this.color = Colors.white,
     this.child,
@@ -29,7 +29,7 @@ class Circle extends StatelessWidget {
 }
 
 class _Painter extends CustomPainter {
-  final Circle circle;
+  final CircleWidget circle;
 
   _Painter(this.circle);
 

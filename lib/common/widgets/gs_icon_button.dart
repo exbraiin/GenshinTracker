@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/incrementer.dart';
+import 'package:tracker/common/widgets/gs_incrementer.dart';
 
 class GsCircleIcon extends StatelessWidget {
   final IconData icon;
@@ -79,7 +79,7 @@ class GsIconButtonHold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Incrementer(
+    return GsIncrementer(
       onTap: onPress != null ? () => onPress!(1) : null,
       onHold: onPress != null ? (i) => onPress!(_intFromTick(i)) : null,
       child: Opacity(

@@ -4,10 +4,10 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
-class WishStateIcon extends StatelessWidget {
+class GsWishStateIcon extends StatelessWidget {
   final WishState wishState;
 
-  WishStateIcon(this.wishState);
+  GsWishStateIcon(this.wishState);
 
   @override
   Widget build(BuildContext context) {

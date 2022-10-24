@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/value_stream_builder.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 

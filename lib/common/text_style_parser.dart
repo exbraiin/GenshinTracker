@@ -4,104 +4,85 @@ import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/enums/gs_element.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-/// Returns a custom [R] used to build a text segment.
-typedef TextStyleBuilder<R> = R Function(String text, bool bold, bool italic);
+class TextParserWidget extends StatelessWidget {
+  final String text;
+  final TextStyle style;
 
-/// Applies the given [builder] to the given [text].
-/// * Text between '**' is marked as bold.
-/// * Text between '__' is marked as italic.
-Iterable<R> parseTextStyle<R>(String text, TextStyleBuilder<R> builder) sync* {
-  var bold = false;
-  var italic = false;
+  TextParserWidget(
+    this.text, {
+    this.style = const TextStyle(),
+  });
 
-  final tags = {
-    '**': () => bold = !bold,
-    '__': () => italic = !italic,
-  };
-  for (var p = 0;;) {
-    final idxs = tags.entries
-        .map((t) => MapEntry(t.key, text.indexOf(t.key, p)))
-        .where((t) => t.value != -1);
-
-    final tag = idxs.minBy((e) => e.value);
-    if (tag == null) {
-      final subText = text.substring(p, text.length);
-      if (subText.isNotEmpty) yield builder(subText, bold, italic);
-      break;
-    }
-
-    final subTex = text.substring(p, tag.value);
-    if (subTex.isNotEmpty) yield builder(subTex, bold, italic);
-    tags[tag.key]?.call();
-    p = tag.value + tag.key.length;
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: getChildren().toList(),
+      ),
+    );
   }
-}
-
-Text parseTextStyle2<R>(String text, TextStyle style) {
-  var bold = false;
-  var italic = false;
-  var underline = false;
-  var color = style.color;
-
-  final tags = {
-    '<b>': () => bold = !bold,
-    '</b>': () => bold = !bold,
-    '<i>': () => italic = !italic,
-    '</i>': () => italic = !italic,
-    '<u>': () => underline = !underline,
-    '</u>': () => underline = !underline,
-    '<color=skill>': () => color = Colors.orange,
-    '<color=geo>': () => color = GsElement.geo.getColor(),
-    '<color=pyro>': () => color = GsElement.pyro.getColor(),
-    '<color=cryo>': () => color = GsElement.cryo.getColor(),
-    '<color=hydro>': () => color = GsElement.hydro.getColor(),
-    '<color=anemo>': () => color = GsElement.anemo.getColor(),
-    '<color=dendro>': () => color = GsElement.dendro.getColor(),
-    '<color=electro>': () => color = GsElement.electro.getColor(),
-    '</color>': () => color = style.color,
-  };
 
   Iterable<TextSpan> getChildren() sync* {
+    final bold = _Stack<FontWeight>();
+    final italic = _Stack<FontStyle>();
+    final underline = _Stack<TextDecoration>();
+    final colorQueue = _Stack<Color>();
+
+    final tags = {
+      '<b>': () => bold.push(FontWeight.bold),
+      '</b>': () => bold.pop(),
+      '<i>': () => italic.push(FontStyle.italic),
+      '</i>': () => italic.pop(),
+      '<u>': () => underline.push(TextDecoration.underline),
+      '</u>': () => underline.pop(),
+      '<color=skill>': () => colorQueue.push(Colors.orange),
+      '<color=geo>': () => colorQueue.push(GsElement.geo.getColor()),
+      '<color=pyro>': () => colorQueue.push(GsElement.pyro.getColor()),
+      '<color=cryo>': () => colorQueue.push(GsElement.cryo.getColor()),
+      '<color=hydro>': () => colorQueue.push(GsElement.hydro.getColor()),
+      '<color=anemo>': () => colorQueue.push(GsElement.anemo.getColor()),
+      '<color=dendro>': () => colorQueue.push(GsElement.dendro.getColor()),
+      '<color=electro>': () => colorQueue.push(GsElement.electro.getColor()),
+      '</color>': () => colorQueue.pop(),
+    };
     for (var p = 0;;) {
       final idxs = tags.keys
           .map((t) => MapEntry(t, text.indexOf(t, p)))
           .where((t) => t.value != -1);
+
+      late final tempStyle = style.copyWith(
+        color: colorQueue.peek ?? style.color,
+        fontWeight: bold.peek ?? style.fontWeight,
+        fontStyle: italic.peek ?? style.fontStyle,
+        decoration: underline.peek ?? style.decoration,
+      );
+
       final tag = idxs.minBy((e) => e.value);
       if (tag == null) {
         final subText = text.substring(p, text.length);
-        if (subText.isNotEmpty)
-          yield TextSpan(
-            text: subText,
-            style: style.copyWith(
-              color: color,
-              fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-              fontStyle: italic ? FontStyle.italic : FontStyle.normal,
-              decoration:
-                  underline ? TextDecoration.underline : TextDecoration.none,
-            ),
-          );
+        if (subText.isNotEmpty) yield TextSpan(text: subText, style: tempStyle);
         break;
       }
       final subTex = text.substring(p, tag.value);
-      if (subTex.isNotEmpty)
-        yield TextSpan(
-          text: subTex,
-          style: style.copyWith(
-            color: color,
-            fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-            fontStyle: italic ? FontStyle.italic : FontStyle.normal,
-            decoration:
-                underline ? TextDecoration.underline : TextDecoration.none,
-          ),
-        );
+      if (subTex.isNotEmpty) yield TextSpan(text: subTex, style: tempStyle);
       tags[tag.key]?.call();
       p = tag.value + tag.key.length;
     }
   }
+}
 
-  return Text.rich(
-    TextSpan(
-      children: getChildren().toList(),
-    ),
-  );
+class _Stack<E> {
+  final _list = <E>[];
+
+  void push(E value) => _list.add(value);
+
+  E pop() => _list.removeLast();
+
+  E? get peek => _list.lastOrNull;
+
+  bool get isEmpty => _list.isEmpty;
+  bool get isNotEmpty => _list.isNotEmpty;
+
+  @override
+  String toString() => _list.toString();
 }

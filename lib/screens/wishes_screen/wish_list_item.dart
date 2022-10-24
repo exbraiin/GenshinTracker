@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/file_image.dart';
-import 'package:tracker/common/widgets/time_dialog.dart';
-import 'package:tracker/common/widgets/wish_state_icon.dart';
+import 'package:tracker/common/widgets/gs_time_dialog.dart';
+import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
@@ -50,7 +51,7 @@ class WishListItem extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
               onTap: () async {
-                final date = await TimeDialog.show(context, wish.date);
+                final date = await GsTimeDialog.show(context, wish.date);
                 if (date == null) return;
                 GsDatabase.instance.saveWishes.updateWishDate(wish, date);
               },
@@ -65,7 +66,7 @@ class WishListItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(pity.toString(), style: style),
-              WishStateIcon(wishState),
+              GsWishStateIcon(wishState),
             ],
           ),
           Row(

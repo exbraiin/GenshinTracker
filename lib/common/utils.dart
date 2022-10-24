@@ -1,91 +1,10 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class GsConsts {
-  GsConsts._();
-  static const kTrue = 'true';
-  static const kFalse = 'false';
-
-  static String fromBool(bool value) => value ? kTrue : kFalse;
-  static bool toBool(String value) => value == kTrue;
-}
-
-extension DateTimeExt on DateTime {
-  String toPrettyDate() {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    return '${months[month - 1]} $day${year != 0 ? ', $year' : ''}';
-  }
-
-  String format([bool showHour = true]) {
-    final str = toString().split('.').first;
-    if (showHour) return str;
-    return str.split(' ').first.toString();
-  }
-}
-
-extension DurationExt on Duration {
-  String toShortTime() {
-    final days = this.inDays.abs();
-    final years = days ~/ 365;
-    return years > 0
-        ? '${years}y'
-        : days > 0
-            ? '${days}d'
-            : '${this.inHours.abs()}h';
-  }
-
-  String endOrEndedIn() {
-    final val = toShortTime();
-    return this.isNegative ? 'Ended $val ago' : 'Ends in $val';
-  }
-
-  String startOrStartedIn() {
-    final val = toShortTime();
-    return this.isNegative ? 'Started $val ago' : 'Starts in $val';
-  }
-}
-
-extension IterableExt<E> on Iterable<E> {
-  Iterable<E> separate(E separator) sync* {
-    final it = iterator;
-    it.moveNext();
-    yield it.current;
-    while (it.moveNext()) {
-      yield separator;
-      yield it.current;
-    }
-  }
-}
-
-extension IntExt on int {
-  String format([String separator = ',']) {
-    final list = toString().characters.reversed;
-    return Iterable.generate(
-      (list.length / 3).ceil(),
-      (i) => list.skip(i * 3).take(3).reversed.join(),
-    ).reversed.join(separator);
-  }
-}
-
 extension BuildContextExt on BuildContext {
-  TextTheme get textTheme => Theme.of(this).textTheme;
-  ColorScheme get colorScheme => Theme.of(this).colorScheme;
-
   String fromLabel(String label, [Object? arg]) {
     final value = Lang.of(this).getValue(label);
     if (arg == null) return value;

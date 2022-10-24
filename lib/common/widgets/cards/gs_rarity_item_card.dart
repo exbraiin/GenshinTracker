@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/file_image.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 
 class GsRarityItemCard extends StatelessWidget {
   final int rarity;

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
-import 'package:tracker/common/widgets/file_image.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/static/file_image_widget.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
-class ItemCardButton extends StatelessWidget {
+class GsItemCardButton extends StatelessWidget {
   final int? rarity;
   final String label;
   final bool disable;
@@ -19,7 +20,7 @@ class ItemCardButton extends StatelessWidget {
   final String? imageAssetPath;
   final VoidCallback? onTap;
 
-  ItemCardButton({
+  GsItemCardButton({
     this.onTap,
     this.rarity,
     this.child,
@@ -159,13 +160,13 @@ class ItemCardButton extends StatelessWidget {
   }
 }
 
-class ItemCardLabel extends StatelessWidget {
+class GsItemCardLabel extends StatelessWidget {
   final String? asset;
   final String? label;
   final IconData? icon;
   final VoidCallback? onTap;
 
-  ItemCardLabel({this.asset, this.label, this.icon, this.onTap});
+  GsItemCardLabel({this.asset, this.label, this.icon, this.onTap});
 
   @override
   Widget build(BuildContext context) {

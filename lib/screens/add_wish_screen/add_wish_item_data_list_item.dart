@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class AddWishItemDataListItem extends StatelessWidget {
@@ -13,7 +13,7 @@ class AddWishItemDataListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemCardButton(
+    return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
       imageUrlPath: item.getUrlImg(),

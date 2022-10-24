@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:excel/excel.dart';
-import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';

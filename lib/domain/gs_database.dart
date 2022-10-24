@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -183,9 +184,4 @@ class GsDatabase {
     );
     await File(savePath).writeAsString(jsonEncode(map));
   }
-}
-
-extension<T> on Iterable<T> {
-  Map<K, V> toMap<K, V>(K Function(T e) key, V Function(T e) value) =>
-      Map.fromEntries(map((e) => MapEntry(key(e), value(e))));
 }

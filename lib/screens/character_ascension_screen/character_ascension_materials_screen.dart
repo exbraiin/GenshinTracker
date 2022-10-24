@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/common/widgets/item_card_button.dart';
-import 'package:tracker/common/widgets/value_stream_builder.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
 
@@ -105,7 +105,7 @@ class _MaterialItemState extends State<_MaterialItem> {
     final cft = widget.material.craftable;
 
     const radius = BorderRadius.all(Radius.circular(6));
-    return ItemCardButton(
+    return GsItemCardButton(
       label: '',
       rarity: mat?.rarity ?? 1,
       imageUrlPath: mat?.image,
