@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
@@ -39,13 +40,7 @@ class HomeWishesSummary extends StatelessWidget {
 
     final pityColor = GsColors.getPityColor(summary.last5, maxPity);
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(kSeparator4 * 2),
-      decoration: BoxDecoration(
-        color: GsColors.mainColor2,
-        borderRadius: kMainRadius,
-      ),
+    return GsDataBox.summary(
       child: Column(
         children: [
           Text(
@@ -153,7 +148,8 @@ class HomeWishesSummary extends StatelessWidget {
                 Spacer(),
                 Text(
                   '${summary.last4}',
-                  style: bigNumberStyle.copyWith(color: GsColors.getRarityColor(4)),
+                  style: bigNumberStyle.copyWith(
+                      color: GsColors.getRarityColor(4)),
                 ),
               ],
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -14,13 +15,9 @@ class TestWidgets {
     Iterable<String> header,
     Iterable<Iterable<String>> items,
   ) {
+    if (items.isEmpty) return SizedBox();
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: kMainRadius,
-        color: Colors.black.withOpacity(0.4),
-        border: Border.all(color: Colors.white),
-      ),
+    return GsDataBox.info(
       child: Table(
         border: TableBorder(
           horizontalInside: BorderSide(color: Colors.white, width: 0.4),

@@ -1,8 +1,12 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_database.exporter.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
@@ -58,6 +62,31 @@ class HomeScreen extends StatelessWidget {
               HomeWishesValues(
                 title: Lang.of(context).getValue(Labels.noviceWishes),
                 banner: GsBanner.beginner,
+              ),
+              GsDataBox.summary(
+                title: 'Birthdays',
+                child: Center(
+                  child: Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: GsDatabase.instance.infoCharacters
+                        .getItems()
+                        .where((e) => !e.birthday
+                            .isBefore(DateTime.now().copyWith(year: 0)))
+                        .sortedBy((e) => e.birthday)
+                        .take(8)
+                        .map<Widget>((e) => SizedBox(
+                              child: GsItemCardButton(
+                                height: 76,
+                                width: 64,
+                                label: e.birthday.toBirthday(),
+                                rarity: e.rarity,
+                                imageUrlPath: e.image,
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
               ),
             ].separate(SizedBox(height: kSeparator4)).toList(),
           ),

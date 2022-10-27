@@ -1,8 +1,9 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
   @override
@@ -28,13 +29,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final style = textTheme.subtitle2!.copyWith(color: Colors.white);
-    return Container(
-      padding: EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: GsColors.mainColor2,
-        boxShadow: mainShadow,
-        borderRadius: kMainRadius,
-      ),
+    return GsDataBox.summary(
       child: Column(
         children: [
           SizedBox(

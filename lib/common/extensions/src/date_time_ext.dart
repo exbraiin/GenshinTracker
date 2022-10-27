@@ -22,4 +22,10 @@ extension DateTimeExt on DateTime {
     if (showHour) return str;
     return str.split(' ').first.toString();
   }
+
+  String toBirthday() {
+    final d = day.toString().padLeft(2, '0');
+    final m = month.toString().padLeft(2, '0');
+    return '$m-$d';
+  }
 }

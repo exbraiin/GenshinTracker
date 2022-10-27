@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
@@ -14,13 +14,7 @@ class HomeReputationWidget extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         final db = GsDatabase.instance;
-        return Container(
-          decoration: BoxDecoration(
-            color: GsColors.mainColor2,
-            boxShadow: mainShadow,
-            borderRadius: kMainRadius,
-          ),
-          padding: EdgeInsets.all(4),
+        return GsDataBox.summary(
           child: Column(
             children: [
               SizedBox(

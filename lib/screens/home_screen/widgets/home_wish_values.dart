@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -26,13 +27,7 @@ class HomeWishesValues extends StatelessWidget {
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
     final summary = WishesSummary.fromList(wishes);
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(kSeparator4 * 2),
-      decoration: BoxDecoration(
-        color: GsColors.mainColor2,
-        borderRadius: kMainRadius,
-      ),
+    return GsDataBox.summary(
       child: Column(
         children: [
           Row(
@@ -187,7 +182,8 @@ class HomeWishesValues extends StatelessWidget {
                             WidgetSpan(child: SizedBox(width: kSeparator4)),
                             TextSpan(
                               text: pity.toString(),
-                              style: style.copyWith(color: GsColors.getPityColor(pity)),
+                              style: style.copyWith(
+                                  color: GsColors.getPityColor(pity)),
                             ),
                             if (guaranteed)
                               WidgetSpan(

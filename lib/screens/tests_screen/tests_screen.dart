@@ -17,7 +17,10 @@ class TestsScreen extends StatelessWidget {
           TestWidgets.getBannerListItem(context),
           TestWidgets.getCharacterListItem(context),
           TestWidgets.getMaterialGroups(context),
-        ].separate(SizedBox(height: kSeparator4)).toList(),
+        ]
+            .where((e) => e is! SizedBox)
+            .separate(SizedBox(height: kSeparator4))
+            .toList(),
       ),
     );
   }

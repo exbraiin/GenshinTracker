@@ -1,11 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/widgets/gs_info_container.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -27,7 +27,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.all(kSeparator4),
           child: ListView(
             children: [
-              GsInfoContainer(
+              GsDataBox.info(
                 title: context.fromLabel(Labels.artifactSet),
                 children: [
                   if (details.desc1Pc.isNotEmpty)
@@ -92,7 +92,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: kSeparator8),
-              GsInfoContainer(
+              GsDataBox.info(
                 title: context.fromLabel(Labels.artifactPieces),
                 children: details.pieces
                     .sortedBy((e) => e.type.index)

@@ -4,9 +4,9 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/text_style_parser.dart';
 import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
-import 'package:tracker/common/widgets/gs_info_container.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -14,6 +14,10 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
+  final _talents = GlobalKey();
+  final _ascension = GlobalKey();
+  final _attributes = GlobalKey();
+  final _constellation = GlobalKey();
   static const id = 'character_details_screen';
 
   CharacterDetailsScreen();
@@ -39,18 +43,20 @@ class CharacterDetailsScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              ListView(
+              SingleChildScrollView(
                 padding: EdgeInsets.all(kSeparator4),
-                children: [
-                  _getInfo(context, details),
-                  _getAttributes(context, details),
-                  SizedBox(height: kSeparator8),
-                  _getAscension(context, details),
-                  SizedBox(height: kSeparator8),
-                  _getTalents(context, details),
-                  SizedBox(height: kSeparator8),
-                  _getConstellations(context, details),
-                ],
+                child: Column(
+                  children: [
+                    _getInfo(context, details),
+                    _getAttributes(context, details),
+                    SizedBox(height: kSeparator8),
+                    _getAscension(context, details),
+                    SizedBox(height: kSeparator8),
+                    _getTalents(context, details),
+                    SizedBox(height: kSeparator8),
+                    _getConstellations(context, details),
+                  ],
+                ),
               ),
             ],
           ),
@@ -67,10 +73,55 @@ class CharacterDetailsScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GsRarityItemCard(
-            size: 120,
-            image: info.image,
-            rarity: info.rarity,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GsRarityItemCard(
+                size: 120,
+                image: info.image,
+                rarity: info.rarity,
+              ),
+              SizedBox(height: kSeparator8),
+              _getTextButton(
+                context,
+                'Attributes',
+                () => Scrollable.ensureVisible(
+                  _attributes.currentContext!,
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                ),
+              ),
+              SizedBox(height: kSeparator4),
+              _getTextButton(
+                context,
+                'Ascension',
+                () => Scrollable.ensureVisible(
+                  _ascension.currentContext!,
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                ),
+              ),
+              SizedBox(height: kSeparator4),
+              _getTextButton(
+                context,
+                'Talents',
+                () => Scrollable.ensureVisible(
+                  _talents.currentContext!,
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                ),
+              ),
+              SizedBox(height: kSeparator4),
+              _getTextButton(
+                context,
+                'Constellation',
+                () => Scrollable.ensureVisible(
+                  _constellation.currentContext!,
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                ),
+              ),
+            ],
           ),
           SizedBox(width: 18),
           Expanded(
@@ -108,6 +159,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                   info.description,
                   style: context.textTheme.description2,
                 ),
+                SizedBox(height: kSeparator8),
+                _getTags(context, info),
               ],
             ),
           ),
@@ -127,7 +180,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     final style = context.textTheme.subtitle2!;
     final stLabel = style.copyWith(color: GsColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
-    return GsInfoContainer(
+    return GsDataBox.info(
+      key: _attributes,
       title: context.fromLabel(Labels.attributes),
       children: [
         Table(
@@ -222,7 +276,8 @@ class CharacterDetailsScreen extends StatelessWidget {
             ])
         .toSet()
         .take(4);
-    return GsInfoContainer(
+    return GsDataBox.info(
+      key: _ascension,
       title: context.fromLabel(Labels.ascension),
       children: [
         Table(
@@ -309,7 +364,8 @@ class CharacterDetailsScreen extends StatelessWidget {
   }
 
   Widget _getTalents(BuildContext context, InfoCharacter info) {
-    return GsInfoContainer(
+    return GsDataBox.info(
+      key: _talents,
       title: context.fromLabel(Labels.talents),
       children: info.talents
           .map<Widget>((e) {
@@ -358,7 +414,8 @@ class CharacterDetailsScreen extends StatelessWidget {
   }
 
   Widget _getConstellations(BuildContext context, InfoCharacter info) {
-    return GsInfoContainer(
+    return GsDataBox.info(
+      key: _constellation,
       title: context.fromLabel(Labels.constellation),
       children: info.constellations
           .map<Widget>((e) {
@@ -397,6 +454,41 @@ class CharacterDetailsScreen extends StatelessWidget {
             thickness: 0.4,
           ))
           .toList(),
+    );
+  }
+
+  Widget _getTags(BuildContext context, InfoCharacter info) {
+    return Row(
+      children: [
+        context.fromLabel(Labels.rarityStar, info.rarity),
+        info.weapon.toPrettyString(context),
+        if (info.region != GsRegion.none) info.region.toPrettyString(context),
+        info.element.toPrettyString(context),
+        info.specialStat.toPrettyString(context),
+      ]
+          .map<Widget>((e) => GsDataBox.label(e))
+          .separate(SizedBox(width: kSeparator4))
+          .toList(),
+    );
+  }
+
+  Widget _getTextButton(
+    BuildContext context,
+    String text, [
+    VoidCallback? onTap,
+  ]) {
+    var hover = false;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return InkWell(
+          onTap: onTap,
+          onHover: (h) => setState(() => hover = h),
+          child: Text(
+            '${hover ? '✦' : '✧'} $text',
+            style: context.textTheme.description2,
+          ),
+        );
+      },
     );
   }
 }
