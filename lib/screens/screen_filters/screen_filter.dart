@@ -186,6 +186,7 @@ class ScreenFilters {
             item.maxProficiency,
         (c) => c.fromLabel(Labels.proficiency),
         (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
+        filter: (i) => _db.saveRecipes.exists(i.id),
       ),
     ],
     comparators: [
@@ -312,6 +313,7 @@ class ScreenFilters {
         (item) => _db.saveCharacters.getCharMaxAscended(item.id),
         (c) => c.fromLabel(Labels.ascension),
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
+        filter: (i) => _db.saveWishes.getOwnedCharacter(i.id) != 0,
         comparator: (a, b) => _db.saveCharacters
             .getCharAscension(a.id)
             .compareTo(_db.saveCharacters.getCharAscension(b.id)),

@@ -20,7 +20,7 @@ class GsDataBox extends StatelessWidget {
         decoration = BoxDecoration(
           color: GsColors.mainColor2,
           borderRadius: kMainRadius,
-          boxShadow: mainShadow,
+          boxShadow: kMainShadow,
           border: Border.all(
             color: GsColors.mainColor3.withOpacity(0.4),
             width: 2,
@@ -73,6 +73,7 @@ class GsDataBox extends StatelessWidget {
       padding: padding,
       decoration: decoration,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: alignment,
         children: [
           if (title != null) ..._buildTitle(context),
@@ -86,7 +87,14 @@ class GsDataBox extends StatelessWidget {
   Iterable<Widget> _buildTitle(
     BuildContext context,
   ) sync* {
-    yield Text(title!, style: context.textTheme.bigTitle3);
+    yield Text(
+      title!,
+      style: context.textTheme.bigTitle3.copyWith(
+        fontSize: 18,
+        fontFamily: 'NotoSans',
+        fontWeight: FontWeight.bold,
+      ),
+    );
     yield Divider(color: GsColors.almostWhite, thickness: 0.5);
   }
 }

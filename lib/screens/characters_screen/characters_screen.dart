@@ -49,10 +49,6 @@ class CharactersScreen extends StatelessWidget {
                 actions: [
                   Tooltip(
                     message: 'Character Ascension',
-                    decoration: BoxDecoration(
-                      color: GsColors.mainColor0,
-                      borderRadius: kMainRadius,
-                    ),
                     child: IconButton(
                       onPressed: () => Navigator.of(context)
                           .pushNamed(CharacterAscensionScreen.id),

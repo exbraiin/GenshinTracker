@@ -23,7 +23,7 @@ class RemoveDialog extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: 300),
         decoration: BoxDecoration(
           color: GsColors.mainColor0,
-          boxShadow: mainShadow,
+          boxShadow: kMainShadow,
           borderRadius: kMainRadius,
         ),
         padding: EdgeInsets.all(16),

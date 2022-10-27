@@ -32,6 +32,16 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: GsColors.mainColor1,
         ),
+        tooltipTheme: TooltipThemeData(
+          decoration: BoxDecoration(
+            color: GsColors.mainColor0,
+            borderRadius: kMainRadius,
+          ),
+          textStyle: TextStyle(
+            fontSize: 12,
+            color: GsColors.mainColor3,
+          ),
+        ),
       ),
       home: MainScreen(),
     );

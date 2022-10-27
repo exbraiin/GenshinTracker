@@ -48,10 +48,6 @@ class WeaponsScreen extends StatelessWidget {
                 actions: [
                   Tooltip(
                     message: Lang.of(context).getValue(Labels.showExtraInfo),
-                    decoration: BoxDecoration(
-                      color: GsColors.mainColor0,
-                      borderRadius: kMainRadius,
-                    ),
                     child: IconButton(
                       icon: Icon(
                         filter.hasExtra('info')

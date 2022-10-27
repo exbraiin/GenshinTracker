@@ -44,10 +44,6 @@ class WishesScreen extends StatelessWidget {
                 actions: [
                   Tooltip(
                     message: Lang.of(context).getValue(Labels.hideEmptyBanners),
-                    decoration: BoxDecoration(
-                      color: GsColors.mainColor0,
-                      borderRadius: kMainRadius,
-                    ),
                     child: IconButton(
                       icon: Icon(
                         filter.hasExtra('show')

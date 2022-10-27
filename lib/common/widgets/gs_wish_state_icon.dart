@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
@@ -33,10 +32,6 @@ class GsWishStateIcon extends StatelessWidget {
       padding: EdgeInsets.only(left: 2),
       child: Tooltip(
         message: message,
-        decoration: BoxDecoration(
-          color: GsColors.mainColor0,
-          borderRadius: kMainRadius,
-        ),
         child: Icon(icon, color: Colors.white, size: 16),
       ),
     );

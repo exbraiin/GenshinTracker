@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const List<BoxShadow> mainShadow = const [
+const List<BoxShadow> kMainShadow = const [
   const BoxShadow(
     color: Color(0x88111111),
     blurRadius: 2,

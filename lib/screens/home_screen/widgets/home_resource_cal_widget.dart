@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
@@ -30,59 +31,48 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
     final textTheme = Theme.of(context).textTheme;
     final style = textTheme.subtitle2!.copyWith(color: Colors.white);
     return GsDataBox.summary(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 26,
-            child: Center(
-              child: Text(
-                Lang.of(context).getValue(Labels.resourceCalculator),
-                style: style.copyWith(fontSize: 16),
+      title: context.fromLabel(Labels.resourceCalculator),
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            Lang.of(context).getValue(Labels.required),
+            style: style.copyWith(fontSize: 14),
+          ),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(
+            5,
+            (idx) => Expanded(
+              child: _getField(
+                style,
+                (i) => _notifier.value = _notifier.value.setRequired(idx, i),
               ),
             ),
           ),
-          Divider(indent: 8, endIndent: 8, color: Colors.white),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              Lang.of(context).getValue(Labels.required),
-              style: style.copyWith(fontSize: 14),
-            ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            Lang.of(context).getValue(Labels.owned),
+            style: style.copyWith(fontSize: 14),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              5,
-              (idx) => Expanded(
-                child: _getField(
-                  style,
-                  (i) => _notifier.value = _notifier.value.setRequired(idx, i),
-                ),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(
+            5,
+            (idx) => Expanded(
+              child: _getField(
+                style,
+                (i) => _notifier.value = _notifier.value.setOwned(idx, i),
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              Lang.of(context).getValue(Labels.owned),
-              style: style.copyWith(fontSize: 14),
-            ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              5,
-              (idx) => Expanded(
-                child: _getField(
-                  style,
-                  (i) => _notifier.value = _notifier.value.setOwned(idx, i),
-                ),
-              ),
-            ),
-          ),
-          _getResourceInfo(),
-        ],
-      ),
+        ),
+        _getResourceInfo(),
+      ],
     );
   }
 

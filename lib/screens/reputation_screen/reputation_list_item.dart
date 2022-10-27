@@ -51,7 +51,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
       decoration: BoxDecoration(
         color: GsColors.mainColor2,
         borderRadius: kMainRadius,
-        boxShadow: mainShadow,
+        boxShadow: kMainShadow,
       ),
       child: Row(
         children: [

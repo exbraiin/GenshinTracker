@@ -9,6 +9,7 @@ const radius = BorderRadius.all(Radius.circular(6));
 class GsItemCardButton extends StatelessWidget {
   final int? rarity;
   final String label;
+  final bool shadow;
   final bool disable;
   final int? maxLines;
   final double? width;
@@ -31,6 +32,7 @@ class GsItemCardButton extends StatelessWidget {
     this.imageUrlPath,
     this.imageFilePath,
     this.imageAssetPath,
+    this.shadow = false,
     this.disable = false,
     required this.label,
   });
@@ -70,6 +72,7 @@ class GsItemCardButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: GsColors.mainColor2,
         borderRadius: radius,
+        boxShadow: shadow ? kMainShadow : null,
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: radius,

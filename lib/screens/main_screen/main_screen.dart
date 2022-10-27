@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
           left: kMainRadius.topLeft,
           right: selected ? Radius.zero : kMainRadius.topRight,
         ),
-        boxShadow: mainShadow,
+        boxShadow: kMainShadow,
       ),
       child: InkWell(
         onTap: () {

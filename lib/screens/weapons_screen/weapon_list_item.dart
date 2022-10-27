@@ -54,10 +54,6 @@ class WeaponListItem extends StatelessWidget {
                       padding: EdgeInsets.only(top: kSeparator2),
                       child: Tooltip(
                         message: weapon.statType.toPrettyString(context),
-                        decoration: BoxDecoration(
-                          color: GsColors.mainColor0,
-                          borderRadius: kMainRadius,
-                        ),
                         child: GsItemCardLabel(
                           label: weapon.statType
                               .toIntOrPercentage(weapon.statValue),

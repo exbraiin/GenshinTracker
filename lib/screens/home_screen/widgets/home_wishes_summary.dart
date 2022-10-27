@@ -41,13 +41,9 @@ class HomeWishesSummary extends StatelessWidget {
     final pityColor = GsColors.getPityColor(summary.last5, maxPity);
 
     return GsDataBox.summary(
+      title: title,
       child: Column(
         children: [
-          Text(
-            title,
-            style: context.textTheme.bigTitle3,
-          ),
-          Divider(color: GsColors.almostWhite, thickness: 0.5),
           Container(
             padding: EdgeInsets.all(kSeparator4 * 2),
             decoration: BoxDecoration(
