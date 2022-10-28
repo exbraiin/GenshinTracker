@@ -10,12 +10,12 @@ import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 class FilterSection<T, I> {
   final Set<T> values;
   final Set<T> enabled;
-  T Function(I item) match;
-  bool Function(I item)? filter;
-  IconData? Function(T i)? _icon;
-  String? Function(T i)? _asset;
-  String Function(BuildContext c) title;
-  String Function(BuildContext c, T i) _label;
+  final T Function(I item) match;
+  final bool Function(I item)? filter;
+  final IconData? Function(T i)? _icon;
+  final String? Function(T i)? _asset;
+  final String Function(BuildContext c) title;
+  final String Function(BuildContext c, T i) _label;
 
   int order = 1;
   final Comparator<I>? comparator;

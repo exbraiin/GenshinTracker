@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -14,24 +15,16 @@ class ReputationListItem extends StatefulWidget {
   ReputationListItem(this.city);
 
   @override
-  _ReputationListItemState createState() => _ReputationListItemState();
+  State<ReputationListItem> createState() => _ReputationListItemState();
 }
 
 class _ReputationListItemState extends State<ReputationListItem> {
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    final db = GsDatabase.instance;
-    final value = db.saveReputations.getSavedReputation(widget.city.id);
-    _controller = TextEditingController(text: value.toString());
-  }
+  final _notifier = ValueNotifier<int>(0);
 
   @override
   void dispose() {
+    _notifier.dispose();
     super.dispose();
-    _controller.dispose();
   }
 
   @override
@@ -40,6 +33,8 @@ class _ReputationListItemState extends State<ReputationListItem> {
     final rp = db.getSavedReputation(widget.city.id);
     final pRep = db.getCityPreviousXpValue(widget.city.id);
     final nRep = db.getCityNextXpValue(widget.city.id);
+    final nextLvlWeeks = db.getCityNextLevelWeeks(widget.city.id);
+    final lastLvlWeeks = db.getCityMaxLevelWeeks(widget.city.id);
 
     final current = rp - pRep;
     final total = nRep - pRep;
@@ -95,25 +90,19 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     ],
                   ),
                   Spacer(),
-                  TextFormField(
-                    controller: _controller,
-                    onFieldSubmitted: (value) {
-                      final v = int.tryParse(value) ?? 0;
-                      _controller.text = v.toString();
-                      GsDatabase.instance.saveReputations
-                          .setSavedReputation(widget.city.id, v);
-                    },
-                    style: context.textTheme.subtitle1!
-                        .copyWith(color: Colors.white),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(vertical: 8),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: GsColors.almostWhite),
-                      ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: kSeparator4),
+                    child: GsNumberField(
+                      onDbUpdate: () {
+                        final db = GsDatabase.instance.saveReputations;
+                        return db.getSavedReputation(widget.city.id);
+                      },
+                      onUpdate: (amount) {
+                        final db = GsDatabase.instance.saveReputations;
+                        final saved = db.getSavedReputation(widget.city.id);
+                        if (saved == amount) return;
+                        db.setSavedReputation(widget.city.id, amount);
+                      },
                     ),
                   ),
                   LinearProgressIndicator(
@@ -155,65 +144,46 @@ class _ReputationListItemState extends State<ReputationListItem> {
               ),
             ),
             child: Center(
-              child: ValueListenableBuilder<TextEditingValue>(
-                valueListenable: _controller,
-                builder: (context, text, child) {
-                  final values = widget.city.reputation;
-                  final rep = values.lastWhere(
-                    (e) => e <= (int.tryParse(text.text) ?? 0),
-                    orElse: () => values.first,
-                  );
-
-                  final sr = GsDatabase.instance.saveReputations;
-                  final nextLvlWeeks = sr.getCityNextLevelWeeks(widget.city.id);
-                  final lastLvlWeeks = sr.getCityMaxLevelWeeks(widget.city.id);
-
-                  final weeks = nextLvlWeeks != lastLvlWeeks
-                      ? '\n' +
-                          Lang.of(context).getValue(
-                            Labels.nnWeeks,
-                            nargs: {
-                              'from': nextLvlWeeks,
-                              'to': lastLvlWeeks,
-                            },
-                          )
-                      : lastLvlWeeks != 0
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: Lang.of(context).getValue(Labels.levelShort),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2!
+                          .copyWith(color: Colors.white, fontSize: 16),
+                    ),
+                    TextSpan(
+                      text: db.getCityLevel(widget.city.id).toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2!
+                          .copyWith(color: Colors.white, fontSize: 26),
+                    ),
+                    TextSpan(
+                      text: nextLvlWeeks != lastLvlWeeks
                           ? '\n' +
                               Lang.of(context).getValue(
-                                Labels.nWeeks,
-                                nargs: {'weeks': lastLvlWeeks},
+                                Labels.nnWeeks,
+                                nargs: {
+                                  'from': nextLvlWeeks,
+                                  'to': lastLvlWeeks
+                                },
                               )
-                          : '';
-
-                  final lvl = sr.getCityLevel(widget.city.id);
-
-                  return RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: Lang.of(context).getValue(Labels.levelShort),
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle2!
-                              .copyWith(color: Colors.white, fontSize: 16),
-                        ),
-                        TextSpan(
-                          text: '$lvl',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle2!
-                              .copyWith(color: Colors.white, fontSize: 26),
-                        ),
-                        TextSpan(
-                          text: '\n${rep.format()} Rp$weeks',
-                          style: context.textTheme.subtitle2!
-                              .copyWith(color: Colors.white, fontSize: 10),
-                        ),
-                      ],
+                          : lastLvlWeeks != 0
+                              ? '\n' +
+                                  context.fromLabel(
+                                    Labels.nWeeks,
+                                    lastLvlWeeks,
+                                  )
+                              : '',
+                      style: context.textTheme.subtitle2!
+                          .copyWith(color: Colors.white, fontSize: 10),
                     ),
-                  );
-                },
+                  ],
+                ),
               ),
             ),
           )

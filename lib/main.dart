@@ -42,6 +42,11 @@ class MyApp extends StatelessWidget {
             color: GsColors.mainColor3,
           ),
         ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.white,
+          selectionColor: Colors.white.withOpacity(0.2),
+          selectionHandleColor: Colors.white,
+        ),
       ),
       home: MainScreen(),
     );

@@ -76,7 +76,7 @@ class _Stack<E> {
 
   void push(E value) => _list.add(value);
 
-  E pop() => _list.removeLast();
+  E? pop() => _list.isEmpty ? null : _list.removeLast();
 
   E? get peek => _list.lastOrNull;
 

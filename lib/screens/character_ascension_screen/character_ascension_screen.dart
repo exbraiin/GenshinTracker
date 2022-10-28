@@ -2,15 +2,17 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/labels.dart';
+import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
-import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
-import 'package:tracker/screens/character_ascension_screen/character_ascension_materials_screen.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
@@ -40,17 +42,7 @@ class CharacterAscensionScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: GsAppBar(
-            label: 'Character Ascension',
-            actions: [
-              IconButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CharacterAscensionMaterialsScreen(),
-                  ),
-                ),
-                icon: Icon(Icons.info_outline_rounded),
-              ),
-            ],
+            label: context.fromLabel(Labels.ascension),
           ),
           body: ListView.separated(
             padding: EdgeInsets.all(kSeparator4),
@@ -84,33 +76,14 @@ class _CharacterAscensionListItem extends StatelessWidget {
     final canAscend = materials.all((e) => e.hasRequired);
     return Opacity(
       opacity: maxAscend ? kDisableOpacity : 1,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
-          borderRadius: radius,
-        ),
-        padding: EdgeInsets.symmetric(vertical: kSeparator4),
+      child: GsDataBox.info(
         child: Row(
           children: [
             SizedBox(width: kSeparator4),
-            Container(
-              width: 88,
-              height: 88,
-              decoration: BoxDecoration(
-                borderRadius: kMainRadius.copyWith(
-                  bottomRight: Radius.circular(24),
-                ),
-                image: DecorationImage(
-                  image: AssetImage(getRarityBgImage(item.rarity)),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              child: ClipRRect(
-                borderRadius: kMainRadius.copyWith(
-                  bottomRight: Radius.circular(24),
-                ),
-                child: CachedImageWidget(item.image),
-              ),
+            GsRarityItemCard(
+              size: 70,
+              image: item.image,
+              rarity: item.rarity,
             ),
             SizedBox(width: kSeparator4),
             Column(

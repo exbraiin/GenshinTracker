@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -16,6 +17,7 @@ import 'package:tracker/screens/character_ascension_screen/character_ascension_m
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
   final _ascension = GlobalKey();
+  final _materials = GlobalKey();
   final _attributes = GlobalKey();
   final _constellation = GlobalKey();
   static const id = 'character_details_screen';
@@ -55,6 +57,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                     _getTalents(context, details),
                     SizedBox(height: kSeparator8),
                     _getConstellations(context, details),
+                    SizedBox(height: kSeparator8),
+                    _getAllMaterials(context, details),
                   ],
                 ),
               ),
@@ -84,7 +88,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               SizedBox(height: kSeparator8),
               _getTextButton(
                 context,
-                'Attributes',
+                context.fromLabel(Labels.attributes),
                 () => Scrollable.ensureVisible(
                   _attributes.currentContext!,
                   duration: Duration(milliseconds: 400),
@@ -94,7 +98,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               SizedBox(height: kSeparator4),
               _getTextButton(
                 context,
-                'Ascension',
+                context.fromLabel(Labels.ascension),
                 () => Scrollable.ensureVisible(
                   _ascension.currentContext!,
                   duration: Duration(milliseconds: 400),
@@ -104,7 +108,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               SizedBox(height: kSeparator4),
               _getTextButton(
                 context,
-                'Talents',
+                context.fromLabel(Labels.talents),
                 () => Scrollable.ensureVisible(
                   _talents.currentContext!,
                   duration: Duration(milliseconds: 400),
@@ -114,9 +118,19 @@ class CharacterDetailsScreen extends StatelessWidget {
               SizedBox(height: kSeparator4),
               _getTextButton(
                 context,
-                'Constellation',
+                context.fromLabel(Labels.constellations),
                 () => Scrollable.ensureVisible(
                   _constellation.currentContext!,
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                ),
+              ),
+              SizedBox(height: kSeparator4),
+              _getTextButton(
+                context,
+                context.fromLabel(Labels.materials),
+                () => Scrollable.ensureVisible(
+                  _materials.currentContext!,
                   duration: Duration(milliseconds: 400),
                   curve: Curves.easeOut,
                 ),
@@ -348,10 +362,15 @@ class CharacterDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       if (e.materials.isNotEmpty)
-                        ...e.materials.entries
-                            .map<Widget>((e) =>
-                                CharacterAscensionMaterial(e.key, e.value))
-                            .separate(SizedBox(width: kSeparator4)),
+                        ...e.materials.entries.map<Widget>((e) {
+                          final db = GsDatabase.instance.infoMaterials;
+                          final item = db.getItemOrNull(e.key);
+                          return GsRarityItemCard.withLabels(
+                            image: item?.image ?? '',
+                            rarity: item?.rarity ?? 1,
+                            labelFooter: e.value.format(),
+                          );
+                        }).separate(SizedBox(width: kSeparator4)),
                     ],
                   )
                 ],
@@ -454,6 +473,101 @@ class CharacterDetailsScreen extends StatelessWidget {
             thickness: 0.4,
           ))
           .toList(),
+    );
+  }
+
+  Widget _getAllMaterials(BuildContext context, InfoCharacter info) {
+    final tltMats = info.allTalentMaterials;
+    final ascMats = info.allAscensionMaterials;
+    final totalMats = info.allMaterials;
+
+    final db = GsDatabase.instance.infoMaterials;
+
+    int existance(String? id) {
+      if (id == null) return 0;
+      final a = tltMats.containsKey(id) ? 1 : 0;
+      final b = ascMats.containsKey(id) ? 1 : 0;
+      final c = totalMats.containsKey(id) ? 1 : 0;
+      return a + b + c;
+    }
+
+    TableRow _getTableRow(
+      String label,
+      Map<String, int> mats,
+      Widget Function(MapEntry<InfoMaterial?, int> e) mapper,
+    ) {
+      return TableRow(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(kSeparator8),
+            child: Text(
+              label,
+              style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: kSeparator4),
+            child: Wrap(
+              spacing: kSeparator4,
+              runSpacing: kSeparator4,
+              textDirection: TextDirection.rtl,
+              children: mats.entries
+                  .map((e) => MapEntry(db.getItemOrNull(e.key), e.value))
+                  .where((e) => e.key != null)
+                  .sortedBy((e) => existance(e.key?.id))
+                  .thenBy((e) => e.key!.group)
+                  .thenBy((e) => e.key!.subgroup)
+                  .thenBy((e) => e.key!.rarity)
+                  .thenBy((e) => e.key!.name)
+                  .reversed
+                  .map(mapper)
+                  .toList(),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return GsDataBox.info(
+      key: _materials,
+      title: context.fromLabel(Labels.materials),
+      child: Table(
+        columnWidths: {
+          0: IntrinsicColumnWidth(),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        border: TableBorder(
+          horizontalInside: BorderSide(
+            color: GsColors.dimWhite,
+            width: 0.4,
+          ),
+        ),
+        children: [
+          _getTableRow(
+            context.fromLabel(Labels.ascension),
+            ascMats,
+            (e) => GsRarityItemCard.withLabels(
+              labelFooter: e.value.format(),
+              rarity: e.key!.rarity,
+              image: e.key!.image,
+            ),
+          ),
+          _getTableRow(
+            context.fromLabel(Labels.talents),
+            tltMats,
+            (e) => GsRarityItemCard.withLabels(
+              labelFooter: e.value.format(),
+              rarity: e.key!.rarity,
+              image: e.key!.image,
+            ),
+          ),
+          _getTableRow(
+            context.fromLabel(Labels.total),
+            totalMats,
+            (e) => CharacterAscensionMaterial(e.key!.id, e.value),
+          ),
+        ],
+      ),
     );
   }
 
