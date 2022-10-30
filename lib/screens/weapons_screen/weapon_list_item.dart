@@ -4,6 +4,7 @@ import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showExtra;
@@ -24,6 +25,10 @@ class WeaponListItem extends StatelessWidget {
         rarity: weapon.rarity,
         imageUrlPath: weapon.image,
         child: _getContent(context),
+        onTap: () => Navigator.of(context).pushNamed(
+          WeaponDetailsScreen.id,
+          arguments: weapon,
+        ),
       ),
     );
   }

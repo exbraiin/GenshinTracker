@@ -42,9 +42,9 @@ class SereniteaSetListItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: set.category == GsSetCategory.indoor
-                    ? Color(0xFFa01f2e)
+                    ? GsColors.setIndoor
                     : set.category == GsSetCategory.outdoor
-                        ? Color(0xFF303671)
+                        ? GsColors.setOutdoor
                         : GsColors.mainColor1,
                 borderRadius: BorderRadius.circular(100),
               ),

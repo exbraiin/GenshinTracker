@@ -13,13 +13,8 @@ class GsColors {
   static const mainColor2 = const Color(0xFF2B2F4E);
   static const mainColor3 = const Color(0xFF8181A6);
 
-  static void generate() {
-    const h = 240.0, s = 0.2;
-    print(HSLColor.fromAHSL(1, h, s, 0.05));
-    print(HSLColor.fromAHSL(1, h, s, 0.10));
-    print(HSLColor.fromAHSL(1, h, s, 0.15));
-    print(HSLColor.fromAHSL(1, h, s, 0.20));
-  }
+  static const setIndoor = const Color(0xFFA01F2E);
+  static const setOutdoor = const Color(0xFF303671);
 
   static const dimWhite = const Color(0x80FFFFFF);
   static const almostWhite = const Color(0xFFEEEEEE);
@@ -29,8 +24,8 @@ class GsColors {
           1: Color(0xFF828E98),
           2: Color(0xFF5C956B),
           3: Color(0xFF51A2B4),
-          4: Color(0xFFB783C8), // 4: Color(0xFFD28FD6),
-          5: Color(0xFFE2AA52), // 5: Color(0xFFFFB13F),
+          4: Color(0xFFB783C8),
+          5: Color(0xFFE2AA52),
         }[rarity] ??
         Colors.transparent;
   }

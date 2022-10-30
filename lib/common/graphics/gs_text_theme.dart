@@ -19,7 +19,7 @@ extension TextThemeExt on TextTheme {
 
   /// 12 | white 0.4
   TextStyle get description => this.subtitle2!.copyWith(
-        color: Colors.white.withOpacity(0.4), // Color(0xFFAAAAAA),
+        color: Colors.white.withOpacity(0.4),
         fontSize: 12,
       );
 

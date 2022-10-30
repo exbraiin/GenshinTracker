@@ -13,6 +13,7 @@ import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/tests_screen/tests_screen.dart';
+import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
@@ -25,6 +26,7 @@ class TrackerRouter {
     AddWishScreen.id: () => AddWishScreen(),
     RecipesScreen.id: () => RecipesScreen(),
     WeaponsScreen.id: () => WeaponsScreen(),
+    WeaponDetailsScreen.id: () => WeaponDetailsScreen(),
     ArtifactsScreen.id: () => ArtifactsScreen(),
     ArtifactDetailsScreen.id: () => ArtifactDetailsScreen(),
     CharactersScreen.id: () => CharactersScreen(),
