@@ -143,7 +143,7 @@ class InfoCharacterAscension {
   factory InfoCharacterAscension.fromMap(Map<String, dynamic> map) {
     return InfoCharacterAscension(
       level: map['level'],
-      materials: (map['materials'] as Map).cast<String, int>(),
+      materials: (map['materials'] as Map? ?? {}).cast<String, int>(),
       valuesAfter: (map['values_after'] as Map? ?? {}).map(
         (key, value) => MapEntry(
           GsAttributeStat.values.firstWhere(

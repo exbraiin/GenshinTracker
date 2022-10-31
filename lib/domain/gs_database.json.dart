@@ -55,8 +55,8 @@ class JsonDetails {
 
   Future<void> load(Map<String, dynamic> data) async {
     final map = data['details'] as Map<String, dynamic>;
-    final values = (map['ascension_heros_wit'] as List).cast<int>();
-    _ascensionHerosWit.addAll(values);
+    final ascValues = (map['ascension_heros_wit'] as List).cast<int>();
+    _ascensionHerosWit.addAll(ascValues);
   }
 
   int getAscensionHerosWit(int level) => _ascensionHerosWit[level];

@@ -179,10 +179,11 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 360,
+            width: 310,
             child: CachedImageWidget(
               info.fullImage,
               fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
             ),
           )
         ],
@@ -347,13 +348,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   ),
                   ...values.map((v) => Center(
                         child: Text(
-                          e.valuesAfter[v] == null && e.valuesBefore[v] != null
-                              ? v.toIntOrPercentage(e.valuesBefore[v]!)
-                              : e.valuesAfter[v] != null &&
-                                      e.valuesBefore[v] == null
-                                  ? v.toIntOrPercentage(e.valuesAfter[v]!)
-                                  : '${v.toIntOrPercentage(e.valuesBefore[v]!)} → '
-                                      '${v.toIntOrPercentage(e.valuesAfter[v]!)}',
+                          e.toAscensionStat(v),
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.white),
                         ),

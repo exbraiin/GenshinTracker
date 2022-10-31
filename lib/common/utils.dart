@@ -142,6 +142,18 @@ extension GsWeaponExt on GsWeapon {
   }
 }
 
+extension InfoCharacterAscensionExt on InfoCharacterAscension {
+  String toAscensionStat(GsAttributeStat stat) {
+    final after = valuesAfter[stat];
+    final before = valuesBefore[stat];
+    if (after == null && before == null) return stat.toIntOrPercentage(0);
+    if (after == null && before != null) return stat.toIntOrPercentage(before);
+    if (after != null && before == null) return stat.toIntOrPercentage(after);
+    if (after == before) return stat.toIntOrPercentage(after!);
+    return '${stat.toIntOrPercentage(before!)} → ${stat.toIntOrPercentage(after!)}';
+  }
+}
+
 extension GsWeaponStatListExt on List<GsAttributeStat> {
   Set<GsAttributeStat> get weaponStats {
     return {

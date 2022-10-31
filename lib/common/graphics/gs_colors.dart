@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 class GsColors {
   GsColors._();
 
-  // 0xff0a0a10 0xff131320 0xff1d1d30 0xff262640
-  // 0xFF1a1d23 0xFF20242c 0xFF272935 0xFF353847
-  // 0xFF0C122E 0xFF1E2240 0xFF2B2F4E 0xFF8181A6
-  // 0xFF051015 0xFF0a1f29 0xFF0f2d3d 0xFF143d52
-
   static const mainColor0 = const Color(0xFF0C122E);
   static const mainColor1 = const Color(0xFF1E2240);
   static const mainColor2 = const Color(0xFF2B2F4E);

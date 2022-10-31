@@ -59,7 +59,7 @@ class InfoWeapon implements IdData {
       rarity: map['rarity'],
       statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
-      ascension: (map['ascension'] as List? ?? [])
+      ascension: (map['ascension'] as List)
           .map((e) => InfoCharacterAscension.fromMap(e))
           .toList(),
     );

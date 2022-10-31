@@ -32,8 +32,8 @@ class WeaponDetailsScreen extends StatelessWidget {
               children: [
                 _getInfo(context, info),
                 SizedBox(height: kSeparator8),
-                _getEffect(context, info),
-                SizedBox(height: kSeparator8),
+                if (info.effectName.isNotEmpty) _getEffect(context, info),
+                if (info.effectName.isNotEmpty) SizedBox(height: kSeparator8),
                 _getAscension(context, info),
                 SizedBox(height: kSeparator8),
                 _getAllMaterials(context, info),
@@ -75,16 +75,18 @@ class WeaponDetailsScreen extends StatelessWidget {
                         '${info.atk}',
                         style: context.textTheme.bigTitle3,
                       ),
-                      SizedBox(height: kSeparator8),
-                      Text(
-                        '${info.statType.toPrettyString(context)}',
-                        style: context.textTheme.description,
-                      ),
-                      SizedBox(height: kSeparator2),
-                      Text(
-                        '${info.statType.toIntOrPercentage(info.statValue)}',
-                        style: context.textTheme.bigTitle3,
-                      ),
+                      if (info.statType != GsAttributeStat.none) ...[
+                        SizedBox(height: kSeparator8),
+                        Text(
+                          '${info.statType.toPrettyString(context)}',
+                          style: context.textTheme.description,
+                        ),
+                        SizedBox(height: kSeparator2),
+                        Text(
+                          '${info.statType.toIntOrPercentage(info.statValue)}',
+                          style: context.textTheme.bigTitle3,
+                        ),
+                      ]
                     ],
                   ),
                   SizedBox(width: kSeparator8 * 2),
@@ -98,11 +100,12 @@ class WeaponDetailsScreen extends StatelessWidget {
                               style: Theme.of(context).textTheme.bigTitle2,
                             ),
                             SizedBox(width: kSeparator8),
-                            Image.asset(
-                              info.statType.assetPath,
-                              width: 18,
-                              height: 18,
-                            ),
+                            if (info.statType != GsAttributeStat.none)
+                              Image.asset(
+                                info.statType.assetPath,
+                                width: 18,
+                                height: 18,
+                              ),
                           ],
                         ),
                         Text(
@@ -189,13 +192,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                   ),
                   ...values.map((v) => Center(
                         child: Text(
-                          e.valuesAfter[v] == null && e.valuesBefore[v] != null
-                              ? v.toIntOrPercentage(e.valuesBefore[v]!)
-                              : e.valuesAfter[v] != null &&
-                                      e.valuesBefore[v] == null
-                                  ? v.toIntOrPercentage(e.valuesAfter[v]!)
-                                  : '${v.toIntOrPercentage(e.valuesBefore[v]!)} → '
-                                      '${v.toIntOrPercentage(e.valuesAfter[v]!)}',
+                          e.toAscensionStat(v),
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.white),
                         ),
