@@ -1,7 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -82,7 +82,8 @@ class TestWidgets {
           'title': details?.title.isEmpty ?? true,
           'constellation': details?.constellation.isEmpty ?? true,
           'affiliation': details?.affiliation.isEmpty ?? true,
-          'specialDish': details?.specialDish.isEmpty ?? true,
+          'specialDish': details?.id != 'raiden_shogun' &&
+              (details?.specialDish.isEmpty ?? true),
           'description': details?.description.isEmpty ?? true,
           'fullImage': details?.fullImage.isEmpty ?? true,
           'birthday': details?.birthday == DateTime(0),
@@ -115,5 +116,72 @@ class TestWidgets {
           .where((e) => !InfoMaterialGroups.groups.contains(e))
           .map((e) => ['No Filter: $e']),
     ]);
+  }
+
+  static Widget getBannerFeature(BuildContext context) {
+    final iw = GsDatabase.instance.infoWeapons;
+    final ic = GsDatabase.instance.infoCharacters;
+    bool _exists(String id) => iw.exists(id) || ic.exists(id);
+    bool _valid(InfoBanner banner) {
+      return (banner.feature4.isEmpty && banner.feature5.isEmpty) ||
+          banner.feature4.every((e) => _exists(e)) &&
+              banner.feature5.every((e) => _exists(e));
+    }
+
+    final items = GsDatabase.instance.infoBanners
+        .getItems()
+        .where((e) => !_valid(e))
+        .sortedBy((e) => e.dateStart);
+    if (items.isEmpty) return SizedBox();
+
+    return _container(
+      context,
+      ['id', '4*', '5*'],
+      items.map((e) {
+        final f5 = e.feature5.where((e) => !_exists(e));
+        final f4 = e.feature4.where((e) => !_exists(e));
+        return [e.id, f4.join(','), f5.join(',')];
+      }),
+    );
+  }
+
+  static Widget getMissingVersions(BuildContext context) {
+    final characters = GsDatabase.instance.infoCharacters
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+    final materials = GsDatabase.instance.infoMaterials
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+    final recipes = GsDatabase.instance.infoRecipes
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+    final serenitea = GsDatabase.instance.infoSereniteaSets
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+    final spincrystals = GsDatabase.instance.infoSpincrystal
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+    final weapons = GsDatabase.instance.infoWeapons
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
+
+    return _container(
+      context,
+      ['type', 'ids'],
+      [
+        if (characters.isNotEmpty) ['Characters', characters.join(', ')],
+        if (materials.isNotEmpty) ['Materials', materials.join(', ')],
+        if (recipes.isNotEmpty) ['Recipes', recipes.join(', ')],
+        if (serenitea.isNotEmpty) ['Serenitea', serenitea.join(', ')],
+        if (spincrystals.isNotEmpty) ['Spincrystals', spincrystals.join(', ')],
+        if (weapons.isNotEmpty) ['Weapons', weapons.join(', ')],
+      ],
+    );
   }
 }

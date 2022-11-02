@@ -274,12 +274,11 @@ final _menus = [
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
   ),
-  if (kDebugMode)
-    Menu(
-      label: Labels.changelog,
-      icon: menuIconAchievements,
-      initialPage: ChangelogScreen.id,
-    ),
+  Menu(
+    label: Labels.changelog,
+    icon: menuIconAchievements,
+    initialPage: ChangelogScreen.id,
+  ),
   if (kDebugMode)
     Menu(
       label: Labels.wsNone,

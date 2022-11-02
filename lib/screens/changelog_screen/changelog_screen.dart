@@ -4,6 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -39,11 +40,11 @@ class ChangelogScreen extends StatelessWidget {
       ...recipes.keys,
       ...sets.keys,
       ...crystals.keys,
-    ].except(['']).toSet().sortedBy((e) => double.tryParse(e) ?? 0).toList();
+    ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
     final tabBar = TabBar(
       isScrollable: true,
-      tabs: groups.map((e) => Tab(text: e)).toList(),
+      tabs: groups.map((e) => Tab(text: e.isNotEmpty ? e : 'None')).toList(),
     );
 
     return DefaultTabController(
@@ -156,16 +157,11 @@ class ChangelogScreen extends StatelessWidget {
           spacing: kSeparator4,
           runSpacing: kSeparator4,
           children: items
-              .map((e) => SizedBox(
-                    width: 80,
-                    height: 96,
-                    child: GsItemCardButton(
-                      label: name(e),
-                      imageUrlPath: image?.call(e),
-                      imageAssetPath: asset?.call(e),
-                      rarity: rarity?.call(e),
-                      maxLines: 1,
-                    ),
+              .map((e) => GsRarityItemCard.withLabels(
+                    labelFooter: name(e),
+                    image: image?.call(e) ?? '', // asset?.call(e)
+                    rarity: rarity?.call(e) ?? 1,
+                    size: 80,
                   ))
               .toList(),
         ),

@@ -45,7 +45,13 @@ class InfoCharacter implements IdData {
           .groupBy((e) => e.key)
           .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
 
-  GsAttributeStat get specialStat => ascension.first.valuesAfter.keys.last;
+  GsAttributeStat get specialStat =>
+      ascension.firstOrNull?.valuesAfter.keys.except([
+        GsAttributeStat.hp,
+        GsAttributeStat.atk,
+        GsAttributeStat.def
+      ]).firstOrNull ??
+      GsAttributeStat.none;
 
   InfoCharacter({
     required this.id,
