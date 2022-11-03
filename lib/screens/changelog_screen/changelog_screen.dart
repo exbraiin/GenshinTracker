@@ -6,9 +6,9 @@ import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/info_ingredient.dart';
 
 class ChangelogScreen extends StatelessWidget {
   static const id = 'changelog_screen';
@@ -33,6 +33,9 @@ class ChangelogScreen extends StatelessWidget {
     final iCrystals = GsDatabase.instance.infoSpincrystal;
     final crystals = iCrystals.getItems().groupBy((e) => e.version);
 
+    final iIngredients = GsDatabase.instance.infoIngredients;
+    final ingredients = iIngredients.getItems().groupBy((e) => e.version);
+
     final groups = [
       ...characters.keys,
       ...weapons.keys,
@@ -40,6 +43,7 @@ class ChangelogScreen extends StatelessWidget {
       ...recipes.keys,
       ...sets.keys,
       ...crystals.keys,
+      ...ingredients.keys,
     ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
     final tabBar = TabBar(
@@ -103,6 +107,16 @@ class ChangelogScreen extends StatelessWidget {
                               context: context,
                               title: context.fromLabel(Labels.recipes),
                               items: recipes[version]
+                                  ?.sortedBy((element) => element.rarity)
+                                  .thenBy((element) => element.name),
+                              name: (i) => i.name,
+                              image: (i) => i.image,
+                              rarity: (i) => i.rarity,
+                            ),
+                            _getSection<InfoIngredient>(
+                              context: context,
+                              title: context.fromLabel(Labels.totalIngredients),
+                              items: ingredients[version]
                                   ?.sortedBy((element) => element.rarity)
                                   .thenBy((element) => element.name),
                               name: (i) => i.name,

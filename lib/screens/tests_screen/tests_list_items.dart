@@ -170,6 +170,10 @@ class TestWidgets {
         .getItems()
         .where((e) => e.version.isEmpty)
         .map((e) => e.id);
+    final ingredients = GsDatabase.instance.infoIngredients
+        .getItems()
+        .where((e) => e.version.isEmpty)
+        .map((e) => e.id);
 
     return _container(
       context,
@@ -181,7 +185,45 @@ class TestWidgets {
         if (serenitea.isNotEmpty) ['Serenitea', serenitea.join(', ')],
         if (spincrystals.isNotEmpty) ['Spincrystals', spincrystals.join(', ')],
         if (weapons.isNotEmpty) ['Weapons', weapons.join(', ')],
+        if (ingredients.isNotEmpty) ['Ingredients', ingredients.join(', ')],
       ],
+    );
+  }
+
+  static Widget getMissinIngredients(BuildContext context) {
+    final rc = GsDatabase.instance.infoRecipes
+        .getItems()
+        .expand((e) => e.ingredients.keys)
+        .toSet();
+    final ig = GsDatabase.instance.infoIngredients
+        .getItems()
+        .map((element) => element.id)
+        .toSet();
+
+    final missingInIg = rc.except(ig);
+
+    if (missingInIg.isEmpty) return SizedBox();
+
+    return _container(
+      context,
+      ['Missing in ingredients'],
+      [
+        [missingInIg.join(', ')],
+      ],
+    );
+  }
+
+  static Widget getMissingSpecialDish(BuildContext context) {
+    final recipes = GsDatabase.instance.infoRecipes.getItems();
+    final missing = recipes
+        .where((e) => e.baseRecipe.isNotEmpty)
+        .where((e) => !recipes.any((r) => r.id == e.id));
+
+    if (missing.isEmpty) return SizedBox();
+    return _container(
+      context,
+      ['Recipe', 'Base Recipe'],
+      missing.map((e) => [e.id, e.baseRecipe]),
     );
   }
 }

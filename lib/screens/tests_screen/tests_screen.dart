@@ -19,6 +19,8 @@ class TestsScreen extends StatelessWidget {
           TestWidgets.getMaterialGroups(context),
           TestWidgets.getBannerFeature(context),
           TestWidgets.getMissingVersions(context),
+          TestWidgets.getMissinIngredients(context),
+          TestWidgets.getMissingSpecialDish(context),
         ]
             .where((e) => e is! SizedBox)
             .separate(SizedBox(height: kSeparator4))

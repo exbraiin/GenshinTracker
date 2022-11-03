@@ -13,6 +13,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
+import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
@@ -195,11 +196,14 @@ class CharacterDetailsScreen extends StatelessWidget {
     final style = context.textTheme.subtitle2!;
     final stLabel = style.copyWith(color: GsColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
+    final db = GsDatabase.instance.infoRecipes;
+    final dish = db.getItemOrNull(info.specialDish);
     return GsDataBox.info(
       key: _attributes,
       title: context.fromLabel(Labels.attributes),
       children: [
         Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: {
             0: IntrinsicColumnWidth(),
             2: IntrinsicColumnWidth(),
@@ -266,7 +270,23 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Text(context.fromLabel(Labels.specialDish), style: stLabel),
-                Text(info.specialDish, style: stStyle),
+                dish != null
+                    ? Row(
+                        children: [
+                          GsRarityItemCard(
+                            size: 48,
+                            image: dish.image,
+                            rarity: dish.rarity,
+                            onTap: () => Navigator.of(context).pushNamed(
+                              RecipeDetailsScreen.id,
+                              arguments: dish,
+                            ),
+                          ),
+                          SizedBox(width: kSeparator8),
+                          Text(dish.name, style: stStyle),
+                        ],
+                      )
+                    : Text(context.fromLabel(Labels.wsNone), style: stStyle),
                 Text(context.fromLabel(Labels.releaseDate), style: stLabel),
                 Text(info.releaseDate.toPrettyDate(), style: stStyle),
               ]

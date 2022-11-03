@@ -178,6 +178,7 @@ class ScreenFilters {
         (item) => _db.saveRecipes.exists(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
+        filter: (i) => i.baseRecipe.isEmpty,
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},
@@ -187,6 +188,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.proficiency),
         (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
         filter: (i) => _db.saveRecipes.exists(i.id),
+      ),
+      FilterSection<bool, InfoRecipe>(
+        {true, false},
+        (item) => item.baseRecipe.isNotEmpty,
+        (c) => c.fromLabel(Labels.specialDish),
+        (c, e) => c.fromLabel(e ? Labels.specialDish : Labels.wsNone),
       ),
     ],
     comparators: [

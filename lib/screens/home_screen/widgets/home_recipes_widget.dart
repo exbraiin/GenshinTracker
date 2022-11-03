@@ -13,7 +13,9 @@ class HomeRecipesWidget extends StatelessWidget {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        final all = GsDatabase.instance.infoRecipes.getItems();
+        final all = GsDatabase.instance.infoRecipes
+            .getItems()
+            .where((e) => e.baseRecipe.isEmpty);
         final saved = GsDatabase.instance.saveRecipes.getItems();
         final groups = all.groupBy((e) => e.rarity);
 
