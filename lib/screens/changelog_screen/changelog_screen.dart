@@ -36,6 +36,9 @@ class ChangelogScreen extends StatelessWidget {
     final iIngredients = GsDatabase.instance.infoIngredients;
     final ingredients = iIngredients.getItems().groupBy((e) => e.version);
 
+    final iBanners = GsDatabase.instance.infoBanners;
+    final banners = iBanners.getItems().groupBy((e) => e.version);
+
     final groups = [
       ...characters.keys,
       ...weapons.keys,
@@ -44,6 +47,7 @@ class ChangelogScreen extends StatelessWidget {
       ...sets.keys,
       ...crystals.keys,
       ...ingredients.keys,
+      ...banners.keys,
     ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
     final tabBar = TabBar(
@@ -142,6 +146,14 @@ class ChangelogScreen extends StatelessWidget {
                               name: (i) => '${i.number}: ${i.name}',
                               asset: (i) => spincrystalAsset,
                             ),
+                            _getSection<InfoBanner>(
+                              context: context,
+                              title: context.fromLabel(Labels.wishes),
+                              items: banners[version],
+                              name: (i) => i.name,
+                              image: (i) => i.image,
+                              fit: BoxFit.cover,
+                            ),
                           ],
                         ))
                     .toList(),
@@ -161,6 +173,7 @@ class ChangelogScreen extends StatelessWidget {
     String Function(T)? image,
     int Function(T)? rarity,
     String Function(T)? asset,
+    BoxFit fit = BoxFit.contain,
   }) {
     if (items == null) return SizedBox();
     return Padding(
@@ -176,6 +189,7 @@ class ChangelogScreen extends StatelessWidget {
                     image: image?.call(e) ?? '', // asset?.call(e)
                     rarity: rarity?.call(e) ?? 1,
                     size: 80,
+                    fit: fit,
                   ))
               .toList(),
         ),

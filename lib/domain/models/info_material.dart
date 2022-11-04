@@ -8,6 +8,7 @@ class InfoMaterial implements IdData {
   final String version;
   final int rarity;
   final int subgroup;
+  final List<String> weekdays;
 
   int get maxAmount => id == 'mora' ? 9999999999 : 9999;
 
@@ -19,6 +20,7 @@ class InfoMaterial implements IdData {
     required this.group,
     required this.rarity,
     required this.subgroup,
+    required this.weekdays,
   });
 
   factory InfoMaterial.fromMap(Map<String, dynamic> map) {
@@ -30,6 +32,7 @@ class InfoMaterial implements IdData {
       group: map['group'],
       rarity: map['rarity'],
       subgroup: map['subgroup'],
+      weekdays: (map['weekdays'] as List? ?? []).cast<String>(),
     );
   }
 }

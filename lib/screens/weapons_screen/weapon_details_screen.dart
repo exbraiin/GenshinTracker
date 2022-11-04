@@ -222,7 +222,7 @@ class WeaponDetailsScreen extends StatelessWidget {
   }
 
   Widget _getAllMaterials(BuildContext context, InfoWeapon info) {
-    final ascMats = info.allAscensionMaterials;
+    final ascMats = info.allMaterials;
     final db = GsDatabase.instance.infoMaterials;
 
     TableRow _getTableRow(

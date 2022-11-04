@@ -4,6 +4,7 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
   final String id;
   final String name;
   final String image;
+  final String version;
   final DateTime dateStart;
   final DateTime dateEnd;
   final List<String> feature4;
@@ -14,6 +15,7 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
     required this.id,
     required this.name,
     required this.image,
+    required this.version,
     required this.dateStart,
     required this.dateEnd,
     required this.feature4,
@@ -26,6 +28,7 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
       id: map['id'],
       name: map['name'],
       image: map['image'],
+      version: map['version'] ?? '',
       dateStart: DateTime.parse(map['date_start']),
       dateEnd: DateTime.parse(map['date_end']),
       feature4: (map['feature_4'] as List).cast<String>(),

@@ -19,7 +19,7 @@ class InfoWeapon implements IdData {
   final List<InfoCharacterAscension> ascension;
 
   /// Gets all ascension materials.
-  Map<String, int> get allAscensionMaterials => ascension
+  Map<String, int> get allMaterials => ascension
       .expand((e) => e.materials.entries)
       .groupBy((e) => e.key)
       .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));

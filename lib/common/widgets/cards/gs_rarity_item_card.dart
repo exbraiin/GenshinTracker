@@ -10,6 +10,7 @@ class GsRarityItemCard extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget? header;
   final Widget? footer;
+  final BoxFit fit;
 
   GsRarityItemCard({
     this.size = 64,
@@ -18,6 +19,7 @@ class GsRarityItemCard extends StatelessWidget {
     this.onTap,
     this.header,
     this.footer,
+    this.fit = BoxFit.contain,
   });
 
   GsRarityItemCard.withLabels({
@@ -25,6 +27,7 @@ class GsRarityItemCard extends StatelessWidget {
     this.image = '',
     this.rarity = 1,
     this.onTap,
+    this.fit = BoxFit.contain,
     String labelHeader = '',
     String labelFooter = '',
   })  : header = labelHeader.isEmpty
@@ -57,7 +60,7 @@ class GsRarityItemCard extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(getRarityBgImage(rarity)),
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
         child: HoverDetector(
@@ -79,7 +82,7 @@ class GsRarityItemCard extends StatelessWidget {
     return Stack(
       children: [
         Positioned.fill(
-          child: CachedImageWidget(image),
+          child: CachedImageWidget(image, fit: fit),
         ),
         if (header != null)
           Positioned.fill(
