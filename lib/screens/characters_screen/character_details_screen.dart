@@ -343,7 +343,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ...values.map(
                   (e) => Center(
                     child: Text(
-                      e.toPrettyString(context),
+                      context.fromLabel(e.label),
                       style: style,
                     ),
                   ),
@@ -597,7 +597,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         context.fromLabel(info.weapon.label),
         if (info.region != GsRegion.none) context.fromLabel(info.region.label),
         context.fromLabel(info.element.label),
-        info.specialStat.toPrettyString(context),
+        context.fromLabel(info.specialStat.label),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
           .separate(SizedBox(width: kSeparator4))

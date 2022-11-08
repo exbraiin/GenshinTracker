@@ -69,7 +69,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        GsAttributeStat.atk.toPrettyString(context),
+                        context.fromLabel(GsAttributeStat.atk.label),
                         style: context.textTheme.description,
                       ),
                       SizedBox(height: kSeparator2),
@@ -80,7 +80,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                       if (info.statType != GsAttributeStat.none) ...[
                         SizedBox(height: kSeparator8),
                         Text(
-                          '${info.statType.toPrettyString(context)}',
+                          context.fromLabel(info.statType.label),
                           style: context.textTheme.description,
                         ),
                         SizedBox(height: kSeparator2),
@@ -165,7 +165,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                 ...values.map(
                   (e) => Center(
                     child: Text(
-                      e.toPrettyString(context),
+                      context.fromLabel(e.label),
                       style: style,
                     ),
                   ),
@@ -355,7 +355,7 @@ class WeaponDetailsScreen extends StatelessWidget {
       children: [
         context.fromLabel(Labels.rarityStar, info.rarity),
         context.fromLabel(info.type.label),
-        info.statType.toPrettyString(context),
+        context.fromLabel(info.statType.label),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
           .separate(SizedBox(width: kSeparator4))

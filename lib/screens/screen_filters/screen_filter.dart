@@ -5,6 +5,7 @@ import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain_ext/enum/gs_attribute_stat_ext.dart';
 import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
 import 'package:tracker/domain_ext/enum/gs_item_ext.dart';
 import 'package:tracker/domain_ext/enum/gs_recipe_buff_ext.dart';
@@ -231,7 +232,7 @@ class ScreenFilters {
         GsAttributeStat.values.weaponStats,
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
-        (c, i) => i.toPrettyString(c),
+        (c, i) => c.fromLabel(i.label),
         asset: (e) => e.assetPath,
         comparator: (a, b) => a.statType.index.compareTo(b.statType.index),
       ),
@@ -301,7 +302,7 @@ class ScreenFilters {
             _db.infoCharacters.getItemOrNull(item.id)?.specialStat ??
             GsAttributeStat.none,
         (c) => 'Special Stat',
-        (c, i) => i.toPrettyString(c),
+        (c, i) => c.fromLabel(i.label),
         comparator: (a, b) => a.region.index.compareTo(b.region.index),
       ),
       FilterSection<bool, InfoCharacter>(

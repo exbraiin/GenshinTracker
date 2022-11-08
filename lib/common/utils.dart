@@ -1,8 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 extension BuildContextExt on BuildContext {
   String fromLabel(String label, [Object? arg]) {
@@ -47,77 +45,4 @@ class InfoMaterialGroups {
 
   static String getLabel(String group) =>
       _infoMaterialGroups[group] ?? Labels.wsNone;
-}
-
-extension GsWeaponStatListExt on List<GsAttributeStat> {
-  Set<GsAttributeStat> get weaponStats {
-    return {
-      GsAttributeStat.none,
-      GsAttributeStat.hpPercent,
-      GsAttributeStat.atkPercent,
-      GsAttributeStat.defPercent,
-      GsAttributeStat.critDmg,
-      GsAttributeStat.critRate,
-      GsAttributeStat.physicalDmg,
-      GsAttributeStat.energyRecharge,
-      GsAttributeStat.elementalMastery,
-    };
-  }
-
-  Set<GsAttributeStat> get characterStats {
-    return GsAttributeStat.values.except([
-      GsAttributeStat.hp,
-      GsAttributeStat.atk,
-      GsAttributeStat.def,
-    ]).toSet();
-  }
-}
-
-extension GsWeaponStatExt on GsAttributeStat {
-  String toPrettyString(BuildContext context) {
-    final key = const {
-      GsAttributeStat.none: Labels.wsNone,
-      GsAttributeStat.hp: Labels.wsHp,
-      GsAttributeStat.atk: Labels.wsAtk,
-      GsAttributeStat.def: Labels.wsDef,
-      GsAttributeStat.critDmg: Labels.wsCritdmg,
-      GsAttributeStat.critRate: Labels.wsCritrate,
-      GsAttributeStat.physicalDmg: Labels.wsPhysicaldmg,
-      GsAttributeStat.elementalMastery: Labels.wsElementalmastery,
-      GsAttributeStat.energyRecharge: Labels.wsEnergyrecharge,
-      GsAttributeStat.healing: Labels.wsHealing,
-      GsAttributeStat.hpPercent: Labels.wsHp,
-      GsAttributeStat.atkPercent: Labels.wsAtk,
-      GsAttributeStat.defPercent: Labels.wsDef,
-      GsAttributeStat.anemoDmgBonus: Labels.wsAnemoDmg,
-      GsAttributeStat.geoDmgBonus: Labels.wsGeoBonus,
-      GsAttributeStat.electroDmgBonus: Labels.wsElectroBonus,
-      GsAttributeStat.dendroDmgBonus: Labels.wsDendroBonus,
-      GsAttributeStat.hydroDmgBonus: Labels.wsHydroBonus,
-      GsAttributeStat.pyroDmgBonus: Labels.wsPyroBonus,
-      GsAttributeStat.cryoDmgBonus: Labels.wsCryoBonus,
-    }[this]!;
-    return Lang.of(context).getValue(key);
-  }
-
-  String toIntOrPercentage(double value, [bool format = true]) {
-    final percentage = GsAttributeStat.values.except({
-      GsAttributeStat.none,
-      GsAttributeStat.hp,
-      GsAttributeStat.atk,
-      GsAttributeStat.def,
-      GsAttributeStat.elementalMastery,
-    });
-
-    late final String str;
-    if (format) {
-      final dc = value.toStringAsFixed(1).split('.').last;
-      str = '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}';
-    } else {
-      str = value.toStringAsFixed(value == value.toInt() ? 0 : 1);
-    }
-
-    if (!percentage.contains(this)) return str;
-    return '$str%';
-  }
 }
