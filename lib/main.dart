@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
           selectionColor: Colors.white.withOpacity(0.2),
           selectionHandleColor: Colors.white,
         ),
+        canvasColor: GsColors.mainColor1,
       ),
       home: MainScreen(),
     );

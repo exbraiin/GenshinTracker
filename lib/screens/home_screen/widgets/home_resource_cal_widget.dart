@@ -5,6 +5,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/gs_number_field.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
   @override
@@ -52,6 +53,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             ),
           ),
         ),
+        SizedBox(height: kSeparator4),
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -78,13 +80,17 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
 
   Widget _getResourceInfo() {
     final textTheme = Theme.of(context).textTheme;
-    final style = textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = textTheme.infoLabel.copyWith(
+      fontSize: 12,
+      color: Colors.white,
+    );
     return ValueListenableBuilder<_ResourceInfo>(
       valueListenable: _notifier,
       builder: (context, value, child) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(height: kSeparator4),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -103,7 +109,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
                 ),
               ),
             ),
-            SizedBox(height: 6),
+            SizedBox(height: kSeparator4),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -132,12 +138,11 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   }
 
   Widget _getText(String text, TextStyle style) {
-    final color = Colors.white.withOpacity(0.5);
     return Container(
-      margin: EdgeInsets.all(2),
-      padding: EdgeInsets.all(4),
+      margin: EdgeInsets.all(kSeparator2),
+      padding: EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
-        border: Border.all(color: color, width: 0.5),
+        border: Border.all(color: GsColors.mainColor3, width: 0.6),
         borderRadius: kMainRadius,
       ),
       child: Text(
@@ -149,33 +154,19 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   }
 
   Widget _getField(TextStyle style, void Function(int) onEdit) {
-    final border = OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.white, width: 0.5),
-      borderRadius: kMainRadius,
-    );
-    return Padding(
-      padding: EdgeInsets.all(2),
-      child: TextField(
-        maxLength: 4,
-        onChanged: (t) => onEdit.call(int.parse(t.isNullOrEmpty ? '0' : t)),
-        style: style,
-        decoration: InputDecoration(
-          border: border,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: kMainRadius,
-          ),
-          disabledBorder: border,
-          enabledBorder: border,
-          counter: SizedBox(),
-          hintText: '0',
-          hintStyle: style.copyWith(color: Colors.white.withOpacity(0.5)),
-          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          isDense: true,
+    return Container(
+      margin: EdgeInsets.all(kSeparator2),
+      padding: EdgeInsets.all(kSeparator4),
+      decoration: BoxDecoration(
+        borderRadius: kMainRadius,
+        border: Border.all(
+          color: GsColors.mainColor3,
+          width: 0.6,
         ),
-        textAlign: TextAlign.center,
-        scrollPadding: EdgeInsets.zero,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      ),
+      child: GsNumberField(
+        length: 4,
+        onUpdate: (t) => onEdit.call(t),
       ),
     );
   }

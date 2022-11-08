@@ -172,6 +172,7 @@ class ScreenFilters {
         (item) => '${item.version.split('.').firstOrNull ?? ''}.x',
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
+        comparator: (a, b) => a.version.compareTo(b.version),
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},
@@ -279,6 +280,7 @@ class ScreenFilters {
         (item) => '${item.version.split('.').first}.x',
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
+        comparator: (a, b) => a.version.compareTo(b.version),
       ),
       FilterSection<GsRegion, InfoCharacter>(
         GsRegion.values.toSet(),

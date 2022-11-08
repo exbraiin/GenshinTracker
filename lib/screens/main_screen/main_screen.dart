@@ -275,12 +275,11 @@ final _menus = [
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
   ),
-  if (DateTime.now().weekday != DateTime.sunday)
-    Menu(
-      label: Labels.weeklyTasks,
-      icon: menuIconAchievements,
-      initialPage: WeeklyScreen.id,
-    ),
+  Menu(
+    label: Labels.weeklyTasks,
+    icon: menuIconAchievements,
+    initialPage: WeeklyScreen.id,
+  ),
   Menu(
     label: Labels.changelog,
     icon: menuIconAchievements,

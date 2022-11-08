@@ -1,8 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_colors.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
@@ -15,13 +13,26 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 
-class WeeklyScreen extends StatelessWidget {
+class WeeklyScreen extends StatefulWidget {
   static const id = 'weekly_screen';
 
   @override
+  State<WeeklyScreen> createState() => _WeeklyScreenState();
+}
+
+class _WeeklyScreenState extends State<WeeklyScreen> {
+  var _weekday = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _weekday = DateTime.now().weekday;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final weekday = DateTime.now().weekday;
-    final name = GsWeekday.days[weekday - 1];
+    final now = DateTime.now().weekday - 1;
+    final name = GsWeekday.days[_weekday - 1];
     final materials = GsDatabase.instance.infoMaterials
         .getItems()
         .where((element) => element.weekdays.contains(name))
@@ -34,7 +45,12 @@ class WeeklyScreen extends StatelessWidget {
     final sw = GsDatabase.instance.saveWishes;
 
     return Scaffold(
-      appBar: GsAppBar(label: context.fromLabel(Labels.weeklyTasks)),
+      appBar: GsAppBar(
+        label: context.fromLabel(Labels.weeklyTasks),
+        actions: [
+          _getDropdown(context, now),
+        ],
+      ),
       body: ListView(
         padding: EdgeInsets.all(kSeparator4),
         children: materials
@@ -120,6 +136,34 @@ class WeeklyScreen extends StatelessWidget {
             })
             .separate(SizedBox(height: kSeparator4))
             .toList(),
+      ),
+    );
+  }
+
+  Padding _getDropdown(BuildContext context, int now) {
+    return Padding(
+      padding: const EdgeInsets.all(kSeparator4),
+      child: DropdownButton(
+        style: context.textTheme.description2.copyWith(color: Colors.white),
+        value: _weekday - 1,
+        underline: SizedBox(),
+        focusColor: Colors.transparent,
+        iconEnabledColor: Colors.white,
+        iconDisabledColor: Colors.white,
+        items: GsWeekday.days.mapIndexed((idx, item) {
+          return DropdownMenuItem(
+            child: Text(
+              item,
+              style: TextStyle(color: idx == now ? Colors.orange : null),
+            ),
+            value: idx,
+            alignment: Alignment.center,
+          );
+        }).toList(),
+        onChanged: (int? i) => setState(() => _weekday = (i ?? 0) + 1),
+        alignment: Alignment.center,
+        borderRadius: kMainRadius,
+        elevation: 1,
       ),
     );
   }
