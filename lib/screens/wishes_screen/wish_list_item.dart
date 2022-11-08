@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain_ext/enum/gs_item_ext.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 enum ListType { none, top, middle, bottom }
@@ -112,7 +113,7 @@ class WishListItem extends StatelessWidget {
                 )
               : SizedBox(),
           Text(item.rarity.toString(), style: style),
-          Text(Lang.of(context).getValue(item.type.getLabel()), style: style),
+          Text(context.fromLabel(item.type.label), style: style),
           Text(wish.number.toString(), style: style),
         ]).toList(),
       ),

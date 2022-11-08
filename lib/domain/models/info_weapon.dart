@@ -16,7 +16,7 @@ class InfoWeapon implements IdData {
   final GsWeapon type;
   final GsAttributeStat statType;
   final List<List<String>> effectValues;
-  final List<InfoCharacterAscension> ascension;
+  final List<InfoAscension> ascension;
 
   /// Gets all ascension materials.
   Map<String, int> get allMaterials => ascension
@@ -60,7 +60,7 @@ class InfoWeapon implements IdData {
       statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
       ascension: (map['ascension'] as List)
-          .map((e) => InfoCharacterAscension.fromMap(e))
+          .map((e) => InfoAscension.fromMap(e))
           .toList(),
     );
   }

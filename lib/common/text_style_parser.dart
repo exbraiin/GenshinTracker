@@ -1,8 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/enums/gs_element.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
 
 class TextParserWidget extends StatelessWidget {
   final String text;
@@ -23,26 +23,26 @@ class TextParserWidget extends StatelessWidget {
   }
 
   Iterable<TextSpan> getChildren() sync* {
-    final bold = _Stack<FontWeight>();
-    final italic = _Stack<FontStyle>();
-    final underline = _Stack<TextDecoration>();
-    final colorQueue = _Stack<Color>();
+    final bold = <FontWeight>[];
+    final italic = <FontStyle>[];
+    final underline = <TextDecoration>[];
+    final colorQueue = <Color>[];
 
     final tags = {
-      '<b>': () => bold.push(FontWeight.bold),
+      '<b>': () => bold.add(FontWeight.bold),
       '</b>': () => bold.pop(),
-      '<i>': () => italic.push(FontStyle.italic),
+      '<i>': () => italic.add(FontStyle.italic),
       '</i>': () => italic.pop(),
-      '<u>': () => underline.push(TextDecoration.underline),
+      '<u>': () => underline.add(TextDecoration.underline),
       '</u>': () => underline.pop(),
-      '<color=skill>': () => colorQueue.push(Colors.orange),
-      '<color=geo>': () => colorQueue.push(GsElement.geo.getColor()),
-      '<color=pyro>': () => colorQueue.push(GsElement.pyro.getColor()),
-      '<color=cryo>': () => colorQueue.push(GsElement.cryo.getColor()),
-      '<color=hydro>': () => colorQueue.push(GsElement.hydro.getColor()),
-      '<color=anemo>': () => colorQueue.push(GsElement.anemo.getColor()),
-      '<color=dendro>': () => colorQueue.push(GsElement.dendro.getColor()),
-      '<color=electro>': () => colorQueue.push(GsElement.electro.getColor()),
+      '<color=skill>': () => colorQueue.add(Colors.orange),
+      '<color=geo>': () => colorQueue.add(GsElement.geo.color),
+      '<color=pyro>': () => colorQueue.add(GsElement.pyro.color),
+      '<color=cryo>': () => colorQueue.add(GsElement.cryo.color),
+      '<color=hydro>': () => colorQueue.add(GsElement.hydro.color),
+      '<color=anemo>': () => colorQueue.add(GsElement.anemo.color),
+      '<color=dendro>': () => colorQueue.add(GsElement.dendro.color),
+      '<color=electro>': () => colorQueue.add(GsElement.electro.color),
       '</color>': () => colorQueue.pop(),
     };
     for (var p = 0;;) {
@@ -71,18 +71,7 @@ class TextParserWidget extends StatelessWidget {
   }
 }
 
-class _Stack<E> {
-  final _list = <E>[];
-
-  void push(E value) => _list.add(value);
-
-  E? pop() => _list.isEmpty ? null : _list.removeLast();
-
-  E? get peek => _list.lastOrNull;
-
-  bool get isEmpty => _list.isEmpty;
-  bool get isNotEmpty => _list.isNotEmpty;
-
-  @override
-  String toString() => _list.toString();
+extension<E> on List<E> {
+  E? get peek => lastOrNull;
+  E? pop() => isEmpty ? null : removeLast();
 }

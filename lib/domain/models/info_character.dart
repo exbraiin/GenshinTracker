@@ -19,7 +19,7 @@ class InfoCharacter implements IdData {
   final GsWeapon weapon;
   final GsElement element;
   final List<InfoCharacterTalent> talents;
-  final List<InfoCharacterAscension> ascension;
+  final List<InfoAscension> ascension;
   final List<InfoCharacterConstellation> constellations;
   final List<Map<String, int>> talentMaterials;
 
@@ -98,7 +98,7 @@ class InfoCharacter implements IdData {
           .map((e) => InfoCharacterTalent.fromMap(e))
           .toList(),
       ascension: (map['ascension'] as List)
-          .map((e) => InfoCharacterAscension.fromMap(e))
+          .map((e) => InfoAscension.fromMap(e))
           .toList(),
       constellations: (map['constellations'] as List)
           .map((e) => InfoCharacterConstellation.fromMap(e))
@@ -131,51 +131,6 @@ class InfoCharacterTalent {
       desc: map['desc'],
     );
   }
-}
-
-class InfoCharacterAscension {
-  final int level;
-  final Map<String, int> materials;
-  final Map<GsAttributeStat, double> valuesAfter;
-  final Map<GsAttributeStat, double> valuesBefore;
-
-  InfoCharacterAscension({
-    required this.level,
-    required this.materials,
-    required this.valuesAfter,
-    required this.valuesBefore,
-  });
-
-  factory InfoCharacterAscension.fromMap(Map<String, dynamic> map) {
-    return InfoCharacterAscension(
-      level: map['level'],
-      materials: (map['materials'] as Map? ?? {}).cast<String, int>(),
-      valuesAfter: (map['values_after'] as Map? ?? {}).map(
-        (key, value) => MapEntry(
-          GsAttributeStat.values.firstWhere(
-            (e) => e.name == key,
-            orElse: () => GsAttributeStat.none,
-          ),
-          _toDouble(value),
-        ),
-      ),
-      valuesBefore: (map['values_before'] as Map? ?? {}).map(
-        (key, value) => MapEntry(
-          GsAttributeStat.values.firstWhere(
-            (e) => e.name == key,
-            orElse: () => GsAttributeStat.none,
-          ),
-          _toDouble(value),
-        ),
-      ),
-    );
-  }
-}
-
-double _toDouble(Object obj) {
-  if (obj is double) return obj;
-  if (obj is int) return obj.toDouble();
-  return double.tryParse(obj.toString()) ?? 0;
 }
 
 class InfoCharacterConstellation {

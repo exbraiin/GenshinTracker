@@ -12,6 +12,10 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain_ext/enum/gs_attribute_stat_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_region_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_weapon_ext.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
 
@@ -244,7 +248,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Text(context.fromLabel(Labels.vision), style: stLabel),
-                Text(info.element.toPrettyString(context), style: stStyle),
+                Text(context.fromLabel(info.element.label), style: stStyle),
                 Text(context.fromLabel(Labels.affiliation), style: stLabel),
                 Text(info.affiliation, style: stStyle),
               ]
@@ -257,7 +261,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Text(context.fromLabel(Labels.weapon), style: stLabel),
-                Text(info.weapon.toPrettyString(context), style: stStyle),
+                Text(context.fromLabel(info.weapon.label), style: stStyle),
                 Text(context.fromLabel(Labels.version), style: stLabel),
                 Text(info.version, style: stStyle),
               ]
@@ -368,7 +372,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   ),
                   ...values.map((v) => Center(
                         child: Text(
-                          e.toAscensionStat(v),
+                          v.toAscensionStat(e),
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.white),
                         ),
@@ -590,9 +594,9 @@ class CharacterDetailsScreen extends StatelessWidget {
     return Row(
       children: [
         context.fromLabel(Labels.rarityStar, info.rarity),
-        info.weapon.toPrettyString(context),
-        if (info.region != GsRegion.none) info.region.toPrettyString(context),
-        info.element.toPrettyString(context),
+        context.fromLabel(info.weapon.label),
+        if (info.region != GsRegion.none) context.fromLabel(info.region.label),
+        context.fromLabel(info.element.label),
         info.specialStat.toPrettyString(context),
       ]
           .map<Widget>((e) => GsDataBox.label(e))

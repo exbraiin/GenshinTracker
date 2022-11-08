@@ -5,6 +5,12 @@ import 'package:tracker/common/lang/labels.dart';
 import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_item_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_recipe_buff_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_region_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_set_category_ext.dart';
+import 'package:tracker/domain_ext/enum/gs_weapon_ext.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class FilterSection<T, I> {
@@ -120,7 +126,7 @@ class ScreenFilters {
         GsItem.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.getLabel()),
+        (c, e) => c.fromLabel(e.label),
         comparator: (a, b) => a.type.index.compareTo(b.type.index),
       ),
       FilterSection<int, ItemData>(
@@ -140,7 +146,7 @@ class ScreenFilters {
         GsItem.values.toSet(),
         (item) => getItemData(item.itemId).type,
         (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.getLabel()),
+        (c, e) => c.fromLabel(e.label),
       ),
       FilterSection<int, SaveWish>(
         {3, 4, 5},
@@ -208,7 +214,7 @@ class ScreenFilters {
         GsWeapon.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.weapon),
-        (c, e) => c.fromLabel(e.getLabel()),
+        (c, e) => c.fromLabel(e.label),
         asset: (e) => e.assetPath,
         comparator: (a, b) => a.type.index.compareTo(b.type.index),
       ),
@@ -263,7 +269,7 @@ class ScreenFilters {
         GsElement.values.toSet(),
         (item) => item.element,
         (c) => c.fromLabel(Labels.element),
-        (c, i) => i.toPrettyString(c),
+        (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
         comparator: (a, b) => a.element.index.compareTo(b.element.index),
       ),
@@ -271,7 +277,7 @@ class ScreenFilters {
         GsWeapon.values.toSet(),
         (item) => item.weapon,
         (c) => c.fromLabel(Labels.weapon),
-        (c, i) => i.toPrettyString(c),
+        (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
         comparator: (a, b) => a.weapon.index.compareTo(b.weapon.index),
       ),
@@ -286,7 +292,7 @@ class ScreenFilters {
         GsRegion.values.toSet(),
         (item) => item.region,
         (c) => c.fromLabel(Labels.region),
-        (c, i) => i.toPrettyString(c),
+        (c, i) => c.fromLabel(i.label),
         comparator: (a, b) => a.region.index.compareTo(b.region.index),
       ),
       FilterSection<GsAttributeStat, InfoCharacter>(
@@ -356,7 +362,7 @@ class ScreenFilters {
         GsSetCategory.values.toSet(),
         (item) => item.category,
         (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.getLabel()),
+        (c, e) => c.fromLabel(e.label),
         comparator: (a, b) => a.category.index.compareTo(b.category.index),
       ),
     ],
