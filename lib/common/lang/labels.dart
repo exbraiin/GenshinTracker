@@ -510,4 +510,7 @@ class Labels {
 
 	/// Changelog
 	static const changelog = 'changelog';
+
+	/// Namecards
+	static const namecards = 'namecards';
 }

@@ -44,12 +44,16 @@ class FilterSection<T, I> {
   String? asset(T i) => _asset?.call(i);
   String label(BuildContext c, T i) => _label(c, i);
 
+  bool _filter(I e) {
+    if (enabled.isEmpty) return true;
+    return (filter?.call(e) ?? true) && enabled.contains(match(e));
+  }
+
   void toggle(T v) => enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
 }
 
 class ScreenFilter<I> {
   final Set<String> extras;
-  final bool Function(I)? filter;
   final Iterable<Comparator<I>> comparators;
   final List<FilterSection<dynamic, I>> sorting = [];
   final List<FilterSection<dynamic, I>> sections;
@@ -57,30 +61,14 @@ class ScreenFilter<I> {
   ScreenFilter({
     this.sections = const [],
     this.comparators = const [],
-    this.filter,
     Set<String>? extras,
   }) : extras = extras ?? {};
 
   List<I> match(Iterable<I> items) {
-    final comparator = _chain(comparators);
-    final chain = _chain(sorting.map((e) => e.comparator!.ordered(e.order)));
-
-    final filtered = items.where((e) =>
-        (filter?.call(e) ?? true) &&
-        sections.every((s) =>
-            s.enabled.isEmpty ||
-            (s.filter?.call(e) ?? true) && s.enabled.contains(s.match(e))));
-
-    if (chain != null && comparator != null) {
-      return filtered.sortedWith(chain).thenWith(comparator);
-    }
-    if (chain != null) {
-      return filtered.sortedWith(chain);
-    }
-    if (comparator != null) {
-      return filtered.sortedWith(comparator);
-    }
-    return filtered.toList();
+    final compt = _chain(comparators);
+    final order = _chain(sorting.map((e) => e.comparator!.ordered(e.order)));
+    final filtr = items.where((e) => sections.every((s) => s._filter(e)));
+    return filtr.sortedWith(order).thenWith(compt);
   }
 
   void reset() {
@@ -138,7 +126,6 @@ class ScreenFilters {
         comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
     ],
-    filter: (e) => e.character?.version != null || e.type == GsItem.weapon,
     comparators: [(a, b) => a.compareTo(b)],
   );
   static final saveWishFilter = ScreenFilter<SaveWish>(
@@ -342,7 +329,6 @@ class ScreenFilters {
         comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
     ],
-    filter: (i) => i.version.isNotEmpty,
     comparators: [
       (a, b) => b.rarity.compareTo(a.rarity),
       (a, b) => a.name.compareTo(b.name),
@@ -407,12 +393,12 @@ class ScreenFilters {
   );
 }
 
-Comparator<E>? _chain<E>(Iterable<Comparator<E>> selectors) {
-  return selectors.fold<Comparator<E>?>(null, (p, e) => p?.compose(e) ?? e);
+Comparator<E> _chain<E>(Iterable<Comparator<E>> selectors) {
+  return selectors.fold((a, b) => 0, (p, e) => p.compose(e));
 }
 
-extension<I> on Comparator<I> {
-  Comparator<I> ordered(int order) => (a, b) => this(a, b) * order;
+extension<E> on Comparator<E> {
+  Comparator<E> ordered(int order) => (a, b) => this(a, b) * order;
 }
 
 extension on bool {

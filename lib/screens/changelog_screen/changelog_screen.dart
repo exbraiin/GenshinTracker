@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/domain/models/info_ingredient.dart';
 
 class ChangelogScreen extends StatelessWidget {
   static const id = 'changelog_screen';
@@ -39,6 +38,9 @@ class ChangelogScreen extends StatelessWidget {
     final iBanners = GsDatabase.instance.infoBanners;
     final banners = iBanners.getItems().groupBy((e) => e.version);
 
+    final iNamecards = GsDatabase.instance.infoNamecards;
+    final namecards = iNamecards.getItems().groupBy((e) => e.version);
+
     final groups = [
       ...characters.keys,
       ...weapons.keys,
@@ -48,6 +50,7 @@ class ChangelogScreen extends StatelessWidget {
       ...crystals.keys,
       ...ingredients.keys,
       ...banners.keys,
+      ...namecards.keys,
     ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
     final tabBar = TabBar(
@@ -153,6 +156,13 @@ class ChangelogScreen extends StatelessWidget {
                               name: (i) => i.name,
                               image: (i) => i.image,
                               fit: BoxFit.cover,
+                            ),
+                            _getSection<InfoNamecard>(
+                              context: context,
+                              title: context.fromLabel(Labels.namecards),
+                              items: namecards[version],
+                              name: (i) => i.name,
+                              image: (i) => i.image,
                             ),
                           ],
                         ))

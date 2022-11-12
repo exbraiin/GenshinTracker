@@ -6,7 +6,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/domain/models/info_ingredient.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
 
@@ -47,6 +46,10 @@ class GsDatabase {
   final infoWeapons = JsonInfoDetails<InfoWeapon>(
     'weapons',
     (map) => InfoWeapon.fromMap(map),
+  );
+  final infoNamecards = JsonInfoDetails(
+    'namecards',
+    (map) => InfoNamecard.fromMap(map),
   );
   final infoCharacters = JsonInfoDetails<InfoCharacter>(
     'characters',
@@ -134,6 +137,7 @@ class GsDatabase {
       infoWeapons.load(info);
       infoArtifacts.load(info);
       infoMaterials.load(info);
+      infoNamecards.load(info);
       infoCharacters.load(info);
       infoSpincrystal.load(info);
       infoSereniteaSets.load(info);

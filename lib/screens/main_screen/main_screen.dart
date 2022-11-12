@@ -14,6 +14,7 @@ import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
 import 'package:tracker/screens/main_screen/tracker_router.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
+import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
@@ -274,6 +275,11 @@ final _menus = [
     label: Labels.reputation,
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
+  ),
+  Menu(
+    label: Labels.namecards,
+    icon: menuIconAchievements,
+    initialPage: NamecardScreen.id,
   ),
   Menu(
     label: Labels.weeklyTasks,
