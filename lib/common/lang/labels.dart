@@ -513,4 +513,10 @@ class Labels {
 
 	/// Namecards
 	static const namecards = 'namecards';
+
+	/// Image
+	static const image = 'image';
+
+	/// Description
+	static const description = 'description';
 }

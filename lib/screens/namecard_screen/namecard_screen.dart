@@ -58,18 +58,40 @@ class NamecardScreen extends StatelessWidget {
         ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
-          TableRow(
-              children: [
-            Center(child: Text('Image', style: titleStyle)),
-            Center(child: Text('Name', style: titleStyle)),
-            Center(child: Text('Description', style: titleStyle)),
-            Center(child: Text('Obtain', style: titleStyle)),
-          ]
-                  .map((e) => Padding(
-                        padding: EdgeInsets.all(kSeparator4),
-                        child: e,
-                      ))
-                  .toList()),
+          TableRow(children: [
+            Container(
+              padding: EdgeInsets.all(kSeparator4),
+              alignment: Alignment.center,
+              child: Text(
+                context.fromLabel(Labels.image),
+                style: titleStyle,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(kSeparator4),
+              alignment: Alignment.center,
+              child: Text(
+                context.fromLabel(Labels.name),
+                style: titleStyle,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(kSeparator4),
+              alignment: Alignment.center,
+              child: Text(
+                context.fromLabel(Labels.description),
+                style: titleStyle,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(kSeparator4),
+              alignment: Alignment.center,
+              child: Text(
+                context.fromLabel(Labels.source),
+                style: titleStyle,
+              ),
+            ),
+          ]),
           ...namecards.map(
             (e) => TableRow(
               children: [

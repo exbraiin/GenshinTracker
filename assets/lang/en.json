@@ -169,5 +169,7 @@
     "release_date": "Release Date",
     "level": "Level",
     "changelog": "Changelog",
-    "namecards": "Namecards"
+    "namecards": "Namecards",
+    "image": "Image",
+    "description": "Description"
 }
