@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class GsWishStateIcon extends StatelessWidget {

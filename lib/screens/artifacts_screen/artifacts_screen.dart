@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/lang/labels.dart';
-import 'package:tracker/common/utils.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';

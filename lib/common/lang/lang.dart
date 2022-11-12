@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -39,5 +40,19 @@ class _LangDelegate extends LocalizationsDelegate<Lang> {
   @override
   bool shouldReload(covariant LocalizationsDelegate<Lang> old) {
     return false;
+  }
+}
+
+extension BuildContextExt on BuildContext {
+  String fromLabel(String label, [Object? arg]) {
+    final value = Lang.of(this).getValue(label);
+    if (arg == null) return value;
+
+    final exp = RegExp(r'{\w+}');
+    final match = exp.allMatches(value).firstOrNull;
+    if (match == null) return value;
+
+    final name = value.substring(match.start, match.end);
+    return value.replaceAll(name, arg.toString());
   }
 }
