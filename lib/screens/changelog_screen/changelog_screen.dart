@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class ChangelogScreen extends StatelessWidget {
   static const id = 'changelog_screen';
@@ -153,7 +154,8 @@ class ChangelogScreen extends StatelessWidget {
                               title: context.fromLabel(Labels.wishes),
                               items: banners[version],
                               name: (i) => i.name,
-                              image: (i) => i.image,
+                              rarity: (i) => _getBannerItemData(i)?.rarity ?? 1,
+                              image: (i) => _getBannerItemData(i)?.image ?? '',
                               fit: BoxFit.cover,
                             ),
                             _getSection<InfoNamecard>(
@@ -204,5 +206,15 @@ class ChangelogScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ItemData? _getBannerItemData(InfoBanner i) {
+    final id = {
+      GsBanner.standard: 'qiqi',
+      GsBanner.beginner: 'noelle',
+      GsBanner.weapon: i.feature5.firstOrNull,
+      GsBanner.character: i.feature5.firstOrNull,
+    }[i.type];
+    return id != null ? getItemData(id) : null;
   }
 }

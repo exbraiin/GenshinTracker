@@ -10,6 +10,7 @@ class ItemData extends Comparable<ItemData> {
 
   String get id => weapon?.id ?? character?.id ?? '';
   String get name => weapon?.name ?? character?.name ?? '';
+  String get image => weapon?.image ?? character?.image ?? '';
   GsItem get type => weapon != null ? GsItem.weapon : GsItem.character;
   int get rarity => weapon?.rarity ?? character?.rarity ?? 0;
 
