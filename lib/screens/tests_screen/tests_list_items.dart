@@ -2,7 +2,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -109,11 +108,11 @@ class TestWidgets {
     return _container(context, [
       'Group'
     ], [
-      ...InfoMaterialGroups.groups
+      ...GsMaterialGroup.values
           .where((e) => !using.contains(e))
           .map((e) => ['Unused Filter: $e']),
       ...using
-          .where((e) => !InfoMaterialGroups.groups.contains(e))
+          .where((e) => !GsMaterialGroup.values.contains(e))
           .map((e) => ['No Filter: $e']),
     ]);
   }

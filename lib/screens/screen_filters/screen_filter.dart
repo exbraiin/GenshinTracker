@@ -2,16 +2,8 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/utils.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/domain_ext/enum/gs_attribute_stat_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_item_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_recipe_buff_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_region_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_set_category_ext.dart';
-import 'package:tracker/domain_ext/enum/gs_weapon_ext.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class FilterSection<T, I> {
@@ -377,15 +369,15 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.rarity),
         (c, i) => c.fromLabel(Labels.rarityStar, i),
       ),
-      FilterSection<String, InfoMaterial>(
-        InfoMaterialGroups.groups,
+      FilterSection<GsMaterialGroup, InfoMaterial>(
+        GsMaterialGroup.values.toSet(),
         (item) => item.group,
         (c) => c.fromLabel(Labels.category),
-        (c, i) => c.fromLabel(InfoMaterialGroups.getLabel(i)),
+        (c, i) => c.fromLabel(i.label),
       ),
     ],
     comparators: [
-      (a, b) => a.group.compareTo(b.group),
+      (a, b) => a.group.index.compareTo(b.group.index),
       (a, b) => a.subgroup.compareTo(b.subgroup),
       (a, b) => a.rarity.compareTo(b.rarity),
       (a, b) => a.name.compareTo(b.name),

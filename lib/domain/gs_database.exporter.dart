@@ -8,6 +8,8 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+export 'gs_database.extensions.dart';
+
 abstract class GsDatabaseExporter {
   static Future<void> export() async {
     final excel = Excel.createExcel();

@@ -1,8 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/domain/enums/gs_element.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/domain_ext/enum/gs_element_ext.dart';
 
 class TextParserWidget extends StatelessWidget {
   final String text;

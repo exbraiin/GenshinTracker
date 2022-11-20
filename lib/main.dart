@@ -2,9 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
 
 void main() {
+  GsDomain.testLabels();
   runApp(MyApp());
 }
 

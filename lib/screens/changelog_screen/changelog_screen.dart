@@ -103,7 +103,7 @@ class ChangelogScreen extends StatelessWidget {
                               context: context,
                               title: context.fromLabel(Labels.materials),
                               items: materials[version]
-                                  ?.sortedBy((element) => element.group)
+                                  ?.sortedBy((element) => element.group.index)
                                   .thenBy((element) => element.subgroup)
                                   .thenBy((element) => element.name),
                               name: (i) => i.name,
