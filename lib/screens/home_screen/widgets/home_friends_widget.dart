@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
@@ -30,12 +31,17 @@ class HomeFriendsWidget extends StatelessWidget {
               spacing: 4,
               runSpacing: 4,
               children: characters.map<Widget>((e) {
-                return GsRarityItemCard.withLabels(
+                return GsRarityItemCard(
+                  key: ValueKey('friend_${e.id}'),
                   size: 70,
                   image: e.image,
                   rarity: e.rarity,
-                  labelFooter: e.name,
-                  labelHeader: sc.getCharFriendship(e.id).toString(),
+                  footer: Text(e.name),
+                  header: GsNumberField(
+                    length: 2,
+                    onUpdate: (i) => sc.setCharFriendship(e.id, i),
+                    onDbUpdate: () => sc.getCharFriendship(e.id),
+                  ),
                   onTap: () => Navigator.of(context).pushNamed(
                     CharacterDetailsScreen.id,
                     arguments: e,

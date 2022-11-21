@@ -13,6 +13,7 @@ class GsRarityItemCard extends StatelessWidget {
   final BoxFit fit;
 
   GsRarityItemCard({
+    super.key,
     this.size = 64,
     this.image = '',
     this.rarity = 1,
@@ -30,24 +31,8 @@ class GsRarityItemCard extends StatelessWidget {
     this.fit = BoxFit.contain,
     String labelHeader = '',
     String labelFooter = '',
-  })  : header = labelHeader.isEmpty
-            ? null
-            : Text(
-                labelHeader,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.clip,
-                style: TextStyle(color: Colors.white, fontSize: 10),
-              ),
-        footer = labelFooter.isEmpty
-            ? null
-            : Text(
-                labelFooter,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.clip,
-                style: TextStyle(color: Colors.white, fontSize: 10),
-              );
+  })  : header = labelHeader.isEmpty ? null : Text(labelHeader),
+        footer = labelFooter.isEmpty ? null : Text(labelFooter);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +75,13 @@ class GsRarityItemCard extends StatelessWidget {
             child: Container(
               color: GsColors.mainColor1.withOpacity(0.6),
               padding: EdgeInsets.all(2),
-              child: Center(child: header),
+              child: DefaultTextStyle(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.clip,
+                style: TextStyle(fontSize: 10, color: Colors.white),
+                child: Center(child: header),
+              ),
             ),
           ),
         if (footer != null)
@@ -99,7 +90,13 @@ class GsRarityItemCard extends StatelessWidget {
             child: Container(
               color: GsColors.mainColor1.withOpacity(0.6),
               padding: EdgeInsets.all(2),
-              child: Center(child: footer),
+              child: DefaultTextStyle(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.clip,
+                style: TextStyle(fontSize: 10, color: Colors.white),
+                child: Center(child: footer),
+              ),
             ),
           ),
       ],

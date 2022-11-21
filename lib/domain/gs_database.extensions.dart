@@ -196,6 +196,13 @@ extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
     return char?.friendship.coerceAtLeast(1) ?? 1;
   }
 
+  void setCharFriendship(String id, int friendship) {
+    final char = getItemOrNull(id);
+    final friend = friendship.clamp(1, 10);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
+    if (item.friendship != char?.friendship) insertItem(item);
+  }
+
   int getCharAscension(String id) {
     final char = getItemOrNull(id);
     return char?.ascension ?? 0;
