@@ -139,9 +139,10 @@ class _CharacterAscensionListItem extends StatelessWidget {
 List<AscendMaterial> getAscendMaterials(String charId, int level) {
   final db = GsDatabase.instance;
   final char = db.infoCharacters.getItemOrNull(charId);
+  final details = db.infoCharactersDetails.getItemOrNull(charId);
   if (char == null) return [];
   final witsAmount = db.infoDetails.getAscensionHerosWit(level);
-  return (char.ascension[level].materials.entries.toList()
+  return ((details?.ascension[level].materials.entries.toList() ?? [])
         ..insert(0, MapEntry('heros_wit', witsAmount)))
       .map((e) => AscendMaterial.fromId(e.key, e.value))
       .toList();

@@ -1,5 +1,3 @@
-import 'package:dartx/dartx.dart';
-
 import '../gs_domain.dart';
 
 class InfoWeapon implements IdData {
@@ -8,21 +6,11 @@ class InfoWeapon implements IdData {
   final String image;
   final String version;
   final String description;
-  final String effectName;
-  final String effectDescription;
   final int atk;
   final int rarity;
   final double statValue;
   final GsWeapon type;
   final GsAttributeStat statType;
-  final List<List<String>> effectValues;
-  final List<InfoAscension> ascension;
-
-  /// Gets all ascension materials.
-  Map<String, int> get allMaterials => ascension
-      .expand((e) => e.materials.entries)
-      .groupBy((e) => e.key)
-      .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
 
   InfoWeapon({
     required this.id,
@@ -30,15 +18,11 @@ class InfoWeapon implements IdData {
     required this.image,
     required this.version,
     required this.description,
-    required this.effectName,
-    required this.effectValues,
-    required this.effectDescription,
     required this.atk,
     required this.type,
     required this.rarity,
     required this.statType,
     required this.statValue,
-    required this.ascension,
   });
 
   factory InfoWeapon.fromMap(Map<String, dynamic> map) {
@@ -49,19 +33,10 @@ class InfoWeapon implements IdData {
       image: map['image'],
       version: map['version'] ?? '',
       description: map['desc'] ?? '',
-      effectName: map['effect_name'] ?? '',
-      effectValues: (map['effect_values'] as List? ?? [])
-          .cast<List>()
-          .map((e) => e.cast<String>())
-          .toList(),
-      effectDescription: map['effect_desc'] ?? '',
       type: GsWeapon.values.fromName(map['type']),
       rarity: map['rarity'],
       statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
-      ascension: (map['ascension'] as List)
-          .map((e) => InfoAscension.fromMap(e))
-          .toList(),
     );
   }
 }

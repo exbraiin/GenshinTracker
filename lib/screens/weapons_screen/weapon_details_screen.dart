@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
@@ -19,6 +19,10 @@ class WeaponDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     final info = args as InfoWeapon;
+    final db = GsDatabase.instance.infoWeaponsDetails;
+    final details = db.getItemOrNull(info.id);
+
+    final hasEffect = details?.effectName.isNotEmpty ?? false;
 
     return Scaffold(
       appBar: GsAppBar(label: info.name),
@@ -30,12 +34,14 @@ class WeaponDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 _getInfo(context, info),
-                SizedBox(height: kSeparator8),
-                if (info.effectName.isNotEmpty) _getEffect(context, info),
-                if (info.effectName.isNotEmpty) SizedBox(height: kSeparator8),
-                _getAscension(context, info),
-                SizedBox(height: kSeparator8),
-                _getAllMaterials(context, info),
+                if (details != null) ...[
+                  SizedBox(height: kSeparator8),
+                  if (hasEffect) _getEffect(context, details),
+                  if (hasEffect) SizedBox(height: kSeparator8),
+                  _getAscension(context, details),
+                  SizedBox(height: kSeparator8),
+                  _getAllMaterials(context, details),
+                ]
               ],
             ),
           );
@@ -126,7 +132,7 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAscension(BuildContext context, InfoWeapon info) {
+  Widget _getAscension(BuildContext context, InfoWeaponDetails info) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
     final values = info.ascension
         .expand((e) => [
@@ -220,7 +226,7 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAllMaterials(BuildContext context, InfoWeapon info) {
+  Widget _getAllMaterials(BuildContext context, InfoWeaponDetails info) {
     final ascMats = info.allMaterials;
     final db = GsDatabase.instance.infoMaterials;
 
@@ -284,7 +290,7 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getEffect(BuildContext context, InfoWeapon info) {
+  Widget _getEffect(BuildContext context, InfoWeaponDetails info) {
     var r = 0;
     return GsDataBox.info(
       title: info.effectName,

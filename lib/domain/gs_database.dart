@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -47,6 +43,10 @@ class GsDatabase {
     'weapons',
     (map) => InfoWeapon.fromMap(map),
   );
+  final infoWeaponsDetails = JsonInfoDetails<InfoWeaponDetails>(
+    'weapons_details',
+    (map) => InfoWeaponDetails.fromMap(map),
+  );
   final infoNamecards = JsonInfoDetails(
     'namecards',
     (map) => InfoNamecard.fromMap(map),
@@ -54,6 +54,10 @@ class GsDatabase {
   final infoCharacters = JsonInfoDetails<InfoCharacter>(
     'characters',
     (map) => InfoCharacter.fromMap(map),
+  );
+  final infoCharactersDetails = JsonInfoDetails<InfoCharacterDetails>(
+    'characters_details',
+    (map) => InfoCharacterDetails.fromMap(map),
   );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
@@ -135,10 +139,12 @@ class GsDatabase {
       infoRecipes.load(info);
       infoIngredients.load(info);
       infoWeapons.load(info);
+      infoWeaponsDetails.load(info);
       infoArtifacts.load(info);
       infoMaterials.load(info);
       infoNamecards.load(info);
       infoCharacters.load(info);
+      infoCharactersDetails.load(info);
       infoSpincrystal.load(info);
       infoSereniteaSets.load(info);
     });
@@ -147,7 +153,7 @@ class GsDatabase {
   Future<void> _loadSave() async {
     if (_saveLoaded) return;
     _saveLoaded = true;
-    _loadInfo().then((map) {
+    await JsonSaveDetails.loadInfo().then((map) {
       saveWishes.load(map);
       saveRecipes.load(map);
       saveCharacters.load(map);
@@ -160,7 +166,7 @@ class GsDatabase {
 
   Future<void> _saveAll() async {
     _saving.add(false);
-    await _saveInfo([
+    await JsonSaveDetails.saveInfo([
       saveWishes,
       saveRecipes,
       saveCharacters,
@@ -179,19 +185,5 @@ class GsDatabase {
   void dispose() {
     _loaded.close();
     _saving.close();
-  }
-
-  Future<Map<String, dynamic>> _loadInfo() async {
-    return File(GsDatabase.savePath)
-        .readAsString()
-        .then((data) => jsonDecode(data) as Map<String, dynamic>);
-  }
-
-  Future<void> _saveInfo(Iterable<JsonSaveDetails> data) async {
-    final map = data.toMap(
-      (e) => e.name,
-      (e) => e.getItems().toMap((e) => e.id, (e) => e.toMap()..remove('id')),
-    );
-    await File(savePath).writeAsString(jsonEncode(map));
   }
 }

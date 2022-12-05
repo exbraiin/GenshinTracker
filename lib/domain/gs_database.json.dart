@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -22,7 +23,7 @@ class JsonInfoDetails<T extends IdData> {
   }
 
   Future<void> load(Map<String, dynamic> data) async {
-    final map = data[name] as Map<String, dynamic>;
+    final map = data[name] as Map<String, dynamic>? ?? {};
     _map.addAll(map.map((k, v) => MapEntry(k, create(v..['id'] = k))));
   }
 
@@ -37,6 +38,22 @@ class JsonSaveDetails<T extends IdSaveData> extends JsonInfoDetails<T> {
 
   JsonSaveDetails(String name, ItemFromMap<T> create, this._onUpdate)
       : super(name, create);
+
+  static Future<Map<String, dynamic>> loadInfo() async {
+    final file = File(GsDatabase.savePath);
+    if (!await file.exists()) return {};
+    return file
+        .readAsString()
+        .then((data) => jsonDecode(data) as Map<String, dynamic>);
+  }
+
+  static Future<void> saveInfo(Iterable<JsonSaveDetails> data) async {
+    final map = data.toMap(
+      (e) => e.name,
+      (e) => e.getItems().toMap((e) => e.id, (e) => e.toMap()..remove('id')),
+    );
+    await File(GsDatabase.savePath).writeAsString(jsonEncode(map));
+  }
 
   void insertItem(T item) {
     _map[item.id] = item;

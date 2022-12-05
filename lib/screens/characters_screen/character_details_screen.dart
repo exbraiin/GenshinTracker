@@ -27,7 +27,9 @@ class CharacterDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final details = args as InfoCharacter;
+    final info = args as InfoCharacter;
+    final db = GsDatabase.instance.infoCharactersDetails;
+    final details = db.getItemOrNull(info.id);
 
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
@@ -35,13 +37,13 @@ class CharacterDetailsScreen extends StatelessWidget {
         if (!snapshot.data!) return SizedBox();
         return Scaffold(
           appBar: GsAppBar(
-            label: details.name,
+            label: info.name,
           ),
           body: Stack(
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  getElementBgImage(details.element),
+                  getElementBgImage(info.element),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -49,16 +51,18 @@ class CharacterDetailsScreen extends StatelessWidget {
                 padding: EdgeInsets.all(kSeparator4),
                 child: Column(
                   children: [
-                    _getInfo(context, details),
-                    _getAttributes(context, details),
-                    SizedBox(height: kSeparator8),
-                    _getAscension(context, details),
-                    SizedBox(height: kSeparator8),
-                    _getTalents(context, details),
-                    SizedBox(height: kSeparator8),
-                    _getConstellations(context, details),
-                    SizedBox(height: kSeparator8),
-                    _getAllMaterials(context, details),
+                    _getInfo(context, info, details),
+                    _getAttributes(context, info),
+                    if (details != null) ...[
+                      SizedBox(height: kSeparator8),
+                      _getAscension(context, details),
+                      SizedBox(height: kSeparator8),
+                      _getTalents(context, details),
+                      SizedBox(height: kSeparator8),
+                      _getConstellations(context, details),
+                      SizedBox(height: kSeparator8),
+                      _getAllMaterials(context, details),
+                    ],
                   ],
                 ),
               ),
@@ -69,7 +73,11 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getInfo(BuildContext context, InfoCharacter info) {
+  Widget _getInfo(
+    BuildContext context,
+    InfoCharacter info,
+    InfoCharacterDetails? details,
+  ) {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = db.getCharAscension(info.id);
     return SizedBox(
@@ -174,7 +182,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   style: context.textTheme.description2,
                 ),
                 SizedBox(height: kSeparator8),
-                _getTags(context, info),
+                _getTags(context, info, details),
               ],
             ),
           ),
@@ -301,7 +309,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAscension(BuildContext context, InfoCharacter info) {
+  Widget _getAscension(BuildContext context, InfoCharacterDetails info) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
     final values = info.ascension
         .expand((e) => [
@@ -396,7 +404,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getTalents(BuildContext context, InfoCharacter info) {
+  Widget _getTalents(BuildContext context, InfoCharacterDetails info) {
     return GsDataBox.info(
       key: _talents,
       title: context.fromLabel(Labels.talents),
@@ -446,7 +454,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getConstellations(BuildContext context, InfoCharacter info) {
+  Widget _getConstellations(BuildContext context, InfoCharacterDetails info) {
     return GsDataBox.info(
       key: _constellation,
       title: context.fromLabel(Labels.constellation),
@@ -490,7 +498,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAllMaterials(BuildContext context, InfoCharacter info) {
+  Widget _getAllMaterials(BuildContext context, InfoCharacterDetails info) {
     final tltMats = info.allTalentMaterials;
     final ascMats = info.allAscensionMaterials;
     final totalMats = info.allMaterials;
@@ -585,14 +593,18 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getTags(BuildContext context, InfoCharacter info) {
+  Widget _getTags(
+    BuildContext context,
+    InfoCharacter info,
+    InfoCharacterDetails? details,
+  ) {
     return Row(
       children: [
         context.fromLabel(Labels.rarityStar, info.rarity),
         context.fromLabel(info.weapon.label),
         if (info.region != GsRegion.none) context.fromLabel(info.region.label),
         context.fromLabel(info.element.label),
-        context.fromLabel(info.specialStat.label),
+        if (details != null) context.fromLabel(details.specialStat.label),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
           .separate(SizedBox(width: kSeparator4))

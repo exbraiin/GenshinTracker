@@ -69,30 +69,27 @@ class TestWidgets {
   }
 
   static Widget getCharacterListItem(BuildContext context) {
-    final info = GsDatabase.instance.infoCharacters;
     final items = GsDatabase.instance.infoCharacters.getItems();
+    final detailed = GsDatabase.instance.infoCharactersDetails;
 
     return _container(
       context,
       ['Character Id', 'Missing info'],
       items.map((e) {
-        final details = info.getItemOrNull(e.id);
+        final details = detailed.getItemOrNull(e.id);
         final temp = <String, bool>{
-          'title': details?.title.isEmpty ?? true,
-          'constellation': details?.constellation.isEmpty ?? true,
-          'affiliation': details?.affiliation.isEmpty ?? true,
-          'specialDish': details?.id != 'raiden_shogun' &&
-              (details?.specialDish.isEmpty ?? true),
-          'description': details?.description.isEmpty ?? true,
-          'fullImage': details?.fullImage.isEmpty ?? true,
-          'birthday': details?.birthday == DateTime(0),
-          'releaseDate': details?.releaseDate == DateTime(0),
-          'talents': details?.talents.any((e) =>
-                  [e.name, e.icon, e.desc, e.type].any((l) => l.isEmpty)) ??
-              true,
-          'constellations': details?.constellations
-                  .any((e) => [e.name, e.desc, e.icon].any((l) => l.isEmpty)) ??
-              true,
+          'title': e.title.isEmpty,
+          'constellation': e.constellation.isEmpty,
+          'affiliation': e.affiliation.isEmpty,
+          'specialDish': e.specialDish.isEmpty,
+          'description': e.description.isEmpty,
+          'fullImage': e.fullImage.isEmpty,
+          'birthday': e.birthday == DateTime(0),
+          'releaseDate': e.releaseDate == DateTime(0),
+          'talents': (details?.talents ?? []).any(
+              (e) => [e.name, e.icon, e.desc, e.type].any((l) => l.isEmpty)),
+          'constellations': (details?.constellations ?? [])
+              .any((e) => [e.name, e.desc, e.icon].any((l) => l.isEmpty)),
         };
         final noDtls = temp.entries.firstOrNullWhere((e) => e.value)?.key;
         return [e.id, noDtls ?? ''];
