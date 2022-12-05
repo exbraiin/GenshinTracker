@@ -25,6 +25,7 @@ export 'models/info_character.dart';
 export 'models/info_character_details.dart';
 export 'models/info_city.dart';
 export 'models/info_data.dart';
+export 'models/info_details.dart';
 export 'models/info_ingredient.dart';
 export 'models/info_material.dart';
 export 'models/info_namecard.dart';

@@ -13,7 +13,10 @@ class GsDatabase {
 
   bool _dataLoaded = false;
 
-  final infoDetails = JsonDetails();
+  final infoDetails = JsonInfoSingle(
+    'details',
+    (map) => InfoDetails.fromMap(map),
+  );
   final infoCities = JsonInfoDetails<InfoCity>(
     'cities',
     (map) => InfoCity.fromMap(map),

@@ -67,14 +67,15 @@ class JsonSaveDetails<T extends IdSaveData> extends JsonInfoDetails<T> {
   }
 }
 
-class JsonDetails {
-  final _ascensionHerosWit = <int>[];
+class JsonInfoSingle<T extends IdData> {
+  final String name;
+  final ItemFromMap<T> create;
+  late T data;
+
+  JsonInfoSingle(this.name, this.create);
 
   Future<void> load(Map<String, dynamic> data) async {
-    final map = data['details'] as Map<String, dynamic>;
-    final ascValues = (map['ascension_heros_wit'] as List).cast<int>();
-    _ascensionHerosWit.addAll(ascValues);
+    final map = data[name] as Map<String, dynamic>? ?? {};
+    this.data = create(map);
   }
-
-  int getAscensionHerosWit(int level) => _ascensionHerosWit[level];
 }

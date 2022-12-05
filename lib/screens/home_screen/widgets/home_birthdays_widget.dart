@@ -12,10 +12,11 @@ class HomeBirthdaysWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var now = DateTime.now();
     now = DateTime(0, now.month, now.day);
+
     final characters = GsDatabase.instance.infoCharacters
         .getItems()
-        .where((e) => !e.birthday.isBefore(now))
-        .sortedBy((e) => e.birthday)
+        .sortedBy((e) => !e.birthday.isBefore(now) ? 0 : 1)
+        .thenBy((e) => e.birthday)
         .take(8);
 
     return GsDataBox.summary(

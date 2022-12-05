@@ -141,7 +141,7 @@ List<AscendMaterial> getAscendMaterials(String charId, int level) {
   final char = db.infoCharacters.getItemOrNull(charId);
   final details = db.infoCharactersDetails.getItemOrNull(charId);
   if (char == null) return [];
-  final witsAmount = db.infoDetails.getAscensionHerosWit(level);
+  final witsAmount = db.infoDetails.data.getAscensionHerosWit(level);
   return ((details?.ascension[level].materials.entries.toList() ?? [])
         ..insert(0, MapEntry('heros_wit', witsAmount)))
       .map((e) => AscendMaterial.fromId(e.key, e.value))

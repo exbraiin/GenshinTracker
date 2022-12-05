@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
@@ -22,6 +23,13 @@ class HomeAscensionWidget extends StatelessWidget {
             .thenByDescending((e) => e.rarity)
             .thenBy((e) => e.name)
             .take(8);
+
+        if (characters.isEmpty) {
+          return GsDataBox.summary(
+            title: context.fromLabel(Labels.friendship),
+            child: GsNoResultsState(),
+          );
+        }
 
         return GsDataBox.summary(
           title: context.fromLabel(Labels.ascension),
