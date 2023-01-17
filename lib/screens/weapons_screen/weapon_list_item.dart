@@ -23,6 +23,7 @@ class WeaponListItem extends StatelessWidget {
       child: GsItemCardButton(
         label: weapon.name,
         rarity: weapon.rarity,
+        version: weapon.version,
         imageUrlPath: weapon.image,
         child: _getContent(context),
         onTap: () => Navigator.of(context).pushNamed(

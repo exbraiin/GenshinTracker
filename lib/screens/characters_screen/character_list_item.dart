@@ -22,6 +22,7 @@ class CharacterListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       disable: owned == 0,
+      version: item.version,
       imageUrlPath: item.image,
       child: _child(context, owned, friend, ascension),
     );

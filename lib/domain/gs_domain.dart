@@ -32,6 +32,7 @@ export 'models/info_namecard.dart';
 export 'models/info_recipe.dart';
 export 'models/info_serenitea_set.dart';
 export 'models/info_spincrystal.dart';
+export 'models/info_version.dart';
 export 'models/info_weapon.dart';
 export 'models/info_weapon_details.dart';
 export 'models/save_character.dart';

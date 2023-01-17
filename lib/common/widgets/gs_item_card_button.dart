@@ -3,12 +3,14 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/file_image_widget.dart';
+import 'package:tracker/domain/gs_database.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
 class GsItemCardButton extends StatelessWidget {
   final int? rarity;
   final String label;
+  final String? version;
   final bool shadow;
   final bool disable;
   final int? maxLines;
@@ -27,6 +29,7 @@ class GsItemCardButton extends StatelessWidget {
     this.child,
     this.width,
     this.height,
+    this.version,
     this.subChild,
     this.maxLines,
     this.imageUrlPath,
@@ -62,6 +65,25 @@ class GsItemCardButton extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _getBanner(String version) {
+    final db = GsDatabase.instance.infoVersion;
+    if (db.isUpcoming(version)) {
+      return Banner(
+        message: 'Upcoming',
+        location: BannerLocation.topEnd,
+        color: Colors.orange,
+      );
+    }
+    if (db.isNew(version)) {
+      return Banner(
+        message: 'New',
+        location: BannerLocation.topEnd,
+        color: Colors.lightBlue,
+      );
+    }
+    return SizedBox();
   }
 
   Widget _getContent(BuildContext context, bool animate) {
@@ -127,6 +149,8 @@ class GsItemCardButton extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
+                    if (version != null)
+                      Positioned.fill(child: _getBanner(version!)),
                     if (child != null) Positioned.fill(child: child!),
                   ],
                 ),

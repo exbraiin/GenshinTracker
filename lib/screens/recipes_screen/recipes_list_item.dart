@@ -34,6 +34,7 @@ class RecipesListItem extends StatelessWidget {
       child: GsItemCardButton(
         label: recipe.name,
         rarity: recipe.rarity,
+        version: recipe.version,
         imageUrlPath: recipe.image,
         onTap: () => Navigator.of(context).pushNamed(
           RecipeDetailsScreen.id,

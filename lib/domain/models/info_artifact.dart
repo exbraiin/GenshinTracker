@@ -5,6 +5,7 @@ class InfoArtifact implements IdData {
   final String id;
   final String name;
   final String domain;
+  final String version;
   final String desc1Pc;
   final String desc2Pc;
   final String desc4Pc;
@@ -17,6 +18,7 @@ class InfoArtifact implements IdData {
     required this.id,
     required this.name,
     required this.domain,
+    required this.version,
     required this.desc1Pc,
     required this.desc2Pc,
     required this.desc4Pc,
@@ -29,6 +31,7 @@ class InfoArtifact implements IdData {
       id: map['id'],
       name: map['name'],
       domain: map['domain'],
+      version: map['version'] ?? '',
       desc1Pc: map['1pc'] ?? '',
       desc2Pc: map['2pc'] ?? '',
       desc4Pc: map['4pc'] ?? '',

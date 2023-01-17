@@ -13,6 +13,7 @@ class ArtifactListItem extends StatelessWidget {
     return GsItemCardButton(
       label: artifact.name,
       rarity: artifact.rarity,
+      version: artifact.version,
       imageUrlPath: artifact.image,
       onTap: () => Navigator.of(context).pushNamed(
         ArtifactDetailsScreen.id,

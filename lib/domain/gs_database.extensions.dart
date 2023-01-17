@@ -24,6 +24,24 @@ extension InfoMaterialExt on JsonInfoDetails<InfoMaterial> {
   }
 }
 
+extension InfoVersionExt on JsonInfoDetails<InfoVersion> {
+  bool isNew(String version) {
+    final now = DateTime.now();
+    final versions = getItems().sortedBy((e) => e.releaseDate).toList();
+    final idx = versions.indexWhere((e) => e.id == version);
+    if (idx == -1) return false;
+    final match = versions[idx];
+    final next = versions.elementAtOrNull(idx + 1);
+    return match.releaseDate.isBefore(now) &&
+        (next?.releaseDate.isAfter(now) ?? true);
+  }
+
+  bool isUpcoming(String version) {
+    final now = DateTime.now();
+    return getItemOrNull(version)?.releaseDate.isAfter(now) ?? false;
+  }
+}
+
 // =============== Save extensions ===============
 
 extension SaveReputationExt on JsonSaveDetails<SaveReputation> {

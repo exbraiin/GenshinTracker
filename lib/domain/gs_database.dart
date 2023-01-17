@@ -69,6 +69,10 @@ class GsDatabase {
     'serenitea_sets',
     (map) => InfoSereniteaSet.fromMap(map),
   );
+  final infoVersion = JsonInfoDetails<InfoVersion>(
+    'versions',
+    (map) => InfoVersion.fromMap(map),
+  );
 
   bool _saveLoaded = false;
   final saveWishes = JsonSaveDetails<SaveWish>(
@@ -149,6 +153,7 @@ class GsDatabase {
       infoCharactersDetails.load(info);
       infoSpincrystal.load(info);
       infoSereniteaSets.load(info);
+      infoVersion.load(info);
     });
   }
 

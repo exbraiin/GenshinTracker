@@ -32,6 +32,7 @@ class SereniteaSetListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GsItemCardButton(
       label: set.name,
+      version: set.version,
       imageUrlPath: set.image,
       child: Stack(
         children: [
