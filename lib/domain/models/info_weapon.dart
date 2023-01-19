@@ -10,6 +10,7 @@ class InfoWeapon implements IdData {
   final int rarity;
   final double statValue;
   final GsWeapon type;
+  final GsItemSource source;
   final GsAttributeStat statType;
 
   InfoWeapon({
@@ -23,6 +24,7 @@ class InfoWeapon implements IdData {
     required this.rarity,
     required this.statType,
     required this.statValue,
+    required this.source,
   });
 
   factory InfoWeapon.fromMap(Map<String, dynamic> map) {
@@ -37,6 +39,7 @@ class InfoWeapon implements IdData {
       rarity: map['rarity'],
       statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
+      source: GsItemSource.values.fromName(map['source']),
     );
   }
 }

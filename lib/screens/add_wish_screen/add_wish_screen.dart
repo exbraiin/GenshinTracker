@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -51,7 +52,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
           ),
           body: Row(
             children: [
-              _getItemsList(context, filter),
+              _getItemsList(context, banner, filter),
               Container(
                 width: 220,
                 color: GsColors.mainColor0,
@@ -134,8 +135,21 @@ class _AddWishScreenState extends State<AddWishScreen> {
     Navigator.of(context).maybePop();
   }
 
-  Widget _getItemsList(BuildContext context, ScreenFilter<ItemData> filter) {
-    final filtered = filter.match(getEveryItemData());
+  Widget _getItemsList(
+    BuildContext context,
+    InfoBanner banner,
+    ScreenFilter<ItemData> filter,
+  ) {
+    bool featured(ItemData itemData) =>
+        banner.feature4.contains(itemData.id) ||
+        banner.feature5.contains(itemData.id);
+
+    final filtered = filter
+        .match(getBannerItemsData(banner))
+        .sortedBy((element) => element.rarity)
+        .thenBy((element) => element.type.index)
+        .thenBy((element) => featured(element) ? 0 : 1)
+        .thenBy((element) => element.name);
     if (filtered.isEmpty) return GsNoResultsState();
 
     return Expanded(
@@ -143,6 +157,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
         itemCount: filtered.length,
         itemBuilder: (context, index) => AddWishItemDataListItem(
           item: filtered[index],
+          isItemFeatured: featured(filtered[index]),
           onAdd: () {
             if (_wishes.value.length >= 10) return;
             _wishes.value =

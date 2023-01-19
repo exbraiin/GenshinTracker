@@ -19,7 +19,7 @@ class SpincrystalListItem extends StatelessWidget {
       opacity: owned ? 1 : kDisableOpacity,
       child: GsItemCardButton(
         label: spincrystal.name,
-        version: spincrystal.version,
+        banner: GsItemBanner.fromVersion(spincrystal.version),
         imageAssetPath: spincrystalAsset,
         child: Stack(
           children: [

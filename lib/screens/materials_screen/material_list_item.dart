@@ -18,7 +18,7 @@ class MaterialListItem extends StatelessWidget {
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
-      version: item.version,
+      banner: GsItemBanner.fromVersion(item.version),
       imageUrlPath: item.image,
       subChild: Padding(
         padding: EdgeInsets.all(2),

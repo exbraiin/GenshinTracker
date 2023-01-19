@@ -40,15 +40,32 @@ ItemData getItemData(String id) {
 }
 
 /// Gets a list of [ItemData] that can be obtained in banners.
-Iterable<ItemData> getEveryItemData() {
+Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
   final db = GsDatabase.instance;
+
+  bool filterWeapon(InfoWeapon weapon) {
+    late final isStandard = weapon.source == GsItemSource.wishesStandard;
+    late final isFeatured = banner.feature5.contains(weapon.id);
+    late final isChar = banner.type == GsBanner.character && weapon.rarity == 5;
+    late final isBegn = banner.type == GsBanner.beginner && weapon.rarity > 3;
+    return (isStandard || isFeatured) && !isChar && !isBegn;
+  }
+
+  bool filterCharacter(InfoCharacter character) {
+    late final isStandard = character.source == GsItemSource.wishesStandard;
+    late final isFeatured = banner.feature5.contains(character.id);
+    late final isWeap = banner.type == GsBanner.weapon && character.rarity == 5;
+    return (isStandard || isFeatured) && !isWeap;
+  }
+
   return [
     ...db.infoWeapons
         .getItems()
-        .where((e) => e.rarity > 2)
+        .where((element) => filterWeapon(element))
         .map((element) => ItemData(weapon: element)),
     ...db.infoCharacters
         .getItems()
+        .where((element) => filterCharacter(element))
         .map((element) => ItemData(character: element)),
   ];
 }

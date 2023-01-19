@@ -17,6 +17,7 @@ class InfoCharacter implements IdData {
   final GsRegion region;
   final GsWeapon weapon;
   final GsElement element;
+  final GsItemSource source;
 
   InfoCharacter({
     required this.id,
@@ -35,6 +36,7 @@ class InfoCharacter implements IdData {
     required this.region,
     required this.weapon,
     required this.element,
+    required this.source,
   });
 
   factory InfoCharacter.fromMap(Map<String, dynamic> map) {
@@ -55,6 +57,7 @@ class InfoCharacter implements IdData {
       region: GsRegion.values.fromName(map['region']),
       weapon: GsWeapon.values.fromName(map['weapon']),
       element: GsElement.values.fromName(map['element']),
+      source: GsItemSource.values.fromName(map['source']),
     );
   }
 }
