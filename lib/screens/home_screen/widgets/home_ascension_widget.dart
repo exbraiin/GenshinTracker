@@ -1,11 +1,14 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
 class HomeAscensionWidget extends StatelessWidget {
@@ -26,32 +29,100 @@ class HomeAscensionWidget extends StatelessWidget {
 
         if (characters.isEmpty) {
           return GsDataBox.summary(
-            title: context.fromLabel(Labels.friendship),
+            title: context.fromLabel(Labels.ascension),
             child: GsNoResultsState(),
           );
         }
 
         return GsDataBox.summary(
           title: context.fromLabel(Labels.ascension),
-          child: Center(
-            child: Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: characters.map<Widget>((e) {
-                return GsRarityItemCard.withLabels(
-                  size: 70,
-                  image: e.image,
-                  rarity: e.rarity,
-                  labelHeader: '${sc.getCharAscension(e.id)} ✦',
-                  labelFooter: e.name,
-                  onTap: () => Navigator.of(context).pushNamed(
-                    CharacterDetailsScreen.id,
-                    arguments: e,
-                  ),
-                );
-              }).toList(),
-            ),
+          child: Column(
+            children: [
+              Center(
+                child: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: characters.map<Widget>((e) {
+                    return GsRarityItemCard.withLabels(
+                      size: 70,
+                      image: e.image,
+                      rarity: e.rarity,
+                      labelHeader: '${sc.getCharAscension(e.id)} ✦',
+                      labelFooter: e.name,
+                      onTap: () => Navigator.of(context).pushNamed(
+                        CharacterDetailsScreen.id,
+                        arguments: e,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              _getMaterialsList(characters: characters),
+            ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget _getMaterialsList({
+    required Iterable<InfoCharacter> characters,
+  }) {
+    if (characters.isEmpty) return SizedBox();
+
+    final materials = characters
+        .expand((e) => GsDatabaseUtils.getCharNextAscensionMats(e.id))
+        .groupBy((e) => e.material?.id)
+        .map((key, value) => MapEntry(key, AscendMaterial.combine(value)))
+        .values
+        .sortedBy((element) => element.material!.group.index)
+        .thenBy((element) => element.material!.subgroup)
+        .thenBy((element) => element.material!.rarity)
+        .thenBy((element) => element.material!.name);
+
+    var expanded = false;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          children: [
+            SizedBox(
+              child: Center(
+                child: IconButton(
+                  onPressed: () => setState(() => expanded = !expanded),
+                  padding: EdgeInsets.all(kSeparator4),
+                  constraints: BoxConstraints.tightFor(),
+                  icon: AnimatedRotation(
+                    turns: expanded ? 0.5 : 1,
+                    duration: Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            AnimatedContainer(
+              curve: Curves.easeOut,
+              duration: Duration(milliseconds: 400),
+              constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                child: Wrap(
+                  spacing: kSeparator4,
+                  runSpacing: kSeparator4,
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  children: materials
+                      .map((e) => CharacterAscensionMaterial(
+                            e.material!.id,
+                            e.required,
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

@@ -285,3 +285,67 @@ extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
         .toInt();
   }
 }
+
+// =============== Save extensions ===============
+
+class GsDatabaseUtils {
+  GsDatabaseUtils._();
+
+  static List<AscendMaterial> getCharAscensionMats(String id, int level) {
+    final db = GsDatabase.instance;
+    final char = db.infoCharacters.getItemOrNull(id);
+    if (char == null) return const [];
+
+    final details = db.infoCharactersDetails.getItemOrNull(id);
+    final witsAmount = db.infoDetails.data.getAscensionHerosWit(level);
+    final materials = details?.ascension.elementAtOrNull(level)?.materials;
+    return ((materials?.entries.toList() ?? [])
+          ..insert(0, MapEntry('heros_wit', witsAmount)))
+        .map((e) => AscendMaterial.fromId(e.key, e.value))
+        .toList();
+  }
+
+  static List<AscendMaterial> getCharNextAscensionMats(String id) {
+    final db = GsDatabase.instance;
+    if (db.saveCharacters.getCharMaxAscended(id)) return const [];
+    final ascension = db.saveCharacters.getCharAscension(id);
+    return getCharAscensionMats(id, ascension + 1);
+  }
+}
+
+class AscendMaterial {
+  final int owned;
+  final int required;
+  final int craftable;
+  final InfoMaterial? material;
+
+  bool get hasRequired => owned + craftable >= required;
+
+  AscendMaterial(
+    this.owned,
+    this.required,
+    this.craftable,
+    this.material,
+  );
+
+  factory AscendMaterial.fromId(String id, int required) {
+    final db = GsDatabase.instance;
+    final owned = db.saveMaterials.getMaterialAmount(id);
+    final craft = db.saveMaterials.getCraftableAmount(id);
+    final material = db.infoMaterials.getItemOrNull(id);
+    return AscendMaterial(owned, required, craft, material);
+  }
+
+  factory AscendMaterial.combine(List<AscendMaterial> mats) {
+    final valid = mats.where((e) => e.material != null);
+    final first = valid.firstOrNull;
+    if (first == null) return AscendMaterial(0, 0, 0, null);
+    if (valid.map((e) => e.material!.id).toSet().length != 1) return first;
+    return AscendMaterial(
+      first.owned,
+      valid.sumBy((e) => e.required).toInt(),
+      first.craftable,
+      first.material,
+    );
+  }
+}

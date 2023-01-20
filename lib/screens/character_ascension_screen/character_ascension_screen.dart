@@ -66,12 +66,9 @@ class _CharacterAscensionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final sw = GsDatabase.instance.saveWishes;
     final sc = GsDatabase.instance.saveCharacters;
-    final saved = sc.getItemOrNull(item.id);
-    final ascension = saved?.ascension ?? 0;
+    final ascension = sc.getCharAscension(item.id);
     final maxAscend = sc.getCharMaxAscended(item.id);
-    final materials = !maxAscend
-        ? getAscendMaterials(item.id, ascension + 1)
-        : <AscendMaterial>[];
+    final materials = GsDatabaseUtils.getCharNextAscensionMats(item.id);
     final canAscend = materials.all((e) => e.hasRequired);
     return Opacity(
       opacity: maxAscend ? kDisableOpacity : 1,
@@ -133,41 +130,5 @@ class _CharacterAscensionListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-List<AscendMaterial> getAscendMaterials(String charId, int level) {
-  final db = GsDatabase.instance;
-  final char = db.infoCharacters.getItemOrNull(charId);
-  final details = db.infoCharactersDetails.getItemOrNull(charId);
-  if (char == null) return [];
-  final witsAmount = db.infoDetails.data.getAscensionHerosWit(level);
-  return ((details?.ascension[level].materials.entries.toList() ?? [])
-        ..insert(0, MapEntry('heros_wit', witsAmount)))
-      .map((e) => AscendMaterial.fromId(e.key, e.value))
-      .toList();
-}
-
-class AscendMaterial {
-  final int owned;
-  final int required;
-  final int craftable;
-  final InfoMaterial? material;
-
-  bool get hasRequired => owned + craftable >= required;
-
-  AscendMaterial(
-    this.owned,
-    this.required,
-    this.craftable,
-    this.material,
-  );
-
-  factory AscendMaterial.fromId(String id, int required) {
-    final db = GsDatabase.instance;
-    final owned = db.saveMaterials.getMaterialAmount(id);
-    final craft = db.saveMaterials.getCraftableAmount(id);
-    final material = db.infoMaterials.getItemOrNull(id);
-    return AscendMaterial(owned, required, craft, material);
   }
 }

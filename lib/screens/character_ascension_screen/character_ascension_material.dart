@@ -26,19 +26,19 @@ class CharacterAscensionMaterial extends StatelessWidget {
         TextSpan(
           children: [
             TextSpan(
-              text: amount.format(),
+              text: (amount - craftable.clamp(0, amount)).format(),
               style: context.textTheme.infoLabel.copyWith(
                 fontSize: 10,
                 color: owned + craftable >= amount
                     ? Colors.lightGreen
-                    : Colors.deepOrange,
+                    : Colors.orange,
               ),
             ),
             if (owned < amount && craftable > 0)
               TextSpan(
-                text: ' (-${(amount - owned).clamp(0, craftable)})',
+                text: ' +${(amount - owned).clamp(0, craftable)}',
                 style: context.textTheme.infoLabel
-                    .copyWith(fontSize: 10, color: Colors.orange),
+                    .copyWith(fontSize: 10, color: Colors.white),
               ),
           ],
         ),
