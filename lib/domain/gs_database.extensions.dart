@@ -208,6 +208,16 @@ extension SaveRecipeExt on JsonSaveDetails<SaveRecipe> {
   }
 }
 
+extension SaveRemarkableChestExt on JsonSaveDetails<SaveRemarkableChest> {
+  void updateRemarkableChest(String id, {required bool obtained}) {
+    if (obtained) {
+      insertItem(SaveRemarkableChest(id: id, obtained: obtained));
+    } else {
+      deleteItem(id);
+    }
+  }
+}
+
 extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
   int getCharFriendship(String key) {
     final char = getItemOrNull(key);

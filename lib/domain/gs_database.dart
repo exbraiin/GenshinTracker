@@ -37,6 +37,10 @@ class GsDatabase {
     'recipes',
     (map) => InfoRecipe.fromMap(map),
   );
+  final infoRemarkableChests = JsonInfoDetails(
+    'remarkable_chests',
+    (map) => InfoRemarkableChest.fromMap(map),
+  );
   final infoIngredients = JsonInfoDetails<InfoIngredient>(
     'ingredients',
     (map) => InfoIngredient.fromMap(map),
@@ -83,6 +87,11 @@ class GsDatabase {
   final saveRecipes = JsonSaveDetails<SaveRecipe>(
     'recipes',
     (m) => SaveRecipe.fromMap(m),
+    () => GsDatabase.instance._notify(),
+  );
+  final saveRemarkableChests = JsonSaveDetails<SaveRemarkableChest>(
+    'remarkable_chests',
+    (m) => SaveRemarkableChest.fromMap(m),
     () => GsDatabase.instance._notify(),
   );
   final saveCharacters = JsonSaveDetails<SaveCharacter>(
@@ -143,6 +152,7 @@ class GsDatabase {
       infoBanners.load(info);
       infoDetails.load(info);
       infoRecipes.load(info);
+      infoRemarkableChests.load(info);
       infoIngredients.load(info);
       infoWeapons.load(info);
       infoWeaponsDetails.load(info);
@@ -163,6 +173,7 @@ class GsDatabase {
     await JsonSaveDetails.loadInfo().then((map) {
       saveWishes.load(map);
       saveRecipes.load(map);
+      saveRemarkableChests.load(map);
       saveCharacters.load(map);
       saveReputations.load(map);
       saveSereniteaSets.load(map);
@@ -176,6 +187,7 @@ class GsDatabase {
     await JsonSaveDetails.saveInfo([
       saveWishes,
       saveRecipes,
+      saveRemarkableChests,
       saveCharacters,
       saveReputations,
       saveSereniteaSets,

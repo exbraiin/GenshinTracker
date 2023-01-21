@@ -24,9 +24,9 @@ class SpincrystalListItem extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              left: 2,
-              right: 2,
-              bottom: 2,
+              left: kSeparator2,
+              right: kSeparator2,
+              bottom: kSeparator2,
               child: Center(
                 child: GsItemCardLabel(
                   label: spincrystal.number.toString(),
@@ -34,8 +34,8 @@ class SpincrystalListItem extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 2,
-              right: 3,
+              top: kSeparator2,
+              right: kSeparator2,
               child: GsIconButton(
                 size: 20,
                 color: owned ? Colors.green : Colors.deepOrange,

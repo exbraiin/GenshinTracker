@@ -45,16 +45,16 @@ class RecipesListItem extends StatelessWidget {
           children: [
             if (recipe.effect != GsRecipeBuff.none)
               Positioned(
-                top: 2,
-                left: 2,
+                top: kSeparator2,
+                left: kSeparator2,
                 child: GsItemCardLabel(
                   asset: recipe.effect.assetPath,
                 ),
               ),
             if (!isSpecial)
               Positioned(
-                top: 2,
-                right: 3,
+                top: kSeparator2,
+                right: kSeparator2,
                 child: GsIconButton(
                   size: 20,
                   color: savedRecipe != null ? Colors.green : Colors.deepOrange,

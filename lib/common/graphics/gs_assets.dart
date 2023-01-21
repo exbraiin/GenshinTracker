@@ -12,9 +12,14 @@ const menuIconRecipes = 'assets/image/icons/menu_icon_recipes.png';
 const menuIconMaterials = 'assets/image/icons/menu_icon_materials.png';
 const menuIconWeapons = 'assets/image/icons/menu_icon_weapons.png';
 const menuIconSereniteaPot = 'assets/image/icons/menu_icon_serenitea_sets.png';
-const menuIconAchievements = 'assets/image/icons/menu_icon_quest.png';
+const menuIconQuest = 'assets/image/icons/menu_icon_quest.png';
 const menuIconReputation = 'assets/image/icons/menu_icon_reputation.png';
 const menuIconCharacters = 'assets/image/icons/menu_icon_characters.png';
+const menuIconBook = 'assets/image/icons/menu_icon_book.webp';
+const menuIconArchive = 'assets/image/icons/menu_icon_archive.webp';
+const menuIconAchievements = 'assets/image/icons/menu_icon_achievements.webp';
+const menuIconFeedback = 'assets/image/icons/menu_icon_feedback.webp';
+const menuIconMap = 'assets/image/icons/menu_icon_map.webp';
 
 const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
 const imageXp = 'assets/image/icons/Companion_xp.png';

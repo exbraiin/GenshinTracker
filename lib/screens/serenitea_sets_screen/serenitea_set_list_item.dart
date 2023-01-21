@@ -37,8 +37,8 @@ class SereniteaSetListItem extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 4,
-            left: 4,
+            top: 2,
+            left: 2,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
@@ -71,14 +71,14 @@ class SereniteaSetListItem extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                vertical: kSeparator4,
-                horizontal: kSeparator4 * 2,
+                vertical: kSeparator2,
+                horizontal: kSeparator2,
               ),
               child: Wrap(
                 alignment: WrapAlignment.end,
                 verticalDirection: VerticalDirection.up,
-                spacing: kSeparator4,
-                runSpacing: kSeparator4,
+                spacing: kSeparator2,
+                runSpacing: kSeparator2,
                 children: set.chars
                     .map((id) => SereniteaCharacterButton(
                           key: ValueKey('${set.name} - $id'),

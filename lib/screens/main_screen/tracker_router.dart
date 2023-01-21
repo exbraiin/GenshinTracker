@@ -11,6 +11,7 @@ import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
+import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
@@ -30,6 +31,7 @@ class TrackerRouter {
     AddWishScreen.id: () => AddWishScreen(),
     RecipesScreen.id: () => RecipesScreen(),
     RecipeDetailsScreen.id: () => RecipeDetailsScreen(),
+    RemarkableChestsScreen.id: () => RemarkableChestsScreen(),
     WeaponsScreen.id: () => WeaponsScreen(),
     WeaponDetailsScreen.id: () => WeaponDetailsScreen(),
     ArtifactsScreen.id: () => ArtifactsScreen(),
@@ -48,7 +50,14 @@ class TrackerRouter {
 
   static Route? onGenerate(RouteSettings settings) {
     return MaterialPageRoute(
-      builder: (_) => _routes[settings.name]?.call() ?? SizedBox(),
+      builder: (_) =>
+          _routes[settings.name]?.call() ??
+          Center(
+            child: Text(
+              'No route defined!',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
       settings: settings,
     );
   }

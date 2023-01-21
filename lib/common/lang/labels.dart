@@ -25,6 +25,9 @@ class Labels {
 	/// Recipes
 	static const recipes = 'recipes';
 
+	/// Remarkable Chests
+	static const remarkableChests = 'remarkable_chests';
+
 	/// Weapon
 	static const weapon = 'weapon';
 

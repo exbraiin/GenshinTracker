@@ -188,6 +188,45 @@ class ScreenFilters {
       (a, b) => a.name.compareTo(b.name),
     ],
   );
+  static final infoRemarkableChestFilter = ScreenFilter<InfoRemarkableChest>(
+    sections: [
+      FilterSection<int, InfoRemarkableChest>(
+        {1, 2, 3, 4, 5},
+        (item) => item.rarity,
+        (c) => c.fromLabel(Labels.rarity),
+        (c, e) => c.fromLabel(Labels.rarityStar, e),
+        comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+      FilterSection<String, InfoRemarkableChest>(
+        _db.infoRemarkableChests
+            .getItems()
+            .map((e) => e.version)
+            .toSet()
+            .sorted()
+            .toSet(),
+        (item) => item.version,
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
+      FilterSection<String, InfoRemarkableChest>(
+        _db.infoRemarkableChests
+            .getItems()
+            .map((e) => e.source)
+            .toSet()
+            .sorted()
+            .toSet(),
+        (item) => item.source,
+        (c) => c.fromLabel(Labels.source),
+        (c, i) => i,
+      ),
+      FilterSection<bool, InfoRemarkableChest>(
+        {true, false},
+        (item) => _db.saveRemarkableChests.exists(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
+      ),
+    ],
+  );
   static final infoWeaponFilter = ScreenFilter<InfoWeapon>(
     sections: [
       FilterSection<GsWeapon, InfoWeapon>(

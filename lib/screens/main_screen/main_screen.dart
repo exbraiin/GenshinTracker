@@ -16,6 +16,7 @@ import 'package:tracker/screens/main_screen/tracker_router.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
+import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
@@ -257,6 +258,11 @@ final _menus = [
     initialPage: RecipesScreen.id,
   ),
   Menu(
+    label: Labels.remarkableChests,
+    icon: menuIconMap,
+    initialPage: RemarkableChestsScreen.id,
+  ),
+  Menu(
     label: Labels.materials,
     icon: menuIconMaterials,
     initialPage: MaterialsScreen.id,
@@ -278,23 +284,23 @@ final _menus = [
   ),
   Menu(
     label: Labels.namecards,
-    icon: menuIconAchievements,
+    icon: menuIconArchive,
     initialPage: NamecardScreen.id,
   ),
   Menu(
     label: Labels.weeklyTasks,
-    icon: menuIconAchievements,
+    icon: menuIconBook,
     initialPage: WeeklyScreen.id,
   ),
   Menu(
     label: Labels.changelog,
-    icon: menuIconAchievements,
+    icon: menuIconFeedback,
     initialPage: ChangelogScreen.id,
   ),
   if (kDebugMode)
     Menu(
       label: Labels.wsNone,
-      icon: menuIconAchievements,
+      icon: menuIconQuest,
       initialPage: TestsScreen.id,
     ),
 ];
