@@ -114,7 +114,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
             if (materials.isNotEmpty)
               GsIconButton(
                 size: 24,
-                color: canAscend ? Colors.green : Colors.deepOrange,
+                color: canAscend ? Colors.green : GsColors.missing,
                 icon: canAscend ? Icons.check : Icons.close,
                 onPress: canAscend
                     ? () => materials

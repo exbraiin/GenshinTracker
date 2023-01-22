@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_colors.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -24,15 +25,19 @@ class HomeReputationWidget extends StatelessWidget {
               final sr = db.saveReputations;
               final maxLvl = sr.getCityMaxLevelWeeks(city.id);
               final nextLvl = sr.getCityNextLevelWeeks(city.id);
+              final nColor = nextLvl > 0 ? GsColors.missing : Colors.white;
+              final mColor = maxLvl > 0 ? GsColors.missing : Colors.white;
               return [
                 HomeRow(city.name),
                 HomeRow(
                   '${sr.getCityLevel(city.id)}'
                   '${nextLvl > 0 ? ' ($nextLvl wk)' : ''}',
+                  color: nColor,
                 ),
                 HomeRow(
                   '${db.infoCities.getCityMaxLevel(city.id)}'
                   '${maxLvl > 0 ? ' ($maxLvl wk)' : ''}',
+                  color: mColor,
                 ),
               ];
             }).toList(),

@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_colors.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -48,8 +49,8 @@ class HomeRecipesWidget extends StatelessWidget {
                 final m = master(i);
                 final o = owned(i);
                 final t = groups[i]?.length ?? 0;
-                final mColor = m < o ? Colors.deepOrange : Colors.white;
-                final oColor = o < t ? Colors.deepOrange : Colors.white;
+                final mColor = m < o ? GsColors.missing : Colors.white;
+                final oColor = o < t ? GsColors.missing : Colors.white;
                 return [
                   HomeRow('$i★'),
                   HomeRow('$m', color: mColor),

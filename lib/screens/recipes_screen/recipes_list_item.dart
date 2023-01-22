@@ -57,7 +57,7 @@ class RecipesListItem extends StatelessWidget {
                 right: kSeparator2,
                 child: GsIconButton(
                   size: 20,
-                  color: savedRecipe != null ? Colors.green : Colors.deepOrange,
+                  color: savedRecipe != null ? Colors.green : GsColors.missing,
                   icon: savedRecipe != null ? Icons.check : Icons.close,
                   onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
                     recipe.id,

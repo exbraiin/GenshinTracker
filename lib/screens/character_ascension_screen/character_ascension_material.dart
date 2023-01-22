@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -18,6 +19,7 @@ class CharacterAscensionMaterial extends StatelessWidget {
     final db = GsDatabase.instance.saveMaterials;
     final owned = db.getItemOrNull(id)?.amount ?? 0;
     final craftable = db.getCraftableAmount(id);
+
     return GsRarityItemCard(
       size: 64,
       image: material?.image ?? '',
@@ -26,17 +28,17 @@ class CharacterAscensionMaterial extends StatelessWidget {
         TextSpan(
           children: [
             TextSpan(
-              text: (amount - craftable.clamp(0, amount)).format(),
+              text: amount.format(),
               style: context.textTheme.infoLabel.copyWith(
                 fontSize: 10,
                 color: owned + craftable >= amount
                     ? Colors.lightGreen
-                    : Colors.orange,
+                    : GsColors.missing,
               ),
             ),
             if (owned < amount && craftable > 0)
               TextSpan(
-                text: ' +${(amount - owned).clamp(0, craftable)}',
+                text: ' -${(amount - owned).clamp(0, craftable)}',
                 style: context.textTheme.infoLabel
                     .copyWith(fontSize: 10, color: Colors.white),
               ),

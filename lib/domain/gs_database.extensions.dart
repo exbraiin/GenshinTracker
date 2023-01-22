@@ -8,8 +8,13 @@ import 'package:tracker/domain/gs_domain.dart';
 // =============== Info extensions ===============
 
 extension InfoBannerExt on JsonInfoDetails<InfoBanner> {
-  List<InfoBanner> getInfoBannerByType(GsBanner type) =>
-      getItems().where((e) => e.type == type).toList();
+  /// Gets all released banners by [type]
+  List<InfoBanner> getInfoBannerByType(GsBanner type) {
+    final now = DateTime.now();
+    return getItems()
+        .where((e) => e.type == type && e.dateStart.isBefore(now))
+        .toList();
+  }
 }
 
 extension InfoCityExt on JsonInfoDetails<InfoCity> {

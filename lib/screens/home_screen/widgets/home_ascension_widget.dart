@@ -11,7 +11,20 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
-class HomeAscensionWidget extends StatelessWidget {
+class HomeAscensionWidget extends StatefulWidget {
+  @override
+  State<HomeAscensionWidget> createState() => _HomeAscensionWidgetState();
+}
+
+class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
+  final _notifier = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
@@ -57,7 +70,7 @@ class HomeAscensionWidget extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              _getMaterialsList(characters: characters),
+              _getMaterialsList(characters),
             ],
           ),
         );
@@ -65,9 +78,7 @@ class HomeAscensionWidget extends StatelessWidget {
     );
   }
 
-  Widget _getMaterialsList({
-    required Iterable<InfoCharacter> characters,
-  }) {
+  Widget _getMaterialsList(Iterable<InfoCharacter> characters) {
     if (characters.isEmpty) return SizedBox();
 
     final db = GsDatabase.instance.infoCharactersInfo;
@@ -81,15 +92,15 @@ class HomeAscensionWidget extends StatelessWidget {
         .thenBy((element) => element.material!.rarity)
         .thenBy((element) => element.material!.name);
 
-    var expanded = false;
-    return StatefulBuilder(
-      builder: (context, setState) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: _notifier,
+      builder: (context, expanded, child) {
         return Column(
           children: [
             SizedBox(
               child: Center(
                 child: IconButton(
-                  onPressed: () => setState(() => expanded = !expanded),
+                  onPressed: () => _notifier.value = !_notifier.value,
                   padding: EdgeInsets.all(kSeparator4),
                   constraints: BoxConstraints.tightFor(),
                   icon: AnimatedRotation(

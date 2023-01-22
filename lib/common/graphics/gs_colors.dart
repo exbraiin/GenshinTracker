@@ -14,6 +14,8 @@ class GsColors {
   static const dimWhite = const Color(0x80FFFFFF);
   static const almostWhite = const Color(0xFFEEEEEE);
 
+  static const missing = Colors.orange;
+
   static Color getRarityColor(int rarity) {
     return const {
           1: Color(0xFF828E98),

@@ -156,7 +156,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
           return DropdownMenuItem(
             child: Text(
               item,
-              style: TextStyle(color: idx == now ? Colors.orange : null),
+              style: TextStyle(color: idx == now ? GsColors.missing : null),
             ),
             value: idx,
             alignment: Alignment.center,

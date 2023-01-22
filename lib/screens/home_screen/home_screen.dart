@@ -9,6 +9,7 @@ import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_birthdays_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_recipes_widget.dart';
+import 'package:tracker/screens/home_screen/widgets/home_remarkable_chests_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_reputation_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_resource_cal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_spincrystal_widget.dart';
@@ -61,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                 title: Lang.of(context).getValue(Labels.noviceWishes),
                 banner: GsBanner.beginner,
               ),
-              HomeBirthdaysWidget(),
+              HomeResourceCalcWidget(),
             ].separate(SizedBox(height: kSeparator4)).toList(),
           ),
         ),
@@ -81,6 +82,7 @@ class HomeScreen extends StatelessWidget {
               ),
               HomeRecipesWidget(),
               HomeSpincrystalsWidget(),
+              HomeRemarkableChestsWidget(),
               HomeReputationWidget(),
             ].separate(SizedBox(height: kSeparator4)).toList(),
           ),
@@ -99,7 +101,7 @@ class HomeScreen extends StatelessWidget {
               ),
               HomeFriendsWidget(),
               HomeAscensionWidget(),
-              HomeResourceCalcWidget(),
+              HomeBirthdaysWidget(),
             ].separate(SizedBox(height: kSeparator4)).toList(),
           ),
         ),

@@ -52,7 +52,7 @@ class RemarkableChestListItem extends StatelessWidget {
             right: kSeparator2,
             child: GsIconButton(
               size: 20,
-              color: owned ? Colors.green : Colors.deepOrange,
+              color: owned ? Colors.green : GsColors.missing,
               icon: owned ? Icons.check : Icons.close,
               onPress: () => db.saveRemarkableChests
                   .updateRemarkableChest(item.id, obtained: !owned),
