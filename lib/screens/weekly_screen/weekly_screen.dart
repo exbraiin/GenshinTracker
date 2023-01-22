@@ -42,8 +42,6 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
     final ic = GsDatabase.instance.infoCharacters;
     final iw = GsDatabase.instance.infoWeapons;
     final sw = GsDatabase.instance.saveWishes;
-    final wd = GsDatabase.instance.infoWeaponsDetails;
-    final cd = GsDatabase.instance.infoCharactersDetails;
 
     return Scaffold(
       appBar: GsAppBar(
@@ -82,32 +80,30 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                       crossAxisAlignment: WrapCrossAlignment.start,
                       children: ic
                           .getItems()
-                          .where((char) {
-                            final temp = cd.getItemOrNull(char.id);
-                            if (temp == null) return false;
-                            return temp.allMaterials.keys.contains(e.id);
-                          })
+                          .where((char) => GsDatabase
+                              .instance.infoCharactersInfo
+                              .getAllMaterials(char.id)
+                              .containsKey(e.id))
                           .sortedBy((element) => element.rarity)
                           .thenBy((element) => element.name)
                           .map((info) {
-                            final exists = sw.hasCaracter(info.id);
-                            final ascension = GsDatabase.instance.saveCharacters
-                                .getCharAscension(info.id);
-                            return Opacity(
-                              opacity: exists ? 1 : kDisableOpacity,
-                              child: GsRarityItemCard.withLabels(
-                                labelFooter: info.name,
-                                image: info.image,
-                                rarity: info.rarity,
-                                labelHeader: exists ? '$ascension ✦' : '',
-                                onTap: () => Navigator.of(context).pushNamed(
-                                  CharacterDetailsScreen.id,
-                                  arguments: info,
-                                ),
-                              ),
-                            );
-                          })
-                          .toList(),
+                        final exists = sw.hasCaracter(info.id);
+                        final ascension = GsDatabase.instance.saveCharacters
+                            .getCharAscension(info.id);
+                        return Opacity(
+                          opacity: exists ? 1 : kDisableOpacity,
+                          child: GsRarityItemCard.withLabels(
+                            labelFooter: info.name,
+                            image: info.image,
+                            rarity: info.rarity,
+                            labelHeader: exists ? '$ascension ✦' : '',
+                            onTap: () => Navigator.of(context).pushNamed(
+                              CharacterDetailsScreen.id,
+                              arguments: info,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                     Wrap(
                       spacing: kSeparator4,
@@ -116,11 +112,9 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                       crossAxisAlignment: WrapCrossAlignment.start,
                       children: iw
                           .getItems()
-                          .where((weapon) {
-                            final temp = wd.getItemOrNull(weapon.id);
-                            if (temp == null) return false;
-                            return temp.allMaterials.keys.contains(e.id);
-                          })
+                          .where((weapon) => GsDatabase.instance.infoWeaponsInfo
+                              .getAscensionMaterials(weapon.id)
+                              .containsKey(e.id))
                           .sortedBy((element) => element.rarity)
                           .thenBy((element) => element.name)
                           .map((info) => Opacity(

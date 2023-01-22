@@ -296,32 +296,7 @@ extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
   }
 }
 
-// =============== Save extensions ===============
-
-class GsDatabaseUtils {
-  GsDatabaseUtils._();
-
-  static List<AscendMaterial> getCharAscensionMats(String id, int level) {
-    final db = GsDatabase.instance;
-    final char = db.infoCharacters.getItemOrNull(id);
-    if (char == null) return const [];
-
-    final details = db.infoCharactersDetails.getItemOrNull(id);
-    final witsAmount = db.infoDetails.data.getAscensionHerosWit(level);
-    final materials = details?.ascension.elementAtOrNull(level)?.materials;
-    return ((materials?.entries.toList() ?? [])
-          ..insert(0, MapEntry('heros_wit', witsAmount)))
-        .map((e) => AscendMaterial.fromId(e.key, e.value))
-        .toList();
-  }
-
-  static List<AscendMaterial> getCharNextAscensionMats(String id) {
-    final db = GsDatabase.instance;
-    if (db.saveCharacters.getCharMaxAscended(id)) return const [];
-    final ascension = db.saveCharacters.getCharAscension(id);
-    return getCharAscensionMats(id, ascension + 1);
-  }
-}
+// =============== Ascend Materials ===============
 
 class AscendMaterial {
   final int owned;

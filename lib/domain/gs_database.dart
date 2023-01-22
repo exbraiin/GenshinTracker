@@ -4,6 +4,7 @@ import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
+export 'package:tracker/domain/gs_database.extensions2.dart';
 
 class GsDatabase {
   static final instance = GsDatabase._();
@@ -49,9 +50,9 @@ class GsDatabase {
     'weapons',
     (map) => InfoWeapon.fromMap(map),
   );
-  final infoWeaponsDetails = JsonInfoDetails<InfoWeaponDetails>(
-    'weapons_details',
-    (map) => InfoWeaponDetails.fromMap(map),
+  final infoWeaponsInfo = JsonInfoDetails<InfoWeaponInfo>(
+    'weapons_info',
+    (map) => InfoWeaponInfo.fromMap(map),
   );
   final infoNamecards = JsonInfoDetails(
     'namecards',
@@ -61,9 +62,9 @@ class GsDatabase {
     'characters',
     (map) => InfoCharacter.fromMap(map),
   );
-  final infoCharactersDetails = JsonInfoDetails<InfoCharacterDetails>(
-    'characters_details',
-    (map) => InfoCharacterDetails.fromMap(map),
+  final infoCharactersInfo = JsonInfoDetails(
+    'characters_info',
+    (map) => InfoCharacterInfo.fromMap(map),
   );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
@@ -155,12 +156,12 @@ class GsDatabase {
       infoRemarkableChests.load(info);
       infoIngredients.load(info);
       infoWeapons.load(info);
-      infoWeaponsDetails.load(info);
+      infoWeaponsInfo.load(info);
       infoArtifacts.load(info);
       infoMaterials.load(info);
       infoNamecards.load(info);
       infoCharacters.load(info);
-      infoCharactersDetails.load(info);
+      infoCharactersInfo.load(info);
       infoSpincrystal.load(info);
       infoSereniteaSets.load(info);
       infoVersion.load(info);

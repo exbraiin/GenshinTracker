@@ -27,9 +27,8 @@ class CharacterDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final info = args as InfoCharacter;
-    final db = GsDatabase.instance.infoCharactersDetails;
-    final details = db.getItemOrNull(info.id);
+    final item = args as InfoCharacter;
+    final info = GsDatabase.instance.infoCharactersInfo.getItemOrNull(item.id);
 
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
@@ -37,36 +36,36 @@ class CharacterDetailsScreen extends StatelessWidget {
         if (!snapshot.data!) return SizedBox();
         return Scaffold(
           appBar: GsAppBar(
-            label: info.name,
+            label: item.name,
           ),
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Image.asset(
-                  getElementBgImage(info.element),
-                  fit: BoxFit.cover,
-                ),
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(getElementBgImage(item.element)),
               ),
-              SingleChildScrollView(
-                padding: EdgeInsets.all(kSeparator4),
-                child: Column(
-                  children: [
-                    _getInfo(context, info, details),
-                    _getAttributes(context, info),
-                    if (details != null) ...[
-                      SizedBox(height: kSeparator8),
-                      _getAscension(context, details),
-                      SizedBox(height: kSeparator8),
-                      _getTalents(context, details),
-                      SizedBox(height: kSeparator8),
-                      _getConstellations(context, details),
-                      SizedBox(height: kSeparator8),
-                      _getAllMaterials(context, details),
-                    ],
+            ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(kSeparator4),
+              child: Column(
+                children: [
+                  _getInfo(context, item, info),
+                  _getAttributes(context, item),
+                  if (info != null) ...[
+                    SizedBox(height: kSeparator8),
+                    _getAscension(context, info),
+                    SizedBox(height: kSeparator8),
+                    _getTalents(context, info),
+                    SizedBox(height: kSeparator8),
+                    _getConstellations(context, info),
+                    SizedBox(height: kSeparator8),
+                    _getAllMaterials(context, info),
                   ],
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },
@@ -76,7 +75,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getInfo(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDetails? details,
+    InfoCharacterInfo? infos,
   ) {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = db.getCharAscension(info.id);
@@ -182,7 +181,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   style: context.textTheme.description2,
                 ),
                 SizedBox(height: kSeparator8),
-                _getTags(context, info, details),
+                _getTags(context, info, infos),
               ],
             ),
           ),
@@ -309,15 +308,11 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAscension(BuildContext context, InfoCharacterDetails info) {
+  Widget _getAscension(
+    BuildContext context,
+    InfoCharacterInfo infos,
+  ) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
-    final values = info.ascension
-        .expand((e) => [
-              ...e.valuesAfter.keys,
-              ...e.valuesBefore.keys,
-            ])
-        .toSet()
-        .take(4);
     return GsDataBox.info(
       key: _ascension,
       title: context.fromLabel(Labels.ascension),
@@ -343,12 +338,28 @@ class CharacterDetailsScreen extends StatelessWidget {
                     child: Text(context.fromLabel(Labels.level), style: style),
                   ),
                 ),
-                ...values.map(
-                  (e) => Center(
-                    child: Text(
-                      context.fromLabel(e.label),
-                      style: style,
-                    ),
+                Center(
+                  child: Text(
+                    context.fromLabel(GsAttributeStat.hp.label),
+                    style: style,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    context.fromLabel(GsAttributeStat.atk.label),
+                    style: style,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    context.fromLabel(GsAttributeStat.def.label),
+                    style: style,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    context.fromLabel(infos.ascension.ascStatType.label),
+                    style: style,
                   ),
                 ),
                 Center(
@@ -359,32 +370,39 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            ...info.ascension.map(
-              (e) => TableRow(
+            ...GsDatabase.instance.infoCharactersInfo
+                .characterAscension()
+                .mapIndexed((idx, cfg) {
+              final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
+              final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
+              final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
+              final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
+              if (hp == null && atk == null && def == null && stat == null) {
+                return null;
+              }
+              return TableRow(
                 children: [
                   Container(
                     height: 64 + 24,
                     margin: EdgeInsets.symmetric(vertical: kSeparator4),
                     child: Center(
                       child: Text(
-                        e.level.toString(),
+                        cfg.level.toString(),
                         style: context.textTheme.subtitle2!
                             .copyWith(color: Colors.white),
                       ),
                     ),
                   ),
-                  ...values.map((v) => Center(
-                        child: Text(
-                          v.toAscensionStat(e),
-                          style: context.textTheme.subtitle2!
-                              .copyWith(color: Colors.white),
-                        ),
-                      )),
+                  Center(child: Text(hp ?? '-', style: style)),
+                  Center(child: Text(atk ?? '-', style: style)),
+                  Center(child: Text(def ?? '-', style: style)),
+                  Center(child: Text(stat ?? '-', style: style)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      if (e.materials.isNotEmpty)
-                        ...e.materials.entries.map<Widget>((e) {
+                    children: GsDatabase.instance.infoCharactersInfo
+                        .getAscensionMaterials(infos.id, idx)
+                        .entries
+                        .map<Widget>((e) {
                           final db = GsDatabase.instance.infoMaterials;
                           final item = db.getItemOrNull(e.key);
                           return GsRarityItemCard.withLabels(
@@ -392,19 +410,20 @@ class CharacterDetailsScreen extends StatelessWidget {
                             rarity: item?.rarity ?? 1,
                             labelFooter: e.value.format(),
                           );
-                        }).separate(SizedBox(width: kSeparator4)),
-                    ],
+                        })
+                        .separate(SizedBox(width: kSeparator4))
+                        .toList(),
                   )
                 ],
-              ),
-            ),
+              );
+            }).whereNotNull(),
           ],
         ),
       ],
     );
   }
 
-  Widget _getTalents(BuildContext context, InfoCharacterDetails info) {
+  Widget _getTalents(BuildContext context, InfoCharacterInfo info) {
     return GsDataBox.info(
       key: _talents,
       title: context.fromLabel(Labels.talents),
@@ -454,7 +473,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getConstellations(BuildContext context, InfoCharacterDetails info) {
+  Widget _getConstellations(BuildContext context, InfoCharacterInfo info) {
     return GsDataBox.info(
       key: _constellation,
       title: context.fromLabel(Labels.constellation),
@@ -498,18 +517,21 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAllMaterials(BuildContext context, InfoCharacterDetails info) {
-    final tltMats = info.allTalentMaterials;
-    final ascMats = info.allAscensionMaterials;
-    final totalMats = info.allMaterials;
-
-    final db = GsDatabase.instance.infoMaterials;
+  Widget _getAllMaterials(BuildContext context, InfoCharacterInfo details) {
+    final im = GsDatabase.instance.infoMaterials;
+    final ic = GsDatabase.instance.infoCharactersInfo;
+    final tltMats = ic.getTalentMaterials(details.id);
+    final ascMats = ic.getAscensionMaterials(details.id);
+    final allMats = {...tltMats, ...ascMats}
+        .entries
+        .groupBy((e) => e.key)
+        .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
 
     int existance(String? id) {
       if (id == null) return 0;
       final a = tltMats.containsKey(id) ? 1 : 0;
       final b = ascMats.containsKey(id) ? 1 : 0;
-      final c = totalMats.containsKey(id) ? 1 : 0;
+      final c = allMats.containsKey(id) ? 1 : 0;
       return a + b + c;
     }
 
@@ -534,7 +556,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               runSpacing: kSeparator4,
               textDirection: TextDirection.rtl,
               children: mats.entries
-                  .map((e) => MapEntry(db.getItemOrNull(e.key), e.value))
+                  .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
                   .where((e) => e.key != null)
                   .sortedBy((e) => existance(e.key?.id))
                   .thenBy((e) => e.key!.group.index)
@@ -585,7 +607,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           ),
           _getTableRow(
             context.fromLabel(Labels.total),
-            totalMats,
+            allMats,
             (e) => CharacterAscensionMaterial(e.key!.id, e.value),
           ),
         ],
@@ -596,7 +618,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getTags(
     BuildContext context,
     InfoCharacter info,
-    InfoCharacterDetails? details,
+    InfoCharacterInfo? infos,
   ) {
     return Row(
       children: [
@@ -604,7 +626,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         context.fromLabel(info.weapon.label),
         if (info.region != GsRegion.none) context.fromLabel(info.region.label),
         context.fromLabel(info.element.label),
-        if (details != null) context.fromLabel(details.specialStat.label),
+        if (infos != null) context.fromLabel(infos.ascension.ascStatType.label),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
           .separate(SizedBox(width: kSeparator4))

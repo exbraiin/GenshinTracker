@@ -70,8 +70,9 @@ class HomeAscensionWidget extends StatelessWidget {
   }) {
     if (characters.isEmpty) return SizedBox();
 
+    final db = GsDatabase.instance.infoCharactersInfo;
     final materials = characters
-        .expand((e) => GsDatabaseUtils.getCharNextAscensionMats(e.id))
+        .expand((e) => db.getCharNextAscensionMats(e.id))
         .groupBy((e) => e.material?.id)
         .map((key, value) => MapEntry(key, AscendMaterial.combine(value)))
         .values

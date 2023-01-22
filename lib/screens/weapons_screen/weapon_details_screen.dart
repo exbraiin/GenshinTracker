@@ -19,7 +19,7 @@ class WeaponDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     final info = args as InfoWeapon;
-    final db = GsDatabase.instance.infoWeaponsDetails;
+    final db = GsDatabase.instance.infoWeaponsInfo;
     final details = db.getItemOrNull(info.id);
 
     final hasEffect = details?.effectName.isNotEmpty ?? false;
@@ -38,7 +38,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                   SizedBox(height: kSeparator8),
                   if (hasEffect) _getEffect(context, details),
                   if (hasEffect) SizedBox(height: kSeparator8),
-                  _getAscension(context, details),
+                  _getAscension(context, info.rarity, details),
                   SizedBox(height: kSeparator8),
                   _getAllMaterials(context, details),
                 ]
@@ -132,15 +132,8 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAscension(BuildContext context, InfoWeaponDetails info) {
+  Widget _getAscension(BuildContext context, int rarity, InfoWeaponInfo info) {
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
-    final values = info.ascension
-        .expand((e) => [
-              ...e.valuesAfter.keys,
-              ...e.valuesBefore.keys,
-            ])
-        .toSet()
-        .take(4);
     return GsDataBox.info(
       title: context.fromLabel(Labels.ascension),
       children: [
@@ -165,14 +158,19 @@ class WeaponDetailsScreen extends StatelessWidget {
                     child: Text(context.fromLabel(Labels.level), style: style),
                   ),
                 ),
-                ...values.map(
-                  (e) => Center(
+                Center(
+                  child: Text(
+                    context.fromLabel(GsAttributeStat.atk.label),
+                    style: style,
+                  ),
+                ),
+                if (info.ascStatType != GsAttributeStat.none)
+                  Center(
                     child: Text(
-                      context.fromLabel(e.label),
+                      context.fromLabel(info.ascStatType.label),
                       style: style,
                     ),
                   ),
-                ),
                 Center(
                   child: Text(
                     context.fromLabel(Labels.materials),
@@ -181,54 +179,58 @@ class WeaponDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            ...info.ascension.map(
-              (e) => TableRow(
-                children: [
-                  Container(
-                    height: 64 + 24,
-                    margin: EdgeInsets.symmetric(vertical: kSeparator4),
-                    child: Center(
-                      child: Text(
-                        e.level.toString(),
-                        style: context.textTheme.subtitle2!
-                            .copyWith(color: Colors.white),
-                      ),
+            ...GsDatabase.instance.infoWeaponsInfo
+                .weaponAscension(rarity)
+                .mapIndexed((i, config) {
+              final atk = info.ascAtkValues.elementAtOrNull(i);
+              final stat = info.ascStatValues.elementAtOrNull(i);
+              if (atk == null && stat == null) {
+                return null;
+              }
+              return TableRow(children: [
+                Container(
+                  height: 64 + 24,
+                  margin: EdgeInsets.symmetric(vertical: kSeparator4),
+                  child: Center(
+                    child: Text(
+                      config.level.toString(),
+                      style: context.textTheme.subtitle2!
+                          .copyWith(color: Colors.white),
                     ),
                   ),
-                  ...values.map((v) => Center(
-                        child: Text(
-                          v.toAscensionStat(e),
-                          style: context.textTheme.subtitle2!
-                              .copyWith(color: Colors.white),
-                        ),
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      if (e.materials.isNotEmpty)
-                        ...e.materials.entries.map<Widget>((e) {
-                          final db = GsDatabase.instance.infoMaterials;
-                          final item = db.getItemOrNull(e.key);
-                          return GsRarityItemCard.withLabels(
-                            image: item?.image ?? '',
-                            rarity: item?.rarity ?? 1,
-                            labelFooter: e.value.format(),
-                          );
-                        }).separate(SizedBox(width: kSeparator4)),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                ),
+                Center(child: Text(atk ?? '-', style: style)),
+                if (info.ascStatType != GsAttributeStat.none)
+                  Center(child: Text(stat ?? '-', style: style)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: GsDatabase.instance.infoWeaponsInfo
+                      .getAscensionMaterials(info.id, i)
+                      .entries
+                      .map<Widget>((e) {
+                        final db = GsDatabase.instance.infoMaterials;
+                        final item = db.getItemOrNull(e.key);
+                        return GsRarityItemCard.withLabels(
+                          image: item?.image ?? '',
+                          rarity: item?.rarity ?? 1,
+                          labelFooter: e.value.format(),
+                        );
+                      })
+                      .separate(SizedBox(width: kSeparator4))
+                      .toList(),
+                ),
+              ]);
+            }).whereNotNull(),
           ],
         ),
       ],
     );
   }
 
-  Widget _getAllMaterials(BuildContext context, InfoWeaponDetails info) {
-    final ascMats = info.allMaterials;
-    final db = GsDatabase.instance.infoMaterials;
+  Widget _getAllMaterials(BuildContext context, InfoWeaponInfo info) {
+    final im = GsDatabase.instance.infoMaterials;
+    final iw = GsDatabase.instance.infoWeaponsInfo;
+    final ascMats = iw.getAscensionMaterials(info.id);
 
     TableRow _getTableRow(
       String label,
@@ -251,7 +253,7 @@ class WeaponDetailsScreen extends StatelessWidget {
               runSpacing: kSeparator4,
               textDirection: TextDirection.rtl,
               children: mats.entries
-                  .map((e) => MapEntry(db.getItemOrNull(e.key), e.value))
+                  .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
                   .where((e) => e.key != null)
                   .sortedBy((e) => e.key!.group.index)
                   .thenBy((e) => e.key!.subgroup)
@@ -290,8 +292,9 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getEffect(BuildContext context, InfoWeaponDetails info) {
+  Widget _getEffect(BuildContext context, InfoWeaponInfo info) {
     var r = 0;
+    final levels = _getEffectLevels(info.effectDesc);
     return GsDataBox.info(
       title: info.effectName,
       child: StatefulBuilder(
@@ -301,7 +304,7 @@ class WeaponDetailsScreen extends StatelessWidget {
             children: [
               Column(
                 children: List.generate(
-                  info.effectValues.length,
+                  levels,
                   (index) => _getTextButton(
                     context,
                     'Refinement ${index + 1}',
@@ -312,16 +315,11 @@ class WeaponDetailsScreen extends StatelessWidget {
               ),
               SizedBox(width: kSeparator8 * 2),
               Expanded(
-                child: info.effectValues.isNotEmpty
-                    ? TextParserWidget(
-                        _getEffectText(
-                          info.effectDescription,
-                          info.effectValues[r],
-                        ),
-                        style: context.textTheme.subtitle2!
-                            .copyWith(color: Colors.white),
-                      )
-                    : SizedBox(),
+                child: TextParserWidget(
+                  _getEffectText(info.effectDesc, r),
+                  style: context.textTheme.subtitle2!
+                      .copyWith(color: Colors.white),
+                ),
               ),
               SizedBox(height: kSeparator4),
             ],
@@ -366,12 +364,25 @@ class WeaponDetailsScreen extends StatelessWidget {
     );
   }
 
-  String _getEffectText(String description, List<String> effectValues) {
-    var value = description;
-    for (var i = 0; i < effectValues.length; ++i) {
-      final data = '<color=skill>${effectValues[i]}</color>';
-      value = value.replaceAll('{$i}', data);
+  int _getEffectLevels(String content) {
+    final match = RegExp('{.+?}').firstMatch(content);
+    final matches = match?.input.substring(match.start, match.end);
+    return matches?.toString().split(',').length ?? 0;
+  }
+
+  String _getEffectText(String content, int level) {
+    var text = content.toString();
+    final matches = RegExp('{.+?}').allMatches(content).reversed;
+    for (var match in matches) {
+      final temp = content
+          .substring(match.start, match.end)
+          .removePrefix('{')
+          .removeSuffix('}');
+      final value = temp.toString().split(',').map((e) => e.trim());
+      var replacement = value.elementAtOrNull(level) ?? '';
+      replacement = '<color=skill>$replacement</color>';
+      text = text.replaceRange(match.start, match.end, replacement);
     }
-    return value;
+    return text;
   }
 }

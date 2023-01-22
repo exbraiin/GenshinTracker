@@ -66,9 +66,10 @@ class _CharacterAscensionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final sw = GsDatabase.instance.saveWishes;
     final sc = GsDatabase.instance.saveCharacters;
+    final ic = GsDatabase.instance.infoCharactersInfo;
     final ascension = sc.getCharAscension(item.id);
     final maxAscend = sc.getCharMaxAscended(item.id);
-    final materials = GsDatabaseUtils.getCharNextAscensionMats(item.id);
+    final materials = ic.getCharNextAscensionMats(item.id);
     final canAscend = materials.all((e) => e.hasRequired);
     return Opacity(
       opacity: maxAscend ? kDisableOpacity : 1,

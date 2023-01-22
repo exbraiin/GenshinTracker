@@ -70,7 +70,7 @@ class TestWidgets {
 
   static Widget getCharacterListItem(BuildContext context) {
     final items = GsDatabase.instance.infoCharacters.getItems();
-    final detailed = GsDatabase.instance.infoCharactersDetails;
+    final detailed = GsDatabase.instance.infoCharactersInfo;
 
     return _container(
       context,

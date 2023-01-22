@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'enums/gs_artifact_piece.dart';
@@ -20,10 +21,9 @@ export 'extensions/enum/gs_region_ext.dart';
 export 'extensions/enum/gs_set_category_ext.dart';
 export 'extensions/enum/gs_weapon_ext.dart';
 export 'models/info_artifact.dart';
-export 'models/info_ascension.dart';
 export 'models/info_banner.dart';
 export 'models/info_character.dart';
-export 'models/info_character_details.dart';
+export 'models/info_character_info.dart';
 export 'models/info_city.dart';
 export 'models/info_data.dart';
 export 'models/info_details.dart';
@@ -36,7 +36,7 @@ export 'models/info_serenitea_set.dart';
 export 'models/info_spincrystal.dart';
 export 'models/info_version.dart';
 export 'models/info_weapon.dart';
-export 'models/info_weapon_details.dart';
+export 'models/info_weapon_info.dart';
 export 'models/save_character.dart';
 export 'models/save_material.dart';
 export 'models/save_recipe.dart';
@@ -75,5 +75,13 @@ extension ListEnumExt<T extends Enum> on List<T> {
       (e) => e.name == name,
       orElse: () => defaultValue ?? first,
     );
+  }
+}
+
+extension JsonMapExt on Map<String, dynamic> {
+  List<String> getAsStringList(String key) {
+    final value = this[key] as String? ?? '';
+    final trimmed = value.split(',').map((e) => e.trim());
+    return trimmed.where((e) => e.isNotBlank).toList();
   }
 }
