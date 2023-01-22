@@ -165,7 +165,9 @@ Map<String, int> _getMaterials<T>(
   for (var item in items) {
     for (var entry in materials.entries) {
       final index = indexes[entry.key]?.call(item) ?? 0;
-      final material = entry.value.elementAtOrNull(index);
+      final material = index == 0
+          ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
+          : entry.value.elementAtOrNull(index);
       if (material == null) continue;
       final amount = amounts[entry.key]?.call(item) ?? 0;
       total[material.id] = (total[material.id] ?? 0) + amount;
