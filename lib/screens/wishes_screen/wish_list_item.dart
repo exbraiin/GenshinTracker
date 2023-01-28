@@ -7,7 +7,6 @@ import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 enum ListType { none, top, middle, bottom }
 
@@ -28,9 +27,8 @@ class WishListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final item = getItemData(wish.itemId);
-    final style =
-        Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white);
+    final item = GsUtils.items.getItemData(wish.itemId);
+    final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
 
     return Container(
       height: 44,

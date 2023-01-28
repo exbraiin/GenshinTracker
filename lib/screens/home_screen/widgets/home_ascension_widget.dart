@@ -30,12 +30,12 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        final sw = GsDatabase.instance.saveWishes;
-        final sc = GsDatabase.instance.saveCharacters;
         final characters = GsDatabase.instance.infoCharacters
             .getItems()
-            .where((e) => sw.hasCaracter(e.id) && !sc.getCharMaxAscended(e.id))
-            .sortedBy((e) => sc.getCharAscension(e.id))
+            .where((e) =>
+                GsUtils.characters.hasCaracter(e.id) &&
+                !GsUtils.characters.isCharMaxAscended(e.id))
+            .sortedBy((e) => GsUtils.characters.getCharAscension(e.id))
             .thenByDescending((e) => e.rarity)
             .thenBy((e) => e.name)
             .take(8);
@@ -47,6 +47,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           );
         }
 
+        final chars = GsUtils.characters;
         return GsDataBox.summary(
           title: context.fromLabel(Labels.ascension),
           child: Column(
@@ -60,7 +61,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                       size: 70,
                       image: e.image,
                       rarity: e.rarity,
-                      labelHeader: '${sc.getCharAscension(e.id)} ✦',
+                      labelHeader: '${chars.getCharAscension(e.id)} ✦',
                       labelFooter: e.name,
                       onTap: () => Navigator.of(context).pushNamed(
                         CharacterDetailsScreen.id,

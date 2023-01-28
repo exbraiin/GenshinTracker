@@ -6,7 +6,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class HomeWishesValues extends StatelessWidget {
   final String title;
@@ -158,7 +157,7 @@ class HomeWishesValues extends StatelessWidget {
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: summary.wishes5.reversed.map((wish) {
-                    final item = getItemData(wish.itemId);
+                    final item = GsUtils.items.getItemData(wish.itemId);
                     final pity = getPity(wishes, wish);
                     final showGuaranteed = banner == GsBanner.character;
                     final guaranteed = showGuaranteed &&

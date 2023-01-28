@@ -87,9 +87,9 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           .sortedBy((element) => element.rarity)
                           .thenBy((element) => element.name)
                           .map((info) {
-                        final exists = sw.hasCaracter(info.id);
-                        final ascension = GsDatabase.instance.saveCharacters
-                            .getCharAscension(info.id);
+                        final exists = GsUtils.characters.hasCaracter(info.id);
+                        final ascension =
+                            GsUtils.characters.getCharAscension(info.id);
                         return Opacity(
                           opacity: exists ? 1 : kDisableOpacity,
                           child: GsRarityItemCard.withLabels(

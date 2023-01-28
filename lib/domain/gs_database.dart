@@ -5,6 +5,7 @@ import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
 export 'package:tracker/domain/gs_database.extensions2.dart';
+export 'package:tracker/domain/gs_database.utils.dart';
 
 class GsDatabase {
   static final instance = GsDatabase._();

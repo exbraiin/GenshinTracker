@@ -5,7 +5,6 @@ import 'package:excel/excel.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 export 'gs_database.extensions.dart';
@@ -42,7 +41,7 @@ abstract class GsDatabaseExporter {
 
     for (var i = 0; i < wishes.length; ++i) {
       final wish = wishes[i];
-      final item = getItemData(wish.itemId);
+      final item = GsUtils.items.getItemData(wish.itemId);
       final banner = db.infoBanners.getItem(wish.bannerId);
 
       rows.add(_Row(

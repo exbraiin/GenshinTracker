@@ -15,14 +15,14 @@ class HomeFriendsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
+        final chars = GsUtils.characters;
         final db = GsDatabase.instance;
-        final sw = db.saveWishes;
         final sc = db.saveCharacters;
         final characters = db.infoCharacters
             .getItems()
-            .where((c) => sw.hasCaracter(c.id))
-            .where((c) => sc.getCharFriendship(c.id) != 10)
-            .sortedByDescending((e) => sc.getCharFriendship(e.id))
+            .where((c) => chars.hasCaracter(c.id))
+            .where((c) => chars.getCharFriendship(c.id) != 10)
+            .sortedByDescending((e) => chars.getCharFriendship(e.id))
             .take(8);
 
         if (characters.isEmpty) {
@@ -48,7 +48,7 @@ class HomeFriendsWidget extends StatelessWidget {
                   header: GsNumberField(
                     length: 2,
                     onUpdate: (i) => sc.setCharFriendship(e.id, i),
-                    onDbUpdate: () => sc.getCharFriendship(e.id),
+                    onDbUpdate: () => chars.getCharFriendship(e.id),
                   ),
                   onTap: () => Navigator.of(context).pushNamed(
                     CharacterDetailsScreen.id,

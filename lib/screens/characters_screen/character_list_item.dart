@@ -12,42 +12,62 @@ class CharacterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = GsDatabase.instance;
-    final owned = db.saveWishes.getOwnedCharacter(item.id);
-    final friend = db.saveCharacters.getCharFriendship(item.id);
-    final ascension = db.saveCharacters.getCharAscension(item.id);
+    final chars = GsUtils.characters;
+    final friend = chars.getCharFriendship(item.id);
+    final ascension = chars.getCharAscension(item.id);
+    final charCons = chars.getCharConstellations(item.id);
+    final charConsTotal = chars.getTotalCharConstellations(item.id);
 
     return GsItemCardButton(
       onTap: onTap,
       label: item.name,
       rarity: item.rarity,
-      disable: owned == 0,
+      disable: charCons == null,
       banner: GsItemBanner.fromVersion(item.version),
       imageUrlPath: item.image,
-      child: _child(context, owned, friend, ascension),
+      child: _child(context, charCons, charConsTotal, friend, ascension),
     );
   }
 
-  Widget _child(BuildContext context, int owned, int friend, int ascension) {
+  Widget _child(
+    BuildContext context,
+    int? charCons,
+    int? charConsTotal,
+    int friend,
+    int ascension,
+  ) {
     return Padding(
       padding: EdgeInsets.all(kSeparator2),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          if (owned > 0)
-            GsItemCardLabel(
-              asset: imageXp,
-              label: '$friend',
-              onTap: () => GsDatabase.instance.saveCharacters
-                  .increaseFriendshipCharacter(item.id),
-            ),
-          Spacer(),
-          GsItemCardLabel(
-            asset: item.element.assetPath,
-            label: owned > 0 ? 'C${(owned - 1).clamp(0, 6)}' : null,
-            onTap: () => GsDatabase.instance.saveCharacters
-                .increaseOwnedCharacter(item.id),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (charCons != null)
+                GsItemCardLabel(
+                  asset: imageXp,
+                  label: '$friend',
+                  onTap: () => GsDatabase.instance.saveCharacters
+                      .increaseFriendshipCharacter(item.id),
+                ),
+              Spacer(),
+              GsItemCardLabel(
+                asset: item.element.assetPath,
+                label: charCons != null ? 'C$charCons' : null,
+                onTap: () => GsDatabase.instance.saveCharacters
+                    .increaseOwnedCharacter(item.id),
+              ),
+            ],
           ),
+          if (charConsTotal != null && charConsTotal != charCons)
+            Container(
+              alignment: Alignment.topRight,
+              margin: EdgeInsets.only(top: kSeparator2),
+              child: GsItemCardLabel(
+                asset: menuIconWish,
+                label: 'C$charConsTotal',
+              ),
+            ),
         ],
       ),
     );

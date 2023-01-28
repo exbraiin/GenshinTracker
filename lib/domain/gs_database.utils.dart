@@ -4,6 +4,63 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
+final _db = GsDatabase.instance;
+
+class GsUtils {
+  GsUtils._();
+
+  static final items = _Items();
+  static final characters = _Characters();
+}
+
+class _Items {
+  /// Gets a weapon or a character by the given [id].
+  ItemData getItemData(String id) {
+    return _db.infoWeapons.exists(id)
+        ? ItemData(weapon: _db.infoWeapons.getItem(id))
+        : ItemData(character: _db.infoCharacters.getItem(id));
+  }
+}
+
+class _Characters {
+  /// Whether the user has this character or not.
+  bool hasCaracter(String id) {
+    final owned = _db.saveCharacters.getItemOrNull(id)?.owned ?? 0;
+    return owned > 0 || _db.saveWishes.getItems().any((e) => e.itemId == id);
+  }
+
+  int getCharFriendship(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    return char?.friendship.coerceAtLeast(1) ?? 1;
+  }
+
+  /// Gets the character ascension level.
+  int getCharAscension(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    return char?.ascension ?? 0;
+  }
+
+  /// Whether the character is fully ascended or not.
+  bool isCharMaxAscended(String id) {
+    return !(getCharAscension(id) < 6);
+  }
+
+  /// Gets the character current constellations amount or null.
+  int? getCharConstellations(String id) {
+    return getTotalCharConstellations(id)?.clamp(0, 6);
+  }
+
+  /// Gets the character total constellations amount or null.
+  int? getTotalCharConstellations(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    final total = _db.saveWishes.countItem(id);
+    final sum = total + (char?.owned ?? 0);
+    return sum > 0 ? (sum - 1) : null;
+  }
+}
+
+// === OLD ===
+
 class ItemData extends Comparable<ItemData> {
   final InfoWeapon? weapon;
   final InfoCharacter? character;
@@ -29,14 +86,6 @@ class ItemData extends Comparable<ItemData> {
     if (t != 0) return t;
     return name.compareTo(other.name);
   }
-}
-
-/// Gets a weapon or a character by the given [id].
-ItemData getItemData(String id) {
-  final db = GsDatabase.instance;
-  return db.infoWeapons.exists(id)
-      ? ItemData(weapon: db.infoWeapons.getItem(id))
-      : ItemData(character: db.infoCharacters.getItem(id));
 }
 
 /// Gets a list of [ItemData] that can be obtained in banners.
@@ -72,12 +121,12 @@ Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
 
 /// Gets the pity of the given wish in the given wishes list.
 int getPity(List<SaveWish> wishes, SaveWish wish) {
-  final item = getItemData(wish.itemId);
+  final item = GsUtils.items.getItemData(wish.itemId);
 
   if (item.rarity == 4 || item.rarity == 5) {
     final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
-    final last =
-        list.indexWhere((e) => getItemData(e.itemId).rarity == item.rarity);
+    final last = list.indexWhere(
+        (e) => GsUtils.items.getItemData(e.itemId).rarity == item.rarity);
     return last != -1 ? (last + 1).coerceAtLeast(1) : list.length + 1;
   }
 
@@ -87,7 +136,7 @@ int getPity(List<SaveWish> wishes, SaveWish wish) {
 enum WishState { none, won, lost, guaranteed }
 
 WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
-  final item = getItemData(wish.itemId);
+  final item = GsUtils.items.getItemData(wish.itemId);
   if (item.rarity != 5) return WishState.none;
 
   final db = GsDatabase.instance;
@@ -95,7 +144,8 @@ WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
   final bannerContains = banner.feature5.contains(wish.itemId);
 
   wishes = wishes.skipWhile((value) => value != wish).skip(1).toList();
-  final last = wishes.indexWhere((e) => getItemData(e.itemId).rarity == 5);
+  final last =
+      wishes.indexWhere((e) => GsUtils.items.getItemData(e.itemId).rarity == 5);
   if (last == -1) return bannerContains ? WishState.won : WishState.lost;
 
   final lastWish = wishes[last];
@@ -110,7 +160,7 @@ WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
 
 /// Checks if the given wish was a guaranteed wish in the given wishes list.
 bool getGuaranteed(List<SaveWish> wishes, SaveWish wish) {
-  final item = getItemData(wish.itemId);
+  final item = GsUtils.items.getItemData(wish.itemId);
   if (item.rarity != 5) return false;
   final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
   return isNextGaranteed(list);
@@ -118,7 +168,8 @@ bool getGuaranteed(List<SaveWish> wishes, SaveWish wish) {
 
 /// Checks if the next wish is a guaranteed one in the given wishes list.
 bool isNextGaranteed(List<SaveWish> wishes) {
-  final last = wishes.indexWhere((e) => getItemData(e.itemId).rarity == 5);
+  final last =
+      wishes.indexWhere((e) => GsUtils.items.getItemData(e.itemId).rarity == 5);
   if (last == -1) return false;
   final lastWish = wishes[last];
   final db = GsDatabase.instance;
@@ -233,8 +284,9 @@ class WishInfo {
     List<SaveWish> wishes,
     bool Function(ItemData item) selector,
   ) {
-    final g = wishes.where((e) => selector(getItemData(e.itemId)));
-    final l = wishes.takeWhile((e) => !selector(getItemData(e.itemId))).length;
+    final getItem = GsUtils.items.getItemData;
+    final g = wishes.where((e) => selector(getItem(e.itemId)));
+    final l = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
     final a = g.length > 0 ? g.map((e) => getPity(wishes, e)).average() : 0.0;
     final p = g.length * 100 / wishes.length.coerceAtLeast(1);
     return WishInfo(

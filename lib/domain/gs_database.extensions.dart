@@ -150,20 +150,9 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
     }
   }
 
-  int getOwnedCharacter(String key) {
-    final saveCharacters = GsDatabase.instance.saveCharacters;
-    final char = saveCharacters.getItemOrNull(key);
-    return countItem(key) + (char?.owned ?? 0);
-  }
-
   int getOwnedWeapon(String key) => countItem(key);
 
   bool hasWeapon(String key) => hasItem(key);
-
-  bool hasCaracter(String key) {
-    final db = GsDatabase.instance.saveCharacters;
-    return (db.getItemOrNull(key)?.owned ?? 0) > 0 || hasItem(key);
-  }
 }
 
 extension SaveSereniteaSetExt on JsonSaveDetails<SaveSereniteaSet> {
@@ -183,7 +172,7 @@ extension SaveSereniteaSetExt on JsonSaveDetails<SaveSereniteaSet> {
     final item = db.infoSereniteaSets.getItem(set);
     final saved = getItemOrNull(set);
     final chars = saved?.chars ?? [];
-    bool hasChar(String id) => db.saveWishes.getOwnedCharacter(id) > 0;
+    bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
     return item.chars.any((c) => !chars.contains(c) && hasChar(c));
   }
 }
@@ -224,26 +213,11 @@ extension SaveRemarkableChestExt on JsonSaveDetails<SaveRemarkableChest> {
 }
 
 extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
-  int getCharFriendship(String key) {
-    final char = getItemOrNull(key);
-    return char?.friendship.coerceAtLeast(1) ?? 1;
-  }
-
   void setCharFriendship(String id, int friendship) {
     final char = getItemOrNull(id);
     final friend = friendship.clamp(1, 10);
     final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
     if (item.friendship != char?.friendship) insertItem(item);
-  }
-
-  int getCharAscension(String id) {
-    final char = getItemOrNull(id);
-    return char?.ascension ?? 0;
-  }
-
-  bool getCharMaxAscended(String id) {
-    final ascension = getCharAscension(id);
-    return !(ascension + 1 < 7);
   }
 
   void increaseOwnedCharacter(String id) {

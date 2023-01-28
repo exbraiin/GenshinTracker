@@ -22,7 +22,7 @@ class RecipesListItem extends StatelessWidget {
     final char = db.infoCharacters
         .getItems()
         .firstOrNullWhere((e) => e.specialDish == recipe.id);
-    return char != null ? db.saveWishes.getOwnedCharacter(char.id) > 0 : false;
+    return char != null && GsUtils.characters.hasCaracter(char.id);
   }
 
   @override

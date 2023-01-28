@@ -7,7 +7,6 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class BannerListItem extends StatelessWidget {
   final int rolls;

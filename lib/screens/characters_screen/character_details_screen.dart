@@ -6,6 +6,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
@@ -78,7 +79,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     InfoCharacterInfo? infos,
   ) {
     final db = GsDatabase.instance.saveCharacters;
-    final ascension = db.getCharAscension(info.id);
+    final ascension = GsUtils.characters.getCharAscension(info.id);
+    final constellation = GsUtils.characters.getCharConstellations(info.id);
     return SizedBox(
       height: 260,
       child: Row(
@@ -157,24 +159,22 @@ class CharacterDetailsScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bigTitle2,
                     ),
                     SizedBox(width: 8),
-                    Image.asset(
-                      info.element.assetPath,
-                      width: 24,
-                      height: 24,
+                    GsItemCardLabel(
+                      asset: info.element.assetPath,
+                      label: constellation != null ? 'C$constellation' : null,
+                      onTap: () => GsDatabase.instance.saveCharacters
+                          .increaseOwnedCharacter(info.id),
                     ),
                   ],
                 ),
-                InkWell(
-                  onTap: GsDatabase.instance.saveWishes
-                              .getOwnedCharacter(info.id) !=
-                          0
-                      ? () => db.increaseAscension(info.id)
-                      : null,
-                  child: Text(
-                    '${'✦' * ascension}${'✧' * (6 - ascension)}',
-                    style: context.textTheme.bigTitle3,
+                if (GsUtils.characters.hasCaracter(info.id))
+                  InkWell(
+                    onTap: () => db.increaseAscension(info.id),
+                    child: Text(
+                      '${'✦' * ascension}${'✧' * (6 - ascension)}',
+                      style: context.textTheme.bigTitle3,
+                    ),
                   ),
-                ),
                 SizedBox(height: kSeparator4),
                 Text(
                   info.description,
@@ -628,7 +628,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         context.fromLabel(info.element.label),
         if (infos != null) context.fromLabel(infos.ascension.ascStatType.label),
       ]
-          .map<Widget>((e) => GsDataBox.label(e))
+          .map<Widget>((e) => GsItemCardLabel(label: e))
           .separate(SizedBox(width: kSeparator4))
           .toList(),
     );

@@ -6,7 +6,6 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class HomeWishesSummary extends StatelessWidget {
   final String title;

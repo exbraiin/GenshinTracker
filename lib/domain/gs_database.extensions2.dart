@@ -208,10 +208,9 @@ extension GsDatabaseExt on JsonInfoDetails<InfoCharacterInfo> {
   List<_CharacterAsc> characterAscension() => _characterAscension;
 
   List<AscendMaterial> getCharNextAscensionMats(String id) {
-    final db = GsDatabase.instance;
-    final max = db.saveCharacters.getCharMaxAscended(id);
+    final max = GsUtils.characters.isCharMaxAscended(id);
     if (max) return const [];
-    final ascension = db.saveCharacters.getCharAscension(id);
+    final ascension = GsUtils.characters.getCharAscension(id);
     return getAscensionMaterials(id, ascension + 1)
         .entries
         .map((e) => AscendMaterial.fromId(e.key, e.value))

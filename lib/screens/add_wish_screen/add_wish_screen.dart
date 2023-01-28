@@ -13,7 +13,6 @@ import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dar
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';

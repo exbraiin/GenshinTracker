@@ -25,12 +25,10 @@ class CharacterAscensionScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.data!) return SizedBox();
 
-        final wishes = GsDatabase.instance.saveWishes;
-        final saved = GsDatabase.instance.saveCharacters;
         final items = GsDatabase.instance.infoCharacters.getItems();
         final characters = items
-            .where((e) => wishes.hasCaracter(e.id))
-            .sortedBy((e) => saved.getCharAscension(e.id))
+            .where((e) => GsUtils.characters.hasCaracter(e.id))
+            .sortedBy((e) => GsUtils.characters.getCharAscension(e.id))
             .thenByDescending((e) => e.rarity)
             .thenBy((e) => e.name)
             .toList();
@@ -64,11 +62,10 @@ class _CharacterAscensionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sw = GsDatabase.instance.saveWishes;
     final sc = GsDatabase.instance.saveCharacters;
     final ic = GsDatabase.instance.infoCharactersInfo;
-    final ascension = sc.getCharAscension(item.id);
-    final maxAscend = sc.getCharMaxAscended(item.id);
+    final ascension = GsUtils.characters.getCharAscension(item.id);
+    final maxAscend = GsUtils.characters.isCharMaxAscended(item.id);
     final materials = ic.getCharNextAscensionMats(item.id);
     final canAscend = materials.all((e) => e.hasRequired);
     return Opacity(
@@ -92,7 +89,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
                 ),
                 SizedBox(height: kSeparator2),
                 InkWell(
-                  onTap: sw.getOwnedCharacter(item.id) != 0
+                  onTap: GsUtils.characters.hasCaracter(item.id)
                       ? () => sc.increaseAscension(item.id)
                       : null,
                   child: Text(

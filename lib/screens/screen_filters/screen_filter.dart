@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class FilterSection<T, I> {
   final Set<T> values;
@@ -124,13 +123,13 @@ class ScreenFilters {
     sections: [
       FilterSection<GsItem, SaveWish>(
         GsItem.values.toSet(),
-        (item) => getItemData(item.itemId).type,
+        (item) => GsUtils.items.getItemData(item.itemId).type,
         (c) => c.fromLabel(Labels.type),
         (c, e) => c.fromLabel(e.label),
       ),
       FilterSection<int, SaveWish>(
         {3, 4, 5},
-        (item) => getItemData(item.itemId).rarity,
+        (item) => GsUtils.items.getItemData(item.itemId).rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, e) => c.fromLabel(Labels.rarityStar, e),
       ),
@@ -328,32 +327,32 @@ class ScreenFilters {
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
-        (item) => _db.saveCharacters.getCharFriendship(item.id) == 10,
+        (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
         (c) => c.fromLabel(Labels.friendship),
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
-        filter: (i) => _db.saveWishes.getOwnedCharacter(i.id) != 0,
-        comparator: (a, b) => _db.saveCharacters
+        filter: (i) => GsUtils.characters.hasCaracter(i.id),
+        comparator: (a, b) => GsUtils.characters
             .getCharFriendship(a.id)
-            .compareTo(_db.saveCharacters.getCharFriendship(b.id)),
+            .compareTo(GsUtils.characters.getCharFriendship(b.id)),
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
-        (item) => _db.saveWishes.hasCaracter(item.id),
+        (item) => GsUtils.characters.hasCaracter(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
-        comparator: (a, b) => _db.saveWishes
+        comparator: (a, b) => GsUtils.characters
             .hasCaracter(a.id)
-            .compareTo(_db.saveWishes.hasCaracter(b.id)),
+            .compareTo(GsUtils.characters.hasCaracter(b.id)),
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
-        (item) => _db.saveCharacters.getCharMaxAscended(item.id),
+        (item) => GsUtils.characters.isCharMaxAscended(item.id),
         (c) => c.fromLabel(Labels.ascension),
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
-        filter: (i) => _db.saveWishes.getOwnedCharacter(i.id) != 0,
-        comparator: (a, b) => _db.saveCharacters
+        filter: (i) => GsUtils.characters.hasCaracter(i.id),
+        comparator: (a, b) => GsUtils.characters
             .getCharAscension(a.id)
-            .compareTo(_db.saveCharacters.getCharAscension(b.id)),
+            .compareTo(GsUtils.characters.getCharAscension(b.id)),
       ),
       FilterSection<int, InfoCharacter>(
         {4, 5},

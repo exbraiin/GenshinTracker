@@ -13,9 +13,7 @@ class SereniteaSetListItem extends StatelessWidget {
   SereniteaSetListItem(this.set, this.saved);
 
   bool _isCharacterOwned(String id) => saved?.chars.contains(id) ?? false;
-
-  bool _hasCharacterFromWishes(String id) =>
-      GsDatabase.instance.saveWishes.hasCaracter(id);
+  bool _hasCharacterFromWishes(String id) => GsUtils.characters.hasCaracter(id);
 
   String get _setImage => set.category == GsSetCategory.indoor
       ? imageIndoorSet

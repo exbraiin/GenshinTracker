@@ -12,7 +12,6 @@ import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
-import 'package:tracker/screens/wishes_screen/wish_utils.dart';
 
 class WishesScreen extends StatelessWidget {
   static const id = 'wishes_screen';
