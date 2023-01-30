@@ -10,8 +10,11 @@ class GsUtils {
   GsUtils._();
 
   static final items = _Items();
+  static final wishes = _Wishes();
   static final characters = _Characters();
 }
+
+enum WishState { none, won, lost, guaranteed }
 
 class _Items {
   /// Gets a weapon or a character by the given [id].
@@ -19,6 +22,85 @@ class _Items {
     return _db.infoWeapons.exists(id)
         ? ItemData(weapon: _db.infoWeapons.getItem(id))
         : ItemData(character: _db.infoCharacters.getItem(id));
+  }
+}
+
+class _Wishes {
+  /// Gets the pity of the given wish in the given wishes list.
+  int countPity(List<SaveWish> wishes, SaveWish wish) {
+    final item = GsUtils.items.getItemData(wish.itemId);
+    final rarity = item.rarity;
+    if (rarity < 4) return 1;
+    final getItem = GsUtils.items.getItemData;
+    final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
+    final last = list.indexWhere((e) => getItem(e.itemId).rarity == rarity);
+    return last != -1 ? (last + 1).coerceAtLeast(1) : list.length + 1;
+  }
+
+  SaveWish? _getLastWish(Iterable<SaveWish> wishes, [int rarity = 5]) {
+    final getItem = GsUtils.items.getItemData;
+    return wishes.firstOrNullWhere((e) => getItem(e.itemId).rarity == rarity);
+  }
+
+  /// Checks if the next wish is a guaranteed one in the given wishes list.
+  bool isNextGaranteed(List<SaveWish> wishes) {
+    final last = _getLastWish(wishes);
+    if (last == null) return false;
+    final banner = _db.infoBanners.getItem(last.bannerId);
+    return !banner.feature5.contains(last.itemId);
+  }
+
+  /// Gets the wish state.
+  WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
+    final item = GsUtils.items.getItemData(wish.itemId);
+    if (item.rarity != 5) return WishState.none;
+
+    final db = GsDatabase.instance;
+    late final banner = db.infoBanners.getItem(wish.bannerId);
+    late final contained = banner.feature5.contains(wish.itemId);
+
+    wishes = wishes.skipWhile((value) => value != wish).skip(1).toList();
+    final lastWish = _getLastWish(wishes);
+    if (lastWish == null) return contained ? WishState.won : WishState.lost;
+
+    final lastBanner = db.infoBanners.getItem(lastWish.bannerId);
+    final lastBannerContains = lastBanner.feature5.contains(lastWish.itemId);
+
+    if (lastBannerContains && contained) return WishState.won;
+    if (lastBannerContains && !contained) return WishState.lost;
+    if (!lastBannerContains && contained) return WishState.guaranteed;
+    return WishState.none;
+  }
+
+  /// Gets a list of [ItemData] that can be obtained in banners.
+  Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
+    final db = GsDatabase.instance;
+
+    bool filterWeapon(InfoWeapon info) {
+      late final isStandard = info.source == GsItemSource.wishesStandard;
+      late final isFeatured = banner.feature5.contains(info.id);
+      late final isChar = banner.type == GsBanner.character && info.rarity == 5;
+      late final isBegn = banner.type == GsBanner.beginner && info.rarity > 3;
+      return (isStandard || isFeatured) && !isChar && !isBegn;
+    }
+
+    bool filterCharacter(InfoCharacter info) {
+      late final isStandard = info.source == GsItemSource.wishesStandard;
+      late final isFeatured = banner.feature5.contains(info.id);
+      late final isWeap = banner.type == GsBanner.weapon && info.rarity == 5;
+      return (isStandard || isFeatured) && !isWeap;
+    }
+
+    return [
+      ...db.infoWeapons
+          .getItems()
+          .where((element) => filterWeapon(element))
+          .map((element) => ItemData(weapon: element)),
+      ...db.infoCharacters
+          .getItems()
+          .where((element) => filterCharacter(element))
+          .map((element) => ItemData(character: element)),
+    ];
   }
 }
 
@@ -86,95 +168,6 @@ class ItemData extends Comparable<ItemData> {
     if (t != 0) return t;
     return name.compareTo(other.name);
   }
-}
-
-/// Gets a list of [ItemData] that can be obtained in banners.
-Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
-  final db = GsDatabase.instance;
-
-  bool filterWeapon(InfoWeapon weapon) {
-    late final isStandard = weapon.source == GsItemSource.wishesStandard;
-    late final isFeatured = banner.feature5.contains(weapon.id);
-    late final isChar = banner.type == GsBanner.character && weapon.rarity == 5;
-    late final isBegn = banner.type == GsBanner.beginner && weapon.rarity > 3;
-    return (isStandard || isFeatured) && !isChar && !isBegn;
-  }
-
-  bool filterCharacter(InfoCharacter character) {
-    late final isStandard = character.source == GsItemSource.wishesStandard;
-    late final isFeatured = banner.feature5.contains(character.id);
-    late final isWeap = banner.type == GsBanner.weapon && character.rarity == 5;
-    return (isStandard || isFeatured) && !isWeap;
-  }
-
-  return [
-    ...db.infoWeapons
-        .getItems()
-        .where((element) => filterWeapon(element))
-        .map((element) => ItemData(weapon: element)),
-    ...db.infoCharacters
-        .getItems()
-        .where((element) => filterCharacter(element))
-        .map((element) => ItemData(character: element)),
-  ];
-}
-
-/// Gets the pity of the given wish in the given wishes list.
-int getPity(List<SaveWish> wishes, SaveWish wish) {
-  final item = GsUtils.items.getItemData(wish.itemId);
-
-  if (item.rarity == 4 || item.rarity == 5) {
-    final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
-    final last = list.indexWhere(
-        (e) => GsUtils.items.getItemData(e.itemId).rarity == item.rarity);
-    return last != -1 ? (last + 1).coerceAtLeast(1) : list.length + 1;
-  }
-
-  return 1;
-}
-
-enum WishState { none, won, lost, guaranteed }
-
-WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
-  final item = GsUtils.items.getItemData(wish.itemId);
-  if (item.rarity != 5) return WishState.none;
-
-  final db = GsDatabase.instance;
-  final banner = db.infoBanners.getItem(wish.bannerId);
-  final bannerContains = banner.feature5.contains(wish.itemId);
-
-  wishes = wishes.skipWhile((value) => value != wish).skip(1).toList();
-  final last =
-      wishes.indexWhere((e) => GsUtils.items.getItemData(e.itemId).rarity == 5);
-  if (last == -1) return bannerContains ? WishState.won : WishState.lost;
-
-  final lastWish = wishes[last];
-  final lastBanner = db.infoBanners.getItem(lastWish.bannerId);
-  final lastBannerContains = lastBanner.feature5.contains(wishes[last].itemId);
-
-  if (lastBannerContains && bannerContains) return WishState.won;
-  if (lastBannerContains && !bannerContains) return WishState.lost;
-  if (!lastBannerContains && bannerContains) return WishState.guaranteed;
-  return WishState.none;
-}
-
-/// Checks if the given wish was a guaranteed wish in the given wishes list.
-bool getGuaranteed(List<SaveWish> wishes, SaveWish wish) {
-  final item = GsUtils.items.getItemData(wish.itemId);
-  if (item.rarity != 5) return false;
-  final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
-  return isNextGaranteed(list);
-}
-
-/// Checks if the next wish is a guaranteed one in the given wishes list.
-bool isNextGaranteed(List<SaveWish> wishes) {
-  final last =
-      wishes.indexWhere((e) => GsUtils.items.getItemData(e.itemId).rarity == 5);
-  if (last == -1) return false;
-  final lastWish = wishes[last];
-  final db = GsDatabase.instance;
-  final banner = db.infoBanners.getItem(lastWish.bannerId);
-  return !banner.feature5.contains(wishes[last].itemId);
 }
 
 List<Widget> getSized(Iterable<Widget> widgets) {
@@ -285,15 +278,16 @@ class WishInfo {
     bool Function(ItemData item) selector,
   ) {
     final getItem = GsUtils.items.getItemData;
+    final getPity = GsUtils.wishes.countPity;
     final g = wishes.where((e) => selector(getItem(e.itemId)));
-    final l = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
-    final a = g.length > 0 ? g.map((e) => getPity(wishes, e)).average() : 0.0;
-    final p = g.length * 100 / wishes.length.coerceAtLeast(1);
+    final lst = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
+    final avg = g.length > 0 ? g.map((e) => getPity(wishes, e)).average() : 0.0;
+    final per = g.length * 100 / wishes.length.coerceAtLeast(1);
     return WishInfo(
-      last: l,
+      last: lst,
       total: g.length,
-      average: a,
-      percentage: p,
+      average: avg,
+      percentage: per,
       wishes: g.toList(),
     );
   }

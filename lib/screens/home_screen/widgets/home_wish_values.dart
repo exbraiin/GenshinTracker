@@ -158,11 +158,11 @@ class HomeWishesValues extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: summary.wishes5.reversed.map((wish) {
                     final item = GsUtils.items.getItemData(wish.itemId);
-                    final pity = getPity(wishes, wish);
-                    final showGuaranteed = banner == GsBanner.character;
-                    final guaranteed = showGuaranteed &&
-                        item.rarity == 5 &&
-                        getGuaranteed(wishes, wish);
+                    final pity = GsUtils.wishes.countPity(wishes, wish);
+                    final showState = banner == GsBanner.character;
+                    final state = showState
+                        ? GsUtils.wishes.getWishState(wishes, wish)
+                        : WishState.none;
 
                     return Container(
                       padding: EdgeInsets.symmetric(
@@ -170,7 +170,11 @@ class HomeWishesValues extends StatelessWidget {
                         horizontal: kSeparator4 * 2,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: GsColors.dimWhite),
+                        border: Border.all(
+                          color: state == WishState.won
+                              ? GsColors.getRarityColor(5)
+                              : GsColors.dimWhite,
+                        ),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Text.rich(
@@ -183,7 +187,7 @@ class HomeWishesValues extends StatelessWidget {
                               style: style.copyWith(
                                   color: GsColors.getPityColor(pity)),
                             ),
-                            if (guaranteed)
+                            if (state == WishState.guaranteed)
                               WidgetSpan(
                                 child: GsWishStateIcon(WishState.guaranteed),
                               ),

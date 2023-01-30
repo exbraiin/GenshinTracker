@@ -49,7 +49,7 @@ abstract class GsDatabaseExporter {
         name: item.name,
         date: wish.date.format(),
         rarity: item.rarity,
-        pity: getPity(wishes, wish),
+        pity: GsUtils.wishes.countPity(wishes, wish),
         roll: wish.number,
         banner: banner.name,
       ));

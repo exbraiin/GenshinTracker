@@ -144,7 +144,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
         banner.feature5.contains(itemData.id);
 
     final filtered = filter
-        .match(getBannerItemsData(banner))
+        .match(GsUtils.wishes.getBannerItemsData(banner))
         .sortedBy((element) => element.rarity)
         .thenBy((element) => element.type.index)
         .thenBy((element) => featured(element) ? 0 : 1)

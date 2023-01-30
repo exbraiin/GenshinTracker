@@ -75,6 +75,20 @@ class WishesScreen extends StatelessWidget {
     );
   }
 
+  ListType _getListType(List<SaveWish> filteredWishes, int index) {
+    final wish = filteredWishes[index];
+    final p = filteredWishes.elementAtOrNull(index - 1);
+    final n = filteredWishes.elementAtOrNull(index + 1);
+
+    late final isTop = p?.date != wish.date && n?.date == wish.date;
+    late final isMid = p?.date == wish.date && n?.date == wish.date;
+    late final isBot = p?.date == wish.date && n?.date != wish.date;
+    if (isTop) return ListType.top;
+    if (isMid) return ListType.middle;
+    if (isBot) return ListType.bottom;
+    return ListType.none;
+  }
+
   List<Widget> _slivers(
     GsBanner gsBanner,
     List<SaveWish> wishesList,
@@ -97,27 +111,14 @@ class WishesScreen extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 final wish = filteredWishes[index];
-                var type = ListType.none;
-                if (filter.isDefault()) {
-                  final p = filteredWishes.elementAtOrNull(index - 1);
-                  final n = filteredWishes.elementAtOrNull(index + 1);
-
-                  final isTop = p?.date != wish.date && n?.date == wish.date;
-                  final isMid = p?.date == wish.date && n?.date == wish.date;
-                  final isBot = p?.date == wish.date && n?.date != wish.date;
-                  type = isTop
-                      ? ListType.top
-                      : isMid
-                          ? ListType.middle
-                          : isBot
-                              ? ListType.bottom
-                              : ListType.none;
-                }
+                final type = filter.isDefault()
+                    ? _getListType(filteredWishes, index)
+                    : ListType.none;
 
                 return WishListItem(
-                  pity: getPity(wishesList, wish),
+                  pity: GsUtils.wishes.countPity(wishesList, wish),
                   wishState: gsBanner == GsBanner.character
-                      ? getWishState(wishesList, wish)
+                      ? GsUtils.wishes.getWishState(wishesList, wish)
                       : WishState.none,
                   index: index,
                   wish: wish,

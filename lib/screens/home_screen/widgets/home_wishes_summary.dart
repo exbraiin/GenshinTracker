@@ -35,7 +35,7 @@ class HomeWishesSummary extends StatelessWidget {
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
     final summary = WishesSummary.fromList(wishes);
     final showGuaranteed = banner == GsBanner.character;
-    final garanteed = showGuaranteed && isNextGaranteed(wishes);
+    final garanteed = showGuaranteed && GsUtils.wishes.isNextGaranteed(wishes);
 
     final pityColor = GsColors.getPityColor(summary.last5, maxPity);
 
