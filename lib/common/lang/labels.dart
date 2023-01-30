@@ -67,6 +67,9 @@ class Labels {
 	/// Achievements
 	static const achievements = 'achievements';
 
+	/// Ingredients
+	static const ingredients = 'ingredients';
+
 	/// Reputation
 	static const reputation = 'reputation';
 

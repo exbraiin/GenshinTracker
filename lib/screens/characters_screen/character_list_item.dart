@@ -5,10 +5,11 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class CharacterListItem extends StatelessWidget {
+  final bool showExtra;
   final InfoCharacter item;
   final VoidCallback? onTap;
 
-  CharacterListItem(this.item, {this.onTap});
+  CharacterListItem(this.item, {this.showExtra = true, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class CharacterListItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (charCons != null)
+              if (showExtra && charCons != null)
                 GsItemCardLabel(
                   asset: imageXp,
                   label: '$friend',
@@ -59,7 +60,7 @@ class CharacterListItem extends StatelessWidget {
               ),
             ],
           ),
-          if (charConsTotal != null && charConsTotal != charCons)
+          if (showExtra && charConsTotal != null && charConsTotal != charCons)
             Container(
               alignment: Alignment.topRight,
               margin: EdgeInsets.only(top: kSeparator2),

@@ -38,6 +38,7 @@ class CharactersScreen extends StatelessWidget {
                       final item = characters[index];
                       return CharacterListItem(
                         item,
+                        showExtra: filter.hasExtra('info'),
                         onTap: () => _onCharacterTap(context, item),
                       );
                     },
@@ -47,6 +48,22 @@ class CharactersScreen extends StatelessWidget {
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.characters),
                 actions: [
+                  Tooltip(
+                    message: Lang.of(context).getValue(Labels.showExtraInfo),
+                    child: IconButton(
+                      icon: Icon(
+                        filter.hasExtra('info')
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      onPressed: () {
+                        filter.toggleExtra('info');
+                        drawer.onNotify();
+                      },
+                    ),
+                  ),
+                  SizedBox(width: kSeparator2),
                   Tooltip(
                     message: 'Character Ascension',
                     child: IconButton(

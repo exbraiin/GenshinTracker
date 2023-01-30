@@ -6,6 +6,7 @@ import 'package:tracker/common/widgets/static/hover_detector.dart';
 class GsRarityItemCard extends StatelessWidget {
   final int rarity;
   final double size;
+  final String asset;
   final String image;
   final VoidCallback? onTap;
   final Widget? header;
@@ -15,6 +16,7 @@ class GsRarityItemCard extends StatelessWidget {
   GsRarityItemCard({
     super.key,
     this.size = 64,
+    this.asset = '',
     this.image = '',
     this.rarity = 1,
     this.onTap,
@@ -25,6 +27,7 @@ class GsRarityItemCard extends StatelessWidget {
 
   GsRarityItemCard.withLabels({
     this.size = 64,
+    this.asset = '',
     this.image = '',
     this.rarity = 1,
     this.onTap,
@@ -66,6 +69,10 @@ class GsRarityItemCard extends StatelessWidget {
   Widget _getChild() {
     return Stack(
       children: [
+        if (asset.isNotEmpty)
+          Positioned.fill(
+            child: Image.asset(asset, fit: fit),
+          ),
         Positioned.fill(
           child: CachedImageWidget(image, fit: fit),
         ),

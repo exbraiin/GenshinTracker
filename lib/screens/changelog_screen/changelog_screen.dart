@@ -37,6 +37,9 @@ class ChangelogScreen extends StatelessWidget {
     final iBanners = GsDatabase.instance.infoBanners;
     final banners = iBanners.getItems().groupBy((e) => e.version);
 
+    final iChests = GsDatabase.instance.infoRemarkableChests;
+    final chests = iChests.getItems().groupBy((e) => e.version);
+
     final iNamecards = GsDatabase.instance.infoNamecards;
     final namecards = iNamecards.getItems().groupBy((e) => e.version);
 
@@ -49,6 +52,7 @@ class ChangelogScreen extends StatelessWidget {
       ...crystals.keys,
       ...ingredients.keys,
       ...banners.keys,
+      ...chests.keys,
       ...namecards.keys,
     ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
@@ -121,7 +125,7 @@ class ChangelogScreen extends StatelessWidget {
                             ),
                             _getSection<InfoIngredient>(
                               context: context,
-                              title: context.fromLabel(Labels.totalIngredients),
+                              title: context.fromLabel(Labels.ingredients),
                               items: ingredients[version]
                                   ?.sortedBy((element) => element.rarity)
                                   .thenBy((element) => element.name),
@@ -144,14 +148,27 @@ class ChangelogScreen extends StatelessWidget {
                             _getSection<InfoSpincrystal>(
                               context: context,
                               title: context.fromLabel(Labels.spincrystals),
-                              items: crystals[version],
+                              items: crystals[version]
+                                  ?.sortedBy((element) => element.number),
                               name: (i) => '${i.number}: ${i.name}',
                               asset: (i) => spincrystalAsset,
+                            ),
+                            _getSection<InfoRemarkableChest>(
+                              context: context,
+                              title: context.fromLabel(Labels.remarkableChests),
+                              items: chests[version]
+                                  ?.sortedBy((element) => element.rarity)
+                                  .thenBy((element) => element.name),
+                              name: (i) => i.name,
+                              image: (i) => i.image,
+                              rarity: (i) => i.rarity,
                             ),
                             _getSection<InfoBanner>(
                               context: context,
                               title: context.fromLabel(Labels.wishes),
-                              items: banners[version],
+                              items: banners[version]
+                                  ?.sortedBy((element) => element.type.index)
+                                  .thenBy((element) => element.name),
                               name: (i) => i.name,
                               rarity: (i) => _getBannerItemData(i)?.rarity ?? 1,
                               image: (i) => _getBannerItemData(i)?.image ?? '',
@@ -160,7 +177,9 @@ class ChangelogScreen extends StatelessWidget {
                             _getSection<InfoNamecard>(
                               context: context,
                               title: context.fromLabel(Labels.namecards),
-                              items: namecards[version],
+                              items: namecards[version]
+                                  ?.sortedBy((element) => element.type)
+                                  .thenBy((element) => element.name),
                               name: (i) => i.name,
                               image: (i) => i.image,
                             ),
@@ -179,10 +198,10 @@ class ChangelogScreen extends StatelessWidget {
     required BuildContext context,
     required String title,
     required List<T>? items,
-    required String Function(T) name,
-    String Function(T)? image,
-    int Function(T)? rarity,
-    String Function(T)? asset,
+    required String Function(T i) name,
+    int Function(T i)? rarity,
+    String Function(T i)? image,
+    String Function(T i)? asset,
     BoxFit fit = BoxFit.contain,
   }) {
     if (items == null) return SizedBox();
@@ -196,7 +215,8 @@ class ChangelogScreen extends StatelessWidget {
           children: items
               .map((e) => GsRarityItemCard.withLabels(
                     labelFooter: name(e),
-                    image: image?.call(e) ?? '', // asset?.call(e)
+                    asset: asset?.call(e) ?? '',
+                    image: image?.call(e) ?? '',
                     rarity: rarity?.call(e) ?? 1,
                     size: 80,
                     fit: fit,
