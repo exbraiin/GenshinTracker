@@ -52,6 +52,9 @@ class Labels {
 	/// Source
 	static const source = 'source';
 
+	/// Outfits
+	static const outfits = 'outfits';
+
 	/// Spincrystals
 	static const spincrystals = 'spincrystals';
 

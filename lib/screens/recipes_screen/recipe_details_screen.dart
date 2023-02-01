@@ -159,7 +159,7 @@ class RecipeDetailsScreen extends StatelessWidget {
               size: 80,
               labelFooter: char.name,
               rarity: char.rarity,
-              image: char.image,
+              image: GsUtils.characters.getImage(char.id),
             ),
         ],
       ),

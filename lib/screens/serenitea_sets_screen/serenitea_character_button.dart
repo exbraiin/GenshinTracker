@@ -46,7 +46,9 @@ class SereniteaCharacterButton extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(44),
-                child: CachedImageWidget(item.image),
+                child: CachedImageWidget(
+                  GsUtils.characters.getImage(item.id),
+                ),
               ),
             ),
           ),

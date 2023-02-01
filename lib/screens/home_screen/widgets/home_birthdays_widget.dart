@@ -29,7 +29,7 @@ class HomeBirthdaysWidget extends StatelessWidget {
             return GsRarityItemCard.withLabels(
               size: 70,
               rarity: e.rarity,
-              image: e.image,
+              image: GsUtils.characters.getImage(e.id),
               labelFooter: e.name,
               labelHeader: e.birthday.toBirthday(),
               onTap: () => Navigator.of(context).pushNamed(

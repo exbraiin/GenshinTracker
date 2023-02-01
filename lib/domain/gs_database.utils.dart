@@ -111,6 +111,13 @@ class _Characters {
     return owned > 0 || _db.saveWishes.getItems().any((e) => e.itemId == id);
   }
 
+  /// Whether the character with the given [id] has outfits or not.
+  bool hasOutfits(String id) {
+    return GsDatabase.instance.infoCharactersOutfit
+        .getItems()
+        .any((element) => element.character == id);
+  }
+
   int getCharFriendship(String id) {
     final char = _db.saveCharacters.getItemOrNull(id);
     return char?.friendship.coerceAtLeast(1) ?? 1;
@@ -138,6 +145,18 @@ class _Characters {
     final total = _db.saveWishes.countItem(id);
     final sum = total + (char?.owned ?? 0);
     return sum > 0 ? (sum - 1) : null;
+  }
+
+  String getImage(String id) {
+    final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
+    final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.image ?? '';
+    return url.isNotEmpty ? url : _db.infoCharacters.getItem(id).image;
+  }
+
+  String getFullImage(String id) {
+    final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
+    final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.fullImage ?? '';
+    return url.isNotEmpty ? url : _db.infoCharacters.getItem(id).fullImage;
   }
 }
 

@@ -213,6 +213,12 @@ extension SaveRemarkableChestExt on JsonSaveDetails<SaveRemarkableChest> {
 }
 
 extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
+  void setCharOutfit(String id, String outfit) {
+    final char = getItemOrNull(id);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(outfit: outfit);
+    if (item.outfit != char?.outfit) insertItem(item);
+  }
+
   void setCharFriendship(String id, int friendship) {
     final char = getItemOrNull(id);
     final friend = friendship.clamp(1, 10);

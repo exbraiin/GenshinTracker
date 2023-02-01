@@ -42,7 +42,7 @@ class HomeFriendsWidget extends StatelessWidget {
                 return GsRarityItemCard(
                   key: ValueKey('friend_${e.id}'),
                   size: 70,
-                  image: e.image,
+                  image: GsUtils.characters.getImage(e.id),
                   rarity: e.rarity,
                   footer: Text(e.name),
                   header: GsNumberField(

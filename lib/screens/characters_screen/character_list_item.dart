@@ -25,7 +25,7 @@ class CharacterListItem extends StatelessWidget {
       rarity: item.rarity,
       disable: charCons == null,
       banner: GsItemBanner.fromVersion(item.version),
-      imageUrlPath: item.image,
+      imageUrlPath: GsUtils.characters.getImage(item.id),
       child: _child(context, charCons, charConsTotal, friend, ascension),
     );
   }

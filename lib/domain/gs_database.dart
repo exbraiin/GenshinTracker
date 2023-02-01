@@ -67,6 +67,10 @@ class GsDatabase {
     'characters_info',
     (map) => InfoCharacterInfo.fromMap(map),
   );
+  final infoCharactersOutfit = JsonInfoDetails(
+    'characters_outfits',
+    (map) => InfoCharacterOutfit.fromMap(map),
+  );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
     (map) => InfoSpincrystal.fromMap(map),
@@ -163,6 +167,7 @@ class GsDatabase {
       infoNamecards.load(info);
       infoCharacters.load(info);
       infoCharactersInfo.load(info);
+      infoCharactersOutfit.load(info);
       infoSpincrystal.load(info);
       infoSereniteaSets.load(info);
       infoVersion.load(info);

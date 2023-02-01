@@ -76,7 +76,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
             SizedBox(width: kSeparator4),
             GsRarityItemCard(
               size: 70,
-              image: item.image,
+              image: GsUtils.characters.getImage(item.id),
               rarity: item.rarity,
             ),
             SizedBox(width: kSeparator4),

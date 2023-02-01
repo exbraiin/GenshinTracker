@@ -88,15 +88,12 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           .thenBy((element) => element.name)
                           .map((info) {
                         final exists = GsUtils.characters.hasCaracter(info.id);
-                        final ascension =
-                            GsUtils.characters.getCharAscension(info.id);
                         return Opacity(
                           opacity: exists ? 1 : kDisableOpacity,
                           child: GsRarityItemCard.withLabels(
                             labelFooter: info.name,
-                            image: info.image,
+                            image: GsUtils.characters.getImage(info.id),
                             rarity: info.rarity,
-                            labelHeader: exists ? '$ascension ✦' : '',
                             onTap: () => Navigator.of(context).pushNamed(
                               CharacterDetailsScreen.id,
                               arguments: info,

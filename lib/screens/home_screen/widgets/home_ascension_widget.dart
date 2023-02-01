@@ -59,7 +59,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   children: characters.map<Widget>((e) {
                     return GsRarityItemCard.withLabels(
                       size: 70,
-                      image: e.image,
+                      image: GsUtils.characters.getImage(e.id),
                       rarity: e.rarity,
                       labelHeader: '${chars.getCharAscension(e.id)} ✦',
                       labelFooter: e.name,

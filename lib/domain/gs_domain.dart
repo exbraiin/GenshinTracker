@@ -24,6 +24,7 @@ export 'models/info_artifact.dart';
 export 'models/info_banner.dart';
 export 'models/info_character.dart';
 export 'models/info_character_info.dart';
+export 'models/info_character_outfit.dart';
 export 'models/info_city.dart';
 export 'models/info_data.dart';
 export 'models/info_details.dart';

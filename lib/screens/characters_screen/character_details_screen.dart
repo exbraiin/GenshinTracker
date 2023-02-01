@@ -81,6 +81,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = GsUtils.characters.getCharAscension(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
+
     return SizedBox(
       height: 260,
       child: Row(
@@ -91,59 +92,28 @@ class CharacterDetailsScreen extends StatelessWidget {
             children: [
               GsRarityItemCard(
                 size: 120,
-                image: info.image,
+                image: GsUtils.characters.getImage(info.id),
                 rarity: info.rarity,
               ),
               SizedBox(height: kSeparator8),
-              _getTextButton(
-                context,
-                context.fromLabel(Labels.attributes),
-                () => Scrollable.ensureVisible(
-                  _attributes.currentContext!,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                ),
-              ),
-              SizedBox(height: kSeparator4),
-              _getTextButton(
-                context,
-                context.fromLabel(Labels.ascension),
-                () => Scrollable.ensureVisible(
-                  _ascension.currentContext!,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                ),
-              ),
-              SizedBox(height: kSeparator4),
-              _getTextButton(
-                context,
-                context.fromLabel(Labels.talents),
-                () => Scrollable.ensureVisible(
-                  _talents.currentContext!,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                ),
-              ),
-              SizedBox(height: kSeparator4),
-              _getTextButton(
-                context,
-                context.fromLabel(Labels.constellations),
-                () => Scrollable.ensureVisible(
-                  _constellation.currentContext!,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                ),
-              ),
-              SizedBox(height: kSeparator4),
-              _getTextButton(
-                context,
-                context.fromLabel(Labels.materials),
-                () => Scrollable.ensureVisible(
-                  _materials.currentContext!,
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                ),
-              ),
+              ...{
+                Labels.attributes: _attributes,
+                Labels.ascension: _ascension,
+                Labels.talents: _talents,
+                Labels.constellations: _constellation,
+                Labels.materials: _materials,
+              }
+                  .entries
+                  .map((e) => _getTextButton(
+                        context,
+                        context.fromLabel(e.key),
+                        () => Scrollable.ensureVisible(
+                          e.value.currentContext!,
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.easeOut,
+                        ),
+                      ))
+                  .separate(SizedBox(height: kSeparator4)),
             ],
           ),
           SizedBox(width: 18),
@@ -188,7 +158,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           SizedBox(
             width: 310,
             child: CachedImageWidget(
-              info.fullImage,
+              GsUtils.characters.getFullImage(info.id),
               fit: BoxFit.fitWidth,
               alignment: Alignment.topCenter,
             ),
@@ -302,6 +272,42 @@ class CharacterDetailsScreen extends StatelessWidget {
                       ))
                   .toList(),
             ),
+            if (GsUtils.characters.hasOutfits(info.id))
+              TableRow(
+                children: [
+                  Text(context.fromLabel(Labels.outfits), style: stLabel),
+                  Wrap(
+                    spacing: kSeparator4,
+                    runSpacing: kSeparator4,
+                    children: [
+                      GsRarityItemCard.withLabels(
+                        image: info.image,
+                        rarity: info.rarity,
+                        labelFooter: info.name,
+                        onTap: () => GsDatabase.instance.saveCharacters
+                            .setCharOutfit(info.id, ''),
+                      ),
+                      ...GsDatabase.instance.infoCharactersOutfit
+                          .getItems()
+                          .where((element) => element.character == info.id)
+                          .map((e) => GsRarityItemCard.withLabels(
+                                image: e.image,
+                                rarity: e.rarity,
+                                labelFooter: e.name,
+                                onTap: () => GsDatabase.instance.saveCharacters
+                                    .setCharOutfit(info.id, e.id),
+                              )),
+                    ],
+                  ),
+                  SizedBox(),
+                  SizedBox(),
+                ]
+                    .map((e) => Padding(
+                          padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                          child: e,
+                        ))
+                    .toList(),
+              )
           ],
         ),
       ],
