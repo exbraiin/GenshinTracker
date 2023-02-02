@@ -161,10 +161,18 @@ class ScreenFilters {
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},
-        (item) => _db.saveRecipes.exists(item.id),
+        (item) {
+          if (item.baseRecipe.isNotEmpty) {
+            final id = _db.infoCharacters
+                .getItems()
+                .firstOrNullWhere((e) => e.specialDish == item.id)
+                ?.id;
+            return GsUtils.characters.hasCaracter(id ?? '');
+          }
+          return _db.saveRecipes.exists(item.id);
+        },
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-        filter: (i) => i.baseRecipe.isEmpty,
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},

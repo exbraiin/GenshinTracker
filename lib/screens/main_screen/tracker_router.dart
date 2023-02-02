@@ -15,7 +15,6 @@ import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_scree
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
-import 'package:tracker/screens/tests_screen/tests_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
@@ -45,7 +44,6 @@ class TrackerRouter {
     CharacterAscensionScreen.id: () => const CharacterAscensionScreen(),
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
     ChangelogScreen.id: () => const ChangelogScreen(),
-    TestsScreen.id: () => const TestsScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {

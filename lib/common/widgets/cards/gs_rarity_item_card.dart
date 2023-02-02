@@ -74,9 +74,10 @@ class GsRarityItemCard extends StatelessWidget {
           Positioned.fill(
             child: Image.asset(asset, fit: fit),
           ),
-        Positioned.fill(
-          child: CachedImageWidget(image, fit: fit),
-        ),
+        if (image.isNotEmpty)
+          Positioned.fill(
+            child: CachedImageWidget(image, fit: fit),
+          ),
         if (header != null)
           Positioned.fill(
             bottom: null,

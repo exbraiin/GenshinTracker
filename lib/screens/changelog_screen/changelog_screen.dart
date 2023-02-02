@@ -18,6 +18,9 @@ class ChangelogScreen extends StatelessWidget {
     final iCharacters = GsDatabase.instance.infoCharacters;
     final characters = iCharacters.getItems().groupBy((e) => e.version);
 
+    final iOutfits = GsDatabase.instance.infoCharactersOutfit;
+    final outfits = iOutfits.getItems().groupBy((e) => e.version);
+
     final iWeapons = GsDatabase.instance.infoWeapons;
     final weapons = iWeapons.getItems().groupBy((e) => e.version);
 
@@ -47,6 +50,7 @@ class ChangelogScreen extends StatelessWidget {
 
     final groups = {
       ...characters.keys,
+      ...outfits.keys,
       ...weapons.keys,
       ...materials.keys,
       ...recipes.keys,
@@ -88,6 +92,16 @@ class ChangelogScreen extends StatelessWidget {
                               context: context,
                               title: context.fromLabel(Labels.characters),
                               items: characters[version]
+                                  ?.sortedBy((element) => element.rarity)
+                                  .thenBy((element) => element.name),
+                              name: (i) => i.name,
+                              image: (i) => i.image,
+                              rarity: (i) => i.rarity,
+                            ),
+                            _getSection<InfoCharacterOutfit>(
+                              context: context,
+                              title: context.fromLabel(Labels.outfits),
+                              items: outfits[version]
                                   ?.sortedBy((element) => element.rarity)
                                   .thenBy((element) => element.name),
                               name: (i) => i.name,

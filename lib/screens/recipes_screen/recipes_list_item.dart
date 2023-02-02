@@ -4,6 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
@@ -30,6 +31,10 @@ class RecipesListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSpecial = recipe.baseRecipe.isNotEmpty;
     final hasSpecial = isSpecial && _hasSpecialDishChar();
+    late final charId = GsDatabase.instance.infoCharacters
+        .getItems()
+        .firstOrNullWhere((e) => e.specialDish == recipe.id)
+        ?.id;
     return Opacity(
       opacity: savedRecipe != null || hasSpecial ? 1 : kDisableOpacity,
       child: GsItemCardButton(
@@ -93,6 +98,26 @@ class RecipesListItem extends StatelessWidget {
                 left: kSeparator2,
                 child: GsItemCardLabel(
                   asset: recipe.effect.assetPath,
+                ),
+              ),
+            if (isSpecial)
+              Positioned(
+                right: kSeparator2,
+                bottom: kSeparator2,
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: GsColors.mainColor0.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  padding: const EdgeInsets.all(kSeparator2),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: CachedImageWidget(
+                      GsUtils.characters.getImage(charId ?? ''),
+                    ),
+                  ),
                 ),
               ),
             if (!isSpecial)
