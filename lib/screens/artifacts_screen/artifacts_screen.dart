@@ -7,7 +7,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class ArtifactsScreen extends StatelessWidget {
   static const id = 'artifacts_screen';
@@ -20,19 +20,20 @@ class ArtifactsScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         final items = GsDatabase.instance.infoArtifacts.getItems();
-        return ScreenDrawerBuilder<InfoArtifact>(
-          filter: () => ScreenFilters.infoArtifactFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoArtifact>(
+          filter: ScreenFilters.infoArtifactFilter,
+          builder: (context, filter, button, toggle) {
             final filtered = filter.match(items);
             return Scaffold(
-              appBar: GsAppBar(label: context.fromLabel(Labels.artifacts)),
+              appBar: GsAppBar(
+                label: context.fromLabel(Labels.artifacts),
+                actions: [button],
+              ),
               body: GsGridView.builder(
                 itemCount: filtered.length,
                 itemBuilder: (context, index) =>
                     ArtifactListItem(filtered[index]),
               ),
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

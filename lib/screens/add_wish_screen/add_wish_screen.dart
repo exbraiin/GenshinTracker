@@ -12,7 +12,7 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';
@@ -42,14 +42,16 @@ class _AddWishScreenState extends State<AddWishScreen> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     final banner = args as InfoBanner?;
-    return ScreenDrawerBuilder<ItemData>(
-      filter: () => ScreenFilters.itemDataFilter,
-      builder: (context, filter, drawer) {
+
+    return ScreenFilterBuilder<ItemData>(
+      filter: ScreenFilters.itemDataFilter,
+      builder: (context, filter, button, toggle) {
         if (banner == null) return const SizedBox();
         return Scaffold(
           appBar: GsAppBar(
             label: Lang.of(context).getValue(Labels.addWishes),
             leading: const CloseButton(),
+            actions: [button],
           ),
           body: Row(
             children: [
@@ -114,8 +116,6 @@ class _AddWishScreenState extends State<AddWishScreen> {
               ),
             ],
           ),
-          endDrawer: drawer,
-          endDrawerEnableOpenDragGesture: false,
         );
       },
     );

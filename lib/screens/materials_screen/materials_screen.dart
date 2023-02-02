@@ -8,7 +8,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/materials_screen/material_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class MaterialsScreen extends StatelessWidget {
   static const id = 'materials_screen';
@@ -21,9 +21,9 @@ class MaterialsScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        return ScreenDrawerBuilder<InfoMaterial>(
-          filter: () => ScreenFilters.infoMaterialFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoMaterial>(
+          filter: ScreenFilters.infoMaterialFilter,
+          builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoMaterials.getItems();
             final materials = filter.match(items);
             final child = materials.isEmpty
@@ -38,10 +38,9 @@ class MaterialsScreen extends StatelessWidget {
             return Scaffold(
               appBar: GsAppBar(
                 label: context.fromLabel(Labels.materials),
+                actions: [button],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

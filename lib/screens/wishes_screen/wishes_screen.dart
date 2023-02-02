@@ -9,16 +9,14 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 
 class WishesScreen extends StatelessWidget {
   static const id = 'wishes_screen';
 
-  final _key = GlobalKey<ScaffoldState>();
-
-  WishesScreen({super.key});
+  const WishesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +32,10 @@ class WishesScreen extends StatelessWidget {
         final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
         final banners = db.infoBanners.getInfoBannerByType(banner);
 
-        return ScreenDrawerBuilder<SaveWish>(
-          filter: () => ScreenFilters.saveWishFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<SaveWish>(
+          filter: ScreenFilters.saveWishFilter,
+          builder: (context, filter, button, toggle) {
             return Scaffold(
-              key: _key,
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.wishes),
                 bottom: _header(context),
@@ -52,24 +49,16 @@ class WishesScreen extends StatelessWidget {
                             : Icons.visibility_off_rounded,
                         color: Colors.white.withOpacity(0.5),
                       ),
-                      onPressed: () {
-                        filter.toggleExtra('show');
-                        drawer.onNotify();
-                      },
+                      onPressed: () => toggle('show'),
                     ),
                   ),
                   const SizedBox(width: kSeparator2),
-                  IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => _key.currentState?.openEndDrawer(),
-                  ),
+                  button,
                 ],
               ),
               body: CustomScrollView(
                 slivers: _slivers(banner, wishes, banners, filter),
               ),
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

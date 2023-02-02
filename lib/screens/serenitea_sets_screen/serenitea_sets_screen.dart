@@ -7,7 +7,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_set_list_item.dart';
 
 class SereniteaSetsScreen extends StatelessWidget {
@@ -21,9 +21,9 @@ class SereniteaSetsScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        return ScreenDrawerBuilder<InfoSereniteaSet>(
-          filter: () => ScreenFilters.infoSereniteaSetFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoSereniteaSet>(
+          filter: ScreenFilters.infoSereniteaSetFilter,
+          builder: (context, filter, button, toggle) {
             final setsList = GsDatabase.instance.infoSereniteaSets.getItems();
             final filtered = filter.match(setsList);
 
@@ -45,10 +45,9 @@ class SereniteaSetsScreen extends StatelessWidget {
             return Scaffold(
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.sereniteaSets),
+                actions: [button],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

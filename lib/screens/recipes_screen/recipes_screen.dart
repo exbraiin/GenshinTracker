@@ -8,7 +8,7 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/recipes_screen/recipes_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class RecipesScreen extends StatelessWidget {
   static const id = 'recipes_screen';
@@ -22,9 +22,9 @@ class RecipesScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
 
-        return ScreenDrawerBuilder<InfoRecipe>(
-          filter: () => ScreenFilters.infoRecipeFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoRecipe>(
+          filter: ScreenFilters.infoRecipeFilter,
+          builder: (context, filter, button, toggle) {
             final db = GsDatabase.instance;
             final recipes = db.infoRecipes.getItems();
             final sorted = filter.match(recipes);
@@ -45,10 +45,9 @@ class RecipesScreen extends StatelessWidget {
             return Scaffold(
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.recipes),
+                actions: [button],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

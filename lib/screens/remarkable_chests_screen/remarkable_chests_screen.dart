@@ -8,7 +8,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class RemarkableChestsScreen extends StatelessWidget {
   static const id = 'remarkable_chests_screen';
@@ -21,9 +21,9 @@ class RemarkableChestsScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        return ScreenDrawerBuilder<InfoRemarkableChest>(
-          filter: () => ScreenFilters.infoRemarkableChestFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoRemarkableChest>(
+          filter: ScreenFilters.infoRemarkableChestFilter,
+          builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoRemarkableChests.getItems();
             final remarkableChests = filter.match(items);
             final child = remarkableChests.isEmpty
@@ -38,10 +38,9 @@ class RemarkableChestsScreen extends StatelessWidget {
             return Scaffold(
               appBar: GsAppBar(
                 label: context.fromLabel(Labels.remarkableChests),
+                actions: [button],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

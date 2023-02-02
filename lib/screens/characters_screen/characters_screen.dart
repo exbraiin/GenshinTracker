@@ -12,14 +12,12 @@ import 'package:tracker/screens/character_ascension_screen/character_ascension_s
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 class CharactersScreen extends StatelessWidget {
   static const id = 'characters_screen';
 
-  final _key = GlobalKey<ScaffoldState>();
-
-  CharactersScreen({super.key});
+  const CharactersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +25,9 @@ class CharactersScreen extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        return ScreenDrawerBuilder<InfoCharacter>(
-          filter: () => ScreenFilters.infoCharacterFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoCharacter>(
+          filter: ScreenFilters.infoCharacterFilter,
+          builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoCharacters.getItems();
             final characters = filter.match(items);
             final child = characters.isEmpty
@@ -46,26 +44,9 @@ class CharactersScreen extends StatelessWidget {
                     },
                   );
             return Scaffold(
-              key: _key,
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.characters),
                 actions: [
-                  Tooltip(
-                    message: Lang.of(context).getValue(Labels.showExtraInfo),
-                    child: IconButton(
-                      icon: Icon(
-                        filter.hasExtra('info')
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      onPressed: () {
-                        filter.toggleExtra('info');
-                        drawer.onNotify();
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: kSeparator2),
                   Tooltip(
                     message: 'Character Ascension',
                     child: IconButton(
@@ -79,15 +60,23 @@ class CharactersScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: kSeparator2),
-                  IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => _key.currentState?.openEndDrawer(),
+                  Tooltip(
+                    message: Lang.of(context).getValue(Labels.showExtraInfo),
+                    child: IconButton(
+                      icon: Icon(
+                        filter.hasExtra('info')
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      onPressed: () => toggle('info'),
+                    ),
                   ),
+                  const SizedBox(width: kSeparator2),
+                  button,
                 ],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );

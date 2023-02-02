@@ -8,14 +8,13 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/weapons_screen/weapon_list_item.dart';
 
 class WeaponsScreen extends StatelessWidget {
   static const id = 'weapons_screen';
-  final _key = GlobalKey<ScaffoldState>();
 
-  WeaponsScreen({super.key});
+  const WeaponsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,9 @@ class WeaponsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
 
-        return ScreenDrawerBuilder<InfoWeapon>(
-          filter: () => ScreenFilters.infoWeaponFilter,
-          builder: (context, filter, drawer) {
+        return ScreenFilterBuilder<InfoWeapon>(
+          filter: ScreenFilters.infoWeaponFilter,
+          builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoWeapons.getItems();
             final weapons = filter.match(items);
 
@@ -44,7 +43,6 @@ class WeaponsScreen extends StatelessWidget {
                   );
 
             return Scaffold(
-              key: _key,
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.weapons),
                 actions: [
@@ -57,22 +55,14 @@ class WeaponsScreen extends StatelessWidget {
                             : Icons.visibility_off_rounded,
                         color: Colors.white.withOpacity(0.5),
                       ),
-                      onPressed: () {
-                        filter.toggleExtra('info');
-                        drawer.onNotify();
-                      },
+                      onPressed: () => toggle('info'),
                     ),
                   ),
                   const SizedBox(width: kSeparator2),
-                  IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => _key.currentState?.openEndDrawer(),
-                  ),
+                  button,
                 ],
               ),
               body: child,
-              endDrawer: drawer,
-              endDrawerEnableOpenDragGesture: false,
             );
           },
         );
