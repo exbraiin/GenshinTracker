@@ -20,7 +20,7 @@ const menuIconArchive = 'assets/image/icons/menu_icon_archive.webp';
 const menuIconAchievements = 'assets/image/icons/menu_icon_achievements.webp';
 const menuIconFeedback = 'assets/image/icons/menu_icon_feedback.webp';
 const menuIconMap = 'assets/image/icons/menu_icon_map.webp';
-const iconMissing = 'assets/image/icons/missing_icon.webp';
+const iconMissing = 'assets/image/icons/missing_icon.png';
 
 const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
 const imageXp = 'assets/image/icons/Companion_xp.png';

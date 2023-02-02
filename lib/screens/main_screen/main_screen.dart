@@ -52,12 +52,10 @@ class _MainScreenState extends State<MainScreen> {
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 250),
+            padding: const EdgeInsets.only(left: 80),
             child: _pageWidget(),
           ),
-          Material(
-            child: _buttonsWidget(),
-          ),
+          _buttonsWidget(),
           Positioned(
             right: 0,
             bottom: 0,
@@ -72,110 +70,73 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _button(int index, Menu menu) {
-    final asset = menu.icon;
-    final label = Lang.of(context).getValue(menu.label);
-    final selected = _page.value == index;
-    return AnimatedContainer(
-      height: 60,
-      width: double.infinity,
-      curve: Curves.easeInOutCubic,
-      duration: const Duration(milliseconds: 400),
-      margin:
-          EdgeInsets.fromLTRB(kSeparator4, 0, selected ? 0 : kSeparator4, 0),
-      decoration: BoxDecoration(
-        color: selected ? GsColors.mainColor1 : GsColors.mainColor2,
-        borderRadius: BorderRadius.horizontal(
-          left: kMainRadius.topLeft,
-          right: selected ? Radius.zero : kMainRadius.topRight,
-        ),
-        boxShadow: kMainShadow,
-      ),
-      child: InkWell(
-        onTap: () {
-          if (_page.value == index) {
-            final key = _menus[index].page.key as GlobalKey;
-            final nv = key.currentState;
-            if (nv != null && nv is NavigatorState) {
-              nv.popUntil((route) => route.isFirst);
-            }
-          }
-          _page.value = index;
-        },
-        child: Row(
-          children: [
-            Container(
-              height: 32,
-              width: 32,
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                image: asset.isNotEmpty
-                    ? DecorationImage(
-                        fit: BoxFit.contain,
-                        image: AssetImage(asset),
-                      )
-                    : null,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                label,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buttonsWidget() {
-    return Container(
-      width: 250,
-      color: GsColors.mainColor0,
-      child: Column(
-        children: [
-          Container(
-            height: 56,
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Image.asset(
-                  imageAppIcon,
-                  height: 46,
-                  width: 46,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  Lang.of(context).getValue(Labels.appTitle),
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(color: Colors.white, fontSize: 20),
-                ),
-              ],
-            ),
+    var hover = false;
+    Widget button(int idx, Menu menu) {
+      final selected = idx == _page.value;
+      return Container(
+        padding: const EdgeInsets.all(kSeparator2),
+        decoration: BoxDecoration(
+          color: idx == 0
+              ? GsColors.mainColor3
+              : selected
+                  ? GsColors.mainColor1
+                  : GsColors.mainColor2,
+          borderRadius: kMainRadius,
+          border: Border.all(
+            color: selected ? GsColors.mainColor3 : Colors.transparent,
+            width: 2,
           ),
-          Expanded(
+        ),
+        child: InkWell(
+          onTap: () => _page.value = idx,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(menu.icon, height: 40, width: 40),
+              if (hover)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: kSeparator2),
+                  child: Text(
+                    context.fromLabel(menu.label),
+                    maxLines: 1,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => hover = true),
+          onExit: (_) => setState(() => hover = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: hover ? 160 : 80,
+            decoration: const BoxDecoration(
+              color: GsColors.mainColor0,
+              border: Border(
+                right: BorderSide(color: GsColors.mainColor2, width: 2),
+              ),
+            ),
             child: ValueListenableBuilder<int>(
-              valueListenable: _page,
-              builder: (context, value, child) {
-                return ListView(
-                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                  children: _menus
-                      .mapIndexed((i, m) => _button(i, m))
-                      .separate(const SizedBox(height: kSeparator2))
-                      .toList(),
-                );
-              },
-            ),
+                valueListenable: _page,
+                builder: (context, value, child) {
+                  return ListView(
+                    padding: const EdgeInsets.all(kSeparator4),
+                    children: _menus
+                        .mapIndexed((i, e) => button(i, e))
+                        .separate(const SizedBox(height: kSeparator2))
+                        .toList(),
+                  );
+                }),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -210,7 +171,7 @@ class _MainScreenState extends State<MainScreen> {
 final _menus = [
   Menu(
     label: Labels.home,
-    icon: menuIconInventory,
+    icon: imageAppIcon,
     initialPage: HomeScreen.id,
   ),
   Menu(
