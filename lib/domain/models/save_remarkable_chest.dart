@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveRemarkableChest implements IdSaveData {
+  @override
   final String id;
   final bool obtained;
 
@@ -16,6 +17,7 @@ class SaveRemarkableChest implements IdSaveData {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'obtained': obtained,

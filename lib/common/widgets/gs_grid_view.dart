@@ -8,12 +8,14 @@ class GsGridView extends StatelessWidget {
   final SliverChildDelegate delegate;
 
   GsGridView({
+    super.key,
     this.childWidth = 126,
     this.childHeight = 160,
     required List<Widget> children,
   }) : delegate = SliverChildListDelegate(children);
 
   GsGridView.builder({
+    super.key,
     this.childWidth = 126,
     this.childHeight = 160,
     required int itemCount,
@@ -27,7 +29,7 @@ class GsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.custom(
       childrenDelegate: delegate,
-      padding: EdgeInsets.all(kSeparator4),
+      padding: const EdgeInsets.all(kSeparator4),
       scrollDirection: Axis.vertical,
       gridDelegate: SliverGridDelegateWithFixedChildSize(
         childWidth: childWidth,

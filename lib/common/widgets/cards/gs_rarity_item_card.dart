@@ -13,7 +13,7 @@ class GsRarityItemCard extends StatelessWidget {
   final Widget? footer;
   final BoxFit fit;
 
-  GsRarityItemCard({
+  const GsRarityItemCard({
     super.key,
     this.size = 64,
     this.asset = '',
@@ -26,6 +26,7 @@ class GsRarityItemCard extends StatelessWidget {
   });
 
   GsRarityItemCard.withLabels({
+    super.key,
     this.size = 64,
     this.asset = '',
     this.image = '',
@@ -81,12 +82,12 @@ class GsRarityItemCard extends StatelessWidget {
             bottom: null,
             child: Container(
               color: GsColors.mainColor1.withOpacity(0.6),
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               child: DefaultTextStyle(
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.clip,
-                style: TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(fontSize: 10, color: Colors.white),
                 child: Center(child: header),
               ),
             ),
@@ -96,12 +97,12 @@ class GsRarityItemCard extends StatelessWidget {
             top: null,
             child: Container(
               color: GsColors.mainColor1.withOpacity(0.6),
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               child: DefaultTextStyle(
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.clip,
-                style: TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(fontSize: 10, color: Colors.white),
                 child: Center(child: footer),
               ),
             ),

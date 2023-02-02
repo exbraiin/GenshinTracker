@@ -8,7 +8,7 @@ import 'package:tracker/domain/gs_domain.dart';
 class MaterialListItem extends StatelessWidget {
   final InfoMaterial item;
 
-  MaterialListItem(this.item);
+  const MaterialListItem(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class MaterialListItem extends StatelessWidget {
       banner: GsItemBanner.fromVersion(item.version),
       imageUrlPath: item.image,
       subChild: Padding(
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         child: Row(
           children: [
             GsIconButtonHold(

@@ -206,7 +206,7 @@ Widget primoWidget([double size = 20, double offset = 3]) {
   return Transform.translate(
     offset: Offset(0, offset),
     child: Padding(
-      padding: EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.only(right: 4),
       child: Image.asset(
         imagePrimogem,
         width: size,
@@ -300,7 +300,7 @@ class WishInfo {
     final getPity = GsUtils.wishes.countPity;
     final g = wishes.where((e) => selector(getItem(e.itemId)));
     final lst = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
-    final avg = g.length > 0 ? g.map((e) => getPity(wishes, e)).average() : 0.0;
+    final avg = g.isNotEmpty ? g.map((e) => getPity(wishes, e)).average() : 0.0;
     final per = g.length * 100 / wishes.length.coerceAtLeast(1);
     return WishInfo(
       last: lst,

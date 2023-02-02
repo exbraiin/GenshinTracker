@@ -7,6 +7,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
 class HomeSpincrystalsWidget extends StatelessWidget {
+  const HomeSpincrystalsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
@@ -30,7 +32,7 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final ownedAll = sv.length;
         final totalAll = spins.length;
 
-        final missing = GsColors.missing;
+        const missing = GsColors.missing;
         final oWorldColor = ownedWorld < totalWorld ? missing : Colors.white;
         final oChubbyColor = ownedChubby < totalChubby ? missing : Colors.white;
         final oAllColor = ownedAll < totalAll ? missing : Colors.white;

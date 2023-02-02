@@ -5,7 +5,8 @@ class HoverDetector extends StatelessWidget {
   final VoidCallback? onTap;
   final Decoration Function(bool) decoration;
 
-  HoverDetector({
+  const HoverDetector({
+    super.key,
     this.child,
     this.onTap,
     required this.decoration,
@@ -13,12 +14,12 @@ class HoverDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (onTap == null) return child ?? SizedBox();
+    if (onTap == null) return child ?? const SizedBox();
     var isHover = false;
     return StatefulBuilder(
       builder: (context, setState) {
         return AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           foregroundDecoration: decoration(isHover),
           child: InkWell(
             onTap: onTap,

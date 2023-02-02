@@ -140,7 +140,7 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
     for (var id in ids) {
       final number = lastRoll + 1 + i++;
       final wish = SaveWish(
-        id: '$bannerId\_$number',
+        id: '${bannerId}_$number',
         date: date,
         itemId: id,
         number: number,

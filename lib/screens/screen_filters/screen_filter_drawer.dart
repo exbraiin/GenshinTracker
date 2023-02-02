@@ -8,10 +8,10 @@ import 'package:tracker/screens/screen_filters/screen_filter.dart';
 class ScreenDrawerBuilder<T> extends StatelessWidget {
   final _notifier = ValueNotifier(false);
   final ScreenFilter<T> Function() filter;
-  final Widget Function(BuildContext c, ScreenFilter<T> f, _Drawer<T> d)
-      builder;
+  final Widget Function(BuildContext c, ScreenFilter<T> f, Drawer<T> d) builder;
 
   ScreenDrawerBuilder({
+    super.key,
     required this.filter,
     required this.builder,
   });
@@ -22,7 +22,7 @@ class ScreenDrawerBuilder<T> extends StatelessWidget {
       valueListenable: _notifier,
       builder: (context, trigger, child) {
         final filter = this.filter();
-        final drawer = _Drawer<T>(filter, _trigger);
+        final drawer = Drawer<T>(filter, _trigger);
         return builder(context, filter, drawer);
       },
     );
@@ -31,18 +31,18 @@ class ScreenDrawerBuilder<T> extends StatelessWidget {
   void _trigger() => _notifier.value = !_notifier.value;
 }
 
-class _Drawer<T> extends StatelessWidget {
+class Drawer<T> extends StatelessWidget {
   final ScreenFilter<T> filter;
   final VoidCallback onNotify;
 
-  _Drawer(this.filter, this.onNotify);
+  const Drawer(this.filter, this.onNotify, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 300,
-      padding: EdgeInsets.all(kSeparator8),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(kSeparator8),
+      decoration: const BoxDecoration(
         color: GsColors.mainColor0,
         border: Border(left: BorderSide(color: GsColors.mainColor3)),
       ),
@@ -53,7 +53,7 @@ class _Drawer<T> extends StatelessWidget {
             context.fromLabel(Labels.filter),
             style: context.textTheme.bigTitle2,
           ),
-          SizedBox(height: kSeparator4),
+          const SizedBox(height: kSeparator4),
           Expanded(
             child: ListView(
               children: filter.sections
@@ -61,7 +61,7 @@ class _Drawer<T> extends StatelessWidget {
                   .toList(),
             ),
           ),
-          SizedBox(height: kSeparator4),
+          const SizedBox(height: kSeparator4),
           Row(
             children: [
               Expanded(
@@ -81,7 +81,7 @@ class _Drawer<T> extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: kSeparator8),
+              const SizedBox(width: kSeparator8),
               Expanded(
                 child: GsButton(
                   onPressed: () => Navigator.of(context).maybePop(),
@@ -127,9 +127,9 @@ class _Drawer<T> extends StatelessWidget {
                 },
                 iconSize: 18,
                 color: Colors.white.withOpacity(sorting ? 1 : kDisableOpacity),
-                constraints: BoxConstraints.tightFor(),
+                constraints: const BoxConstraints.tightFor(),
                 icon: Icon(icon),
-                padding: EdgeInsets.all(kSeparator4),
+                padding: const EdgeInsets.all(kSeparator4),
               ),
             Text(
               section.title(context),
@@ -145,7 +145,7 @@ class _Drawer<T> extends StatelessWidget {
               ),
           ],
         ),
-        SizedBox(height: kSeparator2),
+        const SizedBox(height: kSeparator2),
         Wrap(
           spacing: kSeparator4,
           runSpacing: kSeparator4,
@@ -166,7 +166,7 @@ class _Drawer<T> extends StatelessWidget {
                 children: [
                   if (eIcon != null)
                     Padding(
-                      padding: EdgeInsets.only(right: kSeparator4),
+                      padding: const EdgeInsets.only(right: kSeparator4),
                       child: Icon(
                         eIcon,
                         size: 16,
@@ -175,7 +175,7 @@ class _Drawer<T> extends StatelessWidget {
                     ),
                   if (eAsset != null && eAsset.isNotEmpty)
                     Padding(
-                      padding: EdgeInsets.only(right: kSeparator4),
+                      padding: const EdgeInsets.only(right: kSeparator4),
                       child: Image.asset(
                         eAsset,
                         width: 20,
@@ -192,7 +192,7 @@ class _Drawer<T> extends StatelessWidget {
             );
           }).toList(),
         ),
-        SizedBox(height: kSeparator8),
+        const SizedBox(height: kSeparator8),
       ],
     );
   }

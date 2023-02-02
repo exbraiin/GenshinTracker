@@ -7,7 +7,8 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
 
-  GsAppBar({
+  const GsAppBar({
+    super.key,
     required this.label,
     this.leading,
     this.actions,
@@ -22,7 +23,7 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: PreferredSize(
         preferredSize: Size.fromHeight((bottom?.preferredSize.height ?? 0) + 1),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(color: GsColors.almostWhite),
             ),
@@ -42,8 +43,8 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
         ? IconButton(
             onPressed: () => Navigator.of(context).maybePop(),
             iconSize: 34,
-            padding: EdgeInsets.all((54 - 34) / 2),
-            icon: Icon(Icons.close_rounded),
+            padding: const EdgeInsets.all((54 - 34) / 2),
+            icon: const Icon(Icons.close_rounded),
           )
         : null;
   }

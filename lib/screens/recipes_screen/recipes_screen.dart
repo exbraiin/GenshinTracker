@@ -13,12 +13,14 @@ import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 class RecipesScreen extends StatelessWidget {
   static const id = 'recipes_screen';
 
+  const RecipesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
 
         return ScreenDrawerBuilder<InfoRecipe>(
           filter: () => ScreenFilters.infoRecipeFilter,
@@ -28,7 +30,7 @@ class RecipesScreen extends StatelessWidget {
             final sorted = filter.match(recipes);
 
             final child = sorted.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: sorted.length,
                     itemBuilder: (context, index) {

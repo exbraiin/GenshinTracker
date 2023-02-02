@@ -13,19 +13,21 @@ import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 class MaterialsScreen extends StatelessWidget {
   static const id = 'materials_screen';
 
+  const MaterialsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
         return ScreenDrawerBuilder<InfoMaterial>(
           filter: () => ScreenFilters.infoMaterialFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoMaterials.getItems();
             final materials = filter.match(items);
             final child = materials.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: materials.length,
                     itemBuilder: (context, index) {

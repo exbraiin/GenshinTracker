@@ -1,4 +1,5 @@
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'enums/gs_artifact_piece.dart';
@@ -61,10 +62,10 @@ class GsDomain {
       GsRegion.values.map((e) => e.label).toList();
       GsSetCategory.values.map((e) => e.label).toList();
       GsWeapon.values.map((e) => e.label).toList();
-      print('\x1b[31mValid Labels!');
+      if (kDebugMode) print('\x1b[31mValid Labels!');
       return true;
     } catch (error) {
-      print('\x1b[31m$error');
+      if (kDebugMode) print('\x1b[31m$error');
       return false;
     }
   }

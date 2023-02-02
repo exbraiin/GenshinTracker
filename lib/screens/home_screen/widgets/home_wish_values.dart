@@ -11,7 +11,8 @@ class HomeWishesValues extends StatelessWidget {
   final String title;
   final GsBanner banner;
 
-  HomeWishesValues({
+  const HomeWishesValues({
+    super.key,
     required this.title,
     required this.banner,
   });
@@ -63,7 +64,7 @@ class HomeWishesValues extends StatelessWidget {
               ),
             ],
           ),
-          Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo5,
@@ -71,40 +72,40 @@ class HomeWishesValues extends StatelessWidget {
             GsColors.getRarityColor(5),
           ),
           if (banner == GsBanner.standard) ...[
-            Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+            const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
             _getInfo(
               context,
               summary.wishesInfo5Character,
-              '   > ' + context.fromLabel(Labels.character),
+              '   > ${context.fromLabel(Labels.character)}',
               GsColors.getRarityColor(5),
             ),
-            Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+            const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
             _getInfo(
               context,
               summary.wishesInfo5Weapon,
-              '   > ' + context.fromLabel(Labels.weapon),
+              '   > ${context.fromLabel(Labels.weapon)}',
               GsColors.getRarityColor(5),
             ),
           ],
-          Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo4,
             context.fromLabel(Labels.rarityStar, 4),
             GsColors.getRarityColor(4),
           ),
-          Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo4Character,
-            '   > ' + context.fromLabel(Labels.character),
+            '   > ${context.fromLabel(Labels.character)}',
             GsColors.getRarityColor(4),
           ),
-          Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo4Weapon,
-            '   > ' + context.fromLabel(Labels.weapon),
+            '   > ${context.fromLabel(Labels.weapon)}',
             GsColors.getRarityColor(4),
           ),
           _getWishesList(
@@ -122,7 +123,7 @@ class HomeWishesValues extends StatelessWidget {
     required WishesSummary summary,
     required List<SaveWish> wishes,
   }) {
-    if (summary.wishesInfo5.total == 0) return SizedBox();
+    if (summary.wishesInfo5.total == 0) return const SizedBox();
     var expanded = false;
     return StatefulBuilder(
       builder: (context, setState) {
@@ -132,12 +133,12 @@ class HomeWishesValues extends StatelessWidget {
               child: Center(
                 child: IconButton(
                   onPressed: () => setState(() => expanded = !expanded),
-                  padding: EdgeInsets.all(kSeparator4),
-                  constraints: BoxConstraints.tightFor(),
+                  padding: const EdgeInsets.all(kSeparator4),
+                  constraints: const BoxConstraints.tightFor(),
                   icon: AnimatedRotation(
                     turns: expanded ? 0.5 : 1,
-                    duration: Duration(milliseconds: 200),
-                    child: Icon(
+                    duration: const Duration(milliseconds: 200),
+                    child: const Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: Colors.white,
                     ),
@@ -147,10 +148,10 @@ class HomeWishesValues extends StatelessWidget {
             ),
             AnimatedContainer(
               curve: Curves.easeOut,
-              duration: Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 400),
               constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                 child: Wrap(
                   spacing: kSeparator4,
                   runSpacing: kSeparator4,
@@ -165,7 +166,7 @@ class HomeWishesValues extends StatelessWidget {
                         : WishState.none;
 
                     return Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: kSeparator4,
                         horizontal: kSeparator4 * 2,
                       ),
@@ -181,14 +182,15 @@ class HomeWishesValues extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(text: item.name, style: style),
-                            WidgetSpan(child: SizedBox(width: kSeparator4)),
+                            const WidgetSpan(
+                                child: SizedBox(width: kSeparator4)),
                             TextSpan(
                               text: pity.toString(),
                               style: style.copyWith(
                                   color: GsColors.getPityColor(pity)),
                             ),
                             if (state == WishState.guaranteed)
-                              WidgetSpan(
+                              const WidgetSpan(
                                 child: GsWishStateIcon(WishState.guaranteed),
                               ),
                           ],

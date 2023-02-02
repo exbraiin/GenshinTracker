@@ -16,7 +16,7 @@ class GsDataBox extends StatelessWidget {
     this.child,
     this.children = const [],
   })  : alignment = CrossAxisAlignment.center,
-        padding = EdgeInsets.all(kSeparator8),
+        padding = const EdgeInsets.all(kSeparator8),
         decoration = BoxDecoration(
           color: GsColors.mainColor2,
           borderRadius: kMainRadius,
@@ -32,13 +32,13 @@ class GsDataBox extends StatelessWidget {
     super.key,
   })  : title = null,
         child = Text(label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
             )),
         children = const [],
         alignment = CrossAxisAlignment.start,
-        padding = EdgeInsets.symmetric(
+        padding = const EdgeInsets.symmetric(
           horizontal: kSeparator4,
           vertical: kSeparator2,
         ),
@@ -57,7 +57,7 @@ class GsDataBox extends StatelessWidget {
     this.child,
     this.children = const [],
   })  : alignment = CrossAxisAlignment.start,
-        padding = EdgeInsets.all(kSeparator8),
+        padding = const EdgeInsets.all(kSeparator8),
         decoration = BoxDecoration(
           color: Colors.black.withOpacity(0.4),
           borderRadius: BorderRadius.circular(kSeparator8),
@@ -95,6 +95,6 @@ class GsDataBox extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
     );
-    yield Divider(color: GsColors.almostWhite, thickness: 0.5);
+    yield const Divider(color: GsColors.almostWhite, thickness: 0.5);
   }
 }

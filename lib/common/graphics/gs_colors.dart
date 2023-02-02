@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 class GsColors {
   GsColors._();
 
-  static const mainColor0 = const Color(0xFF0C122E);
-  static const mainColor1 = const Color(0xFF1E2240);
-  static const mainColor2 = const Color(0xFF2B2F4E);
-  static const mainColor3 = const Color(0xFF8181A6);
+  static const mainColor0 = Color(0xFF0C122E);
+  static const mainColor1 = Color(0xFF1E2240);
+  static const mainColor2 = Color(0xFF2B2F4E);
+  static const mainColor3 = Color(0xFF8181A6);
 
-  static const setIndoor = const Color(0xFFA01F2E);
-  static const setOutdoor = const Color(0xFF303671);
+  static const setIndoor = Color(0xFFA01F2E);
+  static const setOutdoor = Color(0xFF303671);
 
-  static const dimWhite = const Color(0x80FFFFFF);
-  static const almostWhite = const Color(0xFFEEEEEE);
+  static const dimWhite = Color(0x80FFFFFF);
+  static const almostWhite = Color(0xFFEEEEEE);
 
   static const missing = Colors.orange;
 

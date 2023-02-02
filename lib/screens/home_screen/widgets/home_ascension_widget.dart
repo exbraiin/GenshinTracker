@@ -12,6 +12,8 @@ import 'package:tracker/screens/character_ascension_screen/character_ascension_m
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
 class HomeAscensionWidget extends StatefulWidget {
+  const HomeAscensionWidget({super.key});
+
   @override
   State<HomeAscensionWidget> createState() => _HomeAscensionWidgetState();
 }
@@ -43,7 +45,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         if (characters.isEmpty) {
           return GsDataBox.summary(
             title: context.fromLabel(Labels.ascension),
-            child: GsNoResultsState(),
+            child: const GsNoResultsState(),
           );
         }
 
@@ -80,7 +82,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
   }
 
   Widget _getMaterialsList(Iterable<InfoCharacter> characters) {
-    if (characters.isEmpty) return SizedBox();
+    if (characters.isEmpty) return const SizedBox();
 
     final db = GsDatabase.instance.infoCharactersInfo;
     final materials = characters
@@ -102,12 +104,12 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
               child: Center(
                 child: IconButton(
                   onPressed: () => _notifier.value = !_notifier.value,
-                  padding: EdgeInsets.all(kSeparator4),
-                  constraints: BoxConstraints.tightFor(),
+                  padding: const EdgeInsets.all(kSeparator4),
+                  constraints: const BoxConstraints.tightFor(),
                   icon: AnimatedRotation(
                     turns: expanded ? 0.5 : 1,
-                    duration: Duration(milliseconds: 200),
-                    child: Icon(
+                    duration: const Duration(milliseconds: 200),
+                    child: const Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: Colors.white,
                     ),
@@ -117,10 +119,10 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
             ),
             AnimatedContainer(
               curve: Curves.easeOut,
-              duration: Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 400),
               constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                 child: Wrap(
                   spacing: kSeparator4,
                   runSpacing: kSeparator4,

@@ -14,7 +14,7 @@ class RemarkableChestListItem extends StatelessWidget {
           ? imageOutdoorSet
           : '';
 
-  RemarkableChestListItem(this.item);
+  const RemarkableChestListItem(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class RemarkableChestListItem extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: item.type == GsSetCategory.indoor
                     ? GsColors.setIndoor

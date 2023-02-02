@@ -74,8 +74,8 @@ class ScreenFilter<I> {
   }
 
   bool isDefault() {
-    return sections.every(
-        (e) => e.values.length == e.enabled.length || e.enabled.length == 0);
+    return sections
+        .every((e) => e.values.length == e.enabled.length || e.enabled.isEmpty);
   }
 
   void toggleExtra(String key) =>

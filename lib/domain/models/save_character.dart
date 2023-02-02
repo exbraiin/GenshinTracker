@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveCharacter implements IdSaveData {
+  @override
   final String id;
   final String outfit;
   final int owned;
@@ -25,6 +26,7 @@ class SaveCharacter implements IdSaveData {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'owned': owned,

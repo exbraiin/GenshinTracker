@@ -6,6 +6,8 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
+  const HomeResourceCalcWidget({super.key});
+
   @override
   State<HomeResourceCalcWidget> createState() => _HomeResourceCalcWidgetState();
 }
@@ -51,7 +53,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             ),
           ),
         ),
-        SizedBox(height: kSeparator4),
+        const SizedBox(height: kSeparator4),
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -88,7 +90,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: kSeparator4),
+            const SizedBox(height: kSeparator4),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -107,7 +109,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
                 ),
               ),
             ),
-            SizedBox(height: kSeparator4),
+            const SizedBox(height: kSeparator4),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -137,8 +139,8 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
 
   Widget _getText(String text, TextStyle style) {
     return Container(
-      margin: EdgeInsets.all(kSeparator2),
-      padding: EdgeInsets.all(kSeparator4),
+      margin: const EdgeInsets.all(kSeparator2),
+      padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
         border: Border.all(color: GsColors.mainColor3, width: 0.6),
         borderRadius: kMainRadius,
@@ -153,8 +155,8 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
 
   Widget _getField(TextStyle style, void Function(int) onEdit) {
     return Container(
-      margin: EdgeInsets.all(kSeparator2),
-      padding: EdgeInsets.all(kSeparator4),
+      margin: const EdgeInsets.all(kSeparator2),
+      padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
         borderRadius: kMainRadius,
         border: Border.all(

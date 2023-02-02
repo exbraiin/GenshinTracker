@@ -14,19 +14,21 @@ import 'package:tracker/screens/spincrystals_screen/spincrystal_list_item.dart';
 class SpincrystalsScreen extends StatelessWidget {
   static const id = 'spincrystal_screen';
 
+  const SpincrystalsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
         return ScreenDrawerBuilder<InfoSpincrystal>(
           filter: () => ScreenFilters.infoSpincrystalFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoSpincrystal.getItems();
             final spincrystals = filter.match(items);
             final child = spincrystals.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: spincrystals.length,
                     itemBuilder: (context, index) {
@@ -40,7 +42,7 @@ class SpincrystalsScreen extends StatelessWidget {
                 label: Lang.of(context).getValue(Labels.spincrystals),
               ),
               body: Padding(
-                padding: EdgeInsets.all(kSeparator4),
+                padding: const EdgeInsets.all(kSeparator4),
                 child: child,
               ),
               endDrawer: drawer,

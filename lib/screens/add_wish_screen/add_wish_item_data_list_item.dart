@@ -7,7 +7,8 @@ class AddWishItemDataListItem extends StatelessWidget {
   final bool isItemFeatured;
   final VoidCallback onAdd;
 
-  AddWishItemDataListItem({
+  const AddWishItemDataListItem({
+    super.key,
     required this.item,
     required this.onAdd,
     required this.isItemFeatured,
@@ -19,8 +20,8 @@ class AddWishItemDataListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       banner: isItemFeatured
-          ? GsItemBanner(text: 'Featured')
-          : GsItemBanner(text: ''),
+          ? const GsItemBanner(text: 'Featured')
+          : const GsItemBanner(text: ''),
       imageUrlPath: item.getUrlImg(),
       onTap: onAdd,
     );

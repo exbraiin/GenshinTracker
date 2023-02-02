@@ -6,7 +6,7 @@ import 'package:tracker/screens/artifacts_screen/artifact_details_screen.dart';
 class ArtifactListItem extends StatelessWidget {
   final InfoArtifact artifact;
 
-  ArtifactListItem(this.artifact);
+  const ArtifactListItem(this.artifact, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoWeaponInfo implements IdData {
+  @override
   final String id;
   final String effectName;
   final String effectDesc;

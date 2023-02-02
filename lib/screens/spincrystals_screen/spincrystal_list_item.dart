@@ -8,7 +8,7 @@ import 'package:tracker/domain/gs_database.dart';
 class SpincrystalListItem extends StatelessWidget {
   final InfoSpincrystal spincrystal;
 
-  SpincrystalListItem({required this.spincrystal});
+  const SpincrystalListItem({super.key, required this.spincrystal});
 
   @override
   Widget build(BuildContext context) {

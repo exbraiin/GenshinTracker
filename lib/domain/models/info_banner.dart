@@ -1,6 +1,7 @@
 import '../gs_domain.dart';
 
 class InfoBanner extends Comparable<InfoBanner> implements IdData {
+  @override
   final String id;
   final String name;
   final String image;

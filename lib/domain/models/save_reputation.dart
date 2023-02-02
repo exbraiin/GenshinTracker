@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveReputation implements IdSaveData {
+  @override
   final String id;
   final int reputation;
 
@@ -16,6 +17,7 @@ class SaveReputation implements IdSaveData {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'reputation': reputation,

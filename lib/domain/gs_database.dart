@@ -136,7 +136,7 @@ class GsDatabase {
     _load();
     _saving
         .where((event) => event)
-        .debounceTime(Duration(seconds: 2))
+        .debounceTime(const Duration(seconds: 2))
         .listen((event) => _saveAll());
   }
 

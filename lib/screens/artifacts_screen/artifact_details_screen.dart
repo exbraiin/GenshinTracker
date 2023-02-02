@@ -11,6 +11,8 @@ import 'package:tracker/domain/gs_domain.dart';
 class ArtifactDetailsScreen extends StatelessWidget {
   static const id = 'artifact_details_screen';
 
+  const ArtifactDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -23,7 +25,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
           label: details.name,
         ),
         body: Padding(
-          padding: EdgeInsets.all(kSeparator4),
+          padding: const EdgeInsets.all(kSeparator4),
           child: ListView(
             children: [
               GsDataBox.info(
@@ -38,7 +40,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.orange),
                         ),
-                        SizedBox(width: kSeparator4),
+                        const SizedBox(width: kSeparator4),
                         Expanded(
                           child: Text(
                             details.desc1Pc,
@@ -46,7 +48,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                                 .copyWith(color: Colors.white),
                           ),
                         ),
-                        SizedBox(height: kSeparator4),
+                        const SizedBox(height: kSeparator4),
                       ],
                     ),
                   if (details.desc2Pc.isNotEmpty)
@@ -58,7 +60,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.orange),
                         ),
-                        SizedBox(width: kSeparator4),
+                        const SizedBox(width: kSeparator4),
                         Expanded(
                           child: Text(
                             details.desc2Pc,
@@ -66,7 +68,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                                 .copyWith(color: Colors.white),
                           ),
                         ),
-                        SizedBox(height: kSeparator4),
+                        const SizedBox(height: kSeparator4),
                       ],
                     ),
                   if (details.desc4Pc.isNotEmpty)
@@ -78,7 +80,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                           style: context.textTheme.subtitle2!
                               .copyWith(color: Colors.orange),
                         ),
-                        SizedBox(width: kSeparator4),
+                        const SizedBox(width: kSeparator4),
                         Expanded(
                           child: Text(
                             details.desc4Pc,
@@ -90,7 +92,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                     ),
                 ],
               ),
-              SizedBox(height: kSeparator8),
+              const SizedBox(height: kSeparator8),
               GsDataBox.info(
                 title: context.fromLabel(Labels.artifactPieces),
                 children: details.pieces
@@ -102,7 +104,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                               rarity: details.rarity,
                               image: e.icon,
                             ),
-                            SizedBox(width: kSeparator8),
+                            const SizedBox(width: kSeparator8),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +113,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                                     e.name,
                                     style: context.textTheme.infoLabel,
                                   ),
-                                  SizedBox(height: kSeparator4),
+                                  const SizedBox(height: kSeparator4),
                                   Text(
                                     e.desc,
                                     style: context.textTheme.description
@@ -122,7 +124,7 @@ class ArtifactDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ))
-                    .separate(Divider(
+                    .separate(const Divider(
                       color: GsColors.dimWhite,
                       thickness: 0.4,
                     ))

@@ -15,6 +15,8 @@ import 'package:tracker/screens/character_ascension_screen/character_ascension_m
 class WeaponDetailsScreen extends StatelessWidget {
   static const id = 'weapon_details_screen';
 
+  const WeaponDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -30,16 +32,16 @@ class WeaponDetailsScreen extends StatelessWidget {
         stream: GsDatabase.instance.loaded,
         builder: (context, snapshot) {
           return SingleChildScrollView(
-            padding: EdgeInsets.all(kSeparator4),
+            padding: const EdgeInsets.all(kSeparator4),
             child: Column(
               children: [
                 _getInfo(context, info),
                 if (details != null) ...[
-                  SizedBox(height: kSeparator8),
+                  const SizedBox(height: kSeparator8),
                   if (hasEffect) _getEffect(context, details),
-                  if (hasEffect) SizedBox(height: kSeparator8),
+                  if (hasEffect) const SizedBox(height: kSeparator8),
                   _getAscension(context, info.rarity, details),
-                  SizedBox(height: kSeparator8),
+                  const SizedBox(height: kSeparator8),
                   _getAllMaterials(context, details),
                 ]
               ],
@@ -59,7 +61,7 @@ class WeaponDetailsScreen extends StatelessWidget {
           image: info.image,
           rarity: info.rarity,
         ),
-        SizedBox(width: kSeparator8),
+        const SizedBox(width: kSeparator8),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -75,26 +77,26 @@ class WeaponDetailsScreen extends StatelessWidget {
                         context.fromLabel(GsAttributeStat.atk.label),
                         style: context.textTheme.description,
                       ),
-                      SizedBox(height: kSeparator2),
+                      const SizedBox(height: kSeparator2),
                       Text(
                         '${info.atk}',
                         style: context.textTheme.bigTitle3,
                       ),
                       if (info.statType != GsAttributeStat.none) ...[
-                        SizedBox(height: kSeparator8),
+                        const SizedBox(height: kSeparator8),
                         Text(
                           context.fromLabel(info.statType.label),
                           style: context.textTheme.description,
                         ),
-                        SizedBox(height: kSeparator2),
+                        const SizedBox(height: kSeparator2),
                         Text(
-                          '${info.statType.toIntOrPercentage(info.statValue)}',
+                          info.statType.toIntOrPercentage(info.statValue),
                           style: context.textTheme.bigTitle3,
                         ),
                       ]
                     ],
                   ),
-                  SizedBox(width: kSeparator8 * 2),
+                  const SizedBox(width: kSeparator8 * 2),
                   Expanded(
                     child: Column(
                       children: [
@@ -104,7 +106,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                               info.name,
                               style: Theme.of(context).textTheme.bigTitle2,
                             ),
-                            SizedBox(width: kSeparator8),
+                            const SizedBox(width: kSeparator8),
                             if (info.statType != GsAttributeStat.none)
                               Image.asset(
                                 info.statType.assetPath,
@@ -117,7 +119,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                           info.description,
                           style: context.textTheme.description2,
                         ),
-                        SizedBox(height: kSeparator8),
+                        const SizedBox(height: kSeparator8),
                         _getTags(context, info),
                       ],
                     ),
@@ -127,7 +129,7 @@ class WeaponDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 360),
+        const SizedBox(width: 360),
       ],
     );
   }
@@ -138,12 +140,12 @@ class WeaponDetailsScreen extends StatelessWidget {
       title: context.fromLabel(Labels.ascension),
       children: [
         Table(
-          columnWidths: {
+          columnWidths: const {
             0: IntrinsicColumnWidth(),
             5: IntrinsicColumnWidth(),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder(
+          border: const TableBorder(
             horizontalInside: BorderSide(
               color: GsColors.dimWhite,
               width: 0.4,
@@ -153,7 +155,7 @@ class WeaponDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                   child: Center(
                     child: Text(context.fromLabel(Labels.level), style: style),
                   ),
@@ -190,7 +192,7 @@ class WeaponDetailsScreen extends StatelessWidget {
               return TableRow(children: [
                 Container(
                   height: 64 + 24,
-                  margin: EdgeInsets.symmetric(vertical: kSeparator4),
+                  margin: const EdgeInsets.symmetric(vertical: kSeparator4),
                   child: Center(
                     child: Text(
                       config.level.toString(),
@@ -216,7 +218,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                           labelFooter: e.value.format(),
                         );
                       })
-                      .separate(SizedBox(width: kSeparator4))
+                      .separate(const SizedBox(width: kSeparator4))
                       .toList(),
                 ),
               ]);
@@ -232,7 +234,7 @@ class WeaponDetailsScreen extends StatelessWidget {
     final iw = GsDatabase.instance.infoWeaponsInfo;
     final ascMats = iw.getAscensionMaterials(info.id);
 
-    TableRow _getTableRow(
+    TableRow getTableRow(
       String label,
       Map<String, int> mats,
       Widget Function(MapEntry<InfoMaterial?, int> e) mapper,
@@ -240,14 +242,14 @@ class WeaponDetailsScreen extends StatelessWidget {
       return TableRow(
         children: [
           Padding(
-            padding: EdgeInsets.all(kSeparator8),
+            padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
               style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: kSeparator4),
+            padding: const EdgeInsets.symmetric(vertical: kSeparator4),
             child: Wrap(
               spacing: kSeparator4,
               runSpacing: kSeparator4,
@@ -271,18 +273,18 @@ class WeaponDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       title: context.fromLabel(Labels.materials),
       child: Table(
-        columnWidths: {
+        columnWidths: const {
           0: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: TableBorder(
+        border: const TableBorder(
           horizontalInside: BorderSide(
             color: GsColors.dimWhite,
             width: 0.4,
           ),
         ),
         children: [
-          _getTableRow(
+          getTableRow(
             context.fromLabel(Labels.total),
             ascMats,
             (e) => CharacterAscensionMaterial(e.key!.id, e.value),
@@ -313,7 +315,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: kSeparator8 * 2),
+              const SizedBox(width: kSeparator8 * 2),
               Expanded(
                 child: TextParserWidget(
                   _getEffectText(info.effectDesc, r),
@@ -321,7 +323,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                       .copyWith(color: Colors.white),
                 ),
               ),
-              SizedBox(height: kSeparator4),
+              const SizedBox(height: kSeparator4),
             ],
           );
         },
@@ -359,7 +361,7 @@ class WeaponDetailsScreen extends StatelessWidget {
         context.fromLabel(info.statType.label),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
-          .separate(SizedBox(width: kSeparator4))
+          .separate(const SizedBox(width: kSeparator4))
           .toList(),
     );
   }

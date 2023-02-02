@@ -7,7 +7,8 @@ class GsCardDialog extends StatelessWidget {
   final Widget? child;
   final BoxConstraints constraints;
 
-  GsCardDialog({
+  const GsCardDialog({
+    super.key,
     required this.title,
     this.child,
     this.constraints = const BoxConstraints.tightFor(width: 350),
@@ -17,22 +18,22 @@ class GsCardDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: constraints,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: GsColors.mainColor0,
         boxShadow: kMainShadow,
         borderRadius: kMainRadius,
       ),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             title.toUpperCase(),
             style: context.textTheme.cardDialogTitle,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           if (child != null) child!,
         ],
       ),

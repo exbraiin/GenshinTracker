@@ -23,7 +23,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   final _constellation = GlobalKey();
   static const id = 'character_details_screen';
 
-  CharacterDetailsScreen();
+  CharacterDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (!snapshot.data!) return SizedBox();
+        if (!snapshot.data!) return const SizedBox();
         return Scaffold(
           appBar: GsAppBar(
             label: item.name,
@@ -49,19 +49,19 @@ class CharacterDetailsScreen extends StatelessWidget {
               ),
             ),
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               child: Column(
                 children: [
                   _getInfo(context, item, info),
                   _getAttributes(context, item),
                   if (info != null) ...[
-                    SizedBox(height: kSeparator8),
+                    const SizedBox(height: kSeparator8),
                     _getAscension(context, info),
-                    SizedBox(height: kSeparator8),
+                    const SizedBox(height: kSeparator8),
                     _getTalents(context, info),
-                    SizedBox(height: kSeparator8),
+                    const SizedBox(height: kSeparator8),
                     _getConstellations(context, info),
-                    SizedBox(height: kSeparator8),
+                    const SizedBox(height: kSeparator8),
                     _getAllMaterials(context, info),
                   ],
                 ],
@@ -95,7 +95,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 image: GsUtils.characters.getImage(info.id),
                 rarity: info.rarity,
               ),
-              SizedBox(height: kSeparator8),
+              const SizedBox(height: kSeparator8),
               ...{
                 Labels.attributes: _attributes,
                 Labels.ascension: _ascension,
@@ -109,14 +109,14 @@ class CharacterDetailsScreen extends StatelessWidget {
                         context.fromLabel(e.key),
                         () => Scrollable.ensureVisible(
                           e.value.currentContext!,
-                          duration: Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 400),
                           curve: Curves.easeOut,
                         ),
                       ))
-                  .separate(SizedBox(height: kSeparator4)),
+                  .separate(const SizedBox(height: kSeparator4)),
             ],
           ),
-          SizedBox(width: 18),
+          const SizedBox(width: 18),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -128,7 +128,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       info.name,
                       style: Theme.of(context).textTheme.bigTitle2,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     GsItemCardLabel(
                       asset: info.element.assetPath,
                       label: constellation != null ? 'C$constellation' : null,
@@ -145,12 +145,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                       style: context.textTheme.bigTitle3,
                     ),
                   ),
-                SizedBox(height: kSeparator4),
+                const SizedBox(height: kSeparator4),
                 Text(
                   info.description,
                   style: context.textTheme.description2,
                 ),
-                SizedBox(height: kSeparator8),
+                const SizedBox(height: kSeparator8),
                 _getTags(context, info, infos),
               ],
             ),
@@ -180,11 +180,11 @@ class CharacterDetailsScreen extends StatelessWidget {
       children: [
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          columnWidths: {
+          columnWidths: const {
             0: IntrinsicColumnWidth(),
             2: IntrinsicColumnWidth(),
           },
-          border: TableBorder(
+          border: const TableBorder(
             horizontalInside: BorderSide(
               color: GsColors.dimWhite,
               width: 0.4,
@@ -199,7 +199,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.birthday.toPrettyDate(), style: stStyle),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: e,
                       ))
                   .toList(),
@@ -212,7 +212,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.title, style: stStyle),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: e,
                       ))
                   .toList(),
@@ -225,7 +225,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.affiliation, style: stStyle),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: e,
                       ))
                   .toList(),
@@ -238,7 +238,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.version, style: stStyle),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: e,
                       ))
                   .toList(),
@@ -258,7 +258,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                               arguments: dish,
                             ),
                           ),
-                          SizedBox(width: kSeparator8),
+                          const SizedBox(width: kSeparator8),
                           Text(dish.name, style: stStyle),
                         ],
                       )
@@ -267,7 +267,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.releaseDate.toPrettyDate(), style: stStyle),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: e,
                       ))
                   .toList(),
@@ -299,11 +299,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                               )),
                     ],
                   ),
-                  SizedBox(),
-                  SizedBox(),
+                  const SizedBox(),
+                  const SizedBox(),
                 ]
                     .map((e) => Padding(
-                          padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                          padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                           child: e,
                         ))
                     .toList(),
@@ -324,12 +324,12 @@ class CharacterDetailsScreen extends StatelessWidget {
       title: context.fromLabel(Labels.ascension),
       children: [
         Table(
-          columnWidths: {
+          columnWidths: const {
             0: IntrinsicColumnWidth(),
             5: IntrinsicColumnWidth(),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder(
+          border: const TableBorder(
             horizontalInside: BorderSide(
               color: GsColors.dimWhite,
               width: 0.4,
@@ -339,7 +339,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             TableRow(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                   child: Center(
                     child: Text(context.fromLabel(Labels.level), style: style),
                   ),
@@ -390,7 +390,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 children: [
                   Container(
                     height: 64 + 24,
-                    margin: EdgeInsets.symmetric(vertical: kSeparator4),
+                    margin: const EdgeInsets.symmetric(vertical: kSeparator4),
                     child: Center(
                       child: Text(
                         cfg.level.toString(),
@@ -417,7 +417,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                             labelFooter: e.value.format(),
                           );
                         })
-                        .separate(SizedBox(width: kSeparator4))
+                        .separate(const SizedBox(width: kSeparator4))
                         .toList(),
                   )
                 ],
@@ -436,7 +436,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       children: info.talents
           .map<Widget>((e) {
             return Padding(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -447,13 +447,13 @@ class CharacterDetailsScreen extends StatelessWidget {
                         height: 46,
                         child: CachedImageWidget(e.icon),
                       ),
-                      SizedBox(width: kSeparator8),
+                      const SizedBox(width: kSeparator8),
                       Text(
                         e.name,
                         style: context.textTheme.subtitle2!
                             .copyWith(color: Colors.white),
                       ),
-                      SizedBox(width: kSeparator8),
+                      const SizedBox(width: kSeparator8),
                       Text(
                         '(${e.type})',
                         style: context.textTheme.description2
@@ -461,7 +461,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: kSeparator8),
+                  const SizedBox(height: kSeparator8),
                   TextParserWidget(
                     e.desc,
                     style: context.textTheme.subtitle2!
@@ -471,7 +471,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               ),
             );
           })
-          .separate(Divider(
+          .separate(const Divider(
             color: GsColors.dimWhite,
             thickness: 0.4,
           ))
@@ -486,7 +486,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       children: info.constellations
           .map<Widget>((e) {
             return Padding(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -497,7 +497,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                         height: 46,
                         child: CachedImageWidget(e.icon),
                       ),
-                      SizedBox(width: kSeparator8),
+                      const SizedBox(width: kSeparator8),
                       Text(
                         e.name,
                         style: context.textTheme.subtitle2!
@@ -505,7 +505,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: kSeparator8),
+                  const SizedBox(height: kSeparator8),
                   TextParserWidget(
                     e.desc,
                     style: context.textTheme.subtitle2!
@@ -515,7 +515,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               ),
             );
           })
-          .separate(Divider(
+          .separate(const Divider(
             color: GsColors.dimWhite,
             thickness: 0.4,
           ))
@@ -541,7 +541,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       return a + b + c;
     }
 
-    TableRow _getTableRow(
+    TableRow getTableRow(
       String label,
       Map<String, int> mats,
       Widget Function(MapEntry<InfoMaterial?, int> e) mapper,
@@ -549,14 +549,14 @@ class CharacterDetailsScreen extends StatelessWidget {
       return TableRow(
         children: [
           Padding(
-            padding: EdgeInsets.all(kSeparator8),
+            padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
               style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: kSeparator4),
+            padding: const EdgeInsets.symmetric(vertical: kSeparator4),
             child: Wrap(
               spacing: kSeparator4,
               runSpacing: kSeparator4,
@@ -582,18 +582,18 @@ class CharacterDetailsScreen extends StatelessWidget {
       key: _materials,
       title: context.fromLabel(Labels.materials),
       child: Table(
-        columnWidths: {
+        columnWidths: const {
           0: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: TableBorder(
+        border: const TableBorder(
           horizontalInside: BorderSide(
             color: GsColors.dimWhite,
             width: 0.4,
           ),
         ),
         children: [
-          _getTableRow(
+          getTableRow(
             context.fromLabel(Labels.ascension),
             ascMats,
             (e) => GsRarityItemCard.withLabels(
@@ -602,7 +602,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               image: e.key!.image,
             ),
           ),
-          _getTableRow(
+          getTableRow(
             context.fromLabel(Labels.talents),
             tltMats,
             (e) => GsRarityItemCard.withLabels(
@@ -611,7 +611,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               image: e.key!.image,
             ),
           ),
-          _getTableRow(
+          getTableRow(
             context.fromLabel(Labels.total),
             allMats,
             (e) => CharacterAscensionMaterial(e.key!.id, e.value),
@@ -635,7 +635,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         if (infos != null) context.fromLabel(infos.ascension.ascStatType.label),
       ]
           .map<Widget>((e) => GsItemCardLabel(label: e))
-          .separate(SizedBox(width: kSeparator4))
+          .separate(const SizedBox(width: kSeparator4))
           .toList(),
     );
   }

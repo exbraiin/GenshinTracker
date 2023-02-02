@@ -26,8 +26,10 @@ import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -80,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
       height: 60,
       width: double.infinity,
       curve: Curves.easeInOutCubic,
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
       margin:
           EdgeInsets.fromLTRB(kSeparator4, 0, selected ? 0 : kSeparator4, 0),
       decoration: BoxDecoration(
@@ -107,7 +109,7 @@ class _MainScreenState extends State<MainScreen> {
             Container(
               height: 32,
               width: 32,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 image: asset.isNotEmpty
                     ? DecorationImage(
@@ -140,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Container(
             height: 56,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Image.asset(
@@ -149,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
                   width: 46,
                   fit: BoxFit.contain,
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   Lang.of(context).getValue(Labels.appTitle),
                   style: Theme.of(context)
@@ -165,10 +167,10 @@ class _MainScreenState extends State<MainScreen> {
               valueListenable: _page,
               builder: (context, value, child) {
                 return ListView(
-                  padding: EdgeInsets.symmetric(vertical: kSeparator4),
+                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                   children: _menus
                       .mapIndexed((i, m) => _button(i, m))
-                      .separate(SizedBox(height: kSeparator2))
+                      .separate(const SizedBox(height: kSeparator2))
                       .toList(),
                 );
               },
@@ -184,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         if (!snapshot.data!) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: Colors.white,
               strokeWidth: 1.6,
@@ -194,7 +196,7 @@ class _MainScreenState extends State<MainScreen> {
 
         return ValueListenableBuilder<int>(
           valueListenable: _page,
-          key: ValueKey('main_page_selector'),
+          key: const ValueKey('main_page_selector'),
           builder: (context, index, child) {
             return _PageAnimator(
               key: ValueKey('main_$index'),
@@ -333,10 +335,10 @@ class Menu {
 class _PageAnimator extends StatefulWidget {
   final Widget child;
 
-  _PageAnimator({
-    Key? key,
+  const _PageAnimator({
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<_PageAnimator> createState() => _PageAnimatorState();
@@ -356,9 +358,9 @@ class _PageAnimatorState extends State<_PageAnimator> {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: opacity,
-      child: widget.child,
       curve: Curves.easeIn,
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
+      child: widget.child,
     );
   }
 }

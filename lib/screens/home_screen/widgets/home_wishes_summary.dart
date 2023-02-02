@@ -14,7 +14,8 @@ class HomeWishesSummary extends StatelessWidget {
   final int minPity;
   final int maxPity;
 
-  HomeWishesSummary({
+  const HomeWishesSummary({
+    super.key,
     required this.title,
     required this.banner,
     this.minPity = 75,
@@ -44,8 +45,8 @@ class HomeWishesSummary extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(kSeparator4 * 2),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(kSeparator4 * 2),
+            decoration: const BoxDecoration(
               color: GsColors.mainColor1,
               borderRadius: kMainRadius,
             ),
@@ -56,11 +57,11 @@ class HomeWishesSummary extends StatelessWidget {
                     style: style,
                     children: [
                       TextSpan(
-                        text: Lang.of(context).getValue(Labels.lifetimePulls) +
-                            '\n',
+                        text:
+                            '${Lang.of(context).getValue(Labels.lifetimePulls)}\n',
                         style: style.copyWith(fontSize: 18),
                       ),
-                      WidgetSpan(child: SizedBox(height: 18)),
+                      const WidgetSpan(child: SizedBox(height: 18)),
                       WidgetSpan(child: primoWidget(16, 1)),
                       TextSpan(
                         text: (wishes.length * 160).format(),
@@ -69,15 +70,15 @@ class HomeWishesSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text('${wishes.length}', style: bigNumberStyle),
               ],
             ),
           ),
-          SizedBox(height: kSeparator4),
+          const SizedBox(height: kSeparator4),
           Container(
-            padding: EdgeInsets.all(kSeparator4 * 2),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(kSeparator4 * 2),
+            decoration: const BoxDecoration(
               color: GsColors.mainColor1,
               borderRadius: kMainRadius,
             ),
@@ -88,10 +89,10 @@ class HomeWishesSummary extends StatelessWidget {
                     style: style,
                     children: [
                       TextSpan(
-                        text: Lang.of(context).getValue(Labels.l5sPity) + '\n',
+                        text: '${Lang.of(context).getValue(Labels.l5sPity)}\n',
                         style: style.copyWith(fontSize: 18),
                       ),
-                      WidgetSpan(child: SizedBox(height: 18)),
+                      const WidgetSpan(child: SizedBox(height: 18)),
                       TextSpan(
                         text: 'Guaranteed at $maxPity',
                         style: subStyle,
@@ -99,10 +100,10 @@ class HomeWishesSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 if (garanteed)
                   Padding(
-                    padding: EdgeInsets.only(right: 4),
+                    padding: const EdgeInsets.only(right: 4),
                     child: Icon(
                       Icons.arrow_circle_up_rounded,
                       color: pityColor,
@@ -115,10 +116,10 @@ class HomeWishesSummary extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: kSeparator4),
+          const SizedBox(height: kSeparator4),
           Container(
-            padding: EdgeInsets.all(kSeparator4 * 2),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(kSeparator4 * 2),
+            decoration: const BoxDecoration(
               color: GsColors.mainColor1,
               borderRadius: kMainRadius,
             ),
@@ -129,10 +130,10 @@ class HomeWishesSummary extends StatelessWidget {
                     style: style,
                     children: [
                       TextSpan(
-                        text: Lang.of(context).getValue(Labels.l4sPity) + '\n',
+                        text: '${Lang.of(context).getValue(Labels.l4sPity)}\n',
                         style: style.copyWith(fontSize: 18),
                       ),
-                      WidgetSpan(child: SizedBox(height: 18)),
+                      const WidgetSpan(child: SizedBox(height: 18)),
                       TextSpan(
                         text: 'Guaranteed at ${10}',
                         style: subStyle,
@@ -140,7 +141,7 @@ class HomeWishesSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   '${summary.last4}',
                   style: bigNumberStyle.copyWith(

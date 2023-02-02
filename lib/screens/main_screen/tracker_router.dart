@@ -24,35 +24,35 @@ import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 class TrackerRouter {
   TrackerRouter._();
 
-  static Map<String, Widget Function()> _routes = {
-    HomeScreen.id: () => HomeScreen(),
-    WeeklyScreen.id: () => WeeklyScreen(),
+  static final Map<String, Widget Function()> _routes = {
+    HomeScreen.id: () => const HomeScreen(),
+    WeeklyScreen.id: () => const WeeklyScreen(),
     WishesScreen.id: () => WishesScreen(),
-    AddWishScreen.id: () => AddWishScreen(),
-    RecipesScreen.id: () => RecipesScreen(),
-    RecipeDetailsScreen.id: () => RecipeDetailsScreen(),
-    RemarkableChestsScreen.id: () => RemarkableChestsScreen(),
+    AddWishScreen.id: () => const AddWishScreen(),
+    RecipesScreen.id: () => const RecipesScreen(),
+    RecipeDetailsScreen.id: () => const RecipeDetailsScreen(),
+    RemarkableChestsScreen.id: () => const RemarkableChestsScreen(),
     WeaponsScreen.id: () => WeaponsScreen(),
-    WeaponDetailsScreen.id: () => WeaponDetailsScreen(),
-    ArtifactsScreen.id: () => ArtifactsScreen(),
-    ArtifactDetailsScreen.id: () => ArtifactDetailsScreen(),
+    WeaponDetailsScreen.id: () => const WeaponDetailsScreen(),
+    ArtifactsScreen.id: () => const ArtifactsScreen(),
+    ArtifactDetailsScreen.id: () => const ArtifactDetailsScreen(),
     CharactersScreen.id: () => CharactersScreen(),
-    NamecardScreen.id: () => NamecardScreen(),
-    MaterialsScreen.id: () => MaterialsScreen(),
-    ReputationScreen.id: () => ReputationScreen(),
-    SereniteaSetsScreen.id: () => SereniteaSetsScreen(),
+    NamecardScreen.id: () => const NamecardScreen(),
+    MaterialsScreen.id: () => const MaterialsScreen(),
+    ReputationScreen.id: () => const ReputationScreen(),
+    SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),
     CharacterDetailsScreen.id: () => CharacterDetailsScreen(),
-    CharacterAscensionScreen.id: () => CharacterAscensionScreen(),
-    SpincrystalsScreen.id: () => SpincrystalsScreen(),
-    ChangelogScreen.id: () => ChangelogScreen(),
-    TestsScreen.id: () => TestsScreen(),
+    CharacterAscensionScreen.id: () => const CharacterAscensionScreen(),
+    SpincrystalsScreen.id: () => const SpincrystalsScreen(),
+    ChangelogScreen.id: () => const ChangelogScreen(),
+    TestsScreen.id: () => const TestsScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) =>
           _routes[settings.name]?.call() ??
-          Center(
+          const Center(
             child: Text(
               'No route defined!',
               style: TextStyle(color: Colors.white),

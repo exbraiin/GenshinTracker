@@ -19,6 +19,8 @@ import 'package:tracker/screens/home_screen/widgets/home_wishes_summary.dart';
 class HomeScreen extends StatelessWidget {
   static const id = 'home_screen';
 
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +29,13 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => GsDatabaseExporter.export(),
-            icon: Icon(Icons.save_alt_rounded),
+            icon: const Icon(Icons.save_alt_rounded),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(kSeparator4),
+        padding: const EdgeInsets.all(kSeparator4),
         child: _widgets(context),
       ),
     );
@@ -62,11 +64,11 @@ class HomeScreen extends StatelessWidget {
                 title: Lang.of(context).getValue(Labels.noviceWishes),
                 banner: GsBanner.beginner,
               ),
-              HomeResourceCalcWidget(),
-            ].separate(SizedBox(height: kSeparator4)).toList(),
+              const HomeResourceCalcWidget(),
+            ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),
-        SizedBox(width: kSeparator4),
+        const SizedBox(width: kSeparator4),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -80,14 +82,14 @@ class HomeScreen extends StatelessWidget {
                 title: Lang.of(context).getValue(Labels.weaponWishes),
                 banner: GsBanner.weapon,
               ),
-              HomeRecipesWidget(),
-              HomeSpincrystalsWidget(),
-              HomeRemarkableChestsWidget(),
-              HomeReputationWidget(),
-            ].separate(SizedBox(height: kSeparator4)).toList(),
+              const HomeRecipesWidget(),
+              const HomeSpincrystalsWidget(),
+              const HomeRemarkableChestsWidget(),
+              const HomeReputationWidget(),
+            ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),
-        SizedBox(width: kSeparator4),
+        const SizedBox(width: kSeparator4),
         Expanded(
           child: Column(
             children: [
@@ -99,10 +101,10 @@ class HomeScreen extends StatelessWidget {
                 title: Lang.of(context).getValue(Labels.stndWishes),
                 banner: GsBanner.standard,
               ),
-              HomeFriendsWidget(),
-              HomeAscensionWidget(),
-              HomeBirthdaysWidget(),
-            ].separate(SizedBox(height: kSeparator4)).toList(),
+              const HomeFriendsWidget(),
+              const HomeAscensionWidget(),
+              const HomeBirthdaysWidget(),
+            ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),
       ],

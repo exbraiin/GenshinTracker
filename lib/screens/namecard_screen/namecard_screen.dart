@@ -13,6 +13,8 @@ import 'package:tracker/domain/gs_domain.dart';
 class NamecardScreen extends StatelessWidget {
   static const id = 'namecards_screen';
 
+  const NamecardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
@@ -26,11 +28,11 @@ class NamecardScreen extends StatelessWidget {
             label: context.fromLabel(Labels.namecards),
           ),
           body: SingleChildScrollView(
-            padding: EdgeInsets.all(kSeparator4),
+            padding: const EdgeInsets.all(kSeparator4),
             child: Column(
               children: groups.entries
                   .map((e) => _getSection(context, e.key, e.value))
-                  .separate(SizedBox(height: kSeparator4))
+                  .separate(const SizedBox(height: kSeparator4))
                   .toList(),
             ),
           ),
@@ -49,18 +51,18 @@ class NamecardScreen extends StatelessWidget {
     return GsDataBox.info(
       title: title,
       child: Table(
-        columnWidths: {
+        columnWidths: const {
           0: IntrinsicColumnWidth(),
           1: IntrinsicColumnWidth(),
         },
-        border: TableBorder(
+        border: const TableBorder(
           horizontalInside: BorderSide(color: GsColors.almostWhite),
         ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           TableRow(children: [
             Container(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               alignment: Alignment.center,
               child: Text(
                 context.fromLabel(Labels.image),
@@ -68,7 +70,7 @@ class NamecardScreen extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               alignment: Alignment.center,
               child: Text(
                 context.fromLabel(Labels.name),
@@ -76,7 +78,7 @@ class NamecardScreen extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               alignment: Alignment.center,
               child: Text(
                 context.fromLabel(Labels.description),
@@ -84,7 +86,7 @@ class NamecardScreen extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator4),
               alignment: Alignment.center,
               child: Text(
                 context.fromLabel(Labels.source),
@@ -105,7 +107,7 @@ class NamecardScreen extends StatelessWidget {
                 Text(e.obtain, textAlign: TextAlign.center, style: style),
               ]
                   .map((e) => Padding(
-                        padding: EdgeInsets.all(kSeparator8),
+                        padding: const EdgeInsets.all(kSeparator8),
                         child: e,
                       ))
                   .toList(),

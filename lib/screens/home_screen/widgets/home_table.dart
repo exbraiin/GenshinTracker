@@ -4,7 +4,8 @@ class HomeTable extends StatelessWidget {
   final List<Widget> headers;
   final List<List<Widget>> rows;
 
-  HomeTable({
+  const HomeTable({
+    super.key,
     required this.headers,
     required this.rows,
   });
@@ -20,8 +21,10 @@ class HomeTable extends StatelessWidget {
       children: [
         TableRow(
           children: headers
-              .map(
-                  (e) => Padding(padding: EdgeInsets.only(bottom: 8), child: e))
+              .map((e) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: e,
+                  ))
               .toList(),
         ),
         ...rows.map((e) => TableRow(children: e.map((e) => e).toList())),
@@ -35,8 +38,9 @@ class HomeRow extends StatelessWidget {
   final double fontSize;
   final Color color;
 
-  HomeRow(
+  const HomeRow(
     this.label, {
+    super.key,
     this.fontSize = 12,
     this.color = Colors.white,
   });
@@ -47,7 +51,7 @@ class HomeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(2),
+      padding: const EdgeInsets.all(2),
       child: Text(
         label,
         style: Theme.of(context)

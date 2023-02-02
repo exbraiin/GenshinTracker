@@ -14,18 +14,18 @@ class TestWidgets {
     Iterable<String> header,
     Iterable<Iterable<String>> items,
   ) {
-    if (items.isEmpty) return SizedBox();
+    if (items.isEmpty) return const SizedBox();
     final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
     return GsDataBox.info(
       child: Table(
-        border: TableBorder(
+        border: const TableBorder(
           horizontalInside: BorderSide(color: Colors.white, width: 0.4),
         ),
         children: [
           TableRow(
             children: header
                 .map((e) => Padding(
-                      padding: EdgeInsets.all(kSeparator4),
+                      padding: const EdgeInsets.all(kSeparator4),
                       child: Text(e, style: style),
                     ))
                 .toList(),
@@ -33,7 +33,7 @@ class TestWidgets {
           ...items.map((iitems) => TableRow(
                 children: iitems
                     .map((e) => Padding(
-                          padding: EdgeInsets.all(kSeparator4),
+                          padding: const EdgeInsets.all(kSeparator4),
                           child: Text(e, style: style),
                         ))
                     .toList(),
@@ -46,11 +46,11 @@ class TestWidgets {
   static Widget getBannerListItem(BuildContext context) {
     final iw = GsDatabase.instance.infoWeapons;
     final ic = GsDatabase.instance.infoCharacters;
-    bool _exists(String id) => iw.exists(id) || ic.exists(id);
-    bool _valid(InfoBanner banner) {
+    bool exists(String id) => iw.exists(id) || ic.exists(id);
+    bool valid(InfoBanner banner) {
       return (banner.feature4.isEmpty && banner.feature5.isEmpty) ||
-          banner.feature4.every((e) => _exists(e)) &&
-              banner.feature5.every((e) => _exists(e));
+          banner.feature4.every((e) => exists(e)) &&
+              banner.feature5.every((e) => exists(e));
     }
 
     return _container(
@@ -58,11 +58,11 @@ class TestWidgets {
       ['Banner Id', 'Missing 4*', 'Missing 5*'],
       GsDatabase.instance.infoBanners
           .getItems()
-          .where((e) => !_valid(e))
+          .where((e) => !valid(e))
           .sortedBy((e) => e.dateStart)
           .map((e) {
-        final f4 = e.feature4.where((e) => !_exists(e));
-        final f5 = e.feature5.where((e) => !_exists(e));
+        final f4 = e.feature4.where((e) => !exists(e));
+        final f5 = e.feature5.where((e) => !exists(e));
         return [e.id, f4.join(','), f5.join(',')];
       }),
     );
@@ -117,25 +117,25 @@ class TestWidgets {
   static Widget getBannerFeature(BuildContext context) {
     final iw = GsDatabase.instance.infoWeapons;
     final ic = GsDatabase.instance.infoCharacters;
-    bool _exists(String id) => iw.exists(id) || ic.exists(id);
-    bool _valid(InfoBanner banner) {
+    bool exists(String id) => iw.exists(id) || ic.exists(id);
+    bool valid(InfoBanner banner) {
       return (banner.feature4.isEmpty && banner.feature5.isEmpty) ||
-          banner.feature4.every((e) => _exists(e)) &&
-              banner.feature5.every((e) => _exists(e));
+          banner.feature4.every((e) => exists(e)) &&
+              banner.feature5.every((e) => exists(e));
     }
 
     final items = GsDatabase.instance.infoBanners
         .getItems()
-        .where((e) => !_valid(e))
+        .where((e) => !valid(e))
         .sortedBy((e) => e.dateStart);
-    if (items.isEmpty) return SizedBox();
+    if (items.isEmpty) return const SizedBox();
 
     return _container(
       context,
       ['id', '4*', '5*'],
       items.map((e) {
-        final f5 = e.feature5.where((e) => !_exists(e));
-        final f4 = e.feature4.where((e) => !_exists(e));
+        final f5 = e.feature5.where((e) => !exists(e));
+        final f4 = e.feature4.where((e) => !exists(e));
         return [e.id, f4.join(','), f5.join(',')];
       }),
     );
@@ -198,7 +198,7 @@ class TestWidgets {
 
     final missingInIg = rc.except(ig);
 
-    if (missingInIg.isEmpty) return SizedBox();
+    if (missingInIg.isEmpty) return const SizedBox();
 
     return _container(
       context,
@@ -215,7 +215,7 @@ class TestWidgets {
         .where((e) => e.baseRecipe.isNotEmpty)
         .where((e) => !recipes.any((r) => r.id == e.id));
 
-    if (missing.isEmpty) return SizedBox();
+    if (missing.isEmpty) return const SizedBox();
     return _container(
       context,
       ['Recipe', 'Base Recipe'],

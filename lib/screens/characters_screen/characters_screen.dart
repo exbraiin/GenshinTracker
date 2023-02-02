@@ -19,19 +19,21 @@ class CharactersScreen extends StatelessWidget {
 
   final _key = GlobalKey<ScaffoldState>();
 
+  CharactersScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
         return ScreenDrawerBuilder<InfoCharacter>(
           filter: () => ScreenFilters.infoCharacterFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoCharacters.getItems();
             final characters = filter.match(items);
             final child = characters.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: characters.length,
                     itemBuilder: (context, index) {
@@ -63,7 +65,7 @@ class CharactersScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(width: kSeparator2),
+                  const SizedBox(width: kSeparator2),
                   Tooltip(
                     message: 'Character Ascension',
                     child: IconButton(
@@ -76,9 +78,9 @@ class CharactersScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: kSeparator2),
+                  const SizedBox(width: kSeparator2),
                   IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: () => _key.currentState?.openEndDrawer(),
                   ),
                 ],

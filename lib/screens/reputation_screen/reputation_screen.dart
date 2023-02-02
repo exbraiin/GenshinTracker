@@ -9,16 +9,18 @@ import 'package:tracker/screens/reputation_screen/reputation_list_item.dart';
 class ReputationScreen extends StatelessWidget {
   static const id = 'reputation_screen';
 
+  const ReputationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GsAppBar(label: Lang.of(context).getValue(Labels.reputation)),
       body: Padding(
-        padding: EdgeInsets.all(kSeparator4),
+        padding: const EdgeInsets.all(kSeparator4),
         child: ValueStreamBuilder<bool>(
           stream: GsDatabase.instance.loaded,
           builder: (context, snapshot) {
-            if (snapshot.data != true) return SizedBox();
+            if (snapshot.data != true) return const SizedBox();
             return ListView(
               children: [
                 Wrap(

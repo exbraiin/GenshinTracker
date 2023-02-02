@@ -9,7 +9,12 @@ class CharacterListItem extends StatelessWidget {
   final InfoCharacter item;
   final VoidCallback? onTap;
 
-  CharacterListItem(this.item, {this.showExtra = true, this.onTap});
+  const CharacterListItem(
+    this.item, {
+    super.key,
+    this.showExtra = true,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,7 @@ class CharacterListItem extends StatelessWidget {
     int ascension,
   ) {
     return Padding(
-      padding: EdgeInsets.all(kSeparator2),
+      padding: const EdgeInsets.all(kSeparator2),
       child: Column(
         children: [
           Row(
@@ -51,7 +56,7 @@ class CharacterListItem extends StatelessWidget {
                   onTap: () => GsDatabase.instance.saveCharacters
                       .increaseFriendshipCharacter(item.id),
                 ),
-              Spacer(),
+              const Spacer(),
               GsItemCardLabel(
                 asset: item.element.assetPath,
                 label: charCons != null ? 'C$charCons' : null,
@@ -63,7 +68,7 @@ class CharacterListItem extends StatelessWidget {
           if (showExtra && charConsTotal != null && charConsTotal != charCons)
             Container(
               alignment: Alignment.topRight,
-              margin: EdgeInsets.only(top: kSeparator2),
+              margin: const EdgeInsets.only(top: kSeparator2),
               child: GsItemCardLabel(
                 asset: menuIconWish,
                 label: 'C$charConsTotal',

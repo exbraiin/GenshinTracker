@@ -18,12 +18,14 @@ const radius = BorderRadius.all(Radius.circular(6));
 class CharacterAscensionScreen extends StatelessWidget {
   static const id = 'character_ascension_screen';
 
+  const CharacterAscensionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (!snapshot.data!) return SizedBox();
+        if (!snapshot.data!) return const SizedBox();
 
         final items = GsDatabase.instance.infoCharacters.getItems();
         final characters = items
@@ -34,7 +36,7 @@ class CharacterAscensionScreen extends StatelessWidget {
             .toList();
 
         if (characters.isEmpty) {
-          return GsNoResultsState();
+          return const GsNoResultsState();
         }
 
         return Scaffold(
@@ -42,12 +44,13 @@ class CharacterAscensionScreen extends StatelessWidget {
             label: context.fromLabel(Labels.ascension),
           ),
           body: ListView.separated(
-            padding: EdgeInsets.all(kSeparator4),
+            padding: const EdgeInsets.all(kSeparator4),
             itemCount: characters.length,
             itemBuilder: (context, index) {
               return _CharacterAscensionListItem(characters[index]);
             },
-            separatorBuilder: (context, index) => SizedBox(height: kSeparator4),
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: kSeparator4),
           ),
         );
       },
@@ -58,7 +61,7 @@ class CharacterAscensionScreen extends StatelessWidget {
 class _CharacterAscensionListItem extends StatelessWidget {
   final InfoCharacter item;
 
-  _CharacterAscensionListItem(this.item);
+  const _CharacterAscensionListItem(this.item);
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +76,13 @@ class _CharacterAscensionListItem extends StatelessWidget {
       child: GsDataBox.info(
         child: Row(
           children: [
-            SizedBox(width: kSeparator4),
+            const SizedBox(width: kSeparator4),
             GsRarityItemCard(
               size: 70,
               image: GsUtils.characters.getImage(item.id),
               rarity: item.rarity,
             ),
-            SizedBox(width: kSeparator4),
+            const SizedBox(width: kSeparator4),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,7 +90,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
                   item.name,
                   style: context.textTheme.bigTitle3,
                 ),
-                SizedBox(height: kSeparator2),
+                const SizedBox(height: kSeparator2),
                 InkWell(
                   onTap: GsUtils.characters.hasCaracter(item.id)
                       ? () => sc.increaseAscension(item.id)
@@ -99,15 +102,15 @@ class _CharacterAscensionListItem extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             if (materials.isNotEmpty)
               ...materials
                   .map<Widget>((e) => CharacterAscensionMaterial(
                         e.material?.id ?? '',
                         e.required,
                       ))
-                  .separate(SizedBox(width: kSeparator4)),
-            SizedBox(width: kSeparator4),
+                  .separate(const SizedBox(width: kSeparator4)),
+            const SizedBox(width: kSeparator4),
             if (materials.isNotEmpty)
               GsIconButton(
                 size: 24,
@@ -123,7 +126,7 @@ class _CharacterAscensionListItem extends StatelessWidget {
                             ))
                     : null,
               ),
-            SizedBox(width: kSeparator4),
+            const SizedBox(width: kSeparator4),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoMaterial implements IdData {
+  @override
   final String id;
   final String name;
   final String image;
@@ -29,7 +30,7 @@ class InfoMaterial implements IdData {
       name: map['name'],
       image: map['image'],
       version: map['version'] ?? '',
-      group: GsMaterialGroup.values.fromName(map['group'] as String? ?? ''),
+      group: GsMaterialGroup.values.fromId(map['group'] as String? ?? ''),
       rarity: map['rarity'],
       subgroup: map['subgroup'],
       weekdays: (map['weekdays'] as List? ?? []).cast<String>(),

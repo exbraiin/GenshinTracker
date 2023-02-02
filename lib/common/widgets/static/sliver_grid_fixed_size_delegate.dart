@@ -70,7 +70,7 @@ class SliverGridDelegateWithFixedChildSize extends SliverGridDelegate {
 class _CustomLayout extends SliverGridRegularTileLayout {
   final double crossAxisOffset;
 
-  _CustomLayout({
+  const _CustomLayout({
     required this.crossAxisOffset,
     required super.crossAxisCount,
     required super.mainAxisStride,

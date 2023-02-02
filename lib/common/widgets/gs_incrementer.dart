@@ -7,7 +7,7 @@ class GsIncrementer extends StatefulWidget {
   final void Function()? onTap;
   final void Function(int ticks)? onHold;
 
-  GsIncrementer({this.onTap, this.onHold, this.child});
+  const GsIncrementer({super.key, this.onTap, this.onHold, this.child});
 
   @override
   State<GsIncrementer> createState() => _GsIncrementerState();
@@ -27,7 +27,7 @@ class _GsIncrementerState extends State<GsIncrementer> {
     return GestureDetector(
       onTap: () => widget.onTap?.call(),
       onLongPressStart: (e) => _timer = Timer.periodic(
-        Duration(milliseconds: 100),
+        const Duration(milliseconds: 100),
         (e) => widget.onHold?.call(e.tick),
       ),
       onLongPressEnd: (e) => _timer?.cancel(),

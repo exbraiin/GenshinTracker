@@ -9,7 +9,12 @@ class AddWishWishListItem extends StatelessWidget {
   final ItemData item;
   final VoidCallback? onRemove;
 
-  AddWishWishListItem({required this.item, required this.roll, this.onRemove});
+  const AddWishWishListItem({
+    super.key,
+    required this.item,
+    required this.roll,
+    this.onRemove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class AddWishWishListItem extends StatelessWidget {
         borderRadius: kMainRadius,
         color: GsColors.getRarityColor(item.rarity),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
         children: [
           Expanded(
@@ -34,7 +39,7 @@ class AddWishWishListItem extends StatelessWidget {
             style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
           ),
           Padding(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             child: GsIconButton(
               icon: Icons.remove,
               onPress: onRemove,

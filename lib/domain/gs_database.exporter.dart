@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -28,7 +29,7 @@ abstract class GsDatabaseExporter {
     await Directory('export').create();
     await File('export/$date.xlsx').writeAsBytes(bytes);
     await launchUrlString('file://${Directory('export').absolute.path}');
-    print('\x1b[31mComplete!');
+    if (kDebugMode) print('\x1b[31mComplete!');
   }
 
   static void writeWishes(Excel excel, String sheetName, GsBanner bannerType) {
@@ -114,11 +115,13 @@ abstract class GsDatabaseExporter {
         .thenBy((e) => e.dateStart);
     final sheet = excel[sheetName];
     sheet.appendRow(['Name', 'Start', 'End']);
-    list.forEach((e) => sheet.appendRow([
-          e.name,
-          e.dateStart.format(false),
-          e.dateEnd.format(false),
-        ]));
+    for (var banner in list) {
+      sheet.appendRow([
+        banner.name,
+        banner.dateStart.format(false),
+        banner.dateEnd.format(false),
+      ]);
+    }
   }
 
   static void writePaimonMoeInformation(Excel excel, String sheetName) {
@@ -174,8 +177,8 @@ int _bannerType(GsBanner banner) {
 extension on Sheet {
   void applyStyleToRow(int index, CellStyle style) {
     final row = this.row(index);
-    row.forEachIndexed((_, i) => this
-        .cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
-        .cellStyle = style);
+    row.forEachIndexed((_, i) =>
+        cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
+            .cellStyle = style);
   }
 }

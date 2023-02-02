@@ -13,14 +13,15 @@ class GsNumberField extends StatefulWidget {
   final int Function()? onDbUpdate;
   final void Function(int)? onUpdate;
 
-  GsNumberField({
+  const GsNumberField({
+    super.key,
     this.length = 0,
     this.enabled = true,
     this.onUpdate,
     this.onDbUpdate,
   });
 
-  GsNumberField.fromMaterial(InfoMaterial? material)
+  GsNumberField.fromMaterial(InfoMaterial? material, {super.key})
       : enabled = material != null,
         length = (material?.maxAmount ?? 0).toString().length,
         onDbUpdate = (() {
@@ -105,7 +106,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
           fontSize: 12,
           color: Colors.white.withOpacity(0.4),
         ),
-        contentPadding: EdgeInsets.all(kSeparator4),
+        contentPadding: const EdgeInsets.all(kSeparator4),
       ),
     );
   }

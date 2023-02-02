@@ -10,13 +10,13 @@ class SereniteaCharacterButton extends StatelessWidget {
   final bool collected;
   final VoidCallback onTap;
 
-  SereniteaCharacterButton({
-    Key? key,
+  const SereniteaCharacterButton({
+    super.key,
     required this.id,
     required this.owned,
     required this.collected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class SereniteaCharacterButton extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: Color(0xFF25294A),
+                color: const Color(0xFF25294A),
                 borderRadius: BorderRadius.circular(44),
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -57,7 +57,7 @@ class SereniteaCharacterButton extends StatelessWidget {
             bottom: 0,
             child: _CheckCircle(
               collected,
-              child: Icon(
+              child: const Icon(
                 Icons.check_rounded,
                 size: 12,
                 color: Colors.green,
@@ -74,7 +74,7 @@ class _CheckCircle extends StatefulWidget {
   final bool show;
   final Widget? child;
 
-  _CheckCircle(this.show, {this.child});
+  const _CheckCircle(this.show, {this.child});
 
   @override
   __CheckCircleState createState() => __CheckCircleState();
@@ -90,10 +90,11 @@ class __CheckCircleState extends State<_CheckCircle>
     _controller = AnimationController(
       vsync: this,
       value: widget.show ? 1 : 0,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
   }
 
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

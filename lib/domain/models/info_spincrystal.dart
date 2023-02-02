@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoSpincrystal implements IdData {
+  @override
   final String id;
   final int number;
   final String name;

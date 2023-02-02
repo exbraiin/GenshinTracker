@@ -4,10 +4,10 @@ import 'package:tracker/common/graphics/gs_style.dart';
 class Toast extends StatefulWidget {
   final bool show;
 
-  Toast(this.show);
+  const Toast(this.show, {super.key});
 
   @override
-  _ToastState createState() => _ToastState();
+  State<Toast> createState() => _ToastState();
 }
 
 class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
@@ -20,7 +20,7 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
     _notifier = ValueNotifier(0);
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
     );
     _triggerAnimation();
   }
@@ -58,7 +58,7 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                 return Material(
                   color: Colors.transparent,
                   child: Container(
-                    margin: EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: GsColors.mainColor0,
                       borderRadius: BorderRadius.circular(100),
@@ -66,22 +66,23 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.6),
                           blurRadius: 2,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    child: SizedBox(
                       width: 28,
                       height: 28,
                       child: Stack(
                         children: [
                           if (value == 0)
-                            CircularProgressIndicator(
+                            const CircularProgressIndicator(
                               color: Colors.white,
                               strokeWidth: 1.6,
                             ),
-                          Center(
+                          const Center(
                             child: Padding(
                               padding: EdgeInsets.all(4),
                               child: Icon(Icons.save,

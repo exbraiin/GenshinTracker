@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoCharacterInfo implements IdData {
+  @override
   final String id;
   final InfoCharacterAscension ascension;
   final List<InfoCharacterTalent> talents;

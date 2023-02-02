@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoRemarkableChest implements IdData {
+  @override
   final String id;
   final String name;
   final GsSetCategory type;

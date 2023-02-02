@@ -12,7 +12,8 @@ class RecipesListItem extends StatelessWidget {
   final InfoRecipe recipe;
   final SaveRecipe? savedRecipe;
 
-  RecipesListItem({
+  const RecipesListItem({
+    super.key,
     required this.recipe,
     this.savedRecipe,
   });
@@ -40,37 +41,10 @@ class RecipesListItem extends StatelessWidget {
           RecipeDetailsScreen.id,
           arguments: recipe,
         ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            if (recipe.effect != GsRecipeBuff.none)
-              Positioned(
-                top: kSeparator2,
-                left: kSeparator2,
-                child: GsItemCardLabel(
-                  asset: recipe.effect.assetPath,
-                ),
-              ),
-            if (!isSpecial)
-              Positioned(
-                top: kSeparator2,
-                right: kSeparator2,
-                child: GsIconButton(
-                  size: 20,
-                  color: savedRecipe != null ? Colors.green : GsColors.missing,
-                  icon: savedRecipe != null ? Icons.check : Icons.close,
-                  onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
-                    recipe.id,
-                    savedRecipe == null,
-                  ),
-                ),
-              ),
-          ],
-        ),
         subChild: isSpecial
             ? null
             : Padding(
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: Row(
                   children: [
                     GsIconButton(
@@ -110,6 +84,33 @@ class RecipesListItem extends StatelessWidget {
                   ],
                 ),
               ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (recipe.effect != GsRecipeBuff.none)
+              Positioned(
+                top: kSeparator2,
+                left: kSeparator2,
+                child: GsItemCardLabel(
+                  asset: recipe.effect.assetPath,
+                ),
+              ),
+            if (!isSpecial)
+              Positioned(
+                top: kSeparator2,
+                right: kSeparator2,
+                child: GsIconButton(
+                  size: 20,
+                  color: savedRecipe != null ? Colors.green : GsColors.missing,
+                  icon: savedRecipe != null ? Icons.check : Icons.close,
+                  onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
+                    recipe.id,
+                    savedRecipe == null,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

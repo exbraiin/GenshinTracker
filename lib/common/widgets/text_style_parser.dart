@@ -6,8 +6,9 @@ class TextParserWidget extends StatelessWidget {
   final String text;
   final TextStyle style;
 
-  TextParserWidget(
+  const TextParserWidget(
     this.text, {
+    super.key,
     this.style = const TextStyle(),
   });
 

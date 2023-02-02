@@ -9,6 +9,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
 class HomeRemarkableChestsWidget extends StatelessWidget {
+  const HomeRemarkableChestsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     final ic = GsDatabase.instance.infoRemarkableChests;

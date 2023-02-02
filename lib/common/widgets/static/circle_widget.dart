@@ -7,7 +7,8 @@ class CircleWidget extends StatelessWidget {
   final Color? borderColor;
   final double? borderSize;
 
-  CircleWidget({
+  const CircleWidget({
+    super.key,
     this.size,
     this.color = Colors.white,
     this.child,

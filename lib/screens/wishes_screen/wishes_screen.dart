@@ -18,6 +18,8 @@ class WishesScreen extends StatelessWidget {
 
   final _key = GlobalKey<ScaffoldState>();
 
+  WishesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -25,7 +27,7 @@ class WishesScreen extends StatelessWidget {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true || banner == null) return SizedBox();
+        if (snapshot.data != true || banner == null) return const SizedBox();
 
         final db = GsDatabase.instance;
         final sw = db.saveWishes;
@@ -56,9 +58,9 @@ class WishesScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(width: kSeparator2),
+                  const SizedBox(width: kSeparator2),
                   IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: () => _key.currentState?.openEndDrawer(),
                   ),
                 ],
@@ -106,7 +108,7 @@ class WishesScreen extends StatelessWidget {
         return SliverStickyHeader(
           header: showBanner
               ? BannerListItem(banner: banner, rolls: bannerWishes.length)
-              : SizedBox(),
+              : const SizedBox(),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -135,8 +137,8 @@ class WishesScreen extends StatelessWidget {
 
   PreferredSizeWidget _header(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(44),
-      child: Container(
+      preferredSize: const Size.fromHeight(44),
+      child: SizedBox(
         height: 44,
         child: Row(
           children: getSized([
@@ -151,14 +153,14 @@ class WishesScreen extends StatelessWidget {
               style: context.textTheme.headerButtonLabel,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 44),
+              padding: const EdgeInsets.only(left: 44),
               child: Text(
                 Lang.of(context).getValue(Labels.name),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
             ),
-            SizedBox(),
+            const SizedBox(),
             Text(
               Lang.of(context).getValue(Labels.rarity),
               textAlign: TextAlign.center,
@@ -175,7 +177,7 @@ class WishesScreen extends StatelessWidget {
               style: context.textTheme.headerButtonLabel,
             ),
           ].map((widget) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Center(child: widget),
               ))),
         ),

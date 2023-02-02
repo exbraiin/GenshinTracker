@@ -13,6 +13,7 @@ class FileImageWidget extends StatelessWidget {
 
   const FileImageWidget(
     this.path, {
+    super.key,
     this.fit = BoxFit.contain,
   });
 
@@ -25,7 +26,7 @@ class FileImageWidget extends StatelessWidget {
           key: ValueKey(path),
           future: file.exists(),
           builder: (context, snapshot) {
-            if (snapshot.data != true) return SizedBox();
+            if (snapshot.data != true) return const SizedBox();
             return Image.file(
               file,
               fit: fit,
@@ -44,7 +45,8 @@ class FileImageWidget extends StatelessWidget {
 class FileImageSafe extends FileImage {
   final int? cacheWidth;
   final int? cacheHeight;
-  FileImageSafe(
+
+  const FileImageSafe(
     File file, {
     this.cacheWidth,
     this.cacheHeight,

@@ -54,7 +54,7 @@ void _generateExtensions(Map<String, String> map) {
 
 extension on String {
   String toCamel() {
-    final words = this.toLowerCase().split('_').where((e) => e.isNotEmpty);
+    final words = toLowerCase().split('_').where((e) => e.isNotEmpty);
     final pascal = words
         .skip(1)
         .map((w) => '${w[0].toUpperCase()}${w.substring(1)}')

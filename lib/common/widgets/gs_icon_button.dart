@@ -7,7 +7,8 @@ class GsCircleIcon extends StatelessWidget {
   final double size;
   final Color color;
 
-  GsCircleIcon({
+  const GsCircleIcon({
+    super.key,
     required this.icon,
     this.size = 24,
     this.color = Colors.black,
@@ -41,7 +42,8 @@ class GsIconButton extends StatelessWidget {
   final Color color;
   final VoidCallback? onPress;
 
-  GsIconButton({
+  const GsIconButton({
+    super.key,
     required this.icon,
     this.size = 24,
     this.onPress,
@@ -70,7 +72,8 @@ class GsIconButtonHold extends StatelessWidget {
   final Color color;
   final void Function(int i)? onPress;
 
-  GsIconButtonHold({
+  const GsIconButtonHold({
+    super.key,
     required this.icon,
     this.size = 24,
     this.onPress,

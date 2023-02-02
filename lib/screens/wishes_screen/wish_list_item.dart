@@ -17,7 +17,8 @@ class WishListItem extends StatelessWidget {
   final WishState wishState;
   final ListType type;
 
-  WishListItem({
+  const WishListItem({
+    super.key,
     required this.pity,
     required this.index,
     required this.wish,
@@ -45,7 +46,7 @@ class WishListItem extends StatelessWidget {
       child: Row(
         children: getSized([
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
               onTap: () async {
                 final date = await GsTimeDialog.show(context, wish.date);
@@ -70,13 +71,13 @@ class WishListItem extends StatelessWidget {
             children: [
               Container(
                 width: 44,
-                margin: EdgeInsets.fromLTRB(2, 2, 2, 0),
+                margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
                 child: CachedImageWidget(
                   item.getUrlImg(),
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(item.name, style: style),
             ],
           ),
@@ -89,11 +90,14 @@ class WishListItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border(
                       top: type == ListType.top
-                          ? BorderSide(color: GsColors.almostWhite, width: 2)
+                          ? const BorderSide(
+                              color: GsColors.almostWhite, width: 2)
                           : BorderSide.none,
-                      right: BorderSide(color: GsColors.almostWhite, width: 2),
+                      right: const BorderSide(
+                          color: GsColors.almostWhite, width: 2),
                       bottom: type == ListType.bottom
-                          ? BorderSide(color: GsColors.almostWhite, width: 2)
+                          ? const BorderSide(
+                              color: GsColors.almostWhite, width: 2)
                           : BorderSide.none,
                     ),
                   ),
@@ -107,7 +111,7 @@ class WishListItem extends StatelessWidget {
                         )
                       : null,
                 )
-              : SizedBox(),
+              : const SizedBox(),
           Text(item.rarity.toString(), style: style),
           Text(context.fromLabel(item.type.label), style: style),
           Text(wish.number.toString(), style: style),

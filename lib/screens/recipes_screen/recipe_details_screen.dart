@@ -14,6 +14,8 @@ import 'package:tracker/domain/gs_domain.dart';
 class RecipeDetailsScreen extends StatelessWidget {
   static const id = 'recipe_details_screen';
 
+  const RecipeDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -25,14 +27,14 @@ class RecipeDetailsScreen extends StatelessWidget {
         stream: GsDatabase.instance.loaded,
         builder: (context, snapshot) {
           return SingleChildScrollView(
-            padding: EdgeInsets.all(kSeparator4),
+            padding: const EdgeInsets.all(kSeparator4),
             child: Column(
               children: [
                 _getInfo(context, info),
-                SizedBox(height: kSeparator8),
+                const SizedBox(height: kSeparator8),
                 if (info.effect != GsRecipeBuff.none) _getEffect(context, info),
                 if (info.effect != GsRecipeBuff.none)
-                  SizedBox(height: kSeparator8),
+                  const SizedBox(height: kSeparator8),
                 _getIngredients(context, info),
               ],
             ),
@@ -51,7 +53,7 @@ class RecipeDetailsScreen extends StatelessWidget {
           image: info.image,
           rarity: info.rarity,
         ),
-        SizedBox(width: kSeparator8),
+        const SizedBox(width: kSeparator8),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -63,7 +65,7 @@ class RecipeDetailsScreen extends StatelessWidget {
                     info.name,
                     style: Theme.of(context).textTheme.bigTitle2,
                   ),
-                  SizedBox(width: kSeparator8),
+                  const SizedBox(width: kSeparator8),
                   if (info.effect != GsRecipeBuff.none)
                     Image.asset(
                       info.effect.assetPath,
@@ -76,12 +78,12 @@ class RecipeDetailsScreen extends StatelessWidget {
                 info.description,
                 style: context.textTheme.description2,
               ),
-              SizedBox(height: kSeparator8),
+              const SizedBox(height: kSeparator8),
               _getTags(context, info),
             ],
           ),
         ),
-        SizedBox(width: 360),
+        const SizedBox(width: 360),
       ],
     );
   }
@@ -94,7 +96,7 @@ class RecipeDetailsScreen extends StatelessWidget {
         if (info.baseRecipe.isNotEmpty) context.fromLabel(Labels.specialDish),
       ]
           .map<Widget>((e) => GsDataBox.label(e))
-          .separate(SizedBox(width: kSeparator4))
+          .separate(const SizedBox(width: kSeparator4))
           .toList(),
     );
   }
@@ -107,7 +109,7 @@ class RecipeDetailsScreen extends StatelessWidget {
               info.effectDesc,
               style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
             )
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 
@@ -129,7 +131,7 @@ class RecipeDetailsScreen extends StatelessWidget {
               image: baseRecipe.image,
             ),
           if (baseRecipe != null)
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: kSeparator8),
               child: Icon(
                 Icons.add_rounded,
@@ -145,9 +147,9 @@ class RecipeDetailsScreen extends StatelessWidget {
               image: i?.image ?? '',
               rarity: i?.rarity ?? 1,
             );
-          }).separate(SizedBox(width: kSeparator4)),
+          }).separate(const SizedBox(width: kSeparator4)),
           if (baseRecipe != null && char != null)
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: kSeparator8),
               child: Icon(
                 Icons.add_rounded,

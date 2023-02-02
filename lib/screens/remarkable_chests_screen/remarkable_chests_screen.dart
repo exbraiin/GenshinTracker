@@ -13,19 +13,21 @@ import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 class RemarkableChestsScreen extends StatelessWidget {
   static const id = 'remarkable_chests_screen';
 
+  const RemarkableChestsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
         return ScreenDrawerBuilder<InfoRemarkableChest>(
           filter: () => ScreenFilters.infoRemarkableChestFilter,
           builder: (context, filter, drawer) {
             final items = GsDatabase.instance.infoRemarkableChests.getItems();
             final remarkableChests = filter.match(items);
             final child = remarkableChests.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: remarkableChests.length,
                     itemBuilder: (context, index) {

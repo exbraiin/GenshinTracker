@@ -7,6 +7,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
 class HomeReputationWidget extends StatelessWidget {
+  const HomeReputationWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(

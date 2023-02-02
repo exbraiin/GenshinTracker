@@ -12,6 +12,8 @@ import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 class ArtifactsScreen extends StatelessWidget {
   static const id = 'artifacts_screen';
 
+  const ArtifactsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(

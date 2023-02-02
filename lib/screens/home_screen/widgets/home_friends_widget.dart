@@ -10,6 +10,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
 class HomeFriendsWidget extends StatelessWidget {
+  const HomeFriendsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
@@ -28,7 +30,7 @@ class HomeFriendsWidget extends StatelessWidget {
         if (characters.isEmpty) {
           return GsDataBox.summary(
             title: context.fromLabel(Labels.friendship),
-            child: GsNoResultsState(),
+            child: const GsNoResultsState(),
           );
         }
 

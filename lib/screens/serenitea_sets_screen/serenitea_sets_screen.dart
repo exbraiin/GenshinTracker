@@ -13,12 +13,14 @@ import 'package:tracker/screens/serenitea_sets_screen/serenitea_set_list_item.da
 class SereniteaSetsScreen extends StatelessWidget {
   static const id = 'serenitea_sets_screen';
 
+  const SereniteaSetsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
         return ScreenDrawerBuilder<InfoSereniteaSet>(
           filter: () => ScreenFilters.infoSereniteaSetFilter,
           builder: (context, filter, drawer) {
@@ -26,7 +28,7 @@ class SereniteaSetsScreen extends StatelessWidget {
             final filtered = filter.match(setsList);
 
             final child = filtered.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     childWidth: 400,
                     childHeight: 200,

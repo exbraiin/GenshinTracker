@@ -8,7 +8,7 @@ import 'package:tracker/common/widgets/cards/gs_card_dialog.dart';
 class GsTimeDialog extends StatefulWidget {
   final DateTime? date;
 
-  GsTimeDialog._(this.date);
+  const GsTimeDialog._(this.date);
 
   static Future<DateTime?> show(BuildContext context, [DateTime? date]) {
     return showDialog<DateTime?>(
@@ -18,7 +18,7 @@ class GsTimeDialog extends StatefulWidget {
   }
 
   @override
-  _GsTimeDialogState createState() => _GsTimeDialogState();
+  State<GsTimeDialog> createState() => _GsTimeDialogState();
 }
 
 class _GsTimeDialogState extends State<GsTimeDialog>
@@ -46,14 +46,16 @@ class _GsTimeDialogState extends State<GsTimeDialog>
 
     _animation = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     )..forward();
   }
 
   @override
   void dispose() {
-    [year, month, day, hour, minute, second]
-        .forEach((element) => element.dispose());
+    final controllers = [year, month, day, hour, minute, second];
+    for (var element in controllers) {
+      element.dispose();
+    }
     _animation.dispose();
     super.dispose();
   }
@@ -69,7 +71,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
       child: Container(
         width: 44,
         height: 44,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: GsColors.mainColor2,
           borderRadius: kMainRadius,
         ),
@@ -86,7 +88,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
             ),
           ),
           controller: controller,
-          scrollBehavior: ScrollBehavior().copyWith(
+          scrollBehavior: const ScrollBehavior().copyWith(
             dragDevices: {PointerDeviceKind.mouse},
             scrollbars: false,
           ),
@@ -106,7 +108,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
     return Center(
       child: GsCardDialog(
         title: Lang.of(context).getValue(Labels.selectDate),
-        constraints: BoxConstraints(maxHeight: 190, maxWidth: 280),
+        constraints: const BoxConstraints(maxHeight: 190, maxWidth: 280),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -130,7 +132,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                 _selector(day, 1, 32, style),
               ],
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -151,11 +153,11 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                 _selector(second, 0, 60, style),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(),
+                const Spacer(),
                 TextButton(
                   onPressed: () {
                     final date = _getDate();
@@ -163,7 +165,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                   },
                   child: Container(
                     width: 100,
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       border: Border.all(color: GsColors.mainColor3),
                       borderRadius: kMainRadius,
@@ -182,7 +184,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                       color: Colors.transparent,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints.tightFor(),
+                        constraints: const BoxConstraints.tightFor(),
                         onPressed: () => setState(() {
                           _savedTime = _isLocked ? null : _getDate();
                         }),

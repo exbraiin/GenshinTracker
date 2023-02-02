@@ -2,6 +2,7 @@ import 'package:tracker/domain/gs_domain.dart';
 
 class SaveWish extends Comparable<SaveWish> implements IdSaveData {
   final int number;
+  @override
   final String id;
   final String itemId;
   final String bannerId;
@@ -27,6 +28,7 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'date': date.toString().split('.').first,

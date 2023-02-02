@@ -11,6 +11,8 @@ import 'package:tracker/domain/gs_domain.dart';
 class ChangelogScreen extends StatelessWidget {
   static const id = 'changelog_screen';
 
+  const ChangelogScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final iCharacters = GsDatabase.instance.infoCharacters;
@@ -43,7 +45,7 @@ class ChangelogScreen extends StatelessWidget {
     final iNamecards = GsDatabase.instance.infoNamecards;
     final namecards = iNamecards.getItems().groupBy((e) => e.version);
 
-    final groups = [
+    final groups = {
       ...characters.keys,
       ...weapons.keys,
       ...materials.keys,
@@ -54,7 +56,7 @@ class ChangelogScreen extends StatelessWidget {
       ...banners.keys,
       ...chests.keys,
       ...namecards.keys,
-    ].toSet().sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
+    }.sortedByDescending((e) => double.tryParse(e) ?? 0).toList();
 
     final tabBar = TabBar(
       isScrollable: true,
@@ -67,11 +69,11 @@ class ChangelogScreen extends StatelessWidget {
         appBar: GsAppBar(
           label: context.fromLabel(Labels.changelog),
           bottom: PreferredSize(
+            preferredSize: tabBar.preferredSize,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: tabBar,
             ),
-            preferredSize: tabBar.preferredSize,
           ),
         ),
         body: Column(
@@ -80,7 +82,7 @@ class ChangelogScreen extends StatelessWidget {
               child: TabBarView(
                 children: groups
                     .map((version) => ListView(
-                          padding: EdgeInsets.all(kSeparator4),
+                          padding: const EdgeInsets.all(kSeparator4),
                           children: [
                             _getSection<InfoCharacter>(
                               context: context,
@@ -204,9 +206,9 @@ class ChangelogScreen extends StatelessWidget {
     String Function(T i)? asset,
     BoxFit fit = BoxFit.contain,
   }) {
-    if (items == null) return SizedBox();
+    if (items == null) return const SizedBox();
     return Padding(
-      padding: EdgeInsets.only(bottom: kSeparator4),
+      padding: const EdgeInsets.only(bottom: kSeparator4),
       child: GsDataBox.info(
         title: title,
         child: Wrap(

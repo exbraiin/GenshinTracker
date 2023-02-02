@@ -21,12 +21,12 @@ class GsItemBanner {
   factory GsItemBanner.fromVersion(String version) {
     final db = GsDatabase.instance.infoVersion;
     if (db.isUpcoming(version)) {
-      return GsItemBanner(text: 'Upcoming', color: Colors.orange);
+      return const GsItemBanner(text: 'Upcoming', color: Colors.orange);
     }
     if (db.isNew(version)) {
-      return GsItemBanner(text: 'New', color: Colors.lightBlue);
+      return const GsItemBanner(text: 'New', color: Colors.lightBlue);
     }
-    return GsItemBanner(text: '');
+    return const GsItemBanner(text: '');
   }
 }
 
@@ -46,7 +46,8 @@ class GsItemCardButton extends StatelessWidget {
   final String? imageAssetPath;
   final VoidCallback? onTap;
 
-  GsItemCardButton({
+  const GsItemCardButton({
+    super.key,
     this.onTap,
     this.rarity,
     this.child,
@@ -94,7 +95,7 @@ class GsItemCardButton extends StatelessWidget {
     return AnimatedContainer(
       width: width,
       height: height,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: GsColors.mainColor2,
         borderRadius: radius,
@@ -115,7 +116,7 @@ class GsItemCardButton extends StatelessWidget {
             child: ClipRRect(
               borderRadius: radius.copyWith(
                 bottomLeft: Radius.zero,
-                bottomRight: Radius.circular(24),
+                bottomRight: const Radius.circular(24),
               ),
               child: Container(
                 width: double.infinity,
@@ -168,13 +169,13 @@ class GsItemCardButton extends StatelessWidget {
             ),
           ),
           Container(
-            constraints: BoxConstraints(minHeight: 24),
-            decoration: BoxDecoration(
+            constraints: const BoxConstraints(minHeight: 24),
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(4),
               ),
             ),
-            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
             child: Center(
               child: Column(
                 children: [
@@ -203,7 +204,13 @@ class GsItemCardLabel extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onTap;
 
-  GsItemCardLabel({this.asset, this.label, this.icon, this.onTap});
+  const GsItemCardLabel({
+    super.key,
+    this.asset,
+    this.label,
+    this.icon,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +220,7 @@ class GsItemCardLabel extends StatelessWidget {
         color: GsColors.mainColor0.withOpacity(0.6),
         borderRadius: BorderRadius.circular(24),
       ),
-      padding: EdgeInsets.all(kSeparator4),
+      padding: const EdgeInsets.all(kSeparator4),
       child: InkWell(
         onTap: onTap,
         child: Row(
@@ -221,7 +228,7 @@ class GsItemCardLabel extends StatelessWidget {
           children: [
             if (label != null)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: kSeparator4),
+                padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
                 child: Text(
                   label!,
                   style: context.textTheme.cardLabel,
@@ -237,7 +244,7 @@ class GsItemCardLabel extends StatelessWidget {
               ),
             if (icon != null)
               Padding(
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 child: Icon(
                   icon!,
                   color: Colors.white,

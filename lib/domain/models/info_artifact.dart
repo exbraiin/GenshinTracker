@@ -2,6 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoArtifact implements IdData {
+  @override
   final String id;
   final String name;
   final String domain;

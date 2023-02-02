@@ -15,6 +15,8 @@ import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 class WeeklyScreen extends StatefulWidget {
   static const id = 'weekly_screen';
 
+  const WeeklyScreen({super.key});
+
   @override
   State<WeeklyScreen> createState() => _WeeklyScreenState();
 }
@@ -51,7 +53,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(kSeparator4),
+        padding: const EdgeInsets.all(kSeparator4),
         children: materials
             .map<Widget>((e) {
               return GsDataBox.summary(
@@ -65,14 +67,14 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           height: 32,
                           child: CachedImageWidget(e.image),
                         ),
-                        SizedBox(width: kSeparator4),
+                        const SizedBox(width: kSeparator4),
                         Text(
                           e.name,
                           style: context.textTheme.bigTitle3,
                         ),
                       ],
                     ),
-                    Divider(color: GsColors.dimWhite),
+                    const Divider(color: GsColors.dimWhite),
                     Wrap(
                       spacing: kSeparator4,
                       runSpacing: kSeparator4,
@@ -133,7 +135,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                 ),
               );
             })
-            .separate(SizedBox(height: kSeparator4))
+            .separate(const SizedBox(height: kSeparator4))
             .toList(),
       ),
     );
@@ -145,18 +147,18 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
       child: DropdownButton(
         style: context.textTheme.description2.copyWith(color: Colors.white),
         value: _weekday - 1,
-        underline: SizedBox(),
+        underline: const SizedBox(),
         focusColor: Colors.transparent,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white,
         items: GsWeekday.days.mapIndexed((idx, item) {
           return DropdownMenuItem(
+            value: idx,
+            alignment: Alignment.center,
             child: Text(
               item,
               style: TextStyle(color: idx == now ? GsColors.missing : null),
             ),
-            value: idx,
-            alignment: Alignment.center,
           );
         }).toList(),
         onChanged: (int? i) => setState(() => _weekday = (i ?? 0) + 1),

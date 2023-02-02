@@ -9,7 +9,8 @@ class GsButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final BorderRadius? borderRadius;
 
-  GsButton({
+  const GsButton({
+    super.key,
     required this.child,
     this.color,
     this.border,

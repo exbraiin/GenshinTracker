@@ -17,8 +17,10 @@ import 'package:tracker/screens/screen_filters/screen_filter_drawer.dart';
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';
 
+  const AddWishScreen({super.key});
+
   @override
-  _AddWishScreenState createState() => _AddWishScreenState();
+  State<AddWishScreen> createState() => _AddWishScreenState();
 }
 
 class _AddWishScreenState extends State<AddWishScreen> {
@@ -43,11 +45,11 @@ class _AddWishScreenState extends State<AddWishScreen> {
     return ScreenDrawerBuilder<ItemData>(
       filter: () => ScreenFilters.itemDataFilter,
       builder: (context, filter, drawer) {
-        if (banner == null) return SizedBox();
+        if (banner == null) return const SizedBox();
         return Scaffold(
           appBar: GsAppBar(
             label: Lang.of(context).getValue(Labels.addWishes),
-            leading: CloseButton(),
+            leading: const CloseButton(),
           ),
           body: Row(
             children: [
@@ -55,7 +57,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
               Container(
                 width: 220,
                 color: GsColors.mainColor0,
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 child: Column(
                   children: [
                     Expanded(
@@ -67,7 +69,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                           return ListView.separated(
                             itemCount: list.length,
                             separatorBuilder: (_, index) =>
-                                SizedBox(height: kSeparator2),
+                                const SizedBox(height: kSeparator2),
                             itemBuilder: (context, index) {
                               return AddWishWishListItem(
                                 item: list[index],
@@ -80,7 +82,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     ValueListenableBuilder<List<ItemData>>(
                       valueListenable: _wishes,
                       builder: (context, list, child) {
@@ -91,14 +93,13 @@ class _AddWishScreenState extends State<AddWishScreen> {
                                 list.isEmpty ? null : () => _saveWishes(banner),
                             child: Container(
                               height: 44,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: GsColors.mainColor1,
                                 borderRadius: kMainRadius,
                               ),
                               child: Center(
                                 child: Text(
-                                  Lang.of(context).getValue(Labels.addWishes) +
-                                      ' (x${list.length})',
+                                  '${context.fromLabel(Labels.addWishes)} (x${list.length})',
                                   style: context.textTheme.subtitle2!
                                       .copyWith(color: Colors.white),
                                 ),
@@ -131,6 +132,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
       bannerId: banner.id,
     );
 
+    if (!mounted) return;
     Navigator.of(context).maybePop();
   }
 
@@ -149,7 +151,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
         .thenBy((element) => element.type.index)
         .thenBy((element) => featured(element) ? 0 : 1)
         .thenBy((element) => element.name);
-    if (filtered.isEmpty) return GsNoResultsState();
+    if (filtered.isEmpty) return const GsNoResultsState();
 
     return Expanded(
       child: GsGridView.builder(

@@ -8,6 +8,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
 class HomeBirthdaysWidget extends StatelessWidget {
+  const HomeBirthdaysWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now();

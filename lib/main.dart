@@ -7,17 +7,19 @@ import 'package:tracker/screens/main_screen/main_screen.dart';
 
 void main() {
   GsDomain.testLabels();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scrollBehavior: MaterialScrollBehavior().copyWith(
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {PointerDeviceKind.mouse},
         scrollbars: false,
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
       ),
       localizationsDelegates: [
         Lang.delegate,
@@ -31,10 +33,10 @@ class MyApp extends StatelessWidget {
         backgroundColor: GsColors.mainColor1,
         scaffoldBackgroundColor: GsColors.mainColor1,
         splashColor: Colors.transparent,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: GsColors.mainColor1,
         ),
-        tooltipTheme: TooltipThemeData(
+        tooltipTheme: const TooltipThemeData(
           decoration: BoxDecoration(
             color: GsColors.mainColor0,
             borderRadius: kMainRadius,
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         canvasColor: GsColors.mainColor1,
       ),
-      home: MainScreen(),
+      home: const MainScreen(),
     );
   }
 }

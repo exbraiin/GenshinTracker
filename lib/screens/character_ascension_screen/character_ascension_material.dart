@@ -9,7 +9,7 @@ class CharacterAscensionMaterial extends StatelessWidget {
   final String id;
   final int amount;
 
-  CharacterAscensionMaterial(this.id, this.amount);
+  const CharacterAscensionMaterial(this.id, this.amount, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,8 @@ class WeaponListItem extends StatelessWidget {
   final bool showExtra;
   final InfoWeapon weapon;
 
-  WeaponListItem({
+  const WeaponListItem({
+    super.key,
     required this.showExtra,
     required this.weapon,
   });
@@ -36,7 +37,7 @@ class WeaponListItem extends StatelessWidget {
 
   Widget _getContent(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(kSeparator2),
+      padding: const EdgeInsets.all(kSeparator2),
       child: Stack(
         children: [
           Positioned(
@@ -57,7 +58,7 @@ class WeaponListItem extends StatelessWidget {
                   ),
                   if (weapon.statType != GsAttributeStat.none)
                     Padding(
-                      padding: EdgeInsets.only(top: kSeparator2),
+                      padding: const EdgeInsets.only(top: kSeparator2),
                       child: Tooltip(
                         message: context.fromLabel(weapon.statType.label),
                         child: GsItemCardLabel(

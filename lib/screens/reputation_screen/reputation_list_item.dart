@@ -11,7 +11,7 @@ import 'package:tracker/domain/gs_domain.dart';
 class ReputationListItem extends StatefulWidget {
   final InfoCity city;
 
-  ReputationListItem(this.city);
+  const ReputationListItem(this.city, {super.key});
 
   @override
   State<ReputationListItem> createState() => _ReputationListItemState();
@@ -42,7 +42,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
     return Container(
       width: 300,
       height: 100,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: GsColors.mainColor2,
         borderRadius: kMainRadius,
         boxShadow: kMainShadow,
@@ -51,7 +51,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
         children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,13 +59,13 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     children: [
                       Stack(
                         children: [
-                          Container(
+                          SizedBox(
                             width: 34,
                             child: CachedImageWidget(widget.city.image),
                           ),
                         ],
                       ),
-                      SizedBox(width: kSeparator4),
+                      const SizedBox(width: kSeparator4),
                       Text(
                         widget.city.name,
                         style: Theme.of(context)
@@ -73,12 +73,12 @@ class _ReputationListItemState extends State<ReputationListItem> {
                             .headline6!
                             .copyWith(color: Colors.white),
                       ),
-                      SizedBox(width: kSeparator4),
+                      const SizedBox(width: kSeparator4),
                       CircleWidget(
                         size: 16,
                         color: GsColors.mainColor1,
                         child: Padding(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: Image.asset(
                             widget.city.element.assetPath,
                             width: 16,
@@ -88,9 +88,9 @@ class _ReputationListItemState extends State<ReputationListItem> {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
-                    padding: EdgeInsets.only(bottom: kSeparator4),
+                    padding: const EdgeInsets.only(bottom: kSeparator4),
                     child: GsNumberField(
                       onDbUpdate: () {
                         final db = GsDatabase.instance.saveReputations;
@@ -109,7 +109,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     minHeight: 2,
                     color: Colors.green,
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Text(
@@ -119,7 +119,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                           color: GsColors.almostWhite,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       if (nRep != -1)
                         Text(
                           nRep.toString(),
@@ -163,20 +163,15 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     ),
                     TextSpan(
                       text: nextLvlWeeks != lastLvlWeeks
-                          ? '\n' +
-                              Lang.of(context).getValue(
-                                Labels.nnWeeks,
-                                nargs: {
-                                  'from': nextLvlWeeks,
-                                  'to': lastLvlWeeks
-                                },
-                              )
+                          ? '\n${Lang.of(context).getValue(
+                              Labels.nnWeeks,
+                              nargs: {'from': nextLvlWeeks, 'to': lastLvlWeeks},
+                            )}'
                           : lastLvlWeeks != 0
-                              ? '\n' +
-                                  context.fromLabel(
-                                    Labels.nWeeks,
-                                    lastLvlWeeks,
-                                  )
+                              ? '\n${context.fromLabel(
+                                  Labels.nWeeks,
+                                  lastLvlWeeks,
+                                )}'
                               : '',
                       style: context.textTheme.subtitle2!
                           .copyWith(color: Colors.white, fontSize: 10),

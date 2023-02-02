@@ -15,12 +15,14 @@ class WeaponsScreen extends StatelessWidget {
   static const id = 'weapons_screen';
   final _key = GlobalKey<ScaffoldState>();
 
+  WeaponsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true) return SizedBox();
+        if (snapshot.data != true) return const SizedBox();
 
         return ScreenDrawerBuilder<InfoWeapon>(
           filter: () => ScreenFilters.infoWeaponFilter,
@@ -29,7 +31,7 @@ class WeaponsScreen extends StatelessWidget {
             final weapons = filter.match(items);
 
             final child = weapons.isEmpty
-                ? GsNoResultsState()
+                ? const GsNoResultsState()
                 : GsGridView.builder(
                     itemCount: weapons.length,
                     itemBuilder: (context, index) {
@@ -61,9 +63,9 @@ class WeaponsScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(width: kSeparator2),
+                  const SizedBox(width: kSeparator2),
                   IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: () => _key.currentState?.openEndDrawer(),
                   ),
                 ],

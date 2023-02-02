@@ -5,7 +5,7 @@ import 'package:tracker/domain/gs_database.utils.dart';
 class GsWishStateIcon extends StatelessWidget {
   final WishState wishState;
 
-  GsWishStateIcon(this.wishState);
+  const GsWishStateIcon(this.wishState, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class GsWishStateIcon extends StatelessWidget {
         message = context.fromLabel(Labels.guaranteed);
         break;
       default:
-        return SizedBox();
+        return const SizedBox();
     }
     return Padding(
-      padding: EdgeInsets.only(left: 2),
+      padding: const EdgeInsets.only(left: 2),
       child: Tooltip(
         message: message,
         child: Icon(icon, color: Colors.white, size: 16),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 
 class CachedImageWidget extends StatelessWidget {
   static String _getScaleUrl(String url, int? w) {
@@ -11,8 +12,9 @@ class CachedImageWidget extends StatelessWidget {
   final String? imageUrl;
   final Alignment alignment;
 
-  CachedImageWidget(
+  const CachedImageWidget(
     this.imageUrl, {
+    super.key,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
   });
@@ -20,7 +22,10 @@ class CachedImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageUrl == null || imageUrl!.isEmpty) {
-      return SizedBox();
+      return Image.asset(
+        iconMissing,
+        fit: BoxFit.contain,
+      );
     }
     return LayoutBuilder(
       builder: (context, layout) {
@@ -30,6 +35,18 @@ class CachedImageWidget extends StatelessWidget {
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
           memCacheHeight: layout.biggest.toCacheHeight,
+          placeholder: (context, url) {
+            return Image.asset(
+              iconMissing,
+              fit: BoxFit.contain,
+            );
+          },
+          errorWidget: (context, url, error) {
+            return Image.asset(
+              iconMissing,
+              fit: BoxFit.contain,
+            );
+          },
         );
       },
     );

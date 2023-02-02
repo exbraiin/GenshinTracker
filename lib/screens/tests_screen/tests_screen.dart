@@ -7,12 +7,14 @@ import 'package:tracker/screens/tests_screen/tests_list_items.dart';
 class TestsScreen extends StatelessWidget {
   static const id = 'tests_screen';
 
+  const TestsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GsAppBar(label: 'Tests'),
+      appBar: const GsAppBar(label: 'Tests'),
       body: ListView(
-        padding: EdgeInsets.all(kSeparator4),
+        padding: const EdgeInsets.all(kSeparator4),
         children: [
           TestWidgets.getBannerListItem(context),
           TestWidgets.getCharacterListItem(context),
@@ -23,7 +25,7 @@ class TestsScreen extends StatelessWidget {
           TestWidgets.getMissingSpecialDish(context),
         ]
             .where((e) => e is! SizedBox)
-            .separate(SizedBox(height: kSeparator4))
+            .separate(const SizedBox(height: kSeparator4))
             .toList(),
       ),
     );

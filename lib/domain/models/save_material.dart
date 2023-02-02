@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveMaterial implements IdSaveData {
+  @override
   final String id;
   final int amount;
 

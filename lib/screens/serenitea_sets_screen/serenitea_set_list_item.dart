@@ -10,7 +10,7 @@ class SereniteaSetListItem extends StatelessWidget {
   final InfoSereniteaSet set;
   final SaveSereniteaSet? saved;
 
-  SereniteaSetListItem(this.set, this.saved);
+  const SereniteaSetListItem(this.set, this.saved, {super.key});
 
   bool _isCharacterOwned(String id) => saved?.chars.contains(id) ?? false;
   bool _hasCharacterFromWishes(String id) => GsUtils.characters.hasCaracter(id);
@@ -38,7 +38,7 @@ class SereniteaSetListItem extends StatelessWidget {
             top: 2,
             left: 2,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 color: set.category == GsSetCategory.indoor
                     ? GsColors.setIndoor
@@ -54,9 +54,9 @@ class SereniteaSetListItem extends StatelessWidget {
                     height: 18,
                     child: _setImage.isNotEmpty ? Image.asset(_setImage) : null,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
-                    '${set.energy.format()}',
+                    set.energy.format(),
                     style: context.textTheme.subtitle2!.copyWith(
                       color: Colors.white,
                       fontSize: 12,
@@ -68,7 +68,7 @@ class SereniteaSetListItem extends StatelessWidget {
           ),
           Positioned.fill(
             child: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: kSeparator2,
                 horizontal: kSeparator2,
               ),

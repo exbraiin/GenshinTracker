@@ -1,6 +1,7 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveRecipe implements IdSaveData {
+  @override
   final String id;
   final int proficiency;
 
@@ -16,6 +17,7 @@ class SaveRecipe implements IdSaveData {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'proficiency': proficiency,
