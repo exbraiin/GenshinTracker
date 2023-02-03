@@ -3,23 +3,37 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
-import 'package:tracker/domain/gs_database.exporter.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_birthdays_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
+import 'package:tracker/screens/home_screen/widgets/home_last_banner_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_recipes_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_remarkable_chests_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_reputation_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_resource_cal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_spincrystal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
-import 'package:tracker/screens/home_screen/widgets/home_wishes_summary.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const id = 'home_screen';
 
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _notifier = ValueNotifier(true);
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +41,60 @@ class HomeScreen extends StatelessWidget {
       appBar: GsAppBar(
         label: Lang.of(context).getValue(Labels.home),
         actions: [
-          IconButton(
-            onPressed: () => GsDatabaseExporter.export(),
-            icon: const Icon(Icons.save_alt_rounded),
+          ValueListenableBuilder<bool>(
+            valueListenable: _notifier,
+            builder: (context, value, child) {
+              return IconButton(
+                icon: Icon(
+                  value
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
+                  color: Colors.white.withOpacity(0.5),
+                ),
+                onPressed: () => _notifier.value = !_notifier.value,
+              );
+            },
           ),
           const SizedBox(width: 8),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(kSeparator4),
-        child: _widgets(context),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _notifier,
+              builder: (context, value, child) {
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: value ? 0.2 : 1,
+                  child: child,
+                );
+              },
+              child: CachedImageWidget(
+                GsUtils.versions.getCurrentVersion()?.image,
+                fit: BoxFit.cover,
+                scaleToWidth: false,
+                showPlaceholder: false,
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _notifier,
+              builder: (context, value, child) {
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: value ? 0.9 : 0,
+                  child: child,
+                );
+              },
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(kSeparator4),
+                child: _widgets(context),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -48,42 +106,14 @@ class HomeScreen extends StatelessWidget {
         Expanded(
           child: Column(
             children: <Widget>[
-              HomeWishesSummary(
-                title: Lang.of(context).getValue(Labels.charWishes),
-                banner: GsBanner.character,
-              ),
               HomeWishesValues(
                 title: Lang.of(context).getValue(Labels.charWishes),
                 banner: GsBanner.character,
-              ),
-              HomeWishesSummary(
-                title: Lang.of(context).getValue(Labels.noviceWishes),
-                banner: GsBanner.beginner,
               ),
               HomeWishesValues(
                 title: Lang.of(context).getValue(Labels.noviceWishes),
                 banner: GsBanner.beginner,
               ),
-              const HomeResourceCalcWidget(),
-            ].separate(const SizedBox(height: kSeparator4)).toList(),
-          ),
-        ),
-        const SizedBox(width: kSeparator4),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              HomeWishesSummary(
-                title: Lang.of(context).getValue(Labels.weaponWishes),
-                banner: GsBanner.weapon,
-                minPity: 50,
-                maxPity: 80,
-              ),
-              HomeWishesValues(
-                title: Lang.of(context).getValue(Labels.weaponWishes),
-                banner: GsBanner.weapon,
-              ),
-              const HomeRecipesWidget(),
-              const HomeSpincrystalsWidget(),
               const HomeRemarkableChestsWidget(),
               const HomeReputationWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
@@ -92,18 +122,30 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(width: kSeparator4),
         Expanded(
           child: Column(
-            children: [
-              HomeWishesSummary(
-                title: Lang.of(context).getValue(Labels.stndWishes),
-                banner: GsBanner.standard,
+            children: <Widget>[
+              HomeWishesValues(
+                title: Lang.of(context).getValue(Labels.weaponWishes),
+                banner: GsBanner.weapon,
+                maxPity: 80,
               ),
               HomeWishesValues(
                 title: Lang.of(context).getValue(Labels.stndWishes),
                 banner: GsBanner.standard,
               ),
+              const HomeResourceCalcWidget(),
+            ].separate(const SizedBox(height: kSeparator4)).toList(),
+          ),
+        ),
+        const SizedBox(width: kSeparator4),
+        Expanded(
+          child: Column(
+            children: [
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
               const HomeBirthdaysWidget(),
+              const HomeLastBannerWidget(),
+              const HomeRecipesWidget(),
+              const HomeSpincrystalsWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),

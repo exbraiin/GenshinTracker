@@ -161,6 +161,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               GsUtils.characters.getFullImage(info.id),
               fit: BoxFit.fitWidth,
               alignment: Alignment.topCenter,
+              showPlaceholder: false,
             ),
           )
         ],

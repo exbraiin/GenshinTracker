@@ -49,7 +49,7 @@ class NamecardScreen extends StatelessWidget {
     final titleStyle = context.textTheme.infoLabel;
     final style = context.textTheme.description2;
     return GsDataBox.info(
-      title: title,
+      title: title.capitalize(),
       child: Table(
         columnWidths: const {
           0: IntrinsicColumnWidth(),

@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
@@ -39,8 +40,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                 !GsUtils.characters.isCharMaxAscended(e.id))
             .sortedBy((e) => GsUtils.characters.getCharAscension(e.id))
             .thenByDescending((e) => e.rarity)
-            .thenBy((e) => e.name)
-            .take(8);
+            .thenBy((e) => e.name);
 
         if (characters.isEmpty) {
           return GsDataBox.summary(
@@ -52,29 +52,36 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         final chars = GsUtils.characters;
         return GsDataBox.summary(
           title: context.fromLabel(Labels.ascension),
-          child: Column(
-            children: [
-              Center(
-                child: Wrap(
-                  spacing: 4,
-                  runSpacing: 4,
-                  children: characters.map<Widget>((e) {
-                    return GsRarityItemCard.withLabels(
-                      size: 70,
-                      image: GsUtils.characters.getImage(e.id),
-                      rarity: e.rarity,
-                      labelHeader: '${chars.getCharAscension(e.id)} ✦',
-                      labelFooter: e.name,
-                      onTap: () => Navigator.of(context).pushNamed(
-                        CharacterDetailsScreen.id,
-                        arguments: e,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              _getMaterialsList(characters),
-            ],
+          child: LayoutBuilder(
+            builder: (context, layout) {
+              final width = layout.maxWidth;
+              final items = (width ~/ 74).coerceAtMost(8);
+              final list = characters.take(items);
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: list
+                        .map<Widget>((e) {
+                          return GsRarityItemCard.withLabels(
+                            size: 70,
+                            image: GsUtils.characters.getImage(e.id),
+                            rarity: e.rarity,
+                            labelHeader: '${chars.getCharAscension(e.id)} ✦',
+                            labelFooter: e.name,
+                            onTap: () => Navigator.of(context).pushNamed(
+                              CharacterDetailsScreen.id,
+                              arguments: e,
+                            ),
+                          );
+                        })
+                        .separate(const SizedBox(width: kSeparator4))
+                        .toList(),
+                  ),
+                  _getMaterialsList(list),
+                ],
+              );
+            },
           ),
         );
       },

@@ -1,5 +1,6 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
@@ -7,7 +8,15 @@ import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
+const _bannerTitleLabel = {
+  GsBanner.character: Labels.charWishes,
+  GsBanner.beginner: Labels.noviceWishes,
+  GsBanner.weapon: Labels.weaponWishes,
+  GsBanner.standard: Labels.stndWishes,
+};
+
 class HomeWishesValues extends StatelessWidget {
+  final int maxPity;
   final String title;
   final GsBanner banner;
 
@@ -15,6 +24,7 @@ class HomeWishesValues extends StatelessWidget {
     super.key,
     required this.title,
     required this.banner,
+    this.maxPity = 90,
   });
 
   @override
@@ -27,17 +37,14 @@ class HomeWishesValues extends StatelessWidget {
     final summary = WishesSummary.fromList(wishes);
 
     return GsDataBox.summary(
+      title: context.fromLabel(_bannerTitleLabel[banner]!),
       child: Column(
         children: [
+          _summary(context, wishes, summary),
+          const SizedBox(height: kSeparator8),
           Row(
             children: [
-              Expanded(
-                flex: 3,
-                child: Text(
-                  title,
-                  style: style,
-                ),
-              ),
+              const Spacer(flex: 3),
               Expanded(
                 child: Center(
                   child: Text(
@@ -115,6 +122,44 @@ class HomeWishesValues extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Row _summary(
+    BuildContext context,
+    List<SaveWish> wishes,
+    WishesSummary summary,
+  ) {
+    final show = banner == GsBanner.character;
+    final pityColor = GsColors.getPityColor(summary.last5);
+    final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
+    return Row(
+      children: [
+        Expanded(
+          child: _summaryContainer(
+            context,
+            wishes.length.format(),
+            context.fromLabel(Labels.lifetimePulls),
+          ),
+        ),
+        Expanded(
+          child: _summaryContainer(
+            context,
+            summary.last5.format(),
+            context.fromLabel(Labels.l5sPity),
+            valueColor: pityColor,
+            wasGuaranteed: guaranteed,
+          ),
+        ),
+        Expanded(
+          child: _summaryContainer(
+            context,
+            summary.last4.format(),
+            context.fromLabel(Labels.l4sPity),
+            valueColor: GsColors.getRarityColor(4),
+          ),
+        ),
+      ],
     );
   }
 
@@ -207,6 +252,59 @@ class HomeWishesValues extends StatelessWidget {
     );
   }
 
+  Widget _summaryContainer(
+    BuildContext context,
+    String value,
+    String label, {
+    Color? valueColor,
+    bool wasGuaranteed = false,
+  }) {
+    return Container(
+      height: 56,
+      margin: const EdgeInsets.all(kSeparator2),
+      padding: const EdgeInsets.all(kSeparator4 * 2),
+      decoration: const BoxDecoration(
+        color: GsColors.mainColor1,
+        borderRadius: kMainRadius,
+      ),
+      child: Center(
+        child: Text.rich(
+          TextSpan(
+            children: [
+              if (wasGuaranteed)
+                WidgetSpan(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Icon(
+                      Icons.arrow_circle_up_rounded,
+                      color: valueColor,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              TextSpan(
+                text: value,
+                style: context.textTheme.subtitle2!.copyWith(
+                  fontSize: 20,
+                  color: valueColor ?? GsColors.almostWhite,
+                ),
+              ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: label,
+                style: context.textTheme.subtitle2!.copyWith(
+                  fontSize: 12,
+                  color: GsColors.dimWhite,
+                ),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Widget _getInfo(
     BuildContext context,
     WishInfo info,
@@ -245,6 +343,7 @@ class HomeWishesValues extends StatelessWidget {
             child: Text(
               info.average.toStringAsFixed(1),
               style: style.copyWith(color: color),
+              textAlign: TextAlign.end,
             ),
           ),
         ),

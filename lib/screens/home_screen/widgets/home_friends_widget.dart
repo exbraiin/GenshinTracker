@@ -1,5 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
@@ -24,8 +26,7 @@ class HomeFriendsWidget extends StatelessWidget {
             .getItems()
             .where((c) => chars.hasCaracter(c.id))
             .where((c) => chars.getCharFriendship(c.id) != 10)
-            .sortedByDescending((e) => chars.getCharFriendship(e.id))
-            .take(8);
+            .sortedByDescending((e) => chars.getCharFriendship(e.id));
 
         if (characters.isEmpty) {
           return GsDataBox.summary(
@@ -36,29 +37,36 @@ class HomeFriendsWidget extends StatelessWidget {
 
         return GsDataBox.summary(
           title: context.fromLabel(Labels.friendship),
-          child: Center(
-            child: Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: characters.map<Widget>((e) {
-                return GsRarityItemCard(
-                  key: ValueKey('friend_${e.id}'),
-                  size: 70,
-                  image: GsUtils.characters.getImage(e.id),
-                  rarity: e.rarity,
-                  footer: Text(e.name),
-                  header: GsNumberField(
-                    length: 2,
-                    onUpdate: (i) => sc.setCharFriendship(e.id, i),
-                    onDbUpdate: () => chars.getCharFriendship(e.id),
-                  ),
-                  onTap: () => Navigator.of(context).pushNamed(
-                    CharacterDetailsScreen.id,
-                    arguments: e,
-                  ),
-                );
-              }).toList(),
-            ),
+          child: LayoutBuilder(
+            builder: (context, layout) {
+              final width = layout.maxWidth;
+              final items = (width ~/ 74).coerceAtMost(8);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: characters
+                    .take(items)
+                    .map<Widget>((e) {
+                      return GsRarityItemCard(
+                        key: ValueKey('friend_${e.id}'),
+                        size: 70,
+                        image: GsUtils.characters.getImage(e.id),
+                        rarity: e.rarity,
+                        footer: Text(e.name),
+                        header: GsNumberField(
+                          length: 2,
+                          onUpdate: (i) => sc.setCharFriendship(e.id, i),
+                          onDbUpdate: () => chars.getCharFriendship(e.id),
+                        ),
+                        onTap: () => Navigator.of(context).pushNamed(
+                          CharacterDetailsScreen.id,
+                          arguments: e,
+                        ),
+                      );
+                    })
+                    .separate(const SizedBox(width: kSeparator4))
+                    .toList(),
+              );
+            },
           ),
         );
       },

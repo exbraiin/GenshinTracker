@@ -11,10 +11,14 @@ class CachedImageWidget extends StatelessWidget {
   final BoxFit fit;
   final String? imageUrl;
   final Alignment alignment;
+  final bool scaleToWidth;
+  final bool showPlaceholder;
 
   const CachedImageWidget(
     this.imageUrl, {
     super.key,
+    this.scaleToWidth = true,
+    this.showPlaceholder = true,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
   });
@@ -22,33 +26,33 @@ class CachedImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageUrl == null || imageUrl!.isEmpty) {
-      return Image.asset(
-        iconMissing,
-        fit: BoxFit.contain,
-      );
+      return showPlaceholder ? _placeholderImageWidget() : const SizedBox();
     }
     return LayoutBuilder(
       builder: (context, layout) {
         return CachedNetworkImage(
-          imageUrl: _getScaleUrl(imageUrl!, layout.biggest.toCacheWidth),
+          imageUrl: scaleToWidth
+              ? _getScaleUrl(imageUrl!, layout.biggest.toCacheWidth)
+              : imageUrl!,
           fit: fit,
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
           memCacheHeight: layout.biggest.toCacheHeight,
-          placeholder: (context, url) {
-            return Image.asset(
-              iconMissing,
-              fit: BoxFit.contain,
-            );
-          },
-          errorWidget: (context, url, error) {
-            return Image.asset(
-              iconMissing,
-              fit: BoxFit.contain,
-            );
-          },
+          placeholder: showPlaceholder
+              ? (context, url) => _placeholderImageWidget()
+              : null,
+          errorWidget: showPlaceholder
+              ? (context, url, error) => _placeholderImageWidget()
+              : null,
         );
       },
+    );
+  }
+
+  Widget _placeholderImageWidget() {
+    return Image.asset(
+      iconMissing,
+      fit: BoxFit.contain,
     );
   }
 }

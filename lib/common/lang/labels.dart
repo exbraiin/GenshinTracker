@@ -25,6 +25,9 @@ class Labels {
 	/// Recipes
 	static const recipes = 'recipes';
 
+	/// Last Banner
+	static const lastBanner = 'last_banner';
+
 	/// Remarkable Chests
 	static const remarkableChests = 'remarkable_chests';
 

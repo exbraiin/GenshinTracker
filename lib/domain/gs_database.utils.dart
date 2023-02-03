@@ -11,6 +11,7 @@ class GsUtils {
 
   static final items = _Items();
   static final wishes = _Wishes();
+  static final versions = _Versions();
   static final characters = _Characters();
 }
 
@@ -101,6 +102,35 @@ class _Wishes {
           .where((element) => filterCharacter(element))
           .map((element) => ItemData(character: element)),
     ];
+  }
+}
+
+class _Versions {
+  bool isCurrentVersion(String version) {
+    final now = DateTime.now();
+    final versions = GsDatabase.instance.infoVersion.getItems();
+    final current = versions
+        .sortedBy((element) => element.releaseDate)
+        .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
+    return current?.id == version;
+  }
+
+  bool isUpcomingVersion(String version) {
+    final now = DateTime.now();
+    final versions = GsDatabase.instance.infoVersion.getItems();
+    final upcoming = versions
+        .sortedBy((element) => element.releaseDate)
+        .where((element) => element.releaseDate.isAfter(now));
+    return upcoming.any((element) => element.id == version);
+  }
+
+  InfoVersion? getCurrentVersion() {
+    final now = DateTime.now();
+    final versions = GsDatabase.instance.infoVersion.getItems();
+    final current = versions
+        .sortedBy((element) => element.releaseDate)
+        .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
+    return current;
   }
 }
 

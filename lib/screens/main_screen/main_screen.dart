@@ -74,38 +74,55 @@ class _MainScreenState extends State<MainScreen> {
     var hover = false;
     Widget button(int idx, Menu menu) {
       final selected = idx == _page.value;
-      return Container(
-        padding: const EdgeInsets.all(kSeparator2),
-        decoration: BoxDecoration(
-          color: idx == 0
-              ? GsColors.mainColor3
-              : selected
-                  ? GsColors.mainColor1
-                  : GsColors.mainColor2,
-          borderRadius: kMainRadius,
-          border: Border.all(
-            color: selected ? GsColors.mainColor3 : Colors.transparent,
-            width: 2,
+      return Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(kSeparator2),
+            decoration: BoxDecoration(
+              color: idx == 0
+                  ? GsColors.mainColor3
+                  : selected
+                      ? GsColors.mainColor1
+                      : GsColors.mainColor2,
+              borderRadius: kMainRadius,
+              border: Border.all(
+                color: selected ? GsColors.mainColor3 : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: InkWell(
+              onTap: () => _page.value = idx,
+              child: Image.asset(menu.icon, height: 40, width: 40),
+            ),
           ),
-        ),
-        child: InkWell(
-          onTap: () => _page.value = idx,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(menu.icon, height: 40, width: 40),
-              if (hover)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kSeparator2),
-                  child: Text(
-                    context.fromLabel(menu.label),
-                    maxLines: 1,
-                    style: const TextStyle(color: Colors.white),
+          if (idx != 0)
+            Positioned.fill(
+              top: null,
+              child: IgnorePointer(
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: hover ? 1 : 0,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    decoration: BoxDecoration(
+                      color: GsColors.mainColor0.withOpacity(0.4),
+                      borderRadius: kMainRadius.copyWith(
+                        topLeft: Radius.zero,
+                        topRight: Radius.zero,
+                      ),
+                    ),
+                    child: Text(
+                      context.fromLabel(menu.label),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-            ],
-          ),
-        ),
+              ),
+            ),
+        ],
       );
     }
 

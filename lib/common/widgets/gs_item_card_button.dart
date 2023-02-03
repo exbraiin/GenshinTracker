@@ -19,11 +19,10 @@ class GsItemBanner {
   });
 
   factory GsItemBanner.fromVersion(String version) {
-    final db = GsDatabase.instance.infoVersion;
-    if (db.isUpcoming(version)) {
+    if (GsUtils.versions.isUpcomingVersion(version)) {
       return const GsItemBanner(text: 'Upcoming', color: Colors.orange);
     }
-    if (db.isNew(version)) {
+    if (GsUtils.versions.isCurrentVersion(version)) {
       return const GsItemBanner(text: 'New', color: Colors.lightBlue);
     }
     return const GsItemBanner(text: '');
@@ -202,6 +201,7 @@ class GsItemCardLabel extends StatelessWidget {
   final String? asset;
   final String? label;
   final IconData? icon;
+  final Color? bgColor;
   final VoidCallback? onTap;
 
   const GsItemCardLabel({
@@ -210,50 +210,51 @@ class GsItemCardLabel extends StatelessWidget {
     this.label,
     this.icon,
     this.onTap,
+    this.bgColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final child = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (label != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
+            child: Text(
+              label!,
+              maxLines: 1,
+              style: context.textTheme.cardLabel,
+            ),
+          ),
+        if (asset != null && asset!.isNotEmpty)
+          Image.asset(
+            asset!,
+            width: 16,
+            height: 16,
+            fit: BoxFit.contain,
+            cacheHeight: 16,
+          ),
+        if (icon != null)
+          Padding(
+            padding: const EdgeInsets.all(1),
+            child: Icon(
+              icon!,
+              color: Colors.white,
+              size: 14,
+            ),
+          ),
+      ],
+    );
+
     return Container(
       height: 24,
       decoration: BoxDecoration(
-        color: GsColors.mainColor0.withOpacity(0.6),
+        color: bgColor ?? GsColors.mainColor0.withOpacity(0.6),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(kSeparator4),
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (label != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
-                child: Text(
-                  label!,
-                  style: context.textTheme.cardLabel,
-                ),
-              ),
-            if (asset != null && asset!.isNotEmpty)
-              Image.asset(
-                asset!,
-                width: 16,
-                height: 16,
-                fit: BoxFit.contain,
-                cacheHeight: 16,
-              ),
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.all(1),
-                child: Icon(
-                  icon!,
-                  color: Colors.white,
-                  size: 14,
-                ),
-              ),
-          ],
-        ),
-      ),
+      child: onTap != null ? InkWell(onTap: onTap, child: child) : child,
     );
   }
 }
