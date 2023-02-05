@@ -53,68 +53,72 @@ class _AddWishScreenState extends State<AddWishScreen> {
             leading: const CloseButton(),
             actions: [button],
           ),
-          body: Row(
-            children: [
-              _getItemsList(context, banner, filter),
-              Container(
-                width: 220,
-                color: GsColors.mainColor0,
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ValueListenableBuilder<List<ItemData>>(
+          body: Container(
+            decoration: kMainBgDecoration,
+            child: Row(
+              children: [
+                _getItemsList(context, banner, filter),
+                Container(
+                  width: 220,
+                  color: GsColors.mainColor0,
+                  padding: const EdgeInsets.all(4),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ValueListenableBuilder<List<ItemData>>(
+                          valueListenable: _wishes,
+                          builder: (context, list, child) {
+                            final roll = GsDatabase.instance.saveWishes
+                                .countBannerWishes(banner.id);
+                            return ListView.separated(
+                              itemCount: list.length,
+                              separatorBuilder: (_, index) =>
+                                  const SizedBox(height: kSeparator2),
+                              itemBuilder: (context, index) {
+                                return AddWishWishListItem(
+                                  item: list[index],
+                                  roll: (roll + (list.length - index)),
+                                  onRemove: () => _wishes.value =
+                                      (_wishes.value..removeAt(index)).toList(),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ValueListenableBuilder<List<ItemData>>(
                         valueListenable: _wishes,
                         builder: (context, list, child) {
-                          final roll = GsDatabase.instance.saveWishes
-                              .countBannerWishes(banner.id);
-                          return ListView.separated(
-                            itemCount: list.length,
-                            separatorBuilder: (_, index) =>
-                                const SizedBox(height: kSeparator2),
-                            itemBuilder: (context, index) {
-                              return AddWishWishListItem(
-                                item: list[index],
-                                roll: (roll + (list.length - index)),
-                                onRemove: () => _wishes.value =
-                                    (_wishes.value..removeAt(index)).toList(),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ValueListenableBuilder<List<ItemData>>(
-                      valueListenable: _wishes,
-                      builder: (context, list, child) {
-                        return Opacity(
-                          opacity: list.isEmpty ? kDisableOpacity : 1,
-                          child: InkWell(
-                            onTap:
-                                list.isEmpty ? null : () => _saveWishes(banner),
-                            child: Container(
-                              height: 44,
-                              decoration: const BoxDecoration(
-                                color: GsColors.mainColor1,
-                                borderRadius: kMainRadius,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${context.fromLabel(Labels.addWishes)} (x${list.length})',
-                                  style: context.textTheme.subtitle2!
-                                      .copyWith(color: Colors.white),
+                          return Opacity(
+                            opacity: list.isEmpty ? kDisableOpacity : 1,
+                            child: InkWell(
+                              onTap: list.isEmpty
+                                  ? null
+                                  : () => _saveWishes(banner),
+                              child: Container(
+                                height: 44,
+                                decoration: const BoxDecoration(
+                                  color: GsColors.mainColor1,
+                                  borderRadius: kMainRadius,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${context.fromLabel(Labels.addWishes)} (x${list.length})',
+                                    style: context.textTheme.subtitle2!
+                                        .copyWith(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

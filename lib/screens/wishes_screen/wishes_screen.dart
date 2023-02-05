@@ -56,8 +56,11 @@ class WishesScreen extends StatelessWidget {
                   button,
                 ],
               ),
-              body: CustomScrollView(
-                slivers: _slivers(banner, wishes, banners, filter),
+              body: Container(
+                decoration: kMainBgDecoration,
+                child: CustomScrollView(
+                  slivers: _slivers(banner, wishes, banners, filter),
+                ),
               ),
             );
           },

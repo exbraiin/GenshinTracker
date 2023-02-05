@@ -43,14 +43,17 @@ class CharacterAscensionScreen extends StatelessWidget {
           appBar: GsAppBar(
             label: context.fromLabel(Labels.ascension),
           ),
-          body: ListView.separated(
-            padding: const EdgeInsets.all(kSeparator4),
-            itemCount: characters.length,
-            itemBuilder: (context, index) {
-              return _CharacterAscensionListItem(characters[index]);
-            },
-            separatorBuilder: (context, index) =>
-                const SizedBox(height: kSeparator4),
+          body: Container(
+            decoration: kMainBgDecoration,
+            child: ListView.separated(
+              padding: const EdgeInsets.all(kSeparator4),
+              itemCount: characters.length,
+              itemBuilder: (context, index) {
+                return _CharacterAscensionListItem(characters[index]);
+              },
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: kSeparator4),
+            ),
           ),
         );
       },

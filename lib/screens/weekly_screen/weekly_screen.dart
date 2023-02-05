@@ -52,91 +52,98 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
           _getDropdown(context, now),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(kSeparator4),
-        children: materials
-            .map<Widget>((e) {
-              return GsDataBox.summary(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: CachedImageWidget(e.image),
-                        ),
-                        const SizedBox(width: kSeparator4),
-                        Text(
-                          e.name,
-                          style: context.textTheme.bigTitle3,
-                        ),
-                      ],
-                    ),
-                    const Divider(color: GsColors.dimWhite),
-                    Wrap(
-                      spacing: kSeparator4,
-                      runSpacing: kSeparator4,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: ic
-                          .getItems()
-                          .where((char) => GsDatabase
-                              .instance.infoCharactersInfo
-                              .getAllMaterials(char.id)
-                              .containsKey(e.id))
-                          .sortedBy((element) => element.rarity)
-                          .thenBy((element) => element.name)
-                          .map((info) {
-                        final exists = GsUtils.characters.hasCaracter(info.id);
-                        return Opacity(
-                          opacity: exists ? 1 : kDisableOpacity,
-                          child: GsRarityItemCard.withLabels(
-                            labelFooter: info.name,
-                            image: GsUtils.characters.getImage(info.id),
-                            rarity: info.rarity,
-                            onTap: () => Navigator.of(context).pushNamed(
-                              CharacterDetailsScreen.id,
-                              arguments: info,
-                            ),
+      body: Container(
+        decoration: kMainBgDecoration,
+        child: ListView(
+          padding: const EdgeInsets.all(kSeparator4),
+          children: materials
+              .map<Widget>((e) {
+                return GsDataBox.info(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: CachedImageWidget(e.image),
                           ),
-                        );
-                      }).toList(),
-                    ),
-                    Wrap(
-                      spacing: kSeparator4,
-                      runSpacing: kSeparator4,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: iw
-                          .getItems()
-                          .where((weapon) => GsDatabase.instance.infoWeaponsInfo
-                              .getAscensionMaterials(weapon.id)
-                              .containsKey(e.id))
-                          .sortedBy((element) => element.rarity)
-                          .thenBy((element) => element.name)
-                          .map((info) => Opacity(
-                                opacity:
-                                    sw.hasWeapon(info.id) ? 1 : kDisableOpacity,
-                                child: GsRarityItemCard.withLabels(
-                                  labelFooter: info.name,
-                                  image: info.image,
-                                  rarity: info.rarity,
-                                  onTap: () => Navigator.of(context).pushNamed(
-                                    WeaponDetailsScreen.id,
-                                    arguments: info,
+                          const SizedBox(width: kSeparator4),
+                          Text(
+                            e.name,
+                            style: context.textTheme.bigTitle3,
+                          ),
+                        ],
+                      ),
+                      const Divider(color: GsColors.dimWhite),
+                      Wrap(
+                        spacing: kSeparator4,
+                        runSpacing: kSeparator4,
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        children: ic
+                            .getItems()
+                            .where((char) => GsDatabase
+                                .instance.infoCharactersInfo
+                                .getAllMaterials(char.id)
+                                .containsKey(e.id))
+                            .sortedBy((element) => element.rarity)
+                            .thenBy((element) => element.name)
+                            .map((info) {
+                          final exists =
+                              GsUtils.characters.hasCaracter(info.id);
+                          return Opacity(
+                            opacity: exists ? 1 : kDisableOpacity,
+                            child: GsRarityItemCard.withLabels(
+                              labelFooter: info.name,
+                              image: GsUtils.characters.getImage(info.id),
+                              rarity: info.rarity,
+                              onTap: () => Navigator.of(context).pushNamed(
+                                CharacterDetailsScreen.id,
+                                arguments: info,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      Wrap(
+                        spacing: kSeparator4,
+                        runSpacing: kSeparator4,
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        children: iw
+                            .getItems()
+                            .where((weapon) => GsDatabase
+                                .instance.infoWeaponsInfo
+                                .getAscensionMaterials(weapon.id)
+                                .containsKey(e.id))
+                            .sortedBy((element) => element.rarity)
+                            .thenBy((element) => element.name)
+                            .map((info) => Opacity(
+                                  opacity: sw.hasWeapon(info.id)
+                                      ? 1
+                                      : kDisableOpacity,
+                                  child: GsRarityItemCard.withLabels(
+                                    labelFooter: info.name,
+                                    image: info.image,
+                                    rarity: info.rarity,
+                                    onTap: () =>
+                                        Navigator.of(context).pushNamed(
+                                      WeaponDetailsScreen.id,
+                                      arguments: info,
+                                    ),
                                   ),
-                                ),
-                              ))
-                          .toList(),
-                    ),
-                  ],
-                ),
-              );
-            })
-            .separate(const SizedBox(height: kSeparator4))
-            .toList(),
+                                ))
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                );
+              })
+              .separate(const SizedBox(height: kSeparator4))
+              .toList(),
+        ),
       ),
     );
   }

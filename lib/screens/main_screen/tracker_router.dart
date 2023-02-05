@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
-import 'package:tracker/screens/artifacts_screen/artifact_details_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/changelog_screen/changelog_screen.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
@@ -9,7 +8,6 @@ import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
-import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
@@ -29,12 +27,10 @@ class TrackerRouter {
     WishesScreen.id: () => const WishesScreen(),
     AddWishScreen.id: () => const AddWishScreen(),
     RecipesScreen.id: () => const RecipesScreen(),
-    RecipeDetailsScreen.id: () => const RecipeDetailsScreen(),
     RemarkableChestsScreen.id: () => const RemarkableChestsScreen(),
     WeaponsScreen.id: () => const WeaponsScreen(),
     WeaponDetailsScreen.id: () => const WeaponDetailsScreen(),
     ArtifactsScreen.id: () => const ArtifactsScreen(),
-    ArtifactDetailsScreen.id: () => const ArtifactDetailsScreen(),
     CharactersScreen.id: () => const CharactersScreen(),
     NamecardScreen.id: () => const NamecardScreen(),
     MaterialsScreen.id: () => const MaterialsScreen(),

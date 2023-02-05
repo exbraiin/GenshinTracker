@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
@@ -40,7 +41,10 @@ class RemarkableChestsScreen extends StatelessWidget {
                 label: context.fromLabel(Labels.remarkableChests),
                 actions: [button],
               ),
-              body: child,
+              body: Container(
+                decoration: kMainBgDecoration,
+                child: child,
+              ),
             );
           },
         );

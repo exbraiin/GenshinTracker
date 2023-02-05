@@ -35,6 +35,7 @@ class GsItemCardButton extends StatelessWidget {
   final GsItemBanner banner;
   final bool shadow;
   final bool disable;
+  final bool selected;
   final int? maxLines;
   final double? width;
   final double? height;
@@ -60,6 +61,7 @@ class GsItemCardButton extends StatelessWidget {
     this.imageAssetPath,
     this.shadow = false,
     this.disable = false,
+    this.selected = false,
     required this.label,
   });
 
@@ -102,7 +104,7 @@ class GsItemCardButton extends StatelessWidget {
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: radius,
-        border: animate
+        border: animate || selected
             ? Border.all(
                 color: GsColors.almostWhite,
                 width: 2,

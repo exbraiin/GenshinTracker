@@ -13,7 +13,6 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
-import 'package:tracker/screens/recipes_screen/recipe_details_screen.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
@@ -254,10 +253,6 @@ class CharacterDetailsScreen extends StatelessWidget {
                             size: 48,
                             image: dish.image,
                             rarity: dish.rarity,
-                            onTap: () => Navigator.of(context).pushNamed(
-                              RecipeDetailsScreen.id,
-                              arguments: dish,
-                            ),
                           ),
                           const SizedBox(width: kSeparator8),
                           Text(dish.name, style: stStyle),

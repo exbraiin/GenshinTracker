@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 const imageAppIcon = 'assets/image/icons/app_icon.png';
@@ -26,6 +27,14 @@ const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
 const imageXp = 'assets/image/icons/Companion_xp.png';
 
 const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
+
+const kMainBgDecoration = BoxDecoration(
+  image: DecorationImage(
+    fit: BoxFit.cover,
+    opacity: 0.1,
+    image: AssetImage('assets/image/bg.jpg'),
+  ),
+);
 
 String getRarityBgImage(int r) => 'assets/image/rarity/Item_${r}_Star.png';
 

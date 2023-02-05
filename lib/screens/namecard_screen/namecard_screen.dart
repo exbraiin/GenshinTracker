@@ -27,13 +27,16 @@ class NamecardScreen extends StatelessWidget {
           appBar: GsAppBar(
             label: context.fromLabel(Labels.namecards),
           ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(kSeparator4),
-            child: Column(
-              children: groups.entries
-                  .map((e) => _getSection(context, e.key, e.value))
-                  .separate(const SizedBox(height: kSeparator4))
-                  .toList(),
+          body: Container(
+            decoration: kMainBgDecoration,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(kSeparator4),
+              child: Column(
+                children: groups.entries
+                    .map((e) => _getSection(context, e.key, e.value))
+                    .separate(const SizedBox(height: kSeparator4))
+                    .toList(),
+              ),
             ),
           ),
         );

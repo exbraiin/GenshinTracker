@@ -62,7 +62,10 @@ class WeaponsScreen extends StatelessWidget {
                   button,
                 ],
               ),
-              body: child,
+              body: Container(
+                decoration: kMainBgDecoration,
+                child: child,
+              ),
             );
           },
         );

@@ -15,7 +15,8 @@ class ReputationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GsAppBar(label: Lang.of(context).getValue(Labels.reputation)),
-      body: Padding(
+      body: Container(
+        decoration: kMainBgDecoration,
         padding: const EdgeInsets.all(kSeparator4),
         child: ValueStreamBuilder<bool>(
           stream: GsDatabase.instance.loaded,
