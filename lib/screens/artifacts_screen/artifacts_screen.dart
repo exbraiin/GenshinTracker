@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_assets.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
@@ -13,23 +12,10 @@ import 'package:tracker/screens/artifacts_screen/artifact_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
-class ArtifactsScreen extends StatefulWidget {
+class ArtifactsScreen extends StatelessWidget {
   static const id = 'artifacts_screen';
 
   const ArtifactsScreen({super.key});
-
-  @override
-  State<ArtifactsScreen> createState() => _ArtifactsScreenState();
-}
-
-class _ArtifactsScreenState extends State<ArtifactsScreen> {
-  final _selected = ValueNotifier(0);
-
-  @override
-  void dispose() {
-    _selected.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,39 +27,16 @@ class _ArtifactsScreenState extends State<ArtifactsScreen> {
           filter: ScreenFilters.infoArtifactFilter,
           builder: (context, filter, button, toggle) {
             final filtered = filter.match(items);
-            if (_selected.value + 1 > filtered.length) {
-              _selected.value = 0;
-            }
 
             final child = filtered.isEmpty
                 ? const GsNoResultsState()
-                : ValueListenableBuilder<int>(
-                    valueListenable: _selected,
-                    builder: (context, value, child) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 7,
-                            child: GsGridView.builder(
-                              itemCount: filtered.length,
-                              itemBuilder: (context, index) {
-                                return ArtifactListItem(
-                                  filtered[index],
-                                  selected: value == index,
-                                  onTap: () => _selected.value = index,
-                                );
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: SingleChildScrollView(
-                              padding: const EdgeInsets.all(kSeparator8),
-                              child: ArtifactDetailsCard(filtered[value]),
-                            ),
-                          ),
-                        ],
+                : GsGridView.builder(
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final item = filtered[index];
+                      return ArtifactListItem(
+                        item,
+                        onTap: () => ArtifactDetailsCard(item).show(context),
                       );
                     },
                   );

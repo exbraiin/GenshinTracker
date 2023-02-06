@@ -5,10 +5,14 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/gs_grid_view.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/namecard_screen/namecard_details_card.dart';
+import 'package:tracker/screens/namecard_screen/namecard_list_item.dart';
 
 class NamecardScreen extends StatelessWidget {
   static const id = 'namecards_screen';
@@ -29,16 +33,31 @@ class NamecardScreen extends StatelessWidget {
           ),
           body: Container(
             decoration: kMainBgDecoration,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(kSeparator4),
-              child: Column(
-                children: groups.entries
-                    .map((e) => _getSection(context, e.key, e.value))
-                    .separate(const SizedBox(height: kSeparator4))
-                    .toList(),
-              ),
-            ),
+            child: _getListView(items.toList()) ??
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(kSeparator4),
+                  child: Column(
+                    children: groups.entries
+                        .map((e) => _getSection(context, e.key, e.value))
+                        .separate(const SizedBox(height: kSeparator4))
+                        .toList(),
+                  ),
+                ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _getListView(List<InfoNamecard> sorted) {
+    if (sorted.isEmpty) return const GsNoResultsState();
+    return GsGridView.builder(
+      itemCount: sorted.length,
+      itemBuilder: (context, index) {
+        final item = sorted[index];
+        return NamecardListItem(
+          item,
+          onTap: () => NamecardDetailsCard(item).show(context),
         );
       },
     );

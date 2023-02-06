@@ -105,7 +105,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                                 child: Center(
                                   child: Text(
                                     '${context.fromLabel(Labels.addWishes)} (x${list.length})',
-                                    style: context.textTheme.subtitle2!
+                                    style: context.textTheme.titleSmall!
                                         .copyWith(color: Colors.white),
                                   ),
                                 ),

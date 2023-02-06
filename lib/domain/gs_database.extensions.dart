@@ -7,16 +7,6 @@ import 'package:tracker/domain/gs_domain.dart';
 
 // =============== Info extensions ===============
 
-extension InfoBannerExt on JsonInfoDetails<InfoBanner> {
-  /// Gets all released banners by [type]
-  List<InfoBanner> getInfoBannerByType(GsBanner type) {
-    final now = DateTime.now();
-    return getItems()
-        .where((e) => e.type == type && e.dateStart.isBefore(now))
-        .toList();
-  }
-}
-
 extension InfoCityExt on JsonInfoDetails<InfoCity> {
   int getCityMaxLevel(String id) => getItem(id).reputation.length;
 }
@@ -80,9 +70,9 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
       getItems().where((e) => e.bannerId == banner).toList();
 
   List<SaveWish> getSaveWishesByBannerType(GsBanner type) {
-    final banners = GsDatabase.instance.infoBanners;
-    final bn = banners.getInfoBannerByType(type).map((e) => e.id);
-    return getItems().where((e) => bn.contains(e.bannerId)).toList();
+    final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
+    final bannerIds = banners.map((e) => e.id);
+    return getItems().where((e) => bannerIds.contains(e.bannerId)).toList();
   }
 
   bool bannerHasWishes(String banner) =>
@@ -240,7 +230,11 @@ extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
 
 extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
   void changeAmount(String id, int amount) {
-    insertItem(SaveMaterial(id: id, amount: amount));
+    if (amount > 0) {
+      insertItem(SaveMaterial(id: id, amount: amount));
+    } else {
+      deleteItem(id);
+    }
   }
 
   int getMaterialAmount(String id) => getItemOrNull(id)?.amount ?? 0;

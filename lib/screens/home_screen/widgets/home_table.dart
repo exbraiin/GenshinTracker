@@ -56,7 +56,7 @@ class HomeRow extends StatelessWidget {
         label,
         style: Theme.of(context)
             .textTheme
-            .subtitle2!
+            .titleSmall!
             .copyWith(fontSize: fontSize, color: color),
         textAlign: TextAlign.center,
         maxLines: 1,

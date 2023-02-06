@@ -5,6 +5,16 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
 
+// TODO:
+// * Move owned and other saved settings to card details.
+// * Missing card details, can be added???
+//    - Remarkable chests.
+//    - Materials.
+//    - Spincrystals.
+//    - Reputation.
+//    - Namecards.
+//    - Characters and Weapons, may not be possible because of information amount.
+
 void main() {
   GsDomain.testLabels();
   runApp(const MyApp());
@@ -30,11 +40,13 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Bahnschrift',
         primarySwatch: Colors.blue,
-        backgroundColor: GsColors.mainColor1,
         scaffoldBackgroundColor: GsColors.mainColor1,
         splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           backgroundColor: GsColors.mainColor1,
+        ),
+        colorScheme: const ColorScheme.light(
+          background: GsColors.mainColor1,
         ),
         tooltipTheme: const TooltipThemeData(
           decoration: BoxDecoration(

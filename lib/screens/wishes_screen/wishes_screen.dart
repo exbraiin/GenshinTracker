@@ -30,7 +30,7 @@ class WishesScreen extends StatelessWidget {
         final db = GsDatabase.instance;
         final sw = db.saveWishes;
         final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
-        final banners = db.infoBanners.getInfoBannerByType(banner);
+        final banners = GsUtils.wishes.geReleasedInfoBannerByType(banner);
 
         return ScreenFilterBuilder<SaveWish>(
           filter: ScreenFilters.saveWishFilter,

@@ -1,6 +1,5 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
@@ -46,49 +45,6 @@ class RecipesListItem extends StatelessWidget {
         banner: GsItemBanner.fromVersion(recipe.version),
         imageUrlPath: recipe.image,
         onTap: onTap,
-        subChild: isSpecial
-            ? null
-            : Padding(
-                padding: const EdgeInsets.all(2),
-                child: Row(
-                  children: [
-                    GsIconButton(
-                      icon: Icons.remove,
-                      size: 20,
-                      onPress: (savedRecipe?.proficiency ?? 0) != 0
-                          ? () =>
-                              GsDatabase.instance.saveRecipes.changeSavedRecipe(
-                                recipe.id,
-                                ((savedRecipe?.proficiency ?? 0) - 1)
-                                    .clamp(0, recipe.maxProficiency),
-                              )
-                          : null,
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          '${savedRecipe?.proficiency ?? 0} / ${recipe.maxProficiency}',
-                          style: context.textTheme.subtitle2!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    GsIconButton(
-                      icon: Icons.add,
-                      size: 20,
-                      onPress: (savedRecipe?.proficiency ?? 0) !=
-                              recipe.maxProficiency
-                          ? () =>
-                              GsDatabase.instance.saveRecipes.changeSavedRecipe(
-                                recipe.id,
-                                ((savedRecipe?.proficiency ?? 0) + 1)
-                                    .clamp(0, recipe.maxProficiency),
-                              )
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
         child: Stack(
           fit: StackFit.expand,
           children: [

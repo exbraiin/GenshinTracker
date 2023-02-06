@@ -1,104 +1,147 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_assets.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
+import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class RecipeDetailsCard extends StatelessWidget {
+class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoRecipe item;
 
   const RecipeDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isSpecial = item.baseRecipe.isNotEmpty;
+    final owned = GsDatabase.instance.saveRecipes.exists(item.id);
+    return ItemDetailsCard.single(
+      name: item.name,
+      rarity: item.rarity,
+      image: item.image,
+      banner: GsItemBanner.fromVersion(item.version),
+      info: Align(
+        alignment: Alignment.topLeft,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.asset(
+                  item.effect.assetPath,
+                  width: 24,
+                  height: 24,
+                ),
+                const SizedBox(width: kSeparator4),
+                Text(context.fromLabel(item.effect.label)),
+              ],
+            ),
+            const Spacer(),
+            if (!isSpecial && owned)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  width: 180,
+                  padding: const EdgeInsets.all(kSeparator4),
+                  decoration: BoxDecoration(
+                    color: GsColors.mainColor2.withOpacity(0.3),
+                    borderRadius: kMainRadius,
+                    border: Border.all(
+                      color: GsColors.mainColor1.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      GsNumberField(
+                        onUpdate: (i) {
+                          final db = GsDatabase.instance.saveRecipes;
+                          final amount = i.clamp(0, item.maxProficiency);
+                          db.changeSavedRecipe(item.id, amount);
+                        },
+                        onDbUpdate: () {
+                          final db = GsDatabase.instance.saveRecipes;
+                          return db.getItemOrNull(item.id)?.proficiency ?? 0;
+                        },
+                        fontSize: 14,
+                      ),
+                      Text(
+                        '${context.fromLabel(Labels.proficiency)}'
+                        ' (max: ${item.maxProficiency.format()})',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+      child: _content(context),
+    );
+  }
+
+  Widget _content(BuildContext context) {
     final db = GsDatabase.instance;
     late final baseRecipe = db.infoRecipes.getItemOrNull(item.baseRecipe);
     late final char = db.infoCharacters
         .getItems()
         .firstOrNullWhere((e) => e.specialDish == item.id);
-    return ItemDetailsCard(
-      name: item.name,
-      rarity: item.rarity,
-      image: (context, page) => item.image,
-      info: (context, page) => Align(
-        alignment: Alignment.topLeft,
-        child: Row(
-          children: [
-            Image.asset(
-              item.effect.assetPath,
-              width: 24,
-              height: 24,
-            ),
-            const SizedBox(width: kSeparator4),
-            Text(context.fromLabel(item.effect.label)),
-          ],
-        ),
+
+    return ItemDetailsCardContent.generate(context, [
+      ItemDetailsCardContent(
+        label: context.fromLabel(item.effect.label),
+        description: item.effectDesc,
       ),
-      child: (context, page) {
-        final texts = <InlineSpan>[];
-
-        final labelStyle = TextStyle(
-          fontSize: 16,
-          color: Color.lerp(Colors.black, Colors.orange, 0.8)!,
-          fontWeight: FontWeight.bold,
-        );
-
-        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-        final label = context.fromLabel(item.effect.label);
-        texts.add(TextSpan(text: '$label\n', style: labelStyle));
-        texts.add(TextSpan(text: '  \u2022  ${item.effectDesc}'));
-
-        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-        final style = TextStyle(color: Colors.grey[600]);
-        texts.add(TextSpan(text: item.description, style: style));
-
-        if (item.ingredients.isNotEmpty) {
-          if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-          final label1 = context.fromLabel(Labels.ingredients);
-          texts.add(TextSpan(text: '$label1\n', style: labelStyle));
-          final list = Wrap(
+      ItemDetailsCardContent(description: item.description),
+      if (item.ingredients.isNotEmpty)
+        ItemDetailsCardContent(
+          label: context.fromLabel(Labels.ingredients),
+          content: Wrap(
             spacing: kSeparator4,
             runSpacing: kSeparator4,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               ...item.ingredients.entries.map((e) {
                 final item = db.infoIngredients.getItemOrNull(e.key);
-                return GsRarityItemCard.withLabels(
+                return ItemRarityBubble(
                   image: item?.image ?? '',
                   rarity: item?.rarity ?? 1,
-                  labelHeader: e.value.format(),
-                  labelFooter: item?.name ?? '',
+                  tooltip: item?.name ?? '',
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      e.value.format(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        shadows: kMainShadowBlack,
+                      ),
+                    ),
+                  ),
                 );
               }),
               if (baseRecipe != null) ...[
-                Icon(
+                const Icon(
                   Icons.add_rounded,
-                  color: labelStyle.color!,
+                  color: Colors.black45,
                 ),
-                GsRarityItemCard.withLabels(
+                ItemRarityBubble(
                   image: baseRecipe.image,
                   rarity: baseRecipe.rarity,
-                  labelFooter: baseRecipe.name,
+                  tooltip: baseRecipe.name,
                 ),
                 if (char != null)
-                  GsRarityItemCard.withLabels(
+                  ItemRarityBubble(
                     image: char.image,
                     rarity: char.rarity,
-                    labelFooter: char.name,
+                    tooltip: char.name,
                   )
               ],
             ],
-          );
-          texts.add(WidgetSpan(child: list));
-        }
-
-        return Text.rich(TextSpan(children: texts));
-      },
-    );
+          ),
+        ),
+    ]);
   }
 }

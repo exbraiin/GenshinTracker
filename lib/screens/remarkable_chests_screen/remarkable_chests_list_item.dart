@@ -7,6 +7,7 @@ import 'package:tracker/domain/gs_domain.dart';
 
 class RemarkableChestListItem extends StatelessWidget {
   final InfoRemarkableChest item;
+  final VoidCallback? onTap;
 
   String get _setImage => item.type == GsSetCategory.indoor
       ? imageIndoorSet
@@ -14,7 +15,7 @@ class RemarkableChestListItem extends StatelessWidget {
           ? imageOutdoorSet
           : '';
 
-  const RemarkableChestListItem(this.item, {super.key});
+  const RemarkableChestListItem(this.item, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class RemarkableChestListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       disable: !owned,
+      onTap: onTap,
       banner: GsItemBanner.fromVersion(item.version),
       imageUrlPath: item.image,
       child: Stack(

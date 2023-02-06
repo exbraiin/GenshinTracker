@@ -169,7 +169,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   }
 
   Widget _getAttributes(BuildContext context, InfoCharacter info) {
-    final style = context.textTheme.subtitle2!;
+    final style = context.textTheme.titleSmall!;
     final stLabel = style.copyWith(color: GsColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
     final db = GsDatabase.instance.infoRecipes;
@@ -314,7 +314,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     BuildContext context,
     InfoCharacterInfo infos,
   ) {
-    final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
     return GsDataBox.info(
       key: _ascension,
       title: context.fromLabel(Labels.ascension),
@@ -390,7 +390,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         cfg.level.toString(),
-                        style: context.textTheme.subtitle2!
+                        style: context.textTheme.titleSmall!
                             .copyWith(color: Colors.white),
                       ),
                     ),
@@ -446,7 +446,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       const SizedBox(width: kSeparator8),
                       Text(
                         e.name,
-                        style: context.textTheme.subtitle2!
+                        style: context.textTheme.titleSmall!
                             .copyWith(color: Colors.white),
                       ),
                       const SizedBox(width: kSeparator8),
@@ -460,7 +460,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   const SizedBox(height: kSeparator8),
                   TextParserWidget(
                     e.desc,
-                    style: context.textTheme.subtitle2!
+                    style: context.textTheme.titleSmall!
                         .copyWith(color: Colors.white),
                   ),
                 ],
@@ -496,7 +496,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       const SizedBox(width: kSeparator8),
                       Text(
                         e.name,
-                        style: context.textTheme.subtitle2!
+                        style: context.textTheme.titleSmall!
                             .copyWith(color: Colors.white),
                       ),
                     ],
@@ -504,7 +504,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   const SizedBox(height: kSeparator8),
                   TextParserWidget(
                     e.desc,
-                    style: context.textTheme.subtitle2!
+                    style: context.textTheme.titleSmall!
                         .copyWith(color: Colors.white),
                   ),
                 ],
@@ -548,7 +548,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
-              style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
+              style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
             ),
           ),
           Padding(

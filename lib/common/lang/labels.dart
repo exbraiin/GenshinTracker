@@ -28,6 +28,9 @@ class Labels {
 	/// Last Banner
 	static const lastBanner = 'last_banner';
 
+	/// Energy: {number}
+	static const energyN = 'energy_n';
+
 	/// Remarkable Chests
 	static const remarkableChests = 'remarkable_chests';
 

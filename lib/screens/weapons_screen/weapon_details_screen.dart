@@ -135,7 +135,7 @@ class WeaponDetailsScreen extends StatelessWidget {
   }
 
   Widget _getAscension(BuildContext context, int rarity, InfoWeaponInfo info) {
-    final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
     return GsDataBox.info(
       title: context.fromLabel(Labels.ascension),
       children: [
@@ -196,7 +196,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       config.level.toString(),
-                      style: context.textTheme.subtitle2!
+                      style: context.textTheme.titleSmall!
                           .copyWith(color: Colors.white),
                     ),
                   ),
@@ -245,7 +245,7 @@ class WeaponDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
-              style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
+              style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
             ),
           ),
           Padding(
@@ -319,7 +319,7 @@ class WeaponDetailsScreen extends StatelessWidget {
               Expanded(
                 child: TextParserWidget(
                   _getEffectText(info.effectDesc, r),
-                  style: context.textTheme.subtitle2!
+                  style: context.textTheme.titleSmall!
                       .copyWith(color: Colors.white),
                 ),
               ),

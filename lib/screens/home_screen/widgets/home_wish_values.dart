@@ -29,7 +29,7 @@ class HomeWishesValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final st = Theme.of(context).textTheme.subtitle2!;
+    final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: GsColors.almostWhite);
 
     final sw = GsDatabase.instance.saveWishes;
@@ -284,7 +284,7 @@ class HomeWishesValues extends StatelessWidget {
                 ),
               TextSpan(
                 text: value,
-                style: context.textTheme.subtitle2!.copyWith(
+                style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 20,
                   color: valueColor ?? GsColors.almostWhite,
                 ),
@@ -292,7 +292,7 @@ class HomeWishesValues extends StatelessWidget {
               const TextSpan(text: '\n'),
               TextSpan(
                 text: label,
-                style: context.textTheme.subtitle2!.copyWith(
+                style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 12,
                   color: GsColors.dimWhite,
                 ),
@@ -311,7 +311,7 @@ class HomeWishesValues extends StatelessWidget {
     String label,
     Color color,
   ) {
-    final st = Theme.of(context).textTheme.subtitle2!;
+    final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: GsColors.almostWhite);
     return Row(
       children: [

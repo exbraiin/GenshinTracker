@@ -67,7 +67,7 @@ class BannerListItem extends StatelessWidget {
                 Expanded(
                   child: RichText(
                     text: TextSpan(
-                      style: context.textTheme.subtitle2!
+                      style: context.textTheme.titleSmall!
                           .copyWith(color: Colors.white),
                       children: [
                         TextSpan(

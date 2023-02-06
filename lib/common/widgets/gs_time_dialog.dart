@@ -103,7 +103,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
 
     return Center(
       child: GsCardDialog(

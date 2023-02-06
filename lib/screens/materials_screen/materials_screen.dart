@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
@@ -33,7 +34,10 @@ class MaterialsScreen extends StatelessWidget {
                     itemCount: materials.length,
                     itemBuilder: (context, index) {
                       final item = materials[index];
-                      return MaterialListItem(item);
+                      return MaterialListItem(
+                        item,
+                        onTap: () => MaterialDetailsCard(item).show(context),
+                      );
                     },
                   );
             return Scaffold(

@@ -12,23 +12,10 @@ import 'package:tracker/screens/recipes_screen/recipes_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
-class RecipesScreen extends StatefulWidget {
+class RecipesScreen extends StatelessWidget {
   static const id = 'recipes_screen';
 
   const RecipesScreen({super.key});
-
-  @override
-  State<RecipesScreen> createState() => _RecipesScreenState();
-}
-
-class _RecipesScreenState extends State<RecipesScreen> {
-  final _selected = ValueNotifier(0);
-
-  @override
-  void dispose() {
-    _selected.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +30,6 @@ class _RecipesScreenState extends State<RecipesScreen> {
             final db = GsDatabase.instance;
             final recipes = db.infoRecipes.getItems();
             final sorted = filter.match(recipes);
-            if (_selected.value + 1 > sorted.length) {
-              _selected.value = 0;
-            }
 
             return Scaffold(
               appBar: GsAppBar(
@@ -54,9 +38,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
               ),
               body: Container(
                 decoration: kMainBgDecoration,
-                child: sorted.isEmpty
-                    ? const GsNoResultsState()
-                    : _getListView(sorted),
+                child: _getListView(sorted),
               ),
             );
           },
@@ -66,36 +48,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
   }
 
   Widget _getListView(List<InfoRecipe> sorted) {
+    if (sorted.isEmpty) return const GsNoResultsState();
     final db = GsDatabase.instance;
-    return ValueListenableBuilder<int>(
-      valueListenable: _selected,
-      builder: (context, value, child) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 7,
-              child: GsGridView.builder(
-                itemCount: sorted.length,
-                itemBuilder: (context, index) {
-                  final item = sorted[index];
-                  return RecipesListItem(
-                    recipe: item,
-                    selected: value == index,
-                    savedRecipe: db.saveRecipes.getItemOrNull(item.id),
-                    onTap: () => _selected.value = index,
-                  );
-                },
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(kSeparator4),
-                child: RecipeDetailsCard(sorted[value]),
-              ),
-            ),
-          ],
+    return GsGridView.builder(
+      itemCount: sorted.length,
+      itemBuilder: (context, index) {
+        final item = sorted[index];
+        return RecipesListItem(
+          recipe: item,
+          savedRecipe: db.saveRecipes.getItemOrNull(item.id),
+          onTap: () => RecipeDetailsCard(item).show(context),
         );
       },
     );

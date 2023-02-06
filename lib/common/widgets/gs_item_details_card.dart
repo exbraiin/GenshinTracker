@@ -2,25 +2,45 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+
+typedef IndexedBuilder<R> = R Function(BuildContext context, int page);
 
 class ItemDetailsCard extends StatefulWidget {
   final int rarity;
   final int pages;
   final String name;
-  final Widget Function(BuildContext context, int page)? info;
-  final String Function(BuildContext context, int page)? image;
-  final String Function(BuildContext context, int page)? fgImage;
-  final Widget Function(BuildContext context, int page)? child;
+  final GsItemBanner? banner;
+  final IndexedBuilder<Widget>? info;
+  final IndexedBuilder<String>? image;
+  final IndexedBuilder<String>? fgImage;
+  final IndexedBuilder<Widget>? child;
 
-  const ItemDetailsCard({
+  ItemDetailsCard.single({
     super.key,
-    this.info,
     this.name = '',
+    this.rarity = 0,
+    this.banner,
+    Widget? info,
+    String? image,
+    String? fgImage,
+    Widget? child,
+  })  : pages = 1,
+        info = info != null ? ((_, __) => info) : null,
+        image = image != null ? ((_, __) => image) : null,
+        fgImage = fgImage != null ? ((_, __) => fgImage) : null,
+        child = child != null ? ((_, __) => child) : null;
+
+  const ItemDetailsCard.paged({
+    super.key,
+    required this.pages,
+    this.name = '',
+    this.rarity = 0,
+    this.banner,
+    this.info,
     this.image,
     this.fgImage,
-    this.pages = 1,
-    this.rarity = 0,
     this.child,
   });
 
@@ -77,14 +97,39 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
             width: kSeparator2,
           ),
         ),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          widget.name,
-          maxLines: 1,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 26,
-          ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.name,
+                maxLines: 1,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white60, width: 2),
+                borderRadius: BorderRadius.circular(48),
+              ),
+              child: Center(
+                child: InkWell(
+                  onTap: () => Navigator.of(context).maybePop(),
+                  child: const AspectRatio(
+                    aspectRatio: 1,
+                    child: Icon(
+                      Icons.close_rounded,
+                      color: Colors.white60,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -156,15 +201,24 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                 ),
               ),
             ),
+          if (widget.banner != null && widget.banner!.text.isNotEmpty)
+            Positioned.fill(
+              child: ClipRect(
+                child: Banner(
+                  color: widget.banner!.color,
+                  message: widget.banner!.text,
+                  location: widget.banner!.location,
+                ),
+              ),
+            ),
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.all(kSeparator4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
                 children: [
-                  Expanded(
+                  Positioned.fill(
                     child: DefaultTextStyle(
-                        style: context.textTheme.headline6!.copyWith(
+                        style: context.textTheme.titleLarge!.copyWith(
                           color: GsColors.dimWhite,
                           fontSize: 16,
                           shadows: const [
@@ -182,13 +236,17 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                               const SizedBox(),
                         )),
                   ),
-                  Row(
-                    children: List.generate(
-                      widget.rarity,
-                      (i) => const Icon(
-                        Icons.star_rounded,
-                        color: Colors.yellow,
-                        size: 30,
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: Row(
+                      children: List.generate(
+                        widget.rarity,
+                        (i) => const Icon(
+                          Icons.star_rounded,
+                          color: Colors.yellow,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ),
@@ -258,6 +316,47 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
             widget.child?.call(context, value) ?? const SizedBox(),
       ),
     );
+  }
+}
+
+class ItemDetailsCardContent {
+  final String? label;
+  final Widget? content;
+  final String? description;
+
+  ItemDetailsCardContent({this.label, this.content, this.description});
+
+  static Widget generate(
+    BuildContext context,
+    List<ItemDetailsCardContent> items,
+  ) {
+    final texts = <InlineSpan>[];
+
+    final labelStyle = TextStyle(
+      fontSize: 16,
+      color: Color.lerp(Colors.black, Colors.orange, 0.8)!,
+      fontWeight: FontWeight.bold,
+    );
+
+    for (var item in items) {
+      if (item.label != null) {
+        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
+        texts.add(TextSpan(text: '${item.label}\n', style: labelStyle));
+
+        if (item.description != null) {
+          texts.add(TextSpan(text: '  \u2022  ${item.description}'));
+        }
+        if (item.content != null) {
+          texts.add(WidgetSpan(child: item.content!));
+        }
+      } else if (item.description != null) {
+        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
+        final style = TextStyle(color: Colors.grey[600]);
+        texts.add(TextSpan(text: item.description, style: style));
+      }
+    }
+
+    return Text.rich(TextSpan(children: texts));
   }
 }
 

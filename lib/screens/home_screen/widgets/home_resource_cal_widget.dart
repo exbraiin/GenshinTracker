@@ -30,7 +30,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final style = textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = textTheme.titleSmall!.copyWith(color: Colors.white);
     return GsDataBox.summary(
       title: context.fromLabel(Labels.resourceCalculator),
       children: [

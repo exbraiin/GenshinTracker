@@ -31,12 +31,13 @@ class AddWishWishListItem extends StatelessWidget {
             child: Text(
               item.name,
               maxLines: 1,
-              style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
+              style:
+                  context.textTheme.titleSmall!.copyWith(color: Colors.white),
             ),
           ),
           Text(
             '$roll',
-            style: context.textTheme.subtitle2!.copyWith(color: Colors.white),
+            style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
           ),
           Padding(
             padding: const EdgeInsets.all(2),

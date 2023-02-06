@@ -70,7 +70,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                         widget.city.name,
                         style: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .copyWith(color: Colors.white),
                       ),
                       const SizedBox(width: kSeparator4),
@@ -114,7 +114,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     children: [
                       Text(
                         pRep.toString(),
-                        style: context.textTheme.subtitle2!.copyWith(
+                        style: context.textTheme.titleSmall!.copyWith(
                           fontSize: 10,
                           color: GsColors.almostWhite,
                         ),
@@ -123,7 +123,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                       if (nRep != -1)
                         Text(
                           nRep.toString(),
-                          style: context.textTheme.subtitle2!.copyWith(
+                          style: context.textTheme.titleSmall!.copyWith(
                             fontSize: 10,
                             color: GsColors.almostWhite,
                           ),
@@ -151,14 +151,14 @@ class _ReputationListItemState extends State<ReputationListItem> {
                       text: Lang.of(context).getValue(Labels.levelShort),
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle2!
+                          .titleSmall!
                           .copyWith(color: Colors.white, fontSize: 16),
                     ),
                     TextSpan(
                       text: db.getCityLevel(widget.city.id).toString(),
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle2!
+                          .titleSmall!
                           .copyWith(color: Colors.white, fontSize: 26),
                     ),
                     TextSpan(
@@ -173,7 +173,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                                   lastLvlWeeks,
                                 )}'
                               : '',
-                      style: context.textTheme.subtitle2!
+                      style: context.textTheme.titleSmall!
                           .copyWith(color: Colors.white, fontSize: 10),
                     ),
                   ],

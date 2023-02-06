@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/remarkable_chests_screen/remarkable_chest_details_card.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
@@ -33,7 +34,11 @@ class RemarkableChestsScreen extends StatelessWidget {
                     itemCount: remarkableChests.length,
                     itemBuilder: (context, index) {
                       final item = remarkableChests[index];
-                      return RemarkableChestListItem(item);
+                      return RemarkableChestListItem(
+                        item,
+                        onTap: () =>
+                            RemarkableChestDetailsCard(item).show(context),
+                      );
                     },
                   );
             return Scaffold(

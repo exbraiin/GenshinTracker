@@ -295,7 +295,10 @@ class Menu {
           initialRoute: initialPage,
           onGenerateRoute: (settings) {
             if (initialPage == settings.name) {
-              settings = settings.copyWith(arguments: initialArgument);
+              settings = RouteSettings(
+                name: settings.name,
+                arguments: initialArgument,
+              );
             }
             return TrackerRouter.onGenerate(settings);
           },

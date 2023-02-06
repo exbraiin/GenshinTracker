@@ -29,7 +29,7 @@ class WishListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final item = GsUtils.items.getItemData(wish.itemId);
-    final style = context.textTheme.subtitle2!.copyWith(color: Colors.white);
+    final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
 
     return Container(
       height: 44,

@@ -10,6 +10,7 @@ import 'package:tracker/domain/gs_domain.dart';
 class GsNumberField extends StatefulWidget {
   final int length;
   final bool enabled;
+  final double fontSize;
   final int Function()? onDbUpdate;
   final void Function(int)? onUpdate;
 
@@ -17,12 +18,16 @@ class GsNumberField extends StatefulWidget {
     super.key,
     this.length = 0,
     this.enabled = true,
+    this.fontSize = 12,
     this.onUpdate,
     this.onDbUpdate,
   });
 
-  GsNumberField.fromMaterial(InfoMaterial? material, {super.key})
-      : enabled = material != null,
+  GsNumberField.fromMaterial(
+    InfoMaterial? material, {
+    super.key,
+    this.fontSize = 12,
+  })  : enabled = material != null,
         length = (material?.maxAmount ?? 0).toString().length,
         onDbUpdate = (() {
           if (material == null) return 0;
@@ -92,7 +97,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
       controller: _controller,
       enabled: widget.enabled,
       focusNode: _node,
-      style: context.textTheme.infoLabel.copyWith(fontSize: 12),
+      style: context.textTheme.infoLabel.copyWith(fontSize: widget.fontSize),
       textAlign: TextAlign.center,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
@@ -103,7 +108,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
         border: InputBorder.none,
         hintText: '0',
         hintStyle: context.textTheme.infoLabel.copyWith(
-          fontSize: 12,
+          fontSize: widget.fontSize,
           color: Colors.white.withOpacity(0.4),
         ),
         contentPadding: const EdgeInsets.all(kSeparator4),

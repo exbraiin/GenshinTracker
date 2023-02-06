@@ -27,6 +27,16 @@ class _Items {
 }
 
 class _Wishes {
+  /// Gets all released banners by [type]
+  List<InfoBanner> geReleasedInfoBannerByType(GsBanner type) {
+    final now = DateTime.now();
+    final banners = GsDatabase.instance.infoBanners;
+    return banners
+        .getItems()
+        .where((e) => e.type == type && e.dateStart.isBefore(now))
+        .toList();
+  }
+
   /// Gets the pity of the given wish in the given wishes list.
   int countPity(List<SaveWish> wishes, SaveWish wish) {
     final item = GsUtils.items.getItemData(wish.itemId);

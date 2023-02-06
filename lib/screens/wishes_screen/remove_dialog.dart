@@ -32,14 +32,16 @@ class RemoveDialog extends StatelessWidget {
           children: [
             Text(
               Lang.of(context).getValue(Labels.youSure),
-              style: context.textTheme.headline5!.copyWith(color: Colors.white),
+              style: context.textTheme.headlineSmall!
+                  .copyWith(color: Colors.white),
             ),
             const Divider(color: GsColors.almostWhite),
             Text(
               Lang.of(context)
                   .getValue(Labels.removeWish, nargs: {'name': name}),
               textAlign: TextAlign.center,
-              style: context.textTheme.subtitle1!.copyWith(color: Colors.white),
+              style:
+                  context.textTheme.titleMedium!.copyWith(color: Colors.white),
             ),
             const SizedBox(height: 8),
             TextButton(
@@ -52,7 +54,7 @@ class RemoveDialog extends StatelessWidget {
                 ),
                 child: Text(
                   Lang.of(context).getValue(Labels.remove).toUpperCase(),
-                  style: context.textTheme.subtitle2!
+                  style: context.textTheme.titleSmall!
                       .copyWith(color: Colors.red, letterSpacing: -1),
                 ),
               ),

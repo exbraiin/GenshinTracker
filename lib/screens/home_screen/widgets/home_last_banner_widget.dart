@@ -14,13 +14,13 @@ class HomeLastBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const type = GsBanner.character;
     const source = GsItemSource.wishesCharacterBanner;
-    final banners = GsDatabase.instance.infoBanners;
-    final releasedBanners = banners.getInfoBannerByType(GsBanner.character);
+    final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
     final characters = GsDatabase.instance.infoCharacters
         .getItems()
         .where((chr) => chr.rarity == 5 && chr.source == source)
-        .map((chr) => _toMapEntry(chr, releasedBanners))
+        .map((chr) => _toMapEntry(chr, banners))
         .where((e) => e.value.inDays > 0)
         .sortedByDescending((e) => e.value);
     return GsDataBox.summary(
