@@ -79,7 +79,9 @@ class CharacterDetailsScreen extends StatelessWidget {
   ) {
     final db = GsDatabase.instance.saveCharacters;
     final ascension = GsUtils.characters.getCharAscension(info.id);
+    final friendship = GsUtils.characters.getCharFriendship(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
+    final hasChar = GsUtils.characters.hasCaracter(info.id);
 
     return SizedBox(
       height: 260,
@@ -127,16 +129,24 @@ class CharacterDetailsScreen extends StatelessWidget {
                       info.name,
                       style: Theme.of(context).textTheme.bigTitle2,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: kSeparator8),
                     GsItemCardLabel(
                       asset: info.element.assetPath,
                       label: constellation != null ? 'C$constellation' : null,
                       onTap: () => GsDatabase.instance.saveCharacters
                           .increaseOwnedCharacter(info.id),
                     ),
+                    const SizedBox(width: kSeparator4),
+                    if (hasChar)
+                      GsItemCardLabel(
+                        asset: imageXp,
+                        label: friendship.toString(),
+                        onTap: () => GsDatabase.instance.saveCharacters
+                            .increaseFriendshipCharacter(info.id),
+                      )
                   ],
                 ),
-                if (GsUtils.characters.hasCaracter(info.id))
+                if (hasChar)
                   InkWell(
                     onTap: () => db.increaseAscension(info.id),
                     child: Text(
@@ -548,7 +558,8 @@ class CharacterDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
-              style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              style:
+                  context.textTheme.titleSmall!.copyWith(color: Colors.white),
             ),
           ),
           Padding(

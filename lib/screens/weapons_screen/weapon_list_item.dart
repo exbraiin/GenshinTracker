@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
@@ -41,9 +42,10 @@ class WeaponListItem extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 0,
-            left: 0,
-            child: GsItemCardLabel(
+            top: kSeparator2,
+            left: kSeparator2,
+            child: ItemRarityBubble(
+              size: 30,
               asset: weapon.type.assetPath,
             ),
           ),

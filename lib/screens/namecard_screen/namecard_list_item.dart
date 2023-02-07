@@ -12,6 +12,7 @@ class NamecardListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GsItemCardButton(
       label: item.name,
+      rarity: item.rarity,
       imageUrlPath: item.image,
       banner: GsItemBanner.fromVersion(item.version),
       onTap: onTap,

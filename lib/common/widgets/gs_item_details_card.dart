@@ -5,17 +5,18 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 
-typedef IndexedBuilder<R> = R Function(BuildContext context, int page);
+typedef Action<R> = R Function(BuildContext context, int page);
 
 class ItemDetailsCard extends StatefulWidget {
   final int rarity;
   final int pages;
   final String name;
   final GsItemBanner? banner;
-  final IndexedBuilder<Widget>? info;
-  final IndexedBuilder<String>? image;
-  final IndexedBuilder<String>? fgImage;
-  final IndexedBuilder<Widget>? child;
+  final Action<Widget>? info;
+  final Action<String>? asset;
+  final Action<String>? image;
+  final Action<String>? fgImage;
+  final Action<Widget>? child;
 
   ItemDetailsCard.single({
     super.key,
@@ -23,11 +24,13 @@ class ItemDetailsCard extends StatefulWidget {
     this.rarity = 0,
     this.banner,
     Widget? info,
+    String? asset,
     String? image,
     String? fgImage,
     Widget? child,
   })  : pages = 1,
         info = info != null ? ((_, __) => info) : null,
+        asset = asset != null ? ((_, __) => asset) : null,
         image = image != null ? ((_, __) => image) : null,
         fgImage = fgImage != null ? ((_, __) => fgImage) : null,
         child = child != null ? ((_, __) => child) : null;
@@ -39,6 +42,7 @@ class ItemDetailsCard extends StatefulWidget {
     this.rarity = 0,
     this.banner,
     this.info,
+    this.asset,
     this.image,
     this.fgImage,
     this.child,
@@ -175,10 +179,17 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   ValueListenableBuilder<int>(
                     valueListenable: _page,
                     builder: (context, value, child) {
-                      if (widget.image == null) return const SizedBox();
-                      return CachedImageWidget(
-                        widget.image?.call(context, value),
-                      );
+                      if (widget.asset != null) {
+                        return Image.asset(
+                          widget.asset!.call(context, value),
+                        );
+                      }
+                      if (widget.image != null) {
+                        return CachedImageWidget(
+                          widget.image!.call(context, value),
+                        );
+                      }
+                      return const SizedBox();
                     },
                   ),
                 ],
@@ -187,18 +198,15 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
           ),
           if (widget.fgImage != null)
             Positioned.fill(
-              child: Opacity(
-                opacity: 0.8,
-                child: ValueListenableBuilder<int>(
-                  valueListenable: _page,
-                  builder: (context, value, child) {
-                    return CachedImageWidget(
-                      widget.fgImage?.call(context, value),
-                      showPlaceholder: false,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+              child: ValueListenableBuilder<int>(
+                valueListenable: _page,
+                builder: (context, value, child) {
+                  return CachedImageWidget(
+                    widget.fgImage?.call(context, value),
+                    showPlaceholder: false,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
           if (widget.banner != null && widget.banner!.text.isNotEmpty)
@@ -364,22 +372,32 @@ class ItemRarityBubble extends StatelessWidget {
   final int rarity;
   final double size;
   final String image;
+  final String asset;
   final String tooltip;
+  final Color? color;
   final Widget? child;
   final VoidCallback? onTap;
 
   const ItemRarityBubble({
     super.key,
-    this.size = 48,
-    this.rarity = 1,
+    this.size = 50,
+    this.rarity = 0,
+    this.asset = '',
     this.image = '',
     this.tooltip = '',
+    this.color,
     this.child,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final img = asset.isNotEmpty
+        ? Image.asset(asset)
+        : image.isNotEmpty
+            ? CachedImageWidget(image)
+            : const SizedBox();
+
     Widget widget = Stack(
       children: [
         Container(
@@ -394,6 +412,7 @@ class ItemRarityBubble extends StatelessWidget {
             borderRadius: BorderRadius.circular(size),
             child: Container(
               decoration: BoxDecoration(
+                color: color,
                 image: DecorationImage(
                   image: AssetImage(getRarityBgImage(rarity)),
                   fit: BoxFit.cover,
@@ -402,17 +421,23 @@ class ItemRarityBubble extends StatelessWidget {
               child: onTap != null
                   ? InkWell(
                       onTap: onTap,
-                      child: CachedImageWidget(image),
+                      child: img,
                     )
-                  : CachedImageWidget(image),
+                  : img,
             ),
           ),
         ),
-        SizedBox(
-          width: size,
-          height: size,
-          child: child,
-        )
+        if (child != null)
+          SizedBox(
+            width: size,
+            height: size,
+            child: DefaultTextStyle(
+              style:
+                  context.textTheme.bodySmall?.copyWith(color: Colors.white) ??
+                      const TextStyle(),
+              child: child!,
+            ),
+          )
       ],
     );
     if (tooltip.isNotEmpty) {

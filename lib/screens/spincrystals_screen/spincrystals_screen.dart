@@ -9,6 +9,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/screens/spincrystals_screen/spincrystal_details_card.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystal_list_item.dart';
 
 class SpincrystalsScreen extends StatelessWidget {
@@ -33,7 +34,10 @@ class SpincrystalsScreen extends StatelessWidget {
                     itemCount: spincrystals.length,
                     itemBuilder: (context, index) {
                       final item = spincrystals[index];
-                      return SpincrystalListItem(spincrystal: item);
+                      return SpincrystalListItem(
+                        item,
+                        onTap: () => SpincrystalDetailsCard(item).show(context),
+                      );
                     },
                   );
 

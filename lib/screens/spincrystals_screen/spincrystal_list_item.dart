@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 class SpincrystalListItem extends StatelessWidget {
-  final InfoSpincrystal spincrystal;
+  final InfoSpincrystal item;
+  final VoidCallback? onTap;
 
-  const SpincrystalListItem({super.key, required this.spincrystal});
+  const SpincrystalListItem(this.item, {super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final table = GsDatabase.instance.saveSpincrystals;
-    final save = table.getItemOrNull(spincrystal.id);
+    final save = table.getItemOrNull(item.id);
     final owned = save?.obtained ?? false;
     return Opacity(
       opacity: owned ? 1 : kDisableOpacity,
       child: GsItemCardButton(
-        label: spincrystal.name,
-        banner: GsItemBanner.fromVersion(spincrystal.version),
+        label: item.name,
+        rarity: item.rarity,
+        onTap: onTap,
+        banner: GsItemBanner.fromVersion(item.version),
         imageAssetPath: spincrystalAsset,
         child: Stack(
           children: [
             Positioned(
+              top: kSeparator2,
               left: kSeparator2,
-              right: kSeparator2,
-              bottom: kSeparator2,
-              child: Center(
-                child: GsItemCardLabel(
-                  label: spincrystal.number.toString(),
+              child: ItemRarityBubble(
+                size: 30,
+                color: GsColors.mainColor2,
+                child: Center(
+                  child: Text(item.number.toString()),
                 ),
               ),
             ),
@@ -41,7 +46,7 @@ class SpincrystalListItem extends StatelessWidget {
                 color: owned ? Colors.green : GsColors.missing,
                 icon: owned ? Icons.check : Icons.close,
                 onPress: () => table.updateSpincrystal(
-                  spincrystal.number,
+                  item.number,
                   obtained: !owned,
                 ),
               ),

@@ -8,11 +8,8 @@ import 'package:tracker/screens/main_screen/main_screen.dart';
 // TODO:
 // * Move owned and other saved settings to card details.
 // * Missing card details, can be added???
-//    - Remarkable chests.
-//    - Materials.
 //    - Spincrystals.
 //    - Reputation.
-//    - Namecards.
 //    - Characters and Weapons, may not be possible because of information amount.
 
 void main() {

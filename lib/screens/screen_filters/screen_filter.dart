@@ -100,6 +100,14 @@ class ScreenFilter<I> {
 
 class ScreenFilters {
   static final _db = GsDatabase.instance;
+
+  static String _toMajorVersion(String version) =>
+      '${version.split('.').first}.x';
+  static final _versions = GsDatabase.instance.infoVersion
+      .getItems()
+      .map((e) => _toMajorVersion(e.id))
+      .toSet();
+
   static final itemDataFilter = ScreenFilter<ItemData>(
     sections: [
       FilterSection<GsItem, ItemData>(
@@ -136,6 +144,20 @@ class ScreenFilters {
     ],
     extras: {'show'},
   );
+  static final infoNamecardFilter = ScreenFilter<InfoNamecard>(sections: [
+    FilterSection<String, InfoNamecard>(
+      GsDatabase.instance.infoNamecards.getItems().map((e) => e.type).toSet(),
+      (item) => item.type,
+      (c) => c.fromLabel(Labels.type),
+      (c, e) => e.capitalize(),
+    ),
+    FilterSection<String, InfoNamecard>(
+      _versions,
+      (item) => _toMajorVersion(item.version),
+      (c) => c.fromLabel(Labels.version),
+      (c, i) => i,
+    ),
+  ]);
   static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
     sections: [
       FilterSection<int, InfoRecipe>(
@@ -153,8 +175,8 @@ class ScreenFilters {
         asset: (i) => i.assetPath,
       ),
       FilterSection<String, InfoRecipe>(
-        {'1.x', '2.x', '3.x'},
-        (item) => '${item.version.split('.').firstOrNull ?? ''}.x',
+        _versions,
+        (item) => _toMajorVersion(item.version),
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
         comparator: (a, b) => a.version.compareTo(b.version),
@@ -205,13 +227,8 @@ class ScreenFilters {
         comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
       FilterSection<String, InfoRemarkableChest>(
-        _db.infoRemarkableChests
-            .getItems()
-            .map((e) => e.version)
-            .toSet()
-            .sorted()
-            .toSet(),
-        (item) => item.version,
+        _versions,
+        (item) => _toMajorVersion(item.version),
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
       ),
@@ -225,6 +242,21 @@ class ScreenFilters {
         (item) => item.source,
         (c) => c.fromLabel(Labels.source),
         (c, i) => i,
+      ),
+      FilterSection<GsSetCategory, InfoRemarkableChest>(
+        GsSetCategory.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.category),
+        (c, i) => c.fromLabel(i.label),
+      ),
+      FilterSection<String, InfoRemarkableChest>(
+        GsDatabase.instance.infoRemarkableChests
+            .getItems()
+            .map((e) => e.category)
+            .toSet(),
+        (item) => item.category,
+        (c) => c.fromLabel(Labels.type),
+        (c, i) => i.capitalize(),
       ),
       FilterSection<bool, InfoRemarkableChest>(
         {true, false},
@@ -268,6 +300,18 @@ class ScreenFilters {
         (c, e) => c.fromLabel(Labels.rarityStar, e),
         comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
+      FilterSection<String, InfoWeapon>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
+      FilterSection<GsItemSource, InfoWeapon>(
+        GsDatabase.instance.infoWeapons.getItems().map((e) => e.source).toSet(),
+        (item) => item.source,
+        (c) => c.fromLabel(Labels.source),
+        (c, i) => i.name,
+      ),
     ],
     comparators: [
       (a, b) => b.rarity.compareTo(a.rarity),
@@ -282,6 +326,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.rarity),
         (c, i) => c.fromLabel(Labels.rarityStar, i),
         comparator: (a, b) => a.rarity.compareTo(b.rarity),
+      ),
+      FilterSection<String, InfoArtifact>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
       ),
     ],
     comparators: [
@@ -308,8 +358,8 @@ class ScreenFilters {
         comparator: (a, b) => a.weapon.index.compareTo(b.weapon.index),
       ),
       FilterSection<String, InfoCharacter>(
-        {'1.x', '2.x', '3.x'},
-        (item) => '${item.version.split('.').first}.x',
+        _versions,
+        (item) => _toMajorVersion(item.version),
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
         comparator: (a, b) => a.version.compareTo(b.version),
@@ -393,6 +443,12 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e.label),
         comparator: (a, b) => a.category.index.compareTo(b.category.index),
       ),
+      FilterSection<String, InfoSereniteaSet>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
     ],
     comparators: [(a, b) => a.name.compareTo(b.name)],
   );
@@ -407,6 +463,12 @@ class ScreenFilters {
             .exists(a.id)
             .compareTo(_db.saveSpincrystals.exists(b.id)),
       ),
+      FilterSection<String, InfoSpincrystal>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
     ],
     comparators: [(a, b) => a.number.compareTo(b.number)],
   );
@@ -417,6 +479,12 @@ class ScreenFilters {
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, i) => c.fromLabel(Labels.rarityStar, i),
+      ),
+      FilterSection<String, InfoMaterial>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
       ),
       FilterSection<GsMaterialGroup, InfoMaterial>(
         GsMaterialGroup.values.toSet(),

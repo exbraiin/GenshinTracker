@@ -134,7 +134,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 ),
                 if (char != null)
                   ItemRarityBubble(
-                    image: char.image,
+                    image: GsUtils.characters.getImage(char.id),
                     rarity: char.rarity,
                     tooltip: char.name,
                   )

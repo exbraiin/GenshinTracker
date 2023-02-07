@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
@@ -8,7 +7,6 @@ import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/character_ascension_screen/character_ascension_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -47,19 +45,6 @@ class CharactersScreen extends StatelessWidget {
               appBar: GsAppBar(
                 label: Lang.of(context).getValue(Labels.characters),
                 actions: [
-                  Tooltip(
-                    message: 'Character Ascension',
-                    child: IconButton(
-                      onPressed: () => Navigator.of(context)
-                          .pushNamed(CharacterAscensionScreen.id),
-                      icon: Text(
-                        '✦',
-                        style: context.textTheme.bigTitle2
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: kSeparator2),
                   Tooltip(
                     message: Lang.of(context).getValue(Labels.showExtraInfo),
                     child: IconButton(

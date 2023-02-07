@@ -52,7 +52,8 @@ class RecipesListItem extends StatelessWidget {
               Positioned(
                 top: kSeparator2,
                 left: kSeparator2,
-                child: GsItemCardLabel(
+                child: ItemRarityBubble(
+                  size: 30,
                   asset: recipe.effect.assetPath,
                 ),
               ),

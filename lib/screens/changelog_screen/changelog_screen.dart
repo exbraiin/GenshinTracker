@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -235,13 +235,12 @@ class ChangelogScreen extends StatelessWidget {
           spacing: kSeparator4,
           runSpacing: kSeparator4,
           children: items
-              .map((e) => GsRarityItemCard.withLabels(
-                    labelFooter: name(e),
+              .map((e) => ItemRarityBubble(
+                    tooltip: name(e),
                     asset: asset?.call(e) ?? '',
                     image: image?.call(e) ?? '',
                     rarity: rarity?.call(e) ?? 1,
-                    size: 80,
-                    fit: fit,
+                    size: 60,
                   ))
               .toList(),
         ),

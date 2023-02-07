@@ -11,6 +11,7 @@ class GsUtils {
 
   static final items = _Items();
   static final wishes = _Wishes();
+  static final weapons = _Weapons();
   static final versions = _Versions();
   static final characters = _Characters();
 }
@@ -112,6 +113,12 @@ class _Wishes {
           .where((element) => filterCharacter(element))
           .map((element) => ItemData(character: element)),
     ];
+  }
+}
+
+class _Weapons {
+  bool hasWeapon(String id) {
+    return GsDatabase.instance.saveWishes.getItems().any((e) => e.itemId == id);
   }
 }
 
