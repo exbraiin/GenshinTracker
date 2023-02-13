@@ -4,6 +4,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
+import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class SpincrystalDetailsCard extends StatelessWidget
@@ -14,6 +15,7 @@ class SpincrystalDetailsCard extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region);
     return ItemDetailsCard.single(
       info: Text(item.name),
       name: 'Radiant Spincrystal ${item.number}',
@@ -24,6 +26,11 @@ class SpincrystalDetailsCard extends StatelessWidget
         if (item.desc.isNotEmpty)
           ItemDetailsCardContent(
             description: item.desc,
+          ),
+        if (region != null)
+          ItemDetailsCardContent(
+            label: context.fromLabel(Labels.region),
+            description: region.name,
           ),
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.source),

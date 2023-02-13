@@ -98,7 +98,7 @@ class GsItemCardButton extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        color: GsColors.mainColor2,
+        color: GsColors.mainColor1,
         borderRadius: radius,
         boxShadow: shadow ? kMainShadow : null,
       ),

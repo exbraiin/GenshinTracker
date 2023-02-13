@@ -7,6 +7,7 @@ class InfoSpincrystal implements IdData {
   final int rarity;
   final String name;
   final String desc;
+  final String region;
   final String source;
   final String version;
 
@@ -18,6 +19,7 @@ class InfoSpincrystal implements IdData {
     required this.desc,
     required this.number,
     required this.rarity,
+    required this.region,
     required this.source,
     required this.version,
   });
@@ -29,6 +31,7 @@ class InfoSpincrystal implements IdData {
       desc: map['desc'] ?? '',
       number: map['number'],
       rarity: map['rarity'] ?? 4,
+      region: map['region'] ?? '',
       source: map['source'],
       version: map['version'],
     );

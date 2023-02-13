@@ -413,10 +413,12 @@ class ItemRarityBubble extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: color,
-                image: DecorationImage(
-                  image: AssetImage(getRarityBgImage(rarity)),
-                  fit: BoxFit.cover,
-                ),
+                image: rarity.between(1, 5)
+                    ? DecorationImage(
+                        image: AssetImage(getRarityBgImage(rarity)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
               child: onTap != null
                   ? InkWell(
