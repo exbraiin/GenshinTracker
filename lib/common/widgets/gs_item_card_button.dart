@@ -4,6 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/file_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/theme.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
@@ -98,7 +99,7 @@ class GsItemCardButton extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        color: GsColors.mainColor1,
+        color: context.themeColors.mainColor1,
         borderRadius: radius,
         boxShadow: shadow ? kMainShadow : null,
       ),
@@ -122,7 +123,7 @@ class GsItemCardButton extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: GsColors.mainColor0,
+                  color: context.themeColors.mainColor0,
                   image: rarity != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
@@ -252,7 +253,7 @@ class GsItemCardLabel extends StatelessWidget {
     return Container(
       height: 24,
       decoration: BoxDecoration(
-        color: bgColor ?? GsColors.mainColor0.withOpacity(0.6),
+        color: bgColor ?? context.themeColors.mainColor0.withOpacity(0.6),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(kSeparator4),

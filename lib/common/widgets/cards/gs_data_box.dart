@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsDataBox extends StatelessWidget {
   final String? title;
-  final Decoration? decoration;
+  final Decoration Function(BuildContext ctx)? decoration;
   final Widget? child;
   final EdgeInsetsGeometry padding;
   final Iterable<Widget> children;
@@ -17,15 +18,15 @@ class GsDataBox extends StatelessWidget {
     this.children = const [],
   })  : alignment = CrossAxisAlignment.center,
         padding = const EdgeInsets.all(kSeparator8),
-        decoration = BoxDecoration(
-          color: GsColors.mainColor2,
-          borderRadius: kMainRadius,
-          boxShadow: kMainShadow,
-          border: Border.all(
-            color: GsColors.mainColor3.withOpacity(0.4),
-            width: 2,
-          ),
-        );
+        decoration = ((context) => BoxDecoration(
+              color: context.themeColors.mainColor2,
+              borderRadius: kMainRadius,
+              boxShadow: kMainShadow,
+              border: Border.all(
+                color: context.themeColors.mainColor3.withOpacity(0.4),
+                width: 2,
+              ),
+            ));
 
   GsDataBox.label(
     String label, {
@@ -44,14 +45,14 @@ class GsDataBox extends StatelessWidget {
           horizontal: kSeparator4,
           vertical: kSeparator2,
         ),
-        decoration = BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(kSeparator8),
-          border: Border.all(
-            color: Colors.black.withOpacity(0.4),
-            width: 1,
-          ),
-        );
+        decoration = ((context) => BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(kSeparator8),
+              border: Border.all(
+                color: Colors.black.withOpacity(0.4),
+                width: 1,
+              ),
+            ));
 
   GsDataBox.info({
     super.key,
@@ -60,20 +61,20 @@ class GsDataBox extends StatelessWidget {
     this.children = const [],
   })  : alignment = CrossAxisAlignment.start,
         padding = const EdgeInsets.all(kSeparator8),
-        decoration = BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(kSeparator8),
-          border: Border.all(
-            color: Colors.black.withOpacity(0.4),
-            width: 2,
-          ),
-        );
+        decoration = ((context) => BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(kSeparator8),
+              border: Border.all(
+                color: Colors.black.withOpacity(0.4),
+                width: 2,
+              ),
+            ));
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
-      decoration: decoration,
+      decoration: decoration?.call(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: alignment,

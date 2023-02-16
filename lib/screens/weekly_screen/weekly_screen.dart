@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/theme.dart';
 
 class WeeklyScreen extends StatefulWidget {
   static const id = 'weekly_screen';
@@ -168,12 +169,13 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white,
         items: GsWeekday.days.mapIndexed((idx, item) {
+          late final color = context.themeColors.badValue;
           return DropdownMenuItem(
             value: idx,
             alignment: Alignment.center,
             child: Text(
               item,
-              style: TextStyle(color: idx == now ? GsColors.missing : null),
+              style: TextStyle(color: idx == now ? color : null),
             ),
           );
         }).toList(),

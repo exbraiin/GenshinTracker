@@ -4,6 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_card_dialog.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsTimeDialog extends StatefulWidget {
   final DateTime? date;
@@ -71,8 +72,8 @@ class _GsTimeDialogState extends State<GsTimeDialog>
       child: Container(
         width: 44,
         height: 44,
-        decoration: const BoxDecoration(
-          color: GsColors.mainColor2,
+        decoration: BoxDecoration(
+          color: context.themeColors.mainColor2,
           borderRadius: kMainRadius,
         ),
         child: ListWheelScrollView.useDelegate(
@@ -167,7 +168,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                     width: 100,
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      border: Border.all(color: GsColors.mainColor3),
+                      border: Border.all(color: context.themeColors.mainColor3),
                       borderRadius: kMainRadius,
                     ),
                     alignment: Alignment.center,

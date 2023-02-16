@@ -4,6 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/theme/theme.dart';
 
 typedef Action<R> = R Function(BuildContext context, int page);
 
@@ -87,7 +88,8 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
   }
 
   Widget _headerTitle(BuildContext context) {
-    final color = GsColors.getRarityColor(widget.rarity.coerceAtLeast(1));
+    final rarity = widget.rarity.coerceAtLeast(1);
+    final color = context.themeColors.getRarityColor(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Container(
       height: 48,
@@ -140,7 +142,8 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
   }
 
   Widget _headerInfo(BuildContext context) {
-    final color = GsColors.getRarityColor(widget.rarity.coerceAtLeast(1));
+    final rarity = widget.rarity.coerceAtLeast(1);
+    final color = context.themeColors.getRarityColor(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Container(
       height: 180,
@@ -405,7 +408,7 @@ class ItemRarityBubble extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-            color: GsColors.mainColor0.withOpacity(0.6),
+            color: context.themeColors.mainColor0.withOpacity(0.6),
             borderRadius: BorderRadius.circular(size),
           ),
           padding: const EdgeInsets.all(kSeparator2),

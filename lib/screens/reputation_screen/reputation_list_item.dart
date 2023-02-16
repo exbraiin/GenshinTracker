@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class ReputationListItem extends StatefulWidget {
   final InfoCity city;
@@ -42,8 +43,8 @@ class _ReputationListItemState extends State<ReputationListItem> {
     return Container(
       width: 300,
       height: 100,
-      decoration: const BoxDecoration(
-        color: GsColors.mainColor2,
+      decoration: BoxDecoration(
+        color: context.themeColors.mainColor2,
         borderRadius: kMainRadius,
         boxShadow: kMainShadow,
       ),
@@ -76,7 +77,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                       const SizedBox(width: kSeparator4),
                       CircleWidget(
                         size: 16,
-                        color: GsColors.mainColor1,
+                        color: context.themeColors.mainColor1,
                         child: Padding(
                           padding: const EdgeInsets.all(2),
                           child: Image.asset(
@@ -137,7 +138,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
           Container(
             width: 100,
             decoration: BoxDecoration(
-              color: GsColors.mainColor3,
+              color: context.themeColors.mainColor3,
               borderRadius: BorderRadius.horizontal(
                 right: kMainRadius.topRight,
               ),

@@ -1,12 +1,12 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_assets.dart';
-import 'package:tracker/common/graphics/gs_colors.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class SereniteaSetListItem extends StatelessWidget {
   final InfoSereniteaSet item;
@@ -31,8 +31,8 @@ class SereniteaSetListItem extends StatelessWidget {
             child: ItemRarityBubble(
               size: 30,
               color: item.category == GsSetCategory.indoor
-                  ? GsColors.setIndoor
-                  : GsColors.setOutdoor,
+                  ? context.themeColors.setIndoor
+                  : context.themeColors.setOutdoor,
               asset: item.category == GsSetCategory.indoor
                   ? imageIndoorSet
                   : imageOutdoorSet,

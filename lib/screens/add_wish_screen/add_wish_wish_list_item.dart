@@ -3,6 +3,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/domain/gs_database.utils.dart';
+import 'package:tracker/theme/theme.dart';
 
 class AddWishWishListItem extends StatelessWidget {
   final int roll;
@@ -22,7 +23,7 @@ class AddWishWishListItem extends StatelessWidget {
       height: 32,
       decoration: BoxDecoration(
         borderRadius: kMainRadius,
-        color: GsColors.getRarityColor(item.rarity),
+        color: context.themeColors.getRarityColor(item.rarity),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(

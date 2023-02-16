@@ -22,6 +22,7 @@ import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
+import 'package:tracker/theme/theme.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -48,13 +49,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: GsColors.mainColor0,
+      color: context.themeColors.mainColor0,
       child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 80),
-            child: _pageWidget(),
-          ),
+          if (false)
+            Padding(
+              padding: const EdgeInsets.only(left: 80),
+              child: _pageWidget(),
+            ),
           _buttonsWidget(),
           Positioned(
             right: 0,
@@ -81,13 +83,15 @@ class _MainScreenState extends State<MainScreen> {
             padding: const EdgeInsets.all(kSeparator2),
             decoration: BoxDecoration(
               color: idx == 0
-                  ? GsColors.mainColor3
+                  ? context.themeColors.mainColor3
                   : selected
-                      ? GsColors.mainColor1
-                      : GsColors.mainColor2,
+                      ? context.themeColors.mainColor1
+                      : context.themeColors.mainColor2,
               borderRadius: kMainRadius,
               border: Border.all(
-                color: selected ? GsColors.mainColor3 : Colors.transparent,
+                color: selected
+                    ? context.themeColors.mainColor3
+                    : Colors.transparent,
                 width: 2,
               ),
             ),
@@ -106,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     decoration: BoxDecoration(
-                      color: GsColors.mainColor0.withOpacity(0.4),
+                      color: context.themeColors.mainColor0.withOpacity(0.4),
                       borderRadius: kMainRadius.copyWith(
                         topLeft: Radius.zero,
                         topRight: Radius.zero,
@@ -134,10 +138,13 @@ class _MainScreenState extends State<MainScreen> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             width: hover ? 160 : 80,
-            decoration: const BoxDecoration(
-              color: GsColors.mainColor0,
+            decoration: BoxDecoration(
+              color: context.themeColors.mainColor0,
               border: Border(
-                right: BorderSide(color: GsColors.mainColor2, width: 2),
+                right: BorderSide(
+                  color: context.themeColors.mainColor2,
+                  width: 2,
+                ),
               ),
             ),
             child: ValueListenableBuilder<int>(

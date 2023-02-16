@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 const _bannerTitleLabel = {
   GsBanner.character: Labels.charWishes,
@@ -76,7 +77,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.wishesInfo5,
             context.fromLabel(Labels.rarityStar, 5),
-            GsColors.getRarityColor(5),
+            context.themeColors.getRarityColor(5),
           ),
           if (banner == GsBanner.standard) ...[
             const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
@@ -84,14 +85,14 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.wishesInfo5Character,
               '   > ${context.fromLabel(Labels.character)}',
-              GsColors.getRarityColor(5),
+              context.themeColors.getRarityColor(5),
             ),
             const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
             _getInfo(
               context,
               summary.wishesInfo5Weapon,
               '   > ${context.fromLabel(Labels.weapon)}',
-              GsColors.getRarityColor(5),
+              context.themeColors.getRarityColor(5),
             ),
           ],
           const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
@@ -99,21 +100,21 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.wishesInfo4,
             context.fromLabel(Labels.rarityStar, 4),
-            GsColors.getRarityColor(4),
+            context.themeColors.getRarityColor(4),
           ),
           const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo4Character,
             '   > ${context.fromLabel(Labels.character)}',
-            GsColors.getRarityColor(4),
+            context.themeColors.getRarityColor(4),
           ),
           const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
           _getInfo(
             context,
             summary.wishesInfo4Weapon,
             '   > ${context.fromLabel(Labels.weapon)}',
-            GsColors.getRarityColor(4),
+            context.themeColors.getRarityColor(4),
           ),
           _getWishesList(
             style: style,
@@ -156,7 +157,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.last4.format(),
             context.fromLabel(Labels.l4sPity),
-            valueColor: GsColors.getRarityColor(4),
+            valueColor: context.themeColors.getRarityColor(4),
           ),
         ),
       ],
@@ -218,7 +219,7 @@ class HomeWishesValues extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: state == WishState.won
-                              ? GsColors.getRarityColor(5)
+                              ? context.themeColors.getRarityColor(5)
                               : GsColors.dimWhite,
                         ),
                         borderRadius: BorderRadius.circular(100),
@@ -265,8 +266,8 @@ class HomeWishesValues extends StatelessWidget {
       height: 56,
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4 * 2),
-      decoration: const BoxDecoration(
-        color: GsColors.mainColor1,
+      decoration: BoxDecoration(
+        color: context.themeColors.mainColor1,
         borderRadius: kMainRadius,
       ),
       child: Center(

@@ -4,6 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
+import 'package:tracker/theme/theme.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
   const HomeResourceCalcWidget({super.key});
@@ -142,7 +143,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
-        border: Border.all(color: GsColors.mainColor3, width: 0.6),
+        border: Border.all(color: context.themeColors.mainColor3, width: 0.6),
         borderRadius: kMainRadius,
       ),
       child: Text(
@@ -160,7 +161,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       decoration: BoxDecoration(
         borderRadius: kMainRadius,
         border: Border.all(
-          color: GsColors.mainColor3,
+          color: context.themeColors.mainColor3,
           width: 0.6,
         ),
       ),

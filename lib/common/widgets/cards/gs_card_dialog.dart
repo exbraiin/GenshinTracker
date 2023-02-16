@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsCardDialog extends StatelessWidget {
   final String title;
@@ -18,8 +19,8 @@ class GsCardDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: constraints,
-      decoration: const BoxDecoration(
-        color: GsColors.mainColor0,
+      decoration: BoxDecoration(
+        color: context.themeColors.mainColor0,
         boxShadow: kMainShadow,
         borderRadius: kMainRadius,
       ),

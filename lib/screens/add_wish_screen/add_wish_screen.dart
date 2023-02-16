@@ -13,6 +13,7 @@ import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dar
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/theme/theme.dart';
 
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';
@@ -60,7 +61,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                 _getItemsList(context, banner, filter),
                 Container(
                   width: 220,
-                  color: GsColors.mainColor0,
+                  color: context.themeColors.mainColor0,
                   padding: const EdgeInsets.all(4),
                   child: Column(
                     children: [
@@ -98,8 +99,8 @@ class _AddWishScreenState extends State<AddWishScreen> {
                                   : () => _saveWishes(banner),
                               child: Container(
                                 height: 44,
-                                decoration: const BoxDecoration(
-                                  color: GsColors.mainColor1,
+                                decoration: BoxDecoration(
+                                  color: context.themeColors.mainColor1,
                                   borderRadius: kMainRadius,
                                 ),
                                 child: Center(

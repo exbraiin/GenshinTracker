@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoRecipe item;
@@ -47,10 +48,10 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   width: 180,
                   padding: const EdgeInsets.all(kSeparator4),
                   decoration: BoxDecoration(
-                    color: GsColors.mainColor2.withOpacity(0.3),
+                    color: context.themeColors.mainColor2.withOpacity(0.3),
                     borderRadius: kMainRadius,
                     border: Border.all(
-                      color: GsColors.mainColor1.withOpacity(0.3),
+                      color: context.themeColors.mainColor1.withOpacity(0.3),
                     ),
                   ),
                   child: Column(

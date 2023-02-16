@@ -5,6 +5,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class RemarkableChestListItem extends StatelessWidget {
   final InfoRemarkableChest item;
@@ -39,10 +40,10 @@ class RemarkableChestListItem extends StatelessWidget {
               size: 30,
               asset: _setImage,
               color: item.type == GsSetCategory.indoor
-                  ? GsColors.setIndoor
+                  ? context.themeColors.setIndoor
                   : item.type == GsSetCategory.outdoor
-                      ? GsColors.setOutdoor
-                      : GsColors.mainColor1,
+                      ? context.themeColors.setOutdoor
+                      : context.themeColors.mainColor1,
             ),
           ),
           Positioned(
@@ -50,7 +51,9 @@ class RemarkableChestListItem extends StatelessWidget {
             right: kSeparator2,
             child: GsIconButton(
               size: 20,
-              color: owned ? Colors.green : GsColors.missing,
+              color: owned
+                  ? context.themeColors.goodValue
+                  : context.themeColors.badValue,
               icon: owned ? Icons.check : Icons.close,
               onPress: () => db.saveRemarkableChests
                   .updateRemarkableChest(item.id, obtained: !owned),

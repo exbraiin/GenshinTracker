@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 enum ListType { none, top, middle, bottom }
 
@@ -29,6 +30,7 @@ class WishListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final item = GsUtils.items.getItemData(wish.itemId);
+    final color = context.themeColors.getRarityColor(item.rarity);
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
 
     return Container(
@@ -40,7 +42,7 @@ class WishListItem extends StatelessWidget {
         kSeparator2,
       ),
       decoration: BoxDecoration(
-        color: GsColors.getRarityColor(item.rarity).withOpacity(0.75),
+        color: color.withOpacity(0.75),
         borderRadius: kMainRadius,
       ),
       child: Row(

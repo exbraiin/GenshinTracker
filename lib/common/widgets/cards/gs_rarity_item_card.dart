@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/hover_detector.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsRarityItemCard extends StatelessWidget {
   final int rarity;
@@ -54,7 +55,7 @@ class GsRarityItemCard extends StatelessWidget {
         ),
         child: HoverDetector(
           onTap: onTap,
-          child: _getChild(),
+          child: _getChild(context),
           decoration: (h) => BoxDecoration(
             borderRadius: radius,
             border: Border.all(
@@ -67,7 +68,7 @@ class GsRarityItemCard extends StatelessWidget {
     );
   }
 
-  Widget _getChild() {
+  Widget _getChild(BuildContext context) {
     return Stack(
       children: [
         if (asset.isNotEmpty)
@@ -82,7 +83,7 @@ class GsRarityItemCard extends StatelessWidget {
           Positioned.fill(
             bottom: null,
             child: Container(
-              color: GsColors.mainColor1.withOpacity(0.6),
+              color: context.themeColors.mainColor1.withOpacity(0.6),
               padding: const EdgeInsets.all(2),
               child: DefaultTextStyle(
                 maxLines: 1,
@@ -97,7 +98,7 @@ class GsRarityItemCard extends StatelessWidget {
           Positioned.fill(
             top: null,
             child: Container(
-              color: GsColors.mainColor1.withOpacity(0.6),
+              color: context.themeColors.mainColor1.withOpacity(0.6),
               padding: const EdgeInsets.all(2),
               child: DefaultTextStyle(
                 maxLines: 1,

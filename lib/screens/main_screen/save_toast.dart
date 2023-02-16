@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/theme.dart';
 
 class Toast extends StatefulWidget {
   final bool show;
@@ -60,7 +60,7 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                   child: Container(
                     margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: GsColors.mainColor0,
+                      color: context.themeColors.mainColor0,
                       borderRadius: BorderRadius.circular(100),
                       boxShadow: [
                         BoxShadow(

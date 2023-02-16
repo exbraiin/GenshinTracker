@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsButton extends StatelessWidget {
   final Color? color;
@@ -25,7 +26,7 @@ class GsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color ?? GsColors.mainColor3,
+      color: color ?? context.themeColors.mainColor3,
       borderRadius: borderRadius,
       child: InkWell(
         onTap: onPressed,

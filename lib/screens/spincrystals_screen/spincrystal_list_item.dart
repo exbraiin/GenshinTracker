@@ -5,6 +5,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class SpincrystalListItem extends StatelessWidget {
   final InfoSpincrystal item;
@@ -32,7 +33,7 @@ class SpincrystalListItem extends StatelessWidget {
               left: kSeparator2,
               child: ItemRarityBubble(
                 size: 30,
-                color: GsColors.mainColor2,
+                color: context.themeColors.mainColor2,
                 child: Center(
                   child: Text(item.number.toString()),
                 ),
@@ -43,7 +44,9 @@ class SpincrystalListItem extends StatelessWidget {
               right: kSeparator2,
               child: GsIconButton(
                 size: 20,
-                color: owned ? Colors.green : GsColors.missing,
+                color: owned
+                    ? context.themeColors.goodValue
+                    : context.themeColors.badValue,
                 icon: owned ? Icons.check : Icons.close,
                 onPress: () => table.updateSpincrystal(
                   item.number,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/theme/theme.dart';
 
 class RemoveDialog extends StatelessWidget {
   static Future<bool> show(BuildContext context, String name) async {
@@ -21,8 +22,8 @@ class RemoveDialog extends StatelessWidget {
     return Center(
       child: Container(
         constraints: const BoxConstraints(maxWidth: 300),
-        decoration: const BoxDecoration(
-          color: GsColors.mainColor0,
+        decoration: BoxDecoration(
+          color: context.themeColors.mainColor0,
           boxShadow: kMainShadow,
           borderRadius: kMainRadius,
         ),

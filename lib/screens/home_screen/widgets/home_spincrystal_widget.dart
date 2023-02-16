@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_colors.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
+import 'package:tracker/theme/theme.dart';
 
 class HomeSpincrystalsWidget extends StatelessWidget {
   const HomeSpincrystalsWidget({super.key});
@@ -32,7 +32,7 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final ownedAll = sv.length;
         final totalAll = spins.length;
 
-        const missing = GsColors.missing;
+        late final missing = context.themeColors.badValue;
         final oWorldColor = ownedWorld < totalWorld ? missing : Colors.white;
         final oChubbyColor = ownedChubby < totalChubby ? missing : Colors.white;
         final oAllColor = ownedAll < totalAll ? missing : Colors.white;

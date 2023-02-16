@@ -3,6 +3,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
+import 'package:tracker/theme/theme.dart';
 
 typedef FilterBuilder<T> = Widget Function(
   BuildContext context,
@@ -75,8 +76,8 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         horizontal: size.width / 4,
       ),
       padding: const EdgeInsets.all(kSeparator8),
-      decoration: const BoxDecoration(
-        color: GsColors.mainColor1,
+      decoration: BoxDecoration(
+        color: context.themeColors.mainColor1,
         borderRadius: kMainRadius,
       ),
       child: Material(
@@ -166,7 +167,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
     return Container(
       height: 28,
       decoration: BoxDecoration(
-        color: GsColors.mainColor0.withOpacity(0.6),
+        color: context.themeColors.mainColor0.withOpacity(0.6),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
           color: selected

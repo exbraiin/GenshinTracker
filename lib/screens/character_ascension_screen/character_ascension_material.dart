@@ -4,6 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/theme.dart';
 
 class CharacterAscensionMaterial extends StatelessWidget {
   final String id;
@@ -31,8 +32,8 @@ class CharacterAscensionMaterial extends StatelessWidget {
               style: context.textTheme.infoLabel.copyWith(
                 fontSize: 10,
                 color: owned + craftable >= amount
-                    ? Colors.lightGreen
-                    : GsColors.missing,
+                    ? context.themeColors.goodValue
+                    : context.themeColors.badValue,
               ),
             ),
             if (owned < amount && craftable > 0)
