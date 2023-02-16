@@ -52,11 +52,10 @@ class _MainScreenState extends State<MainScreen> {
       color: context.themeColors.mainColor0,
       child: Stack(
         children: [
-          if (false)
-            Padding(
-              padding: const EdgeInsets.only(left: 80),
-              child: _pageWidget(),
-            ),
+          Padding(
+            padding: const EdgeInsets.only(left: 80),
+            child: _pageWidget(),
+          ),
           _buttonsWidget(),
           Positioned(
             right: 0,
