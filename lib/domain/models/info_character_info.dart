@@ -18,10 +18,12 @@ class InfoCharacterInfo implements IdData {
     return InfoCharacterInfo(
       id: map['id'],
       ascension: InfoCharacterAscension.fromMap(map),
-      talents: (map['talents'] as List<Map<String, dynamic>>)
+      talents: (map['talents'] as List)
+          .cast<Map<String, dynamic>>()
           .map(InfoCharacterTalent.fromMap)
           .toList(),
-      constellations: (map['constellations'] as List<Map<String, dynamic>>)
+      constellations: (map['constellations'] as List)
+          .cast<Map<String, dynamic>>()
           .map(InfoCharacterConstellation.fromMap)
           .toList(),
     );

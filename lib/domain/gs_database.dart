@@ -88,42 +88,42 @@ class GsDatabase {
   final saveWishes = JsonSaveDetails<SaveWish>(
     'wishes',
     SaveWish.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveRecipes = JsonSaveDetails<SaveRecipe>(
     'recipes',
     SaveRecipe.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveRemarkableChests = JsonSaveDetails<SaveRemarkableChest>(
     'remarkable_chests',
     SaveRemarkableChest.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveCharacters = JsonSaveDetails<SaveCharacter>(
     'characters',
     SaveCharacter.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveReputations = JsonSaveDetails<SaveReputation>(
     'reputation',
     SaveReputation.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveSereniteaSets = JsonSaveDetails<SaveSereniteaSet>(
     'serenitea_sets',
     SaveSereniteaSet.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveSpincrystals = JsonSaveDetails<SaveSpincrystal>(
     'spincrystals',
     SaveSpincrystal.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
   final saveMaterials = JsonSaveDetails<SaveMaterial>(
     'materials',
     SaveMaterial.fromMap,
-    GsDatabase.instance._notify,
+    _notify,
   );
 
   final _loaded = BehaviorSubject<bool>();
@@ -203,9 +203,9 @@ class GsDatabase {
     ]);
   }
 
-  Future<void> _notify() async {
-    _loaded.add(true);
-    _saving.add(true);
+  static Future<void> _notify() async {
+    GsDatabase.instance._loaded.add(true);
+    GsDatabase.instance._saving.add(true);
   }
 
   void dispose() {
