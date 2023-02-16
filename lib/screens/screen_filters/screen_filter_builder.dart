@@ -111,33 +111,35 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                 builder: (context, value, child) {
                   return ListView(
                     children: widget.filter.sections
-                        .map((e) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  e.title(context),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                const SizedBox(height: kSeparator8),
-                                Wrap(
-                                  spacing: kSeparator4,
-                                  runSpacing: kSeparator4,
-                                  children: e.values
-                                      .map((v) => _chip(
-                                            context,
-                                            e.label(context, v),
-                                            e.icon(v),
-                                            e.asset(v),
-                                            e.enabled.contains(v),
-                                            () {
-                                              e.toggle(v);
-                                              notifier.value = !notifier.value;
-                                            },
-                                          ))
-                                      .toList(),
-                                ),
-                              ],
-                            ))
+                        .map(
+                          (e) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                e.title(context),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(height: kSeparator8),
+                              Wrap(
+                                spacing: kSeparator4,
+                                runSpacing: kSeparator4,
+                                children: e.values.map((v) {
+                                  return _chip(
+                                    context,
+                                    e.label(context, v),
+                                    e.icon(v),
+                                    e.asset(v),
+                                    e.enabled.contains(v),
+                                    () {
+                                      e.toggle(v);
+                                      notifier.value = !notifier.value;
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        )
                         .toGrid(
                           spacing: kSeparator8,
                           runSpacing: kSeparator8,
@@ -220,7 +222,7 @@ extension on Iterable<Widget> {
     if (!it.moveNext()) return;
     var canMove = true;
     while (true) {
-      var items = <Widget>[];
+      final items = <Widget>[];
       for (var r = 0; r < columns; ++r) {
         items.add(Expanded(child: canMove ? it.current : const SizedBox()));
         if (spacing > 0 && r + 1 < columns) items.add(SizedBox(width: spacing));

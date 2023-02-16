@@ -144,20 +144,22 @@ class ScreenFilters {
     ],
     extras: {'show'},
   );
-  static final infoNamecardFilter = ScreenFilter<InfoNamecard>(sections: [
-    FilterSection<String, InfoNamecard>(
-      GsDatabase.instance.infoNamecards.getItems().map((e) => e.type).toSet(),
-      (item) => item.type,
-      (c) => c.fromLabel(Labels.type),
-      (c, e) => e.capitalize(),
-    ),
-    FilterSection<String, InfoNamecard>(
-      _versions,
-      (item) => _toMajorVersion(item.version),
-      (c) => c.fromLabel(Labels.version),
-      (c, i) => i,
-    ),
-  ]);
+  static final infoNamecardFilter = ScreenFilter<InfoNamecard>(
+    sections: [
+      FilterSection<String, InfoNamecard>(
+        GsDatabase.instance.infoNamecards.getItems().map((e) => e.type).toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.type),
+        (c, e) => e.capitalize(),
+      ),
+      FilterSection<String, InfoNamecard>(
+        _versions,
+        (item) => _toMajorVersion(item.version),
+        (c) => c.fromLabel(Labels.version),
+        (c, i) => i,
+      ),
+    ],
+  );
   static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
     sections: [
       FilterSection<int, InfoRecipe>(
@@ -511,5 +513,6 @@ extension<E> on Comparator<E> {
 }
 
 extension on bool {
+  // ignore: avoid_positional_boolean_parameters
   int compareTo(bool other) => (this ? 1 : 0).compareTo(other ? 1 : 0);
 }

@@ -72,7 +72,7 @@ class BannerListItem extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${banner.name} '
-                              '(${banner.dateStart.format(false)}) ',
+                              '(${banner.dateStart.format(showHour: false)}) ',
                         ),
                         TextSpan(
                           text: '\n   $rolls Pulls - ',

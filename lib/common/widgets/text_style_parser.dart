@@ -29,11 +29,11 @@ class TextParserWidget extends StatelessWidget {
 
     final tags = {
       '<b>': () => bold.add(FontWeight.bold),
-      '</b>': () => bold.pop(),
+      '</b>': bold.pop,
       '<i>': () => italic.add(FontStyle.italic),
-      '</i>': () => italic.pop(),
+      '</i>': italic.pop,
       '<u>': () => underline.add(TextDecoration.underline),
-      '</u>': () => underline.pop(),
+      '</u>': underline.pop,
       '<color=skill>': () => colorQueue.add(Colors.orange),
       '<color=geo>': () => colorQueue.add(GsElement.geo.color),
       '<color=pyro>': () => colorQueue.add(GsElement.pyro.color),
@@ -42,7 +42,7 @@ class TextParserWidget extends StatelessWidget {
       '<color=anemo>': () => colorQueue.add(GsElement.anemo.color),
       '<color=dendro>': () => colorQueue.add(GsElement.dendro.color),
       '<color=electro>': () => colorQueue.add(GsElement.electro.color),
-      '</color>': () => colorQueue.pop(),
+      '</color>': colorQueue.pop,
     };
     for (var p = 0;;) {
       final idxs = tags.keys

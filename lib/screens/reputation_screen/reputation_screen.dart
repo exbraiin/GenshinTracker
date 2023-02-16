@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -29,7 +29,7 @@ class ReputationScreen extends StatelessWidget {
                   runSpacing: kSeparator4,
                   children: GsDatabase.instance.infoCities
                       .getItems()
-                      .map((c) => ReputationListItem(c))
+                      .map(ReputationListItem.new)
                       .toList(),
                 ),
               ],

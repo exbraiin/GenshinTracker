@@ -39,19 +39,23 @@ class SereniteaSetListItem extends StatelessWidget {
             ),
           ),
           ...item.chars
-              .map((e) => GsDatabase.instance.infoCharacters.getItemOrNull(e))
+              .map(GsDatabase.instance.infoCharacters.getItemOrNull)
               .whereNotNull()
-              .where((e) =>
-                  !(saved?.chars.contains(e.id) ?? false) &&
-                  GsUtils.characters.hasCaracter(e.id))
-              .mapIndexed((i, e) => Positioned(
-                    right: kSeparator2 + i * kSeparator8,
-                    bottom: kSeparator2,
-                    child: ItemRarityBubble(
-                      image: e.image,
-                      rarity: e.rarity,
-                    ),
-                  )),
+              .where(
+                (e) =>
+                    !(saved?.chars.contains(e.id) ?? false) &&
+                    GsUtils.characters.hasCaracter(e.id),
+              )
+              .mapIndexed(
+                (i, e) => Positioned(
+                  right: kSeparator2 + i * kSeparator8,
+                  bottom: kSeparator2,
+                  child: ItemRarityBubble(
+                    image: e.image,
+                    rarity: e.rarity,
+                  ),
+                ),
+              ),
         ],
       ),
     );

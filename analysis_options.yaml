@@ -21,9 +21,74 @@ linter:
   # or a specific dart file by using the `// ignore: name_of_lint` and
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
-  rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+  rules:    
+    # Style
+    ## Adhere to Effective Dart Guide directives sorting conventions.
+    directives_ordering: true
+    ## AVOID lines longer than 80 characters.
+    lines_longer_than_80_chars: false
+    ## DO use single quotes where they wouldn't require additional escapes.
+    prefer_single_quotes: true
+    ## DO declare method return types.
+    always_declare_return_types: true
+    ## DO use trailing commas for all function calls and declarations unless the
+    ## function call or definition, from the start of the function name up to the
+    ## closing parenthesis, fits in a single line.
+    require_trailing_commas: true
+    ## AVOID using parentheses when not needed.
+    unnecessary_parenthesis: true
+    
+    # Documentation
+    ## Provide doc comments for all public APIs.
+    package_api_docs: true
+    ## Document all public members.
+    public_member_api_docs: false
+
+    # Errors
+    ## DO avoid relative imports for files in lib/.
+    always_use_package_imports: true
+    
+    # Usage
+    ## Use interpolation to compose strings and values.
+    prefer_interpolation_to_compose_strings: true
+    ## Don't create a lambda when a tear-off will do.
+    unnecessary_lambdas: true
+    
+    # Design
+    ## Start the name of the method with to/_to or as/_as if applicable.
+    use_to_and_as_if_applicable: true
+    ## Use a setter for operations that conceptually change a property.
+    use_setters_to_change_properties: true
+    ## Avoid setters without getters.
+    avoid_setters_without_getters: true
+    ## Avoid returning null from members whose return type is bool, double, int, or num.
+    avoid_returning_null: true
+    ## Avoid returning this from methods just to enable a fluent interface.
+    avoid_returning_this: true
+    ## Type annotate public APIs.
+    type_annotate_public_apis: true
+    ## Omit type annotations for local variables.
+    omit_local_variable_types: true
+    ## Avoid positional boolean parameters.
+    avoid_positional_boolean_parameters: true
+    
+    # Additional rules
+    ## Don't cast a nullable value to a non nullable type. This hides a null check and most of the time it is not what is expected.
+    cast_nullable_to_non_nullable: true
+    ## DO prefer declaring variables as final if they are not reassigned later in the code.
+    ## Declaring variables as final when possible is a good practice because it helps avoid accidental reassignments
+    ## and allows the compiler to do optimizations.
+    prefer_final_locals: true
+    ## DO NOT use BuildContext across asynchronous gaps.
+    use_build_context_synchronously: true
+    ## PREFER the use of intValue.isOdd/isEven to check for evenness.
+    use_is_even_rather_than_modulo: true
+    
+    # Exclusions
+    ## Some code generation tools place files we want to import in a src folder
+    implementation_imports: false
+
+    
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

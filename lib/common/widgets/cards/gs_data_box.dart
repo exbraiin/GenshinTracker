@@ -31,11 +31,13 @@ class GsDataBox extends StatelessWidget {
     String label, {
     super.key,
   })  : title = null,
-        child = Text(label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-            )),
+        child = Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
         children = const [],
         alignment = CrossAxisAlignment.start,
         padding = const EdgeInsets.symmetric(

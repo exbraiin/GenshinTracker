@@ -35,9 +35,11 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
       builder: (context, snapshot) {
         final characters = GsDatabase.instance.infoCharacters
             .getItems()
-            .where((e) =>
-                GsUtils.characters.hasCaracter(e.id) &&
-                !GsUtils.characters.isCharMaxAscended(e.id))
+            .where(
+              (e) =>
+                  GsUtils.characters.hasCaracter(e.id) &&
+                  !GsUtils.characters.isCharMaxAscended(e.id),
+            )
             .sortedBy((e) => GsUtils.characters.getCharAscension(e.id))
             .thenByDescending((e) => e.rarity)
             .thenBy((e) => e.name);
@@ -136,10 +138,12 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: materials
-                      .map((e) => CharacterAscensionMaterial(
-                            e.material!.id,
-                            e.required,
-                          ))
+                      .map(
+                        (e) => CharacterAscensionMaterial(
+                          e.material!.id,
+                          e.required,
+                        ),
+                      )
                       .toList(),
                 ),
               ),

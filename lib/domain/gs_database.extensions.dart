@@ -13,9 +13,10 @@ extension InfoCityExt on JsonInfoDetails<InfoCity> {
 
 extension InfoMaterialExt on JsonInfoDetails<InfoMaterial> {
   Iterable<InfoMaterial> getSubGroup(InfoMaterial material) {
-    return getItems().where((element) =>
-        element.group == material.group &&
-        element.subgroup == material.subgroup);
+    return getItems().where((element) {
+      return element.group == material.group &&
+          element.subgroup == material.subgroup;
+    });
   }
 }
 
@@ -128,7 +129,7 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
 }
 
 extension SaveSereniteaSetExt on JsonSaveDetails<SaveSereniteaSet> {
-  void setSetCharacter(String set, String char, bool owned) {
+  void setSetCharacter(String set, String char, {required bool owned}) {
     final sv = getItemOrNull(set) ?? SaveSereniteaSet(id: set, chars: []);
     final hasCharacter = sv.chars.contains(char);
     if (owned && !hasCharacter) {
@@ -160,7 +161,7 @@ extension SaveSpincrystalExt on JsonSaveDetails<SaveSpincrystal> {
 }
 
 extension SaveRecipeExt on JsonSaveDetails<SaveRecipe> {
-  void ownRecipe(String id, bool own) async {
+  void ownRecipe(String id, {required bool own}) async {
     final contains = exists(id);
     if (own && !contains) {
       insertItem(SaveRecipe(id: id, proficiency: 0));
@@ -202,7 +203,7 @@ extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
     final char = getItemOrNull(id);
     final wishes = GsDatabase.instance.saveWishes.countItem(id);
 
-    var cOwned = (char?.owned ?? 0);
+    var cOwned = char?.owned ?? 0;
     cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
     final item = (char ?? SaveCharacter(id: id)).copyWith(owned: cOwned);
     insertItem(item);
@@ -252,7 +253,7 @@ extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
     return GsDatabase.instance.infoMaterials
         .getSubGroup(mat)
         .where((e) => e.rarity < mat.rarity)
-        .sumBy((e) => getCraftable(e))
+        .sumBy(getCraftable)
         .toInt();
   }
 }

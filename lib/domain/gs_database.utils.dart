@@ -106,11 +106,11 @@ class _Wishes {
     return [
       ...db.infoWeapons
           .getItems()
-          .where((element) => filterWeapon(element))
+          .where(filterWeapon)
           .map((element) => ItemData(weapon: element)),
       ...db.infoCharacters
           .getItems()
-          .where((element) => filterCharacter(element))
+          .where(filterCharacter)
           .map((element) => ItemData(character: element)),
     ];
   }
@@ -237,7 +237,7 @@ class ItemData extends Comparable<ItemData> {
 }
 
 List<Widget> getSized(Iterable<Widget> widgets) {
-  final List<double> sizes = [100, 44, 0, 20, 64, 84, 56];
+  final sizes = <double>[100, 44, 0, 20, 64, 84, 56];
   return List.generate(
     sizes.length,
     (i) => sizes[i] == 0

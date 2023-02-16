@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -89,7 +88,7 @@ class FileImageSafe extends FileImage {
       );
     }
 
-    final Uint8List bytes = await file.readAsBytes();
+    final bytes = await file.readAsBytes();
 
     if (bytes.lengthInBytes == 0) {
       // The file may become available later.

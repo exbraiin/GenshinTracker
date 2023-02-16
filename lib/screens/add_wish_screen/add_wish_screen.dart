@@ -77,7 +77,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                               itemBuilder: (context, index) {
                                 return AddWishWishListItem(
                                   item: list[index],
-                                  roll: (roll + (list.length - index)),
+                                  roll: roll + (list.length - index),
                                   onRemove: () => _wishes.value =
                                       (_wishes.value..removeAt(index)).toList(),
                                 );

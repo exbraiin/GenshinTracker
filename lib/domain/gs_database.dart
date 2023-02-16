@@ -17,113 +17,113 @@ class GsDatabase {
 
   final infoDetails = JsonInfoSingle(
     'details',
-    (map) => InfoDetails.fromMap(map),
+    InfoDetails.fromMap,
   );
   final infoCities = JsonInfoDetails<InfoCity>(
     'cities',
-    (map) => InfoCity.fromMap(map),
+    InfoCity.fromMap,
   );
   final infoBanners = JsonInfoDetails<InfoBanner>(
     'banners',
-    (map) => InfoBanner.fromMap(map),
+    InfoBanner.fromMap,
   );
   final infoArtifacts = JsonInfoDetails<InfoArtifact>(
     'artifacts',
-    (map) => InfoArtifact.fromMap(map),
+    InfoArtifact.fromMap,
   );
   final infoMaterials = JsonInfoDetails<InfoMaterial>(
     'materials',
-    (map) => InfoMaterial.fromMap(map),
+    InfoMaterial.fromMap,
   );
   final infoRecipes = JsonInfoDetails<InfoRecipe>(
     'recipes',
-    (map) => InfoRecipe.fromMap(map),
+    InfoRecipe.fromMap,
   );
   final infoRemarkableChests = JsonInfoDetails(
     'remarkable_chests',
-    (map) => InfoRemarkableChest.fromMap(map),
+    InfoRemarkableChest.fromMap,
   );
   final infoIngredients = JsonInfoDetails<InfoIngredient>(
     'ingredients',
-    (map) => InfoIngredient.fromMap(map),
+    InfoIngredient.fromMap,
   );
   final infoWeapons = JsonInfoDetails<InfoWeapon>(
     'weapons',
-    (map) => InfoWeapon.fromMap(map),
+    InfoWeapon.fromMap,
   );
   final infoWeaponsInfo = JsonInfoDetails<InfoWeaponInfo>(
     'weapons_info',
-    (map) => InfoWeaponInfo.fromMap(map),
+    InfoWeaponInfo.fromMap,
   );
   final infoNamecards = JsonInfoDetails(
     'namecards',
-    (map) => InfoNamecard.fromMap(map),
+    InfoNamecard.fromMap,
   );
   final infoCharacters = JsonInfoDetails<InfoCharacter>(
     'characters',
-    (map) => InfoCharacter.fromMap(map),
+    InfoCharacter.fromMap,
   );
   final infoCharactersInfo = JsonInfoDetails(
     'characters_info',
-    (map) => InfoCharacterInfo.fromMap(map),
+    InfoCharacterInfo.fromMap,
   );
   final infoCharactersOutfit = JsonInfoDetails(
     'characters_outfits',
-    (map) => InfoCharacterOutfit.fromMap(map),
+    InfoCharacterOutfit.fromMap,
   );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
-    (map) => InfoSpincrystal.fromMap(map),
+    InfoSpincrystal.fromMap,
   );
   final infoSereniteaSets = JsonInfoDetails<InfoSereniteaSet>(
     'serenitea_sets',
-    (map) => InfoSereniteaSet.fromMap(map),
+    InfoSereniteaSet.fromMap,
   );
   final infoVersion = JsonInfoDetails<InfoVersion>(
     'versions',
-    (map) => InfoVersion.fromMap(map),
+    InfoVersion.fromMap,
   );
 
   bool _saveLoaded = false;
   final saveWishes = JsonSaveDetails<SaveWish>(
     'wishes',
-    (m) => SaveWish.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveWish.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveRecipes = JsonSaveDetails<SaveRecipe>(
     'recipes',
-    (m) => SaveRecipe.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveRecipe.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveRemarkableChests = JsonSaveDetails<SaveRemarkableChest>(
     'remarkable_chests',
-    (m) => SaveRemarkableChest.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveRemarkableChest.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveCharacters = JsonSaveDetails<SaveCharacter>(
     'characters',
-    (m) => SaveCharacter.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveCharacter.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveReputations = JsonSaveDetails<SaveReputation>(
     'reputation',
-    (m) => SaveReputation.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveReputation.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveSereniteaSets = JsonSaveDetails<SaveSereniteaSet>(
     'serenitea_sets',
-    (m) => SaveSereniteaSet.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveSereniteaSet.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveSpincrystals = JsonSaveDetails<SaveSpincrystal>(
     'spincrystals',
-    (m) => SaveSpincrystal.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveSpincrystal.fromMap,
+    GsDatabase.instance._notify,
   );
   final saveMaterials = JsonSaveDetails<SaveMaterial>(
     'materials',
-    (m) => SaveMaterial.fromMap(m),
-    () => GsDatabase.instance._notify(),
+    SaveMaterial.fromMap,
+    GsDatabase.instance._notify,
   );
 
   final _loaded = BehaviorSubject<bool>();

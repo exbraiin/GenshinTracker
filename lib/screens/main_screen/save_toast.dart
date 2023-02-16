@@ -4,7 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 class Toast extends StatefulWidget {
   final bool show;
 
-  const Toast(this.show, {super.key});
+  const Toast({super.key, required this.show});
 
   @override
   State<Toast> createState() => _ToastState();
@@ -85,8 +85,11 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                           const Center(
                             child: Padding(
                               padding: EdgeInsets.all(4),
-                              child: Icon(Icons.save,
-                                  size: 20, color: Colors.white),
+                              child: Icon(
+                                Icons.save,
+                                size: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           )
                         ],

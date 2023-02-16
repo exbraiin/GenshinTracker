@@ -17,7 +17,7 @@ extension DateTimeExt on DateTime {
     return '${months[month - 1]} $day${year != 0 ? ', $year' : ''}';
   }
 
-  String format([bool showHour = true]) {
+  String format({bool showHour = true}) {
     final str = toString().split('.').first;
     if (showHour) return str;
     return str.split(' ').first.toString();

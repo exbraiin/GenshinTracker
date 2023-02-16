@@ -27,7 +27,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final item = args as InfoCharacter;
+    final item = args! as InfoCharacter;
     final info = GsDatabase.instance.infoCharactersInfo.getItemOrNull(item.id);
 
     return ValueStreamBuilder<bool>(
@@ -103,18 +103,17 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Labels.talents: _talents,
                 Labels.constellations: _constellation,
                 Labels.materials: _materials,
-              }
-                  .entries
-                  .map((e) => _getTextButton(
-                        context,
-                        context.fromLabel(e.key),
-                        () => Scrollable.ensureVisible(
-                          e.value.currentContext!,
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeOut,
-                        ),
-                      ))
-                  .separate(const SizedBox(height: kSeparator4)),
+              }.entries.map((e) {
+                return _getTextButton(
+                  context,
+                  context.fromLabel(e.key),
+                  () => Scrollable.ensureVisible(
+                    e.value.currentContext!,
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeOut,
+                  ),
+                );
+              }).separate(const SizedBox(height: kSeparator4)),
             ],
           ),
           const SizedBox(width: 18),
@@ -207,12 +206,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.name, style: stStyle),
                 Text(context.fromLabel(Labels.birthday), style: stLabel),
                 Text(info.birthday.toPrettyDate(), style: stStyle),
-              ]
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: e,
-                      ))
-                  .toList(),
+              ].map((e) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                  child: e,
+                );
+              }).toList(),
             ),
             TableRow(
               children: [
@@ -220,12 +219,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.constellation, style: stStyle),
                 Text(context.fromLabel(Labels.title), style: stLabel),
                 Text(info.title, style: stStyle),
-              ]
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: e,
-                      ))
-                  .toList(),
+              ].map((e) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                  child: e,
+                );
+              }).toList(),
             ),
             TableRow(
               children: [
@@ -233,12 +232,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(context.fromLabel(info.element.label), style: stStyle),
                 Text(context.fromLabel(Labels.affiliation), style: stLabel),
                 Text(info.affiliation, style: stStyle),
-              ]
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: e,
-                      ))
-                  .toList(),
+              ].map((e) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                  child: e,
+                );
+              }).toList(),
             ),
             TableRow(
               children: [
@@ -246,12 +245,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(context.fromLabel(info.weapon.label), style: stStyle),
                 Text(context.fromLabel(Labels.version), style: stLabel),
                 Text(info.version, style: stStyle),
-              ]
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: e,
-                      ))
-                  .toList(),
+              ].map((e) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                  child: e,
+                );
+              }).toList(),
             ),
             TableRow(
               children: [
@@ -271,12 +270,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                     : Text(context.fromLabel(Labels.wsNone), style: stStyle),
                 Text(context.fromLabel(Labels.releaseDate), style: stLabel),
                 Text(info.releaseDate.toPrettyDate(), style: stStyle),
-              ]
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: e,
-                      ))
-                  .toList(),
+              ].map((e) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                  child: e,
+                );
+              }).toList(),
             ),
             if (GsUtils.characters.hasOutfits(info.id))
               TableRow(
@@ -296,23 +295,25 @@ class CharacterDetailsScreen extends StatelessWidget {
                       ...GsDatabase.instance.infoCharactersOutfit
                           .getItems()
                           .where((element) => element.character == info.id)
-                          .map((e) => GsRarityItemCard.withLabels(
-                                image: e.image,
-                                rarity: e.rarity,
-                                labelFooter: e.name,
-                                onTap: () => GsDatabase.instance.saveCharacters
-                                    .setCharOutfit(info.id, e.id),
-                              )),
+                          .map((e) {
+                        return GsRarityItemCard.withLabels(
+                          image: e.image,
+                          rarity: e.rarity,
+                          labelFooter: e.name,
+                          onTap: () => GsDatabase.instance.saveCharacters
+                              .setCharOutfit(info.id, e.id),
+                        );
+                      }),
                     ],
                   ),
                   const SizedBox(),
                   const SizedBox(),
-                ]
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-                          child: e,
-                        ))
-                    .toList(),
+                ].map((e) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                    child: e,
+                  );
+                }).toList(),
               )
           ],
         ),
@@ -477,10 +478,12 @@ class CharacterDetailsScreen extends StatelessWidget {
               ),
             );
           })
-          .separate(const Divider(
-            color: GsColors.dimWhite,
-            thickness: 0.4,
-          ))
+          .separate(
+            const Divider(
+              color: GsColors.dimWhite,
+              thickness: 0.4,
+            ),
+          )
           .toList(),
     );
   }
@@ -521,10 +524,12 @@ class CharacterDetailsScreen extends StatelessWidget {
               ),
             );
           })
-          .separate(const Divider(
-            color: GsColors.dimWhite,
-            thickness: 0.4,
-          ))
+          .separate(
+            const Divider(
+              color: GsColors.dimWhite,
+              thickness: 0.4,
+            ),
+          )
           .toList(),
     );
   }

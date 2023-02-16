@@ -228,11 +228,13 @@ class HomeWishesValues extends StatelessWidget {
                           children: [
                             TextSpan(text: item.name, style: style),
                             const WidgetSpan(
-                                child: SizedBox(width: kSeparator4)),
+                              child: SizedBox(width: kSeparator4),
+                            ),
                             TextSpan(
                               text: pity.toString(),
                               style: style.copyWith(
-                                  color: GsColors.getPityColor(pity)),
+                                color: GsColors.getPityColor(pity),
+                              ),
                             ),
                             if (state == WishState.guaranteed)
                               const WidgetSpan(

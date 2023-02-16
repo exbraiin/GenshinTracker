@@ -91,13 +91,19 @@ class WishListItem extends StatelessWidget {
                     border: Border(
                       top: type == ListType.top
                           ? const BorderSide(
-                              color: GsColors.almostWhite, width: 2)
+                              color: GsColors.almostWhite,
+                              width: 2,
+                            )
                           : BorderSide.none,
                       right: const BorderSide(
-                          color: GsColors.almostWhite, width: 2),
+                        color: GsColors.almostWhite,
+                        width: 2,
+                      ),
                       bottom: type == ListType.bottom
                           ? const BorderSide(
-                              color: GsColors.almostWhite, width: 2)
+                              color: GsColors.almostWhite,
+                              width: 2,
+                            )
                           : BorderSide.none,
                     ),
                   ),
@@ -106,7 +112,9 @@ class WishListItem extends StatelessWidget {
                           child: Text(
                             Lang.of(context).getValue(Labels.x10),
                             style: style.copyWith(
-                                fontSize: 8, color: GsColors.almostWhite),
+                              fontSize: 8,
+                              color: GsColors.almostWhite,
+                            ),
                           ),
                         )
                       : null,

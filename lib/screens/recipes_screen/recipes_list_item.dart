@@ -76,7 +76,7 @@ class RecipesListItem extends StatelessWidget {
                   icon: savedRecipe != null ? Icons.check : Icons.close,
                   onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
                     recipe.id,
-                    savedRecipe == null,
+                    own: savedRecipe == null,
                   ),
                 ),
               ),

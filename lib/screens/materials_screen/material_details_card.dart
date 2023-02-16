@@ -81,11 +81,13 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             runSpacing: kSeparator4,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: mats
-                .map((e) => ItemRarityBubble(
-                      image: e.image,
-                      rarity: e.rarity,
-                      tooltip: e.name,
-                    ))
+                .map(
+                  (e) => ItemRarityBubble(
+                    image: e.image,
+                    rarity: e.rarity,
+                    tooltip: e.name,
+                  ),
+                )
                 .toList(),
           ),
         ),

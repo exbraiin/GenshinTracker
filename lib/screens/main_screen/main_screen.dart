@@ -62,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
             child: StreamBuilder<bool>(
               initialData: false,
               stream: GsDatabase.instance.saving.distinct(),
-              builder: (context, snapshot) => Toast(snapshot.data!),
+              builder: (context, snapshot) => Toast(show: snapshot.data!),
             ),
           ),
         ],
@@ -141,16 +141,17 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             child: ValueListenableBuilder<int>(
-                valueListenable: _page,
-                builder: (context, value, child) {
-                  return ListView(
-                    padding: const EdgeInsets.all(kSeparator4),
-                    children: _menus
-                        .mapIndexed((i, e) => button(i, e))
-                        .separate(const SizedBox(height: kSeparator2))
-                        .toList(),
-                  );
-                }),
+              valueListenable: _page,
+              builder: (context, value, child) {
+                return ListView(
+                  padding: const EdgeInsets.all(kSeparator4),
+                  children: _menus
+                      .mapIndexed(button)
+                      .separate(const SizedBox(height: kSeparator2))
+                      .toList(),
+                );
+              },
+            ),
           ),
         );
       },
@@ -318,19 +319,19 @@ class _PageAnimator extends StatefulWidget {
 }
 
 class _PageAnimatorState extends State<_PageAnimator> {
-  var opacity = 0.0;
+  var _opacity = 0.0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.endOfFrame
-        .then((value) => setState(() => opacity = 1));
+        .then((value) => setState(() => _opacity = 1));
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      opacity: opacity,
+      opacity: _opacity,
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
       child: widget.child,

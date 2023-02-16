@@ -24,7 +24,7 @@ class HomeTable extends StatelessWidget {
               .map((e) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: e,
-                  ))
+                  ),)
               .toList(),
         ),
         ...rows.map((e) => TableRow(children: e.map((e) => e).toList())),

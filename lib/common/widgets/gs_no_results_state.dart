@@ -20,7 +20,9 @@ class GsNoResultsState extends StatelessWidget {
           Text(
             Lang.of(context).getValue(Labels.noResults).toUpperCase(),
             style: context.textTheme.description.copyWith(
-                color: GsColors.mainColor3, fontFamily: 'ZenKurenaido'),
+              color: GsColors.mainColor3,
+              fontFamily: 'ZenKurenaido',
+            ),
           ),
         ],
       ),

@@ -226,23 +226,24 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                 children: [
                   Positioned.fill(
                     child: DefaultTextStyle(
-                        style: context.textTheme.titleLarge!.copyWith(
-                          color: GsColors.dimWhite,
-                          fontSize: 16,
-                          shadows: const [
-                            BoxShadow(
-                              color: Colors.black45,
-                              offset: Offset(1, 1),
-                              blurRadius: 1,
-                            )
-                          ],
-                        ),
-                        child: ValueListenableBuilder<int>(
-                          valueListenable: _page,
-                          builder: (context, value, child) =>
-                              widget.info?.call(context, value) ??
-                              const SizedBox(),
-                        )),
+                      style: context.textTheme.titleLarge!.copyWith(
+                        color: GsColors.dimWhite,
+                        fontSize: 16,
+                        shadows: const [
+                          BoxShadow(
+                            color: Colors.black45,
+                            offset: Offset(1, 1),
+                            blurRadius: 1,
+                          )
+                        ],
+                      ),
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: _page,
+                        builder: (context, value, child) =>
+                            widget.info?.call(context, value) ??
+                            const SizedBox(),
+                      ),
+                    ),
                   ),
                   Positioned(
                     left: 0,

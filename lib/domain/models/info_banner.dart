@@ -1,4 +1,4 @@
-import '../gs_domain.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 class InfoBanner extends Comparable<InfoBanner> implements IdData {
   @override

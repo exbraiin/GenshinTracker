@@ -35,7 +35,7 @@ class TrackerRouter {
     MaterialsScreen.id: () => const MaterialsScreen(),
     ReputationScreen.id: () => const ReputationScreen(),
     SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),
-    CharacterDetailsScreen.id: () => CharacterDetailsScreen(),
+    CharacterDetailsScreen.id: CharacterDetailsScreen.new,
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
     ChangelogScreen.id: () => const ChangelogScreen(),
   };

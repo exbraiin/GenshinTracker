@@ -69,10 +69,11 @@ class SereniteaSetDetailsCard extends StatelessWidget
                 runSpacing: kSeparator4,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: item.chars
-                    .map((e) => ic.getItemOrNull(e))
+                    .map(ic.getItemOrNull)
                     .whereNotNull()
                     .sortedBy(
-                        (e) => GsUtils.characters.hasCaracter(e.id) ? 0 : 1)
+                      (e) => GsUtils.characters.hasCaracter(e.id) ? 0 : 1,
+                    )
                     .thenByDescending((element) => element.rarity)
                     .thenBy((element) => element.name)
                     .map((char) {
@@ -85,7 +86,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
                       rarity: char.rarity,
                       onTap: owns
                           ? () => GsDatabase.instance.saveSereniteaSets
-                              .setSetCharacter(item.id, char.id, !marked)
+                              .setSetCharacter(item.id, char.id, owned: !marked)
                           : null,
                       child: marked
                           ? const Align(

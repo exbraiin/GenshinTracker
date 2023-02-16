@@ -133,45 +133,49 @@ class WishesScreen extends StatelessWidget {
       child: SizedBox(
         height: 44,
         child: Row(
-          children: getSized([
-            Text(
-              Lang.of(context).getValue(Labels.time),
-              textAlign: TextAlign.center,
-              style: context.textTheme.headerButtonLabel,
-            ),
-            Text(
-              Lang.of(context).getValue(Labels.pity),
-              textAlign: TextAlign.center,
-              style: context.textTheme.headerButtonLabel,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 44),
-              child: Text(
-                Lang.of(context).getValue(Labels.name),
+          children: getSized(
+            [
+              Text(
+                Lang.of(context).getValue(Labels.time),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
-            ),
-            const SizedBox(),
-            Text(
-              Lang.of(context).getValue(Labels.rarity),
-              textAlign: TextAlign.center,
-              style: context.textTheme.headerButtonLabel,
-            ),
-            Text(
-              Lang.of(context).getValue(Labels.type),
-              textAlign: TextAlign.center,
-              style: context.textTheme.headerButtonLabel,
-            ),
-            Text(
-              Lang.of(context).getValue(Labels.roll),
-              textAlign: TextAlign.center,
-              style: context.textTheme.headerButtonLabel,
-            ),
-          ].map((widget) => Padding(
+              Text(
+                Lang.of(context).getValue(Labels.pity),
+                textAlign: TextAlign.center,
+                style: context.textTheme.headerButtonLabel,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 44),
+                child: Text(
+                  Lang.of(context).getValue(Labels.name),
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.headerButtonLabel,
+                ),
+              ),
+              const SizedBox(),
+              Text(
+                Lang.of(context).getValue(Labels.rarity),
+                textAlign: TextAlign.center,
+                style: context.textTheme.headerButtonLabel,
+              ),
+              Text(
+                Lang.of(context).getValue(Labels.type),
+                textAlign: TextAlign.center,
+                style: context.textTheme.headerButtonLabel,
+              ),
+              Text(
+                Lang.of(context).getValue(Labels.roll),
+                textAlign: TextAlign.center,
+                style: context.textTheme.headerButtonLabel,
+              ),
+            ].map((widget) {
+              return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Center(child: widget),
-              ))),
+              );
+            }),
+          ),
         ),
       ),
     );

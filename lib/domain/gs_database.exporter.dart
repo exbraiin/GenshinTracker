@@ -45,7 +45,7 @@ abstract class GsDatabaseExporter {
       final item = GsUtils.items.getItemData(wish.itemId);
       final banner = db.infoBanners.getItem(wish.bannerId);
 
-      rows.add(_Row(
+      final row = _Row(
         type: item.type.name.capitalize(),
         name: item.name,
         date: wish.date.format(),
@@ -53,7 +53,8 @@ abstract class GsDatabaseExporter {
         pity: GsUtils.wishes.countPity(wishes, wish),
         roll: wish.number,
         banner: banner.name,
-      ));
+      );
+      rows.add(row);
     }
 
     sheet.appendRow([
@@ -118,8 +119,8 @@ abstract class GsDatabaseExporter {
     for (var banner in list) {
       sheet.appendRow([
         banner.name,
-        banner.dateStart.format(false),
-        banner.dateEnd.format(false),
+        banner.dateStart.format(showHour: false),
+        banner.dateEnd.format(showHour: false),
       ]);
     }
   }
@@ -177,8 +178,10 @@ int _bannerType(GsBanner banner) {
 extension on Sheet {
   void applyStyleToRow(int index, CellStyle style) {
     final row = this.row(index);
-    row.forEachIndexed((_, i) =>
-        cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
-            .cellStyle = style);
+    row.forEachIndexed(
+      (_, i) =>
+          cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
+              .cellStyle = style,
+    );
   }
 }

@@ -20,19 +20,19 @@ class WeeklyScreen extends StatefulWidget {
 }
 
 class _WeeklyScreenState extends State<WeeklyScreen> {
-  var owned = false;
-  var weekday = 0;
+  var _owned = false;
+  var _weekday = 0;
 
   @override
   void initState() {
     super.initState();
-    weekday = DateTime.now().weekday;
+    _weekday = DateTime.now().weekday;
   }
 
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now().weekday - 1;
-    final name = GsWeekday.days[weekday - 1];
+    final name = GsWeekday.days[_weekday - 1];
     final materials = GsDatabase.instance.infoMaterials
         .getItems()
         .where((element) => element.weekdays.contains(name))
@@ -49,10 +49,10 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              owned ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+              _owned ? Icons.visibility_rounded : Icons.visibility_off_rounded,
               color: Colors.white.withOpacity(0.5),
             ),
-            onPressed: () => setState(() => owned = !owned),
+            onPressed: () => setState(() => _owned = !_owned),
           ),
           _getDropdown(context, now),
         ],
@@ -89,12 +89,16 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         crossAxisAlignment: WrapCrossAlignment.start,
                         children: ic
                             .getItems()
-                            .where((char) => GsDatabase
-                                .instance.infoCharactersInfo
-                                .getAllMaterials(char.id)
-                                .containsKey(e.id))
-                            .where((e) =>
-                                !owned || GsUtils.characters.hasCaracter(e.id))
+                            .where(
+                              (char) => GsDatabase.instance.infoCharactersInfo
+                                  .getAllMaterials(char.id)
+                                  .containsKey(e.id),
+                            )
+                            .where(
+                              (e) =>
+                                  !_owned ||
+                                  GsUtils.characters.hasCaracter(e.id),
+                            )
                             .sortedByDescending((element) => element.rarity)
                             .thenBy((element) => element.name)
                             .map((info) {
@@ -118,12 +122,14 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         crossAxisAlignment: WrapCrossAlignment.start,
                         children: iw
                             .getItems()
-                            .where((weapon) => GsDatabase
-                                .instance.infoWeaponsInfo
-                                .getAscensionMaterials(weapon.id)
-                                .containsKey(e.id))
-                            .where((e) =>
-                                !owned || GsUtils.weapons.hasWeapon(e.id))
+                            .where(
+                              (weapon) => GsDatabase.instance.infoWeaponsInfo
+                                  .getAscensionMaterials(weapon.id)
+                                  .containsKey(e.id),
+                            )
+                            .where(
+                              (e) => !_owned || GsUtils.weapons.hasWeapon(e.id),
+                            )
                             .sortedByDescending((element) => element.rarity)
                             .thenBy((element) => element.name)
                             .map((info) {
@@ -156,7 +162,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
       padding: const EdgeInsets.all(kSeparator4),
       child: DropdownButton(
         style: context.textTheme.description2.copyWith(color: Colors.white),
-        value: weekday - 1,
+        value: _weekday - 1,
         underline: const SizedBox(),
         focusColor: Colors.transparent,
         iconEnabledColor: Colors.white,
@@ -171,7 +177,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
             ),
           );
         }).toList(),
-        onChanged: (int? i) => setState(() => weekday = (i ?? 0) + 1),
+        onChanged: (int? i) => setState(() => _weekday = (i ?? 0) + 1),
         alignment: Alignment.center,
         borderRadius: kMainRadius,
         elevation: 1,

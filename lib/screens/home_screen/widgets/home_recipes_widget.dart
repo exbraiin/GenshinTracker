@@ -30,8 +30,11 @@ class HomeRecipesWidget extends StatelessWidget {
 
         int master(int rarity) {
           return groups[rarity]
-                  ?.where((e) => saved.any(
-                      (t) => t.id == e.id && t.proficiency == e.maxProficiency))
+                  ?.where(
+                    (e) => saved.any(
+                      (t) => t.id == e.id && t.proficiency == e.maxProficiency,
+                    ),
+                  )
                   .length ??
               0;
         }

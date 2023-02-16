@@ -27,7 +27,7 @@ extension GsAttributeStatExt on GsAttributeStat {
         Labels.wsCryoBonus,
       ][index];
 
-  String toIntOrPercentage(double value, [bool format = true]) {
+  String toIntOrPercentage(double value, {bool format = true}) {
     final percentage = GsAttributeStat.values.except({
       GsAttributeStat.none,
       GsAttributeStat.hp,

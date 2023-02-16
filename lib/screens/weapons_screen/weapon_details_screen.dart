@@ -20,7 +20,7 @@ class WeaponDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final info = args as InfoWeapon;
+    final info = args! as InfoWeapon;
     final db = GsDatabase.instance.infoWeaponsInfo;
     final details = db.getItemOrNull(info.id);
 
@@ -189,39 +189,41 @@ class WeaponDetailsScreen extends StatelessWidget {
               if (atk == null && stat == null) {
                 return null;
               }
-              return TableRow(children: [
-                Container(
-                  height: 64 + 24,
-                  margin: const EdgeInsets.symmetric(vertical: kSeparator4),
-                  child: Center(
-                    child: Text(
-                      config.level.toString(),
-                      style: context.textTheme.titleSmall!
-                          .copyWith(color: Colors.white),
+              return TableRow(
+                children: [
+                  Container(
+                    height: 64 + 24,
+                    margin: const EdgeInsets.symmetric(vertical: kSeparator4),
+                    child: Center(
+                      child: Text(
+                        config.level.toString(),
+                        style: context.textTheme.titleSmall!
+                            .copyWith(color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
-                Center(child: Text(atk ?? '-', style: style)),
-                if (info.ascStatType != GsAttributeStat.none)
-                  Center(child: Text(stat ?? '-', style: style)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: GsDatabase.instance.infoWeaponsInfo
-                      .getAscensionMaterials(info.id, i)
-                      .entries
-                      .map<Widget>((e) {
-                        final db = GsDatabase.instance.infoMaterials;
-                        final item = db.getItemOrNull(e.key);
-                        return GsRarityItemCard.withLabels(
-                          image: item?.image ?? '',
-                          rarity: item?.rarity ?? 1,
-                          labelFooter: e.value.format(),
-                        );
-                      })
-                      .separate(const SizedBox(width: kSeparator4))
-                      .toList(),
-                ),
-              ]);
+                  Center(child: Text(atk ?? '-', style: style)),
+                  if (info.ascStatType != GsAttributeStat.none)
+                    Center(child: Text(stat ?? '-', style: style)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: GsDatabase.instance.infoWeaponsInfo
+                        .getAscensionMaterials(info.id, i)
+                        .entries
+                        .map<Widget>((e) {
+                          final db = GsDatabase.instance.infoMaterials;
+                          final item = db.getItemOrNull(e.key);
+                          return GsRarityItemCard.withLabels(
+                            image: item?.image ?? '',
+                            rarity: item?.rarity ?? 1,
+                            labelFooter: e.value.format(),
+                          );
+                        })
+                        .separate(const SizedBox(width: kSeparator4))
+                        .toList(),
+                  ),
+                ],
+              );
             }).whereNotNull(),
           ],
         ),
@@ -245,7 +247,8 @@ class WeaponDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
-              style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              style:
+                  context.textTheme.titleSmall!.copyWith(color: Colors.white),
             ),
           ),
           Padding(
@@ -360,7 +363,7 @@ class WeaponDetailsScreen extends StatelessWidget {
         context.fromLabel(info.type.label),
         context.fromLabel(info.statType.label),
       ]
-          .map<Widget>((e) => GsDataBox.label(e))
+          .map<Widget>(GsDataBox.label)
           .separate(const SizedBox(width: kSeparator4))
           .toList(),
     );
