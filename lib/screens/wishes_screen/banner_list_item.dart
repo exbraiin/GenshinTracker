@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -77,12 +76,14 @@ class BannerListItem extends StatelessWidget {
                         ),
                         TextSpan(
                           text: '\n   $rolls Pulls - ',
-                          style: const TextStyle(color: GsColors.almostWhite),
+                          style:
+                              TextStyle(color: context.themeColors.almostWhite),
                         ),
                         WidgetSpan(child: primoWidget()),
                         TextSpan(
                           text: '${(rolls * 160).format()} Primogems',
-                          style: const TextStyle(color: GsColors.almostWhite),
+                          style:
+                              TextStyle(color: context.themeColors.almostWhite),
                         ),
                       ],
                     ),

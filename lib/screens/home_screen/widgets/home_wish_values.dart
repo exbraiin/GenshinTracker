@@ -31,7 +31,7 @@ class HomeWishesValues extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final st = Theme.of(context).textTheme.titleSmall!;
-    final style = st.copyWith(color: GsColors.almostWhite);
+    final style = st.copyWith(color: context.themeColors.almostWhite);
 
     final sw = GsDatabase.instance.saveWishes;
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
@@ -42,7 +42,6 @@ class HomeWishesValues extends StatelessWidget {
       child: Column(
         children: [
           _summary(context, wishes, summary),
-          const SizedBox(height: kSeparator8),
           Row(
             children: [
               const Spacer(flex: 3),
@@ -72,7 +71,11 @@ class HomeWishesValues extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          Divider(
+            color: context.themeColors.almostWhite,
+            thickness: 1,
+            height: 8,
+          ),
           _getInfo(
             context,
             summary.wishesInfo5,
@@ -80,14 +83,22 @@ class HomeWishesValues extends StatelessWidget {
             context.themeColors.getRarityColor(5),
           ),
           if (banner == GsBanner.standard) ...[
-            const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+            Divider(
+              color: context.themeColors.almostWhite,
+              thickness: 1,
+              height: 8,
+            ),
             _getInfo(
               context,
               summary.wishesInfo5Character,
               '   > ${context.fromLabel(Labels.character)}',
               context.themeColors.getRarityColor(5),
             ),
-            const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+            Divider(
+              color: context.themeColors.almostWhite,
+              thickness: 1,
+              height: 8,
+            ),
             _getInfo(
               context,
               summary.wishesInfo5Weapon,
@@ -95,21 +106,33 @@ class HomeWishesValues extends StatelessWidget {
               context.themeColors.getRarityColor(5),
             ),
           ],
-          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          Divider(
+            color: context.themeColors.almostWhite,
+            thickness: 1,
+            height: 8,
+          ),
           _getInfo(
             context,
             summary.wishesInfo4,
             context.fromLabel(Labels.rarityStar, 4),
             context.themeColors.getRarityColor(4),
           ),
-          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          Divider(
+            color: context.themeColors.almostWhite,
+            thickness: 1,
+            height: 8,
+          ),
           _getInfo(
             context,
             summary.wishesInfo4Character,
             '   > ${context.fromLabel(Labels.character)}',
             context.themeColors.getRarityColor(4),
           ),
-          const Divider(color: GsColors.almostWhite, thickness: 1, height: 8),
+          Divider(
+            color: context.themeColors.almostWhite,
+            thickness: 1,
+            height: 8,
+          ),
           _getInfo(
             context,
             summary.wishesInfo4Weapon,
@@ -132,7 +155,7 @@ class HomeWishesValues extends StatelessWidget {
     WishesSummary summary,
   ) {
     final show = banner == GsBanner.character;
-    final pityColor = GsColors.getPityColor(summary.last5);
+    final pityColor = context.themeColors.getPityColor(summary.last5);
     final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
     return Row(
       children: [
@@ -218,9 +241,10 @@ class HomeWishesValues extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
+                          width: state == WishState.won ? 2 : 1,
                           color: state == WishState.won
                               ? context.themeColors.getRarityColor(5)
-                              : GsColors.dimWhite,
+                              : context.themeColors.dimWhite,
                         ),
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -234,7 +258,7 @@ class HomeWishesValues extends StatelessWidget {
                             TextSpan(
                               text: pity.toString(),
                               style: style.copyWith(
-                                color: GsColors.getPityColor(pity),
+                                color: context.themeColors.getPityColor(pity),
                               ),
                             ),
                             if (state == WishState.guaranteed)
@@ -289,7 +313,7 @@ class HomeWishesValues extends StatelessWidget {
                 text: value,
                 style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 20,
-                  color: valueColor ?? GsColors.almostWhite,
+                  color: valueColor ?? context.themeColors.almostWhite,
                 ),
               ),
               const TextSpan(text: '\n'),
@@ -297,7 +321,7 @@ class HomeWishesValues extends StatelessWidget {
                 text: label,
                 style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 12,
-                  color: GsColors.dimWhite,
+                  color: context.themeColors.dimWhite,
                 ),
               ),
             ],
@@ -315,7 +339,7 @@ class HomeWishesValues extends StatelessWidget {
     Color color,
   ) {
     final st = Theme.of(context).textTheme.titleSmall!;
-    final style = st.copyWith(color: GsColors.almostWhite);
+    final style = st.copyWith(color: context.themeColors.almostWhite);
     return Row(
       children: [
         Expanded(

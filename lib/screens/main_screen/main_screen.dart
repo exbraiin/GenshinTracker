@@ -95,7 +95,14 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             child: InkWell(
-              onTap: () => _page.value = idx,
+              onTap: () {
+                if (_page.value == idx) {
+                  final key = _menus[idx].navigator.key as GlobalKey?;
+                  final ctx = key?.currentContext;
+                  if (ctx != null) Navigator.of(ctx).maybePop();
+                }
+                _page.value = idx;
+              },
               child: Image.asset(menu.icon, height: 40, width: 40),
             ),
           ),
@@ -183,7 +190,7 @@ class _MainScreenState extends State<MainScreen> {
           builder: (context, index, child) {
             return _PageAnimator(
               key: ValueKey('main_$index'),
-              child: _menus[index].page,
+              child: _menus[index].navigator,
             );
           },
         );
@@ -289,15 +296,14 @@ class Menu {
   final String icon;
   final String initialPage;
   final Object? initialArgument;
-  final Widget page;
-  final key = GlobalKey();
+  final Navigator navigator;
 
   Menu({
     required this.label,
     required this.icon,
     required this.initialPage,
     this.initialArgument,
-  }) : page = Navigator(
+  }) : navigator = Navigator(
           key: GlobalKey(),
           initialRoute: initialPage,
           onGenerateRoute: (settings) {

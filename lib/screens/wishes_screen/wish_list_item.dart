@@ -92,18 +92,18 @@ class WishListItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border(
                       top: type == ListType.top
-                          ? const BorderSide(
-                              color: GsColors.almostWhite,
+                          ? BorderSide(
+                              color: context.themeColors.almostWhite,
                               width: 2,
                             )
                           : BorderSide.none,
-                      right: const BorderSide(
-                        color: GsColors.almostWhite,
+                      right: BorderSide(
+                        color: context.themeColors.almostWhite,
                         width: 2,
                       ),
                       bottom: type == ListType.bottom
-                          ? const BorderSide(
-                              color: GsColors.almostWhite,
+                          ? BorderSide(
+                              color: context.themeColors.almostWhite,
                               width: 2,
                             )
                           : BorderSide.none,
@@ -115,7 +115,7 @@ class WishListItem extends StatelessWidget {
                             Lang.of(context).getValue(Labels.x10),
                             style: style.copyWith(
                               fontSize: 8,
-                              color: GsColors.almostWhite,
+                              color: context.themeColors.almostWhite,
                             ),
                           ),
                         )

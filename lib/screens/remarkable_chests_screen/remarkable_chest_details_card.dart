@@ -3,9 +3,13 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
+import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class RemarkableChestDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
@@ -15,40 +19,64 @@ class RemarkableChestDetailsCard extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ItemDetailsCard.single(
-      name: item.name,
-      image: item.image,
-      rarity: item.rarity,
-      banner: GsItemBanner.fromVersion(item.version),
-      info: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  item.type == GsSetCategory.indoor
-                      ? imageIndoorSet
-                      : imageOutdoorSet,
-                  width: 32,
-                  height: 32,
+    return ValueStreamBuilder(
+      stream: GsDatabase.instance.loaded,
+      builder: (context, snapshot) {
+        final db = GsDatabase.instance.saveRemarkableChests;
+        final owned = db.getItemOrNull(item.id)?.obtained ?? false;
+        return ItemDetailsCard.single(
+          name: item.name,
+          image: item.image,
+          rarity: item.rarity,
+          banner: GsItemBanner.fromVersion(item.version),
+          info: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          item.type == GsSetCategory.indoor
+                              ? imageIndoorSet
+                              : imageOutdoorSet,
+                          width: 32,
+                          height: 32,
+                        ),
+                        const SizedBox(width: kSeparator4),
+                        Text(context.fromLabel(item.type.label)),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: kSeparator8),
+                      child: Text(
+                        item.category,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: kSeparator4),
-                Text(context.fromLabel(item.type.label)),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: kSeparator8),
-              child: Text(
-                item.category,
-                style: const TextStyle(fontSize: 14),
               ),
-            ),
-          ],
-        ),
-      ),
-      child: _content(context),
+              const Spacer(),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: GsIconButton(
+                  size: 26,
+                  color: owned
+                      ? context.themeColors.goodValue
+                      : context.themeColors.badValue,
+                  icon: owned ? Icons.check : Icons.close,
+                  onPress: () =>
+                      db.updateRemarkableChest(item.id, obtained: !owned),
+                ),
+              ),
+            ],
+          ),
+          child: _content(context),
+        );
+      },
     );
   }
 

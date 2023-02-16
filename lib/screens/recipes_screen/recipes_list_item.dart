@@ -1,12 +1,10 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/theme/theme.dart';
 
 class RecipesListItem extends StatelessWidget {
   final InfoRecipe recipe;
@@ -65,22 +63,6 @@ class RecipesListItem extends StatelessWidget {
                 child: ItemRarityBubble(
                   image: GsUtils.characters.getImage(char?.id ?? ''),
                   rarity: char?.rarity ?? 1,
-                ),
-              ),
-            if (!isSpecial)
-              Positioned(
-                top: kSeparator2,
-                right: kSeparator2,
-                child: GsIconButton(
-                  size: 20,
-                  color: savedRecipe != null
-                      ? context.themeColors.goodValue
-                      : context.themeColors.badValue,
-                  icon: savedRecipe != null ? Icons.check : Icons.close,
-                  onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
-                    recipe.id,
-                    own: savedRecipe == null,
-                  ),
                 ),
               ),
           ],

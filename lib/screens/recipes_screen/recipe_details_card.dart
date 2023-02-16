@@ -4,9 +4,11 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
+import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
@@ -19,68 +21,92 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   @override
   Widget build(BuildContext context) {
     final isSpecial = item.baseRecipe.isNotEmpty;
-    final owned = GsDatabase.instance.saveRecipes.exists(item.id);
-    return ItemDetailsCard.single(
-      name: item.name,
-      rarity: item.rarity,
-      image: item.image,
-      banner: GsItemBanner.fromVersion(item.version),
-      info: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          children: [
-            Row(
+    return ValueStreamBuilder(
+      stream: GsDatabase.instance.loaded,
+      builder: (context, snapshot) {
+        final owned = GsDatabase.instance.saveRecipes.exists(item.id);
+        final saved = GsDatabase.instance.saveRecipes.getItemOrNull(item.id);
+        return ItemDetailsCard.single(
+          name: item.name,
+          rarity: item.rarity,
+          image: item.image,
+          banner: GsItemBanner.fromVersion(item.version),
+          info: Align(
+            alignment: Alignment.topLeft,
+            child: Column(
               children: [
-                Image.asset(
-                  item.effect.assetPath,
-                  width: 24,
-                  height: 24,
+                Row(
+                  children: [
+                    Image.asset(
+                      item.effect.assetPath,
+                      width: 24,
+                      height: 24,
+                    ),
+                    const SizedBox(width: kSeparator4),
+                    Text(context.fromLabel(item.effect.label)),
+                  ],
                 ),
-                const SizedBox(width: kSeparator4),
-                Text(context.fromLabel(item.effect.label)),
-              ],
-            ),
-            const Spacer(),
-            if (!isSpecial && owned)
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  width: 180,
-                  padding: const EdgeInsets.all(kSeparator4),
-                  decoration: BoxDecoration(
-                    color: context.themeColors.mainColor2.withOpacity(0.3),
-                    borderRadius: kMainRadius,
-                    border: Border.all(
-                      color: context.themeColors.mainColor1.withOpacity(0.3),
+                const Spacer(),
+                if (!isSpecial)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: GsIconButton(
+                      size: 26,
+                      color: saved != null
+                          ? context.themeColors.goodValue
+                          : context.themeColors.badValue,
+                      icon: saved != null ? Icons.check : Icons.close,
+                      onPress: () => GsDatabase.instance.saveRecipes.ownRecipe(
+                        item.id,
+                        own: saved == null,
+                      ),
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      GsNumberField(
-                        onUpdate: (i) {
-                          final db = GsDatabase.instance.saveRecipes;
-                          final amount = i.clamp(0, item.maxProficiency);
-                          db.changeSavedRecipe(item.id, amount);
-                        },
-                        onDbUpdate: () {
-                          final db = GsDatabase.instance.saveRecipes;
-                          return db.getItemOrNull(item.id)?.proficiency ?? 0;
-                        },
-                        fontSize: 14,
+                if (!isSpecial && owned)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      width: 180,
+                      margin: const EdgeInsets.only(top: kSeparator4),
+                      padding: const EdgeInsets.all(kSeparator4),
+                      decoration: BoxDecoration(
+                        color: context.themeColors.mainColor2.withOpacity(0.3),
+                        borderRadius: kMainRadius,
+                        border: Border.all(
+                          color:
+                              context.themeColors.mainColor1.withOpacity(0.3),
+                        ),
                       ),
-                      Text(
-                        '${context.fromLabel(Labels.proficiency)}'
-                        ' (max: ${item.maxProficiency.format()})',
-                        style: const TextStyle(fontSize: 14),
+                      child: Column(
+                        children: [
+                          GsNumberField(
+                            onUpdate: (i) {
+                              final db = GsDatabase.instance.saveRecipes;
+                              final amount = i.clamp(0, item.maxProficiency);
+                              db.changeSavedRecipe(item.id, amount);
+                            },
+                            onDbUpdate: () {
+                              final db = GsDatabase.instance.saveRecipes;
+                              return db.getItemOrNull(item.id)?.proficiency ??
+                                  0;
+                            },
+                            fontSize: 14,
+                          ),
+                          Text(
+                            '${context.fromLabel(Labels.proficiency)}'
+                            ' (max: ${item.maxProficiency.format()})',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-          ],
-        ),
-      ),
-      child: _content(context),
+              ],
+            ),
+          ),
+          child: _content(context),
+        );
+      },
     );
   }
 

@@ -82,7 +82,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           ),
                         ],
                       ),
-                      const Divider(color: GsColors.dimWhite),
+                      Divider(color: context.themeColors.dimWhite),
                       Wrap(
                         spacing: kSeparator4,
                         runSpacing: kSeparator4,

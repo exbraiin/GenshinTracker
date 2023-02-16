@@ -36,7 +36,7 @@ class RemoveDialog extends StatelessWidget {
               style: context.textTheme.headlineSmall!
                   .copyWith(color: Colors.white),
             ),
-            const Divider(color: GsColors.almostWhite),
+            Divider(color: context.themeColors.almostWhite),
             Text(
               Lang.of(context)
                   .getValue(Labels.removeWish, nargs: {'name': name}),

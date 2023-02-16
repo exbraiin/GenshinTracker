@@ -98,6 +98,6 @@ class GsDataBox extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
     );
-    yield const Divider(color: GsColors.almostWhite, thickness: 0.5);
+    yield Divider(color: context.themeColors.almostWhite, thickness: 0.5);
   }
 }

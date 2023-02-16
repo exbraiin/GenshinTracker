@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -44,19 +43,6 @@ class RemarkableChestListItem extends StatelessWidget {
                   : item.type == GsSetCategory.outdoor
                       ? context.themeColors.setOutdoor
                       : context.themeColors.mainColor1,
-            ),
-          ),
-          Positioned(
-            top: kSeparator2,
-            right: kSeparator2,
-            child: GsIconButton(
-              size: 20,
-              color: owned
-                  ? context.themeColors.goodValue
-                  : context.themeColors.badValue,
-              icon: owned ? Icons.check : Icons.close,
-              onPress: () => db.saveRemarkableChests
-                  .updateRemarkableChest(item.id, obtained: !owned),
             ),
           ),
         ],

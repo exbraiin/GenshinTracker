@@ -13,6 +13,7 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
+import 'package:tracker/theme/theme.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
@@ -179,7 +180,7 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getAttributes(BuildContext context, InfoCharacter info) {
     final style = context.textTheme.titleSmall!;
-    final stLabel = style.copyWith(color: GsColors.dimWhite);
+    final stLabel = style.copyWith(color: context.themeColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
     final db = GsDatabase.instance.infoRecipes;
     final dish = db.getItemOrNull(info.specialDish);
@@ -193,9 +194,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             0: IntrinsicColumnWidth(),
             2: IntrinsicColumnWidth(),
           },
-          border: const TableBorder(
+          border: TableBorder(
             horizontalInside: BorderSide(
-              color: GsColors.dimWhite,
+              color: context.themeColors.dimWhite,
               width: 0.4,
             ),
           ),
@@ -336,9 +337,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             5: IntrinsicColumnWidth(),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: const TableBorder(
+          border: TableBorder(
             horizontalInside: BorderSide(
-              color: GsColors.dimWhite,
+              color: context.themeColors.dimWhite,
               width: 0.4,
             ),
           ),
@@ -479,8 +480,8 @@ class CharacterDetailsScreen extends StatelessWidget {
             );
           })
           .separate(
-            const Divider(
-              color: GsColors.dimWhite,
+            Divider(
+              color: context.themeColors.dimWhite,
               thickness: 0.4,
             ),
           )
@@ -525,8 +526,8 @@ class CharacterDetailsScreen extends StatelessWidget {
             );
           })
           .separate(
-            const Divider(
-              color: GsColors.dimWhite,
+            Divider(
+              color: context.themeColors.dimWhite,
               thickness: 0.4,
             ),
           )
@@ -598,9 +599,9 @@ class CharacterDetailsScreen extends StatelessWidget {
           0: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: const TableBorder(
+        border: TableBorder(
           horizontalInside: BorderSide(
-            color: GsColors.dimWhite,
+            color: context.themeColors.dimWhite,
             width: 0.4,
           ),
         ),

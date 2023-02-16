@@ -230,7 +230,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   Positioned.fill(
                     child: DefaultTextStyle(
                       style: context.textTheme.titleLarge!.copyWith(
-                        color: GsColors.dimWhite,
+                        color: context.themeColors.dimWhite,
                         fontSize: 16,
                         shadows: const [
                           BoxShadow(

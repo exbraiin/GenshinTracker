@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
-final _themeColors = ThemeColors.rgby();
+final _themeColors = ThemeColors.gs();
 final theme = ThemeData(
   extensions: [_themeColors],
   scrollbarTheme: ScrollbarThemeData(
@@ -21,10 +21,11 @@ final theme = ThemeData(
     decoration: BoxDecoration(
       color: _themeColors.mainColor1,
       borderRadius: kMainRadius,
+      border: Border.all(color: _themeColors.mainColor3),
     ),
     textStyle: TextStyle(
       fontSize: 12,
-      color: _themeColors.mainColor3,
+      color: _themeColors.almostWhite,
     ),
   ),
   textSelectionTheme: TextSelectionThemeData(
@@ -36,6 +37,8 @@ final theme = ThemeData(
 );
 
 class ThemeColors extends ThemeExtension<ThemeColors> {
+  final Color dimWhite;
+  final Color almostWhite;
   final Color mainColor0;
   final Color mainColor1;
   final Color mainColor2;
@@ -47,6 +50,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color setOutdoor;
 
   ThemeColors({
+    required this.dimWhite,
+    required this.almostWhite,
     required this.mainColor0,
     required this.mainColor1,
     required this.mainColor2,
@@ -58,7 +63,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   });
 
   ThemeColors.gs()
-      : mainColor0 = const Color(0xFF0C122E),
+      : dimWhite = const Color(0x80FFFFFF),
+        almostWhite = const Color(0xFFEEEEEE),
+        mainColor0 = const Color(0xFF0C122E),
         mainColor1 = const Color(0xFF1E2240),
         mainColor2 = const Color(0xFF2B2F4E),
         mainColor3 = const Color(0xFF8181A6),
@@ -67,15 +74,22 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         setIndoor = const Color(0xFFA01F2E),
         setOutdoor = const Color(0xFF303671);
 
-  ThemeColors.rgby()
-      : mainColor0 = Colors.red,
-        mainColor1 = Colors.green,
-        mainColor2 = Colors.blue,
-        mainColor3 = Colors.yellow,
+  ThemeColors.black()
+      : dimWhite = const Color(0x80FFFFFF),
+        almostWhite = const Color(0xFFEEEEEE),
+        mainColor0 = const Color(0xFF000000),
+        mainColor1 = const Color(0xFF111111),
+        mainColor2 = const Color(0xFF222222),
+        mainColor3 = const Color(0xFF333333),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
         setIndoor = const Color(0xFFA01F2E),
         setOutdoor = const Color(0xFF303671);
+
+  Color getPityColor(int pity, [int max = 90]) {
+    final h = (1 - (pity / max)) * 120;
+    return HSLColor.fromAHSL(1, h, 1, 0.6).toColor();
+  }
 
   Color getRarityColor(int rarity) {
     return const {
@@ -90,6 +104,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
 
   @override
   ThemeExtension<ThemeColors> copyWith({
+    Color? dimWhite,
+    Color? almostWhite,
     Color? mainColor0,
     Color? mainColor1,
     Color? mainColor2,
@@ -100,6 +116,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? setOutdoor,
   }) {
     return ThemeColors(
+      dimWhite: dimWhite ?? this.dimWhite,
+      almostWhite: almostWhite ?? this.almostWhite,
       mainColor0: mainColor0 ?? this.mainColor0,
       mainColor1: mainColor1 ?? this.mainColor1,
       mainColor2: mainColor2 ?? this.mainColor2,
@@ -122,6 +140,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         Color.lerp(selector(other), selector(this), t)!;
 
     return ThemeColors(
+      dimWhite: clerp((c) => c.dimWhite),
+      almostWhite: clerp((c) => c.almostWhite),
       mainColor0: clerp((c) => c.mainColor0),
       mainColor1: clerp((c) => c.mainColor1),
       mainColor2: clerp((c) => c.mainColor2),

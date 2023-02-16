@@ -11,6 +11,7 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
+import 'package:tracker/theme/theme.dart';
 
 class WeaponDetailsScreen extends StatelessWidget {
   static const id = 'weapon_details_screen';
@@ -145,9 +146,9 @@ class WeaponDetailsScreen extends StatelessWidget {
             5: IntrinsicColumnWidth(),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: const TableBorder(
+          border: TableBorder(
             horizontalInside: BorderSide(
-              color: GsColors.dimWhite,
+              color: context.themeColors.dimWhite,
               width: 0.4,
             ),
           ),
@@ -280,9 +281,9 @@ class WeaponDetailsScreen extends StatelessWidget {
           0: IntrinsicColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: const TableBorder(
+        border: TableBorder(
           horizontalInside: BorderSide(
-            color: GsColors.dimWhite,
+            color: context.themeColors.dimWhite,
             width: 0.4,
           ),
         ),

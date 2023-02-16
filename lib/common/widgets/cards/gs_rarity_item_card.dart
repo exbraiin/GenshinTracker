@@ -60,7 +60,7 @@ class GsRarityItemCard extends StatelessWidget {
             borderRadius: radius,
             border: Border.all(
               width: 1.2,
-              color: h ? GsColors.almostWhite : Colors.transparent,
+              color: h ? context.themeColors.almostWhite : Colors.transparent,
             ),
           ),
         ),

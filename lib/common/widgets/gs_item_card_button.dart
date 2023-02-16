@@ -107,7 +107,7 @@ class GsItemCardButton extends StatelessWidget {
         borderRadius: radius,
         border: animate || selected
             ? Border.all(
-                color: GsColors.almostWhite,
+                color: context.themeColors.almostWhite,
                 width: 2,
               )
             : null,

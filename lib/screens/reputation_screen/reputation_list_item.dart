@@ -117,7 +117,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                         pRep.toString(),
                         style: context.textTheme.titleSmall!.copyWith(
                           fontSize: 10,
-                          color: GsColors.almostWhite,
+                          color: context.themeColors.almostWhite,
                         ),
                       ),
                       const Spacer(),
@@ -126,7 +126,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                           nRep.toString(),
                           style: context.textTheme.titleSmall!.copyWith(
                             fontSize: 10,
-                            color: GsColors.almostWhite,
+                            color: context.themeColors.almostWhite,
                           ),
                         ),
                     ],

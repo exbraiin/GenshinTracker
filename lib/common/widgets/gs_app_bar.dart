@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/theme.dart';
 
 class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String label;
@@ -23,9 +23,9 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: PreferredSize(
         preferredSize: Size.fromHeight((bottom?.preferredSize.height ?? 0) + 1),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: GsColors.almostWhite),
+              bottom: BorderSide(color: context.themeColors.almostWhite),
             ),
           ),
           child: bottom,
