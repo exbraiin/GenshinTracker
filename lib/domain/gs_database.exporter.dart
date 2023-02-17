@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 export 'gs_database.extensions.dart';
 
@@ -28,7 +27,7 @@ abstract class GsDatabaseExporter {
     final date = DateTime.now().format().replaceAll(':', '-');
     await Directory('export').create();
     await File('export/$date.xlsx').writeAsBytes(bytes);
-    await launchUrlString('file://${Directory('export').absolute.path}');
+    if (Platform.isWindows) await Process.run('explorer', ['.']);
     if (kDebugMode) print('\x1b[31mComplete!');
   }
 

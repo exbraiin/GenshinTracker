@@ -33,7 +33,6 @@ dependencies:
   dartx: ^0.7.1
   excel: ^2.0.0-null-safety-3
   cached_network_image: ^3.2.1
-  url_launcher: ^6.1.6
   flutter_lints: ^2.0.1
 
 dev_dependencies:
