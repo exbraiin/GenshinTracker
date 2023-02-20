@@ -110,42 +110,34 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
               child: ValueListenableBuilder<bool>(
                 valueListenable: notifier,
                 builder: (context, value, child) {
-                  return ListView(
-                    children: widget.filter.sections
-                        .map(
-                          (e) => Column(
+                  final half = widget.filter.sections.length ~/ 2;
+                  return SingleChildScrollView(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                e.title(context),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(height: kSeparator8),
-                              Wrap(
-                                spacing: kSeparator4,
-                                runSpacing: kSeparator4,
-                                children: e.values.map((v) {
-                                  return _chip(
-                                    context,
-                                    e.label(context, v),
-                                    e.icon(v),
-                                    e.asset(v),
-                                    e.enabled.contains(v),
-                                    () {
-                                      e.toggle(v);
-                                      notifier.value = !notifier.value;
-                                    },
-                                  );
-                                }).toList(),
-                              ),
-                            ],
+                            children: widget.filter.sections
+                                .take(half)
+                                .map(_filter)
+                                .separate(const SizedBox(height: kSeparator8))
+                                .toList(),
                           ),
-                        )
-                        .toGrid(
-                          spacing: kSeparator8,
-                          runSpacing: kSeparator8,
-                        )
-                        .toList(),
+                        ),
+                        const SizedBox(width: kSeparator8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: widget.filter.sections
+                                .skip(half)
+                                .map(_filter)
+                                .separate(const SizedBox(height: kSeparator8))
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
@@ -153,6 +145,36 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _filter(FilterSection section) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          section.title(context),
+          style: const TextStyle(color: Colors.white),
+        ),
+        const SizedBox(height: kSeparator8),
+        Wrap(
+          spacing: kSeparator4,
+          runSpacing: kSeparator4,
+          children: section.values.map((v) {
+            return _chip(
+              context,
+              section.label(context, v),
+              section.icon(v),
+              section.asset(v),
+              section.enabled.contains(v),
+              () {
+                section.toggle(v);
+                notifier.value = !notifier.value;
+              },
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -210,31 +232,5 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         ),
       ),
     );
-  }
-}
-
-extension on Iterable<Widget> {
-  Iterable<Widget> toGrid({
-    int columns = 2,
-    double spacing = 0,
-    double runSpacing = 0,
-  }) sync* {
-    final it = iterator;
-    if (!it.moveNext()) return;
-    var canMove = true;
-    while (true) {
-      final items = <Widget>[];
-      for (var r = 0; r < columns; ++r) {
-        items.add(Expanded(child: canMove ? it.current : const SizedBox()));
-        if (spacing > 0 && r + 1 < columns) items.add(SizedBox(width: spacing));
-        canMove = it.moveNext();
-      }
-      yield Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: items,
-      );
-      if (!canMove) return;
-      if (runSpacing > 0) yield SizedBox(height: runSpacing);
-    }
   }
 }
