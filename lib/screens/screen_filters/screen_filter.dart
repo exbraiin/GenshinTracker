@@ -2,31 +2,44 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class FilterSection<T, I> {
+  final String? key;
   final Set<T> values;
   final Set<T> enabled;
-  final T Function(I item) match;
   final bool Function(I item)? filter;
   final IconData? Function(T i)? _icon;
   final String? Function(T i)? _asset;
   final String Function(BuildContext c) title;
   final String Function(BuildContext c, T i) _label;
-
-  int order = 1;
-  final Comparator<I>? comparator;
+  final bool Function(I item, Set<T> enabled) match;
 
   FilterSection(
+    this.values,
+    T Function(I item) match,
+    this.title,
+    this._label, {
+    this.key,
+    this.filter,
+    String? Function(T i)? asset,
+    IconData? Function(T i)? icon,
+  })  : enabled = {},
+        _icon = icon,
+        _asset = asset,
+        match = ((item, enabled) => enabled.contains(match(item)));
+
+  FilterSection.raw(
     this.values,
     this.match,
     this.title,
     this._label, {
+    this.key,
     this.filter,
     String? Function(T i)? asset,
     IconData? Function(T i)? icon,
-    this.comparator,
   })  : enabled = {},
         _icon = icon,
         _asset = asset;
@@ -37,7 +50,7 @@ class FilterSection<T, I> {
 
   bool _filter(I e) {
     if (enabled.isEmpty) return true;
-    return (filter?.call(e) ?? true) && enabled.contains(match(e));
+    return (filter?.call(e) ?? true) && match.call(e, enabled);
   }
 
   void toggle(T v) => enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
@@ -45,25 +58,22 @@ class FilterSection<T, I> {
 
 class ScreenFilter<I> {
   final Set<String> extras;
-  final Iterable<Comparator<I>> comparators;
-  final List<FilterSection<dynamic, I>> sorting = [];
+  final Iterable<Comparator<I>> sorting;
   final List<FilterSection<dynamic, I>> sections;
 
   ScreenFilter({
     this.sections = const [],
-    this.comparators = const [],
+    this.sorting = const [],
     Set<String>? extras,
   }) : extras = extras ?? {};
 
   List<I> match(Iterable<I> items) {
-    final compt = _chain(comparators);
-    final order = _chain(sorting.map((e) => e.comparator!.ordered(e.order)));
+    final sorters = _chain(sorting);
     final filtr = items.where((e) => sections.every((s) => s._filter(e)));
-    return filtr.sortedWith(order).thenWith(compt);
+    return filtr.sortedWith(sorters);
   }
 
   void reset() {
-    sorting.clear();
     for (var section in sections) {
       section.enabled.clear();
     }
@@ -81,21 +91,8 @@ class ScreenFilter<I> {
   void toggleExtra(String key) =>
       extras.contains(key) ? extras.remove(key) : extras.add(key);
 
-  void addSort(FilterSection<dynamic, I> section) {
-    if (sorting.contains(section)) {
-      if (section.order == 1) {
-        section.order = -1;
-        sorting.remove(section);
-        sorting.add(section);
-      } else {
-        section.order = 1;
-        sorting.remove(section);
-      }
-    } else {
-      section.order = 1;
-      sorting.add(section);
-    }
-  }
+  bool isSectionEmpty(String key) =>
+      sections.firstOrNullWhere((e) => e.key == key)?.enabled.isEmpty ?? true;
 }
 
 class ScreenFilters {
@@ -107,6 +104,7 @@ class ScreenFilters {
       .getItems()
       .map((e) => _toMajorVersion(e.id))
       .toSet();
+  static final _weekdays = GsWeekday.days.exceptElement('Sunday').toSet();
 
   static final itemDataFilter = ScreenFilter<ItemData>(
     sections: [
@@ -115,17 +113,15 @@ class ScreenFilters {
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
         (c, e) => c.fromLabel(e.label),
-        comparator: (a, b) => a.type.index.compareTo(b.type.index),
       ),
       FilterSection<int, ItemData>(
         {3, 4, 5},
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, e) => c.fromLabel(Labels.rarityStar, e),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
     ],
-    comparators: [(a, b) => a.compareTo(b)],
+    sorting: [(a, b) => a.compareTo(b)],
   );
   static final saveWishFilter = ScreenFilter<SaveWish>(
     sections: [
@@ -167,7 +163,6 @@ class ScreenFilters {
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, e) => c.fromLabel(Labels.rarityStar, e),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
       FilterSection<GsRecipeBuff, InfoRecipe>(
         GsRecipeBuff.values.toSet(),
@@ -181,7 +176,6 @@ class ScreenFilters {
         (item) => _toMajorVersion(item.version),
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
-        comparator: (a, b) => a.version.compareTo(b.version),
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},
@@ -214,7 +208,7 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e ? Labels.specialDish : Labels.wsNone),
       ),
     ],
-    comparators: [
+    sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
       (a, b) => a.name.compareTo(b.name),
     ],
@@ -226,7 +220,6 @@ class ScreenFilters {
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, e) => c.fromLabel(Labels.rarityStar, e),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
       FilterSection<String, InfoRemarkableChest>(
         _versions,
@@ -276,16 +269,24 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.weapon),
         (c, e) => c.fromLabel(e.label),
         asset: (e) => e.assetPath,
-        comparator: (a, b) => a.type.index.compareTo(b.type.index),
       ),
       FilterSection<bool, InfoWeapon>(
         {true, false},
         (item) => _db.saveWishes.hasWeapon(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-        comparator: (a, b) => _db.saveWishes
-            .hasWeapon(a.id)
-            .compareTo(_db.saveWishes.hasWeapon(b.id)),
+      ),
+      FilterSection<String, InfoWeapon>.raw(
+        _weekdays,
+        (item, enabled) {
+          final t = _db.infoMaterials.getItems();
+          final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
+          final inMats = _db.infoWeaponsInfo.getAscensionMaterials(item.id);
+          return m.any((e) => inMats.containsKey(e.id));
+        },
+        (c) => c.fromLabel(Labels.materials),
+        (c, i) => i,
+        key: 'weekdays',
       ),
       FilterSection<GsAttributeStat, InfoWeapon>(
         GsAttributeStat.values.weaponStats,
@@ -293,14 +294,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.ndStat),
         (c, i) => c.fromLabel(i.label),
         asset: (e) => e.assetPath,
-        comparator: (a, b) => a.statType.index.compareTo(b.statType.index),
       ),
       FilterSection<int, InfoWeapon>(
         {1, 2, 3, 4, 5},
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, e) => c.fromLabel(Labels.rarityStar, e),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
       FilterSection<String, InfoWeapon>(
         _versions,
@@ -315,7 +314,7 @@ class ScreenFilters {
         (c, i) => i.name,
       ),
     ],
-    comparators: [
+    sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
       (a, b) => a.name.compareTo(b.name),
     ],
@@ -327,7 +326,6 @@ class ScreenFilters {
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, i) => c.fromLabel(Labels.rarityStar, i),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
       FilterSection<String, InfoArtifact>(
         _versions,
@@ -336,7 +334,7 @@ class ScreenFilters {
         (c, i) => i,
       ),
     ],
-    comparators: [
+    sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
       (a, b) => a.name.compareTo(b.name),
     ],
@@ -349,7 +347,6 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.element),
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
-        comparator: (a, b) => a.element.index.compareTo(b.element.index),
       ),
       FilterSection<GsWeapon, InfoCharacter>(
         GsWeapon.values.toSet(),
@@ -357,21 +354,30 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.weapon),
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
-        comparator: (a, b) => a.weapon.index.compareTo(b.weapon.index),
+      ),
+      FilterSection<String, InfoCharacter>.raw(
+        _weekdays,
+        (item, enabled) {
+          final t = _db.infoMaterials.getItems();
+          final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
+          final charMats = _db.infoCharactersInfo.getTalentMaterials(item.id);
+          return m.any((e) => charMats.containsKey(e.id));
+        },
+        (c) => c.fromLabel(Labels.materials),
+        (c, i) => i,
+        key: 'weekdays',
       ),
       FilterSection<String, InfoCharacter>(
         _versions,
         (item) => _toMajorVersion(item.version),
         (c) => c.fromLabel(Labels.version),
         (c, i) => i,
-        comparator: (a, b) => a.version.compareTo(b.version),
       ),
       FilterSection<GsRegion, InfoCharacter>(
         GsRegion.values.toSet(),
         (item) => item.region,
         (c) => c.fromLabel(Labels.region),
         (c, i) => c.fromLabel(i.label),
-        comparator: (a, b) => a.region.index.compareTo(b.region.index),
       ),
       FilterSection<GsAttributeStat, InfoCharacter>(
         GsAttributeStat.values.characterStats,
@@ -383,7 +389,6 @@ class ScreenFilters {
             GsAttributeStat.none,
         (c) => 'Special Stat',
         (c, i) => c.fromLabel(i.label),
-        comparator: (a, b) => a.region.index.compareTo(b.region.index),
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
@@ -391,18 +396,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.friendship),
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
         filter: (i) => GsUtils.characters.hasCaracter(i.id),
-        comparator: (a, b) => GsUtils.characters
-            .getCharFriendship(a.id)
-            .compareTo(GsUtils.characters.getCharFriendship(b.id)),
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
         (item) => GsUtils.characters.hasCaracter(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
-        comparator: (a, b) => GsUtils.characters
-            .hasCaracter(a.id)
-            .compareTo(GsUtils.characters.hasCaracter(b.id)),
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
@@ -410,19 +409,15 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.ascension),
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
         filter: (i) => GsUtils.characters.hasCaracter(i.id),
-        comparator: (a, b) => GsUtils.characters
-            .getCharAscension(a.id)
-            .compareTo(GsUtils.characters.getCharAscension(b.id)),
       ),
       FilterSection<int, InfoCharacter>(
         {4, 5},
         (item) => item.rarity,
         (c) => c.fromLabel(Labels.rarity),
         (c, i) => c.fromLabel(Labels.rarityStar, i),
-        comparator: (a, b) => a.rarity.compareTo(b.rarity),
       ),
     ],
-    comparators: [
+    sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
       (a, b) => a.name.compareTo(b.name),
     ],
@@ -434,16 +429,12 @@ class ScreenFilters {
         (item) => _db.saveSereniteaSets.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
-        comparator: (a, b) => _db.saveSereniteaSets
-            .isObtainable(a.id)
-            .compareTo(_db.saveSereniteaSets.isObtainable(b.id)),
       ),
       FilterSection<GsSetCategory, InfoSereniteaSet>(
         GsSetCategory.values.toSet(),
         (item) => item.category,
         (c) => c.fromLabel(Labels.type),
         (c, e) => c.fromLabel(e.label),
-        comparator: (a, b) => a.category.index.compareTo(b.category.index),
       ),
       FilterSection<String, InfoSereniteaSet>(
         _versions,
@@ -452,7 +443,7 @@ class ScreenFilters {
         (c, i) => i,
       ),
     ],
-    comparators: [(a, b) => a.name.compareTo(b.name)],
+    sorting: [(a, b) => a.name.compareTo(b.name)],
   );
   static final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
     sections: [
@@ -461,9 +452,6 @@ class ScreenFilters {
         (item) => _db.saveSpincrystals.exists(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-        comparator: (a, b) => _db.saveSpincrystals
-            .exists(a.id)
-            .compareTo(_db.saveSpincrystals.exists(b.id)),
       ),
       FilterSection<String, InfoSpincrystal>(
         _versions,
@@ -472,7 +460,7 @@ class ScreenFilters {
         (c, i) => i,
       ),
     ],
-    comparators: [(a, b) => a.number.compareTo(b.number)],
+    sorting: [(a, b) => a.number.compareTo(b.number)],
   );
   static final infoMaterialFilter = ScreenFilter<InfoMaterial>(
     sections: [
@@ -495,7 +483,7 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
       ),
     ],
-    comparators: [
+    sorting: [
       (a, b) => a.group.index.compareTo(b.group.index),
       (a, b) => a.subgroup.compareTo(b.subgroup),
       (a, b) => a.rarity.compareTo(b.rarity),
@@ -506,13 +494,4 @@ class ScreenFilters {
 
 Comparator<E> _chain<E>(Iterable<Comparator<E>> selectors) {
   return selectors.fold((a, b) => 0, (p, e) => p.compose(e));
-}
-
-extension<E> on Comparator<E> {
-  Comparator<E> ordered(int order) => (a, b) => this(a, b) * order;
-}
-
-extension on bool {
-  // ignore: avoid_positional_boolean_parameters
-  int compareTo(bool other) => (this ? 1 : 0).compareTo(other ? 1 : 0);
 }

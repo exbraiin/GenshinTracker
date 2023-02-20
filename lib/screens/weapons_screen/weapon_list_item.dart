@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -8,11 +9,13 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 
 class WeaponListItem extends StatelessWidget {
+  final bool showItem;
   final bool showExtra;
   final InfoWeapon weapon;
 
   const WeaponListItem({
     super.key,
+    this.showItem = false,
     required this.showExtra,
     required this.weapon,
   });
@@ -37,6 +40,12 @@ class WeaponListItem extends StatelessWidget {
   }
 
   Widget _getContent(BuildContext context) {
+    late final material = GsDatabase.instance.infoWeaponsInfo
+        .getAscensionMaterials(weapon.id)
+        .entries
+        .map((e) => GsDatabase.instance.infoMaterials.getItemOrNull(e.key))
+        .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);
+
     return Padding(
       padding: const EdgeInsets.all(kSeparator2),
       child: Stack(
@@ -71,6 +80,16 @@ class WeaponListItem extends StatelessWidget {
                       ),
                     ),
                 ],
+              ),
+            ),
+          if (showItem && material != null)
+            Positioned(
+              right: kSeparator2,
+              bottom: kSeparator2,
+              child: ItemRarityBubble(
+                image: material.image,
+                tooltip: material.name,
+                rarity: material.rarity,
               ),
             ),
         ],

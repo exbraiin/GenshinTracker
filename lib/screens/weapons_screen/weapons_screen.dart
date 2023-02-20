@@ -28,6 +28,7 @@ class WeaponsScreen extends StatelessWidget {
           builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoWeapons.getItems();
             final weapons = filter.match(items);
+            final showItem = !filter.isSectionEmpty('weekdays');
 
             final child = weapons.isEmpty
                 ? const GsNoResultsState()
@@ -36,6 +37,7 @@ class WeaponsScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final item = weapons[index];
                       return WeaponListItem(
+                        showItem: showItem,
                         showExtra: filter.hasExtra('info'),
                         weapon: item,
                       );

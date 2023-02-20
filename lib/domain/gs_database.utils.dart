@@ -197,13 +197,15 @@ class _Characters {
   String getImage(String id) {
     final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
     final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.image ?? '';
-    return url.isNotEmpty ? url : _db.infoCharacters.getItem(id).image;
+    late final charImg = _db.infoCharacters.getItemOrNull(id)?.image ?? '';
+    return url.isNotEmpty ? url : charImg;
   }
 
   String getFullImage(String id) {
     final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
     final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.fullImage ?? '';
-    return url.isNotEmpty ? url : _db.infoCharacters.getItem(id).fullImage;
+    late final charImg = _db.infoCharacters.getItemOrNull(id)?.fullImage ?? '';
+    return url.isNotEmpty ? url : charImg;
   }
 }
 

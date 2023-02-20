@@ -28,6 +28,7 @@ class CharactersScreen extends StatelessWidget {
           builder: (context, filter, button, toggle) {
             final items = GsDatabase.instance.infoCharacters.getItems();
             final characters = filter.match(items);
+            final showItem = !filter.isSectionEmpty('weekdays');
             final child = characters.isEmpty
                 ? const GsNoResultsState()
                 : GsGridView.builder(
@@ -36,6 +37,7 @@ class CharactersScreen extends StatelessWidget {
                       final item = characters[index];
                       return CharacterListItem(
                         item,
+                        showItem: showItem,
                         showExtra: filter.hasExtra('info'),
                         onTap: () => _onCharacterTap(context, item),
                       );
