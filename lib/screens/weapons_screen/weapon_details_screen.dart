@@ -54,13 +54,19 @@ class WeaponDetailsScreen extends StatelessWidget {
   }
 
   Widget _getInfo(BuildContext context, InfoWeapon info) {
+    var first = true;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GsRarityItemCard(
-          size: 120,
-          image: info.image,
-          rarity: info.rarity,
+        StatefulBuilder(
+          builder: (context, setState) {
+            return GsRarityItemCard(
+              size: 120,
+              image: first ? info.image : info.imageAscension,
+              rarity: info.rarity,
+              onTap: () => setState(() => first = !first),
+            );
+          },
         ),
         const SizedBox(width: kSeparator8),
         Expanded(

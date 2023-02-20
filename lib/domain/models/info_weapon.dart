@@ -5,6 +5,7 @@ class InfoWeapon implements IdData {
   final String id;
   final String name;
   final String image;
+  final String imageAscension;
   final String version;
   final String description;
   final int atk;
@@ -18,6 +19,7 @@ class InfoWeapon implements IdData {
     required this.id,
     required this.name,
     required this.image,
+    required this.imageAscension,
     required this.version,
     required this.description,
     required this.atk,
@@ -34,6 +36,7 @@ class InfoWeapon implements IdData {
       atk: map['atk'],
       name: map['name'],
       image: map['image'],
+      imageAscension: map['image_asc'],
       version: map['version'] ?? '',
       description: map['desc'] ?? '',
       type: GsWeapon.values.fromName(map['type']),
