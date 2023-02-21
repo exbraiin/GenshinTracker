@@ -16,15 +16,12 @@ class SaveCharacter implements IdSaveData {
     this.friendship = 1,
   });
 
-  factory SaveCharacter.fromMap(Map<String, dynamic> map) {
-    return SaveCharacter(
-      id: map['id'],
-      owned: map['owned'] ?? 0,
-      outfit: map['outfit'] ?? '',
-      ascension: map['ascension'] ?? 0,
-      friendship: map['friendship'] ?? 0,
-    );
-  }
+  SaveCharacter.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        outfit = data.getString('outfit'),
+        owned = data.getInt('owned'),
+        ascension = data.getInt('ascension'),
+        friendship = data.getInt('friendship');
 
   @override
   Map<String, dynamic> toMap() => {

@@ -15,35 +15,17 @@ class InfoWeapon implements IdData {
   final GsItemSource source;
   final GsAttributeStat statType;
 
-  InfoWeapon({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.imageAscension,
-    required this.version,
-    required this.description,
-    required this.atk,
-    required this.type,
-    required this.rarity,
-    required this.statType,
-    required this.statValue,
-    required this.source,
-  });
-
-  factory InfoWeapon.fromMap(Map<String, dynamic> map) {
-    return InfoWeapon(
-      id: map['id'],
-      atk: map['atk'],
-      name: map['name'],
-      image: map['image'],
-      imageAscension: map['image_asc'],
-      version: map['version'] ?? '',
-      description: map['desc'] ?? '',
-      type: GsWeapon.values.fromName(map['type']),
-      rarity: map['rarity'],
-      statType: GsAttributeStat.values.fromName(map['stat_type']),
-      statValue: map['stat_value'],
-      source: GsItemSource.fromId(map['source']),
-    );
-  }
+  InfoWeapon.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        imageAscension = data.getString('image_asc'),
+        version = data.getString('version'),
+        description = data.getString('desc'),
+        atk = data.getInt('atk'),
+        rarity = data.getInt('rarity', 1),
+        statValue = data.getDouble('stat_value'),
+        type = data.getGsEnum('type', GsWeapon.values),
+        source = data.getGsEnum('source', GsItemSource.values),
+        statType = data.getGsEnum('stat_type', GsAttributeStat.values);
 }

@@ -9,23 +9,11 @@ class InfoIngredient implements IdData {
   final String version;
   final int rarity;
 
-  InfoIngredient({
-    required this.id,
-    required this.name,
-    required this.desc,
-    required this.image,
-    required this.version,
-    required this.rarity,
-  });
-
-  factory InfoIngredient.fromMap(Map<String, dynamic> map) {
-    return InfoIngredient(
-      id: map['id'],
-      name: map['name'],
-      desc: map['desc'],
-      image: map['image'],
-      rarity: map['rarity'],
-      version: map['version'],
-    );
-  }
+  InfoIngredient.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        desc = data.getString('desc'),
+        image = data.getString('image'),
+        rarity = data.getInt('rarity', 1),
+        version = data.getString('version');
 }

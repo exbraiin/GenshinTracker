@@ -2,12 +2,63 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-typedef ItemFromMap<T> = T Function(Map<String, dynamic> map);
+typedef ItemFromMap<T> = T Function(JsonData data);
+
+class JsonData {
+  final Map<String, dynamic> _data;
+
+  JsonData(this._data);
+
+  T getData<T>(String key) => _data[key] as T;
+  T getDataOrDefault<T>(String key, T value) => _data[key] as T? ?? value;
+  T? getDataOrNull<T>(String key) => _data[key] as T?;
+
+  int getInt(String key, [int df = 0]) => getDataOrDefault(key, df);
+  bool getBool(String key, {bool df = false}) => getDataOrDefault(key, df);
+  double getDouble(String key, [double df = 0]) => getDataOrDefault(key, df);
+  String getString(String key, [String df = '']) => getDataOrDefault(key, df);
+
+  List<int> getIntList(String key, [List<int> df = const []]) =>
+      getDataOrDefault<List>(key, df).cast<int>();
+  List<String> getStringList(String key, [List<String> df = const []]) =>
+      getDataOrDefault<List>(key, df).cast<String>();
+  List<String> getStringAsStringList(String key) => getString(key)
+      .split(',')
+      .map((e) => e.trim())
+      .where((e) => e.isNotBlank)
+      .toList();
+  List<T> getModelList<T>(String s, ItemFromMap<T> create) =>
+      getDataOrDefault<Map<String, dynamic>>('pieces', {})
+          .entries
+          .map((e) => create(JsonData(e.value..['id'] = e.key)))
+          .toList();
+
+  DateTime getDate(String key, [DateTime? df]) =>
+      DateTime.tryParse(getDataOrDefault(key, '')) ?? df ?? DateTime(0);
+
+  E getGsEnum<E extends GsEnum>(String key, List<E> values, [E? df]) {
+    final id = getString(key);
+    return values.firstWhere(
+      (e) => e.id == id,
+      orElse: () => df ?? values.first,
+    );
+  }
+
+  List<E> getGsEnumList<E extends GsEnum>(String key, List<E> values) =>
+      getStringList(key)
+          .map((e) => values.firstOrNullWhere((t) => t.id == e))
+          .whereNotNull()
+          .toList();
+
+  Map<K, V> getMap<K, V>(String key) =>
+      getDataOrDefault<Map<String, dynamic>>(key, {}).cast<K, V>();
+}
 
 class JsonInfoDetails<T extends IdData> {
   final String name;
@@ -24,7 +75,8 @@ class JsonInfoDetails<T extends IdData> {
 
   Future<void> load(Map<String, dynamic> data) async {
     final map = data[name] as Map<String, dynamic>? ?? {};
-    _map.addAll(map.map((k, v) => MapEntry(k, create(v..['id'] = k))));
+    final e = map.map((k, v) => MapEntry(k, create(JsonData(v..['id'] = k))));
+    _map.addAll(e);
   }
 
   T getItem(String id) => _map[id]!;
@@ -76,6 +128,6 @@ class JsonInfoSingle<T extends IdData> {
 
   Future<void> load(Map<String, dynamic> data) async {
     final map = data[name] as Map<String, dynamic>? ?? {};
-    this.data = create(map);
+    this.data = create(JsonData(map));
   }
 }

@@ -33,7 +33,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now().weekday - 1;
-    final name = GsWeekday.days[_weekday - 1];
+    final name = GsWeekday.values[_weekday - 1];
     final materials = GsDatabase.instance.infoMaterials
         .getItems()
         .where((element) => element.weekdays.contains(name))
@@ -168,13 +168,13 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         focusColor: Colors.transparent,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white,
-        items: GsWeekday.days.mapIndexed((idx, item) {
+        items: GsWeekday.values.mapIndexed((idx, item) {
           late final color = context.themeColors.badValue;
           return DropdownMenuItem(
             value: idx,
             alignment: Alignment.center,
             child: Text(
-              item,
+              item.label,
               style: TextStyle(color: idx == now ? color : null),
             ),
           );

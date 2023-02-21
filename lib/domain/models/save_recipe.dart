@@ -10,12 +10,9 @@ class SaveRecipe implements IdSaveData {
     required this.proficiency,
   });
 
-  factory SaveRecipe.fromMap(Map<String, dynamic> map) {
-    return SaveRecipe(
-      id: map['id'],
-      proficiency: map['proficiency'],
-    );
-  }
+  SaveRecipe.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        proficiency = data.getInt('proficiency');
 
   @override
   Map<String, dynamic> toMap() => {

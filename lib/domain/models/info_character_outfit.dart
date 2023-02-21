@@ -10,12 +10,12 @@ class InfoCharacterOutfit implements IdData {
   final String image;
   final String fullImage;
 
-  InfoCharacterOutfit.fromMap(Map<String, dynamic> map)
-      : id = map['id'] ?? '',
-        name = map['name'] ?? '',
-        rarity = map['rarity'] ?? 1,
-        version = map['version'] ?? '',
-        character = map['character'] ?? '',
-        image = map['image'] ?? '',
-        fullImage = map['full_image'] ?? '';
+  InfoCharacterOutfit.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        rarity = data.getInt('rarity', 4),
+        version = data.getString('version'),
+        character = data.getString('character'),
+        image = data.getString('image'),
+        fullImage = data.getString('full_image');
 }

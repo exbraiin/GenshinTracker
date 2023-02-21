@@ -17,112 +17,112 @@ class GsDatabase {
 
   final infoDetails = JsonInfoSingle(
     'details',
-    InfoDetails.fromMap,
+    InfoDetails.fromJsonData,
   );
   final infoCities = JsonInfoDetails<InfoCity>(
     'cities',
-    InfoCity.fromMap,
+    InfoCity.fromJsonData,
   );
   final infoBanners = JsonInfoDetails<InfoBanner>(
     'banners',
-    InfoBanner.fromMap,
+    InfoBanner.fromJsonData,
   );
   final infoArtifacts = JsonInfoDetails<InfoArtifact>(
     'artifacts',
-    InfoArtifact.fromMap,
+    InfoArtifact.fromJsonData,
   );
   final infoMaterials = JsonInfoDetails<InfoMaterial>(
     'materials',
-    InfoMaterial.fromMap,
+    InfoMaterial.fromJsonData,
   );
   final infoRecipes = JsonInfoDetails<InfoRecipe>(
     'recipes',
-    InfoRecipe.fromMap,
+    InfoRecipe.fromJsonData,
   );
   final infoRemarkableChests = JsonInfoDetails(
     'remarkable_chests',
-    InfoRemarkableChest.fromMap,
+    InfoRemarkableChest.fromJsonData,
   );
   final infoIngredients = JsonInfoDetails<InfoIngredient>(
     'ingredients',
-    InfoIngredient.fromMap,
+    InfoIngredient.fromJsonData,
   );
   final infoWeapons = JsonInfoDetails<InfoWeapon>(
     'weapons',
-    InfoWeapon.fromMap,
+    InfoWeapon.fromJsonData,
   );
   final infoWeaponsInfo = JsonInfoDetails<InfoWeaponInfo>(
     'weapons_info',
-    InfoWeaponInfo.fromMap,
+    InfoWeaponInfo.fromJsonData,
   );
   final infoNamecards = JsonInfoDetails(
     'namecards',
-    InfoNamecard.fromMap,
+    InfoNamecard.fromJsonData,
   );
   final infoCharacters = JsonInfoDetails<InfoCharacter>(
     'characters',
-    InfoCharacter.fromMap,
+    InfoCharacter.fromJsonData,
   );
   final infoCharactersInfo = JsonInfoDetails(
     'characters_info',
-    InfoCharacterInfo.fromMap,
+    InfoCharacterInfo.fromJsonData,
   );
   final infoCharactersOutfit = JsonInfoDetails(
     'characters_outfits',
-    InfoCharacterOutfit.fromMap,
+    InfoCharacterOutfit.fromJsonData,
   );
   final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
     'spincrystals',
-    InfoSpincrystal.fromMap,
+    InfoSpincrystal.fromJsonData,
   );
   final infoSereniteaSets = JsonInfoDetails<InfoSereniteaSet>(
     'serenitea_sets',
-    InfoSereniteaSet.fromMap,
+    InfoSereniteaSet.fromJsonData,
   );
   final infoVersion = JsonInfoDetails<InfoVersion>(
     'versions',
-    InfoVersion.fromMap,
+    InfoVersion.fromJsonData,
   );
 
   bool _saveLoaded = false;
   final saveWishes = JsonSaveDetails<SaveWish>(
     'wishes',
-    SaveWish.fromMap,
+    SaveWish.fromJsonData,
     _notify,
   );
   final saveRecipes = JsonSaveDetails<SaveRecipe>(
     'recipes',
-    SaveRecipe.fromMap,
+    SaveRecipe.fromJsonData,
     _notify,
   );
   final saveRemarkableChests = JsonSaveDetails<SaveRemarkableChest>(
     'remarkable_chests',
-    SaveRemarkableChest.fromMap,
+    SaveRemarkableChest.fromJsonData,
     _notify,
   );
   final saveCharacters = JsonSaveDetails<SaveCharacter>(
     'characters',
-    SaveCharacter.fromMap,
+    SaveCharacter.fromJsonData,
     _notify,
   );
   final saveReputations = JsonSaveDetails<SaveReputation>(
     'reputation',
-    SaveReputation.fromMap,
+    SaveReputation.fromJsonData,
     _notify,
   );
   final saveSereniteaSets = JsonSaveDetails<SaveSereniteaSet>(
     'serenitea_sets',
-    SaveSereniteaSet.fromMap,
+    SaveSereniteaSet.fromJsonData,
     _notify,
   );
   final saveSpincrystals = JsonSaveDetails<SaveSpincrystal>(
     'spincrystals',
-    SaveSpincrystal.fromMap,
+    SaveSpincrystal.fromJsonData,
     _notify,
   );
   final saveMaterials = JsonSaveDetails<SaveMaterial>(
     'materials',
-    SaveMaterial.fromMap,
+    SaveMaterial.fromJsonData,
     _notify,
   );
 

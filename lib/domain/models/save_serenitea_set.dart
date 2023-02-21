@@ -10,12 +10,9 @@ class SaveSereniteaSet implements IdSaveData {
     required this.chars,
   });
 
-  factory SaveSereniteaSet.fromMap(Map<String, dynamic> map) {
-    return SaveSereniteaSet(
-      id: map['id'],
-      chars: (map['chars'] as List).cast<String>(),
-    );
-  }
+  SaveSereniteaSet.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        chars = data.getStringList('chars');
 
   @override
   Map<String, dynamic> toMap() => {

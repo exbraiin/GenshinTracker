@@ -104,7 +104,8 @@ class ScreenFilters {
       .getItems()
       .map((e) => _toMajorVersion(e.id))
       .toSet();
-  static final _weekdays = GsWeekday.days.exceptElement('Sunday').toSet();
+  static final _weekdays =
+      GsWeekday.values.exceptElement(GsWeekday.sunday).toSet();
 
   static final itemDataFilter = ScreenFilter<ItemData>(
     sections: [
@@ -276,7 +277,7 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
       ),
-      FilterSection<String, InfoWeapon>.raw(
+      FilterSection<GsWeekday, InfoWeapon>.raw(
         _weekdays,
         (item, enabled) {
           final t = _db.infoMaterials.getItems();
@@ -285,7 +286,7 @@ class ScreenFilters {
           return m.any((e) => inMats.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
-        (c, i) => i,
+        (c, i) => i.label,
         key: 'weekdays',
       ),
       FilterSection<GsAttributeStat, InfoWeapon>(
@@ -355,7 +356,7 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
       ),
-      FilterSection<String, InfoCharacter>.raw(
+      FilterSection<GsWeekday, InfoCharacter>.raw(
         _weekdays,
         (item, enabled) {
           final t = _db.infoMaterials.getItems();
@@ -364,7 +365,7 @@ class ScreenFilters {
           return m.any((e) => charMats.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
-        (c, i) => i,
+        (c, i) => i.label,
         key: 'weekdays',
       ),
       FilterSection<String, InfoCharacter>(

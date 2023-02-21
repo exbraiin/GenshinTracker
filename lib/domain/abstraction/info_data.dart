@@ -5,3 +5,7 @@ abstract class IdData {
 abstract class IdSaveData extends IdData {
   Map<String, dynamic> toMap();
 }
+
+abstract class GsEnum {
+  String get id;
+}

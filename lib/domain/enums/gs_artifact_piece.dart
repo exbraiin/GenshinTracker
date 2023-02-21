@@ -1,7 +1,8 @@
 import 'package:dartx/dartx.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
 /// The artifact pieces
-enum GsArtifactPieces {
+enum GsArtifactPieces implements GsEnum {
   /// 0 - Flower of life
   flowerOfLife('flower_of_life'),
 
@@ -17,6 +18,7 @@ enum GsArtifactPieces {
   /// 4 - Circlet of Logos
   circletOfLogos('circlet_of_logos');
 
+  @override
   final String id;
   const GsArtifactPieces(this.id);
 

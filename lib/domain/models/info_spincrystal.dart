@@ -13,27 +13,13 @@ class InfoSpincrystal implements IdData {
 
   bool get fromChubby => source == 'Chubby';
 
-  InfoSpincrystal({
-    required this.id,
-    required this.name,
-    required this.desc,
-    required this.number,
-    required this.rarity,
-    required this.region,
-    required this.source,
-    required this.version,
-  });
-
-  factory InfoSpincrystal.fromMap(Map<String, dynamic> map) {
-    return InfoSpincrystal(
-      id: map['id'],
-      name: map['name'],
-      desc: map['desc'] ?? '',
-      number: map['number'],
-      rarity: map['rarity'] ?? 4,
-      region: map['region'] ?? '',
-      source: map['source'],
-      version: map['version'],
-    );
-  }
+  InfoSpincrystal.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        desc = data.getString('desc'),
+        number = data.getInt('number'),
+        rarity = data.getInt('rarity', 4),
+        region = data.getString('region'),
+        source = data.getString('source'),
+        version = data.getString('version');
 }

@@ -15,32 +15,15 @@ class InfoRecipe implements IdData {
 
   int get maxProficiency => (rarity * 5).clamp(0, 25);
 
-  InfoRecipe({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.rarity,
-    required this.effect,
-    required this.effectDesc,
-    required this.version,
-    required this.description,
-    required this.baseRecipe,
-    required this.ingredients,
-  });
-
-  factory InfoRecipe.fromMap(Map<String, dynamic> map) {
-    return InfoRecipe(
-      id: map['id'],
-      name: map['name'],
-      image: map['image'],
-      rarity: map['rarity'],
-      version: map['version'],
-      description: map['desc'] ?? '',
-      baseRecipe: map['base_recipe'] ?? '',
-      effectDesc: map['effect_desc'] ?? '',
-      effect: GsRecipeBuff.values.fromName(map['effect']),
-      ingredients: (map['ingredients'] as Map<String, dynamic>? ?? {})
-          .cast<String, int>(),
-    );
-  }
+  InfoRecipe.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        rarity = data.getInt('rarity', 1),
+        version = data.getString('version'),
+        description = data.getString('desc'),
+        baseRecipe = data.getString('base_recipe'),
+        effectDesc = data.getString('effect_desc'),
+        effect = data.getGsEnum('effect', GsRecipeBuff.values),
+        ingredients = data.getMap<String, int>('ingredients');
 }

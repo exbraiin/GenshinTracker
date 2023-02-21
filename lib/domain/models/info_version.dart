@@ -7,19 +7,9 @@ class InfoVersion implements IdData {
   final String image;
   final DateTime releaseDate;
 
-  InfoVersion({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.releaseDate,
-  });
-
-  factory InfoVersion.fromMap(Map<String, dynamic> map) {
-    return InfoVersion(
-      id: map['id'],
-      name: map['name'],
-      image: map['image'],
-      releaseDate: DateTime.parse(map['release_date']),
-    );
-  }
+  InfoVersion.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        releaseDate = data.getDate('release_date');
 }

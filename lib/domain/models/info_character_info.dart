@@ -7,27 +7,17 @@ class InfoCharacterInfo implements IdData {
   final List<InfoCharacterTalent> talents;
   final List<InfoCharacterConstellation> constellations;
 
-  InfoCharacterInfo({
-    required this.id,
-    required this.talents,
-    required this.ascension,
-    required this.constellations,
-  });
-
-  factory InfoCharacterInfo.fromMap(Map<String, dynamic> map) {
-    return InfoCharacterInfo(
-      id: map['id'],
-      ascension: InfoCharacterAscension.fromMap(map),
-      talents: (map['talents'] as List)
-          .cast<Map<String, dynamic>>()
-          .map(InfoCharacterTalent.fromMap)
-          .toList(),
-      constellations: (map['constellations'] as List)
-          .cast<Map<String, dynamic>>()
-          .map(InfoCharacterConstellation.fromMap)
-          .toList(),
-    );
-  }
+  InfoCharacterInfo.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        ascension = InfoCharacterAscension.fromJsonData(data),
+        talents = data.getModelList(
+          'talents',
+          InfoCharacterTalent.fromJsonData,
+        ),
+        constellations = data.getModelList(
+          'constellations',
+          InfoCharacterConstellation.fromJsonData,
+        );
 }
 
 class InfoCharacterTalent {
@@ -36,21 +26,11 @@ class InfoCharacterTalent {
   final String icon;
   final String desc;
 
-  InfoCharacterTalent({
-    required this.name,
-    required this.type,
-    required this.icon,
-    required this.desc,
-  });
-
-  factory InfoCharacterTalent.fromMap(Map<String, dynamic> map) {
-    return InfoCharacterTalent(
-      name: map['name'],
-      type: map['type'],
-      icon: map['icon'],
-      desc: map['desc'],
-    );
-  }
+  InfoCharacterTalent.fromJsonData(JsonData data)
+      : name = data.getString('name'),
+        type = data.getString('type'),
+        icon = data.getString('icon'),
+        desc = data.getString('desc');
 }
 
 class InfoCharacterConstellation {
@@ -58,19 +38,10 @@ class InfoCharacterConstellation {
   final String icon;
   final String desc;
 
-  InfoCharacterConstellation({
-    required this.name,
-    required this.icon,
-    required this.desc,
-  });
-
-  factory InfoCharacterConstellation.fromMap(Map<String, dynamic> map) {
-    return InfoCharacterConstellation(
-      name: map['name'],
-      icon: map['icon'],
-      desc: map['desc'],
-    );
-  }
+  InfoCharacterConstellation.fromJsonData(JsonData data)
+      : name = data.getString('name'),
+        icon = data.getString('icon'),
+        desc = data.getString('desc');
 }
 
 class InfoCharacterAscension {
@@ -86,16 +57,16 @@ class InfoCharacterAscension {
   final List<String> ascStatValues;
   final GsAttributeStat ascStatType;
 
-  InfoCharacterAscension.fromMap(Map<String, dynamic> map)
-      : matGem = map['mat_gem'] ?? '',
-        matBoss = map['mat_boss'] ?? '',
-        matCommon = map['mat_common'] ?? '',
-        matRegion = map['mat_region'] ?? '',
-        matTalent = map['mat_talent'] ?? '',
-        matWeekly = map['mat_weekly'] ?? '',
-        ascHpValues = map.getAsStringList('asc_hp_values'),
-        ascAtkValues = map.getAsStringList('asc_atk_values'),
-        ascDefValues = map.getAsStringList('asc_def_values'),
-        ascStatValues = map.getAsStringList('asc_stat_values'),
-        ascStatType = GsAttributeStat.values.fromName(map['asc_stat_type']);
+  InfoCharacterAscension.fromJsonData(JsonData data)
+      : matGem = data.getString('mat_gem'),
+        matBoss = data.getString('mat_boss'),
+        matCommon = data.getString('mat_common'),
+        matRegion = data.getString('mat_region'),
+        matTalent = data.getString('mat_talent'),
+        matWeekly = data.getString('mat_weekly'),
+        ascHpValues = data.getStringAsStringList('asc_hp_values'),
+        ascAtkValues = data.getStringAsStringList('asc_atk_values'),
+        ascDefValues = data.getStringAsStringList('asc_def_values'),
+        ascStatValues = data.getStringAsStringList('asc_stat_values'),
+        ascStatType = data.getGsEnum('asc_stat_type', GsAttributeStat.values);
 }

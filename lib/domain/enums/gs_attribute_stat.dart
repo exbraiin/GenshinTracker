@@ -1,8 +1,9 @@
 import 'package:dartx/dartx.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
-enum GsAttributeStat {
+enum GsAttributeStat implements GsEnum {
   none(Labels.wsNone),
   hp(Labels.wsHp),
   atk(Labels.wsAtk),
@@ -23,6 +24,9 @@ enum GsAttributeStat {
   hydroDmgBonus(Labels.wsHydroBonus),
   pyroDmgBonus(Labels.wsPyroBonus),
   cryoDmgBonus(Labels.wsCryoBonus);
+
+  @override
+  String get id => name;
 
   final String label;
   const GsAttributeStat(this.label);

@@ -1,6 +1,7 @@
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
-enum GsRecipeBuff {
+enum GsRecipeBuff implements GsEnum {
   /// No buff
   none(Labels.wsNone),
 
@@ -37,6 +38,9 @@ enum GsRecipeBuff {
   /// Adventurer's Dishes
   /// * Stamina Increse
   staminaIncrease(Labels.rbStaminaIncrease);
+
+  @override
+  String get id => name;
 
   final String label;
   const GsRecipeBuff(this.label);

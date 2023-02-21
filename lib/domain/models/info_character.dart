@@ -20,45 +20,22 @@ class InfoCharacter implements IdData {
   final GsElement element;
   final GsItemSource source;
 
-  InfoCharacter({
-    required this.id,
-    required this.name,
-    required this.title,
-    required this.version,
-    required this.constellation,
-    required this.affiliation,
-    required this.specialDish,
-    required this.description,
-    required this.image,
-    required this.fullImage,
-    required this.birthday,
-    required this.releaseDate,
-    required this.rarity,
-    required this.region,
-    required this.weapon,
-    required this.element,
-    required this.source,
-  });
-
-  factory InfoCharacter.fromMap(Map<String, dynamic> map) {
-    return InfoCharacter(
-      id: map['id'],
-      name: map['name'],
-      title: map['title'],
-      version: map['version'],
-      constellation: map['constellation'],
-      affiliation: map['affiliation'],
-      specialDish: map['special_dish'],
-      description: map['description'],
-      image: map['image'],
-      fullImage: map['full_image'],
-      birthday: DateTime.tryParse(map['birthday'] ?? '') ?? DateTime(0),
-      releaseDate: DateTime.tryParse(map['release_date'] ?? '') ?? DateTime(0),
-      rarity: map['rarity'],
-      region: GsRegion.values.fromName(map['region']),
-      weapon: GsWeapon.values.fromName(map['weapon']),
-      element: GsElement.values.fromName(map['element']),
-      source: GsItemSource.fromId(map['source']),
-    );
-  }
+  InfoCharacter.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        title = data.getString('title'),
+        version = data.getString('version'),
+        constellation = data.getString('constellation'),
+        affiliation = data.getString('affiliation'),
+        specialDish = data.getString('special_dish'),
+        description = data.getString('description'),
+        image = data.getString('image'),
+        fullImage = data.getString('full_image'),
+        birthday = data.getDate('birthday'),
+        releaseDate = data.getDate('release_date'),
+        rarity = data.getInt('rarity', 4),
+        region = data.getGsEnum('region', GsRegion.values),
+        weapon = data.getGsEnum('weapon', GsWeapon.values),
+        element = data.getGsEnum('element', GsElement.values),
+        source = data.getGsEnum('source', GsItemSource.values);
 }

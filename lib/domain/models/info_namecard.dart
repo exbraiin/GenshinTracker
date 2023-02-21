@@ -12,29 +12,14 @@ class InfoNamecard implements IdData {
   final String obtain;
   final String version;
 
-  InfoNamecard({
-    required this.id,
-    required this.name,
-    required this.desc,
-    required this.type,
-    required this.image,
-    required this.fullImage,
-    required this.rarity,
-    required this.obtain,
-    required this.version,
-  });
-
-  factory InfoNamecard.fromMap(Map<String, dynamic> map) {
-    return InfoNamecard(
-      id: map['id'],
-      name: map['name'],
-      version: map['version'],
-      image: map['image'],
-      fullImage: map['full_image'],
-      desc: map['desc'],
-      obtain: map['obtain'],
-      rarity: map['rarity'],
-      type: map['type'],
-    );
-  }
+  InfoNamecard.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        rarity = data.getInt('rarity', 4),
+        name = data.getString('name'),
+        desc = data.getString('desc'),
+        type = data.getString('type'),
+        image = data.getString('image'),
+        fullImage = data.getString('full_image'),
+        obtain = data.getString('obtain'),
+        version = data.getString('version');
 }

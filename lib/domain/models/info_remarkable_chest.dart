@@ -12,29 +12,14 @@ class InfoRemarkableChest implements IdData {
   final String version;
   final String category;
 
-  InfoRemarkableChest({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.image,
-    required this.rarity,
-    required this.energy,
-    required this.source,
-    required this.version,
-    required this.category,
-  });
-
-  factory InfoRemarkableChest.fromMap(Map<String, dynamic> map) {
-    return InfoRemarkableChest(
-      id: map['id'],
-      name: map['name'],
-      type: GsSetCategory.values.fromName(map['type']),
-      image: map['image'],
-      rarity: map['rarity'],
-      energy: map['energy'],
-      source: map['source'],
-      version: map['version'],
-      category: map['category'],
-    );
-  }
+  InfoRemarkableChest.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        type = data.getGsEnum('type', GsSetCategory.values),
+        image = data.getString('image'),
+        rarity = data.getInt('rarity', 2),
+        energy = data.getInt('energy'),
+        source = data.getString('source'),
+        version = data.getString('version'),
+        category = data.getString('category');
 }

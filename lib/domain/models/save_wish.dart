@@ -1,9 +1,9 @@
 import 'package:tracker/domain/gs_domain.dart';
 
 class SaveWish extends Comparable<SaveWish> implements IdSaveData {
-  final int number;
   @override
   final String id;
+  final int number;
   final String itemId;
   final String bannerId;
   final DateTime date;
@@ -18,15 +18,13 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData {
     required this.bannerId,
   }) : bannerDate = _getBannerDate(bannerId);
 
-  factory SaveWish.fromMap(Map<String, dynamic> map) {
-    return SaveWish(
-      id: map['id'],
-      date: DateTime.parse(map['date']),
-      number: map['number'],
-      itemId: map['item'],
-      bannerId: map['banner'],
-    );
-  }
+  SaveWish.fromJsonData(JsonData data)
+      : number = data.getInt('number'),
+        id = data.getString('id'),
+        itemId = data.getString('item'),
+        bannerId = data.getString('banner'),
+        date = data.getDate('date'),
+        bannerDate = _getBannerDate(data.getString('banner'));
 
   @override
   Map<String, dynamic> toMap() => {

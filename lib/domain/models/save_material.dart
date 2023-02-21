@@ -10,12 +10,9 @@ class SaveMaterial implements IdSaveData {
     required this.amount,
   });
 
-  factory SaveMaterial.fromMap(Map<String, dynamic> map) {
-    return SaveMaterial(
-      id: map['id'],
-      amount: map['amount'] ?? 0,
-    );
-  }
+  SaveMaterial.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        amount = data.getInt('amount');
 
   @override
   Map<String, dynamic> toMap() => {

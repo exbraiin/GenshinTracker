@@ -8,21 +8,10 @@ class InfoCity implements IdData {
   final GsElement element;
   final List<int> reputation;
 
-  InfoCity({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.element,
-    required this.reputation,
-  });
-
-  factory InfoCity.fromMap(Map<String, dynamic> map) {
-    return InfoCity(
-      id: map['id'],
-      name: map['name'],
-      image: map['image'],
-      element: GsElement.values.fromName(map['element']),
-      reputation: (map['reputation'] as List).cast<int>(),
-    );
-  }
+  InfoCity.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        element = data.getGsEnum('element', GsElement.values),
+        reputation = data.getIntList('reputation');
 }

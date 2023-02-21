@@ -1,7 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/gs_domain.dart';
 
-enum GsMaterialGroup {
+enum GsMaterialGroup implements GsEnum {
   none(
     'none',
     Labels.wsNone,
@@ -87,6 +88,7 @@ enum GsMaterialGroup {
     Labels.talents,
   );
 
+  @override
   final String id;
   final String label;
   const GsMaterialGroup(this.id, this.label);

@@ -11,27 +11,13 @@ class InfoSereniteaSet implements IdData {
   final GsSetCategory category;
   final List<String> chars;
 
-  InfoSereniteaSet({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.version,
-    required this.rarity,
-    required this.energy,
-    required this.category,
-    required this.chars,
-  });
-
-  factory InfoSereniteaSet.fromMap(Map<String, dynamic> map) {
-    return InfoSereniteaSet(
-      id: map['id'],
-      name: map['name'],
-      image: map['image'],
-      version: map['version'] ?? '',
-      rarity: map['rarity'] ?? 4,
-      energy: map['energy'],
-      category: GsSetCategory.values.fromName(map['category']),
-      chars: (map['chars'] as List).cast<String>(),
-    );
-  }
+  InfoSereniteaSet.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        version = data.getString('version'),
+        rarity = data.getInt('rarity', 4),
+        energy = data.getInt('energy'),
+        category = data.getGsEnum('category', GsSetCategory.values),
+        chars = data.getStringList('chars');
 }

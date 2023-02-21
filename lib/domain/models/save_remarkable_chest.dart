@@ -10,12 +10,9 @@ class SaveRemarkableChest implements IdSaveData {
     required this.obtained,
   });
 
-  factory SaveRemarkableChest.fromMap(Map<String, dynamic> map) {
-    return SaveRemarkableChest(
-      id: map['id'],
-      obtained: map['obtained'],
-    );
-  }
+  SaveRemarkableChest.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        obtained = data.getBool('obtained');
 
   @override
   Map<String, dynamic> toMap() => {

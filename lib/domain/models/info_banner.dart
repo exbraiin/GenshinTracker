@@ -12,31 +12,16 @@ class InfoBanner extends Comparable<InfoBanner> implements IdData {
   final List<String> feature5;
   final GsBanner type;
 
-  InfoBanner({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.version,
-    required this.dateStart,
-    required this.dateEnd,
-    required this.feature4,
-    required this.feature5,
-    required this.type,
-  });
-
-  factory InfoBanner.fromMap(Map<String, dynamic> map) {
-    return InfoBanner(
-      id: map['id'],
-      name: map['name'],
-      image: map['image'],
-      version: map['version'] ?? '',
-      dateStart: DateTime.parse(map['date_start']),
-      dateEnd: DateTime.parse(map['date_end']),
-      feature4: (map['feature_4'] as List).cast<String>(),
-      feature5: (map['feature_5'] as List).cast<String>(),
-      type: GsBanner.values.fromName(map['type']),
-    );
-  }
+  InfoBanner.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        name = data.getString('name'),
+        image = data.getString('image'),
+        version = data.getString('version'),
+        dateStart = data.getDate('date_start'),
+        dateEnd = data.getDate('date_end'),
+        feature4 = data.getStringList('feature_4'),
+        feature5 = data.getStringList('feature_5'),
+        type = data.getGsEnum('type', GsBanner.values);
 
   @override
   int compareTo(InfoBanner other) {

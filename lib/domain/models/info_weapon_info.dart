@@ -12,29 +12,14 @@ class InfoWeaponInfo implements IdData {
   final List<String> ascStatValues;
   final GsAttributeStat ascStatType;
 
-  InfoWeaponInfo({
-    required this.id,
-    required this.effectName,
-    required this.effectDesc,
-    required this.matWeapon,
-    required this.matCommon,
-    required this.matElite,
-    required this.ascStatType,
-    required this.ascAtkValues,
-    required this.ascStatValues,
-  });
-
-  factory InfoWeaponInfo.fromMap(Map<String, dynamic> map) {
-    return InfoWeaponInfo(
-      id: map['id'],
-      effectName: map['effect_name'],
-      effectDesc: map['effect_desc'],
-      matWeapon: map['mat_weapon'],
-      matCommon: map['mat_common'],
-      matElite: map['mat_elite'],
-      ascAtkValues: map.getAsStringList('asc_atk_values'),
-      ascStatValues: map.getAsStringList('asc_stat_values'),
-      ascStatType: GsAttributeStat.values.fromName(map['asc_stat_type'] ?? ''),
-    );
-  }
+  InfoWeaponInfo.fromJsonData(JsonData data)
+      : id = data.getString('id'),
+        effectName = data.getString('effect_name'),
+        effectDesc = data.getString('effect_desc'),
+        matElite = data.getString('mat_elite'),
+        matCommon = data.getString('mat_common'),
+        matWeapon = data.getString('mat_weapon'),
+        ascAtkValues = data.getStringAsStringList('asc_atk_values'),
+        ascStatValues = data.getStringAsStringList('asc_stat_values'),
+        ascStatType = data.getGsEnum('asc_stat_type', GsAttributeStat.values);
 }

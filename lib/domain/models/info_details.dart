@@ -5,15 +5,8 @@ class InfoDetails implements IdData {
   final String id = 'details';
   final List<int> ascensionHerosWit;
 
-  InfoDetails({
-    required this.ascensionHerosWit,
-  });
-
-  factory InfoDetails.fromMap(Map<String, dynamic> map) {
-    return InfoDetails(
-      ascensionHerosWit: (map['ascension_heros_wit'] as List).cast<int>(),
-    );
-  }
+  InfoDetails.fromJsonData(JsonData data)
+      : ascensionHerosWit = data.getIntList('ascension_heros_wit');
 
   int getAscensionHerosWit(int level) => ascensionHerosWit[level];
 }
