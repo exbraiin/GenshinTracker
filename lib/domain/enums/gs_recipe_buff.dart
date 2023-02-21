@@ -1,38 +1,43 @@
+import 'package:tracker/common/lang/lang.dart';
+
 enum GsRecipeBuff {
   /// No buff
-  none,
+  none(Labels.wsNone),
 
   /// Recovery Dishes
   /// * Revive buff
-  revive,
+  revive(Labels.rbRevive),
 
   /// Adventurer's Dishes
-  adventure,
+  adventure(Labels.rbAdventure),
 
   /// DEF-Boosting Dishes
-  defBoost,
+  defBoost(Labels.rbDef),
 
   /// ATK-Boosting Dishes
   /// * ATK boost
-  atkBoost,
+  atkBoost(Labels.rbAtk),
 
   /// ATK-Boosting Dishes
   /// * ATK CRIT boost
-  atkCritBoost,
+  atkCritBoost(Labels.rbAtkCrit),
 
   /// Recovery Dishes
   /// * HP recovery
-  recoveryHP,
+  recoveryHP(Labels.rbHpRecovery),
 
   /// Recovery Dishes
   /// * HP recovery and extra
-  recoveryHPAll,
+  recoveryHPAll(Labels.rbHpAllRecovery),
 
   /// Adventurer's Dishes
   /// * Stamina Reduction
-  staminaReduction,
+  staminaReduction(Labels.rbStaminaReduction),
 
   /// Adventurer's Dishes
   /// * Stamina Increse
-  staminaIncrease,
+  staminaIncrease(Labels.rbStaminaIncrease);
+
+  final String label;
+  const GsRecipeBuff(this.label);
 }

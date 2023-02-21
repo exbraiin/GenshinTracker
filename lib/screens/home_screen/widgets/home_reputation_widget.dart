@@ -38,7 +38,7 @@ class HomeReputationWidget extends StatelessWidget {
                   color: nColor,
                 ),
                 HomeRow(
-                  '${db.infoCities.getCityMaxLevel(city.id)}'
+                  '${GsUtils.cities.getCityMaxLevel(city.id)}'
                   '${maxLvl > 0 ? ' ($maxLvl wk)' : ''}',
                   color: mColor,
                 ),

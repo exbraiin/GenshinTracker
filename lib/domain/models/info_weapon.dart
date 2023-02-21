@@ -43,7 +43,7 @@ class InfoWeapon implements IdData {
       rarity: map['rarity'],
       statType: GsAttributeStat.values.fromName(map['stat_type']),
       statValue: map['stat_value'],
-      source: GsItemSource.values.fromName(map['source']),
+      source: GsItemSource.fromId(map['source']),
     );
   }
 }

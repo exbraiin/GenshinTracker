@@ -153,13 +153,8 @@ Map<String, int> _getMaterials<T>(
     items = temp != null ? [temp] : [];
   }
 
-  final db = GsDatabase.instance;
-  Iterable<InfoMaterial> getGroup(String id) {
-    final mat = db.infoMaterials.getItemOrNull(id);
-    return mat != null ? db.infoMaterials.getSubGroup(mat) : const [];
-  }
-
-  final materials = amounts.map((k, v) => MapEntry(k, getGroup(k)));
+  final materials = amounts
+      .map((k, v) => MapEntry(k, GsUtils.materials.getGroupMaterialsById(k)));
 
   final total = <String, int>{};
   for (var item in items) {

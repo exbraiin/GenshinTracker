@@ -10,9 +10,11 @@ class GsUtils {
   GsUtils._();
 
   static final items = _Items();
+  static final cities = _Cities();
   static final wishes = _Wishes();
   static final weapons = _Weapons();
   static final versions = _Versions();
+  static final materials = _Materials();
   static final characters = _Characters();
 }
 
@@ -25,6 +27,11 @@ class _Items {
         ? ItemData(weapon: _db.infoWeapons.getItem(id))
         : ItemData(character: _db.infoCharacters.getItem(id));
   }
+}
+
+class _Cities {
+  int getCityMaxLevel(String id) =>
+      _db.infoCities.getItem(id).reputation.length;
 }
 
 class _Wishes {
@@ -148,6 +155,21 @@ class _Versions {
         .sortedBy((element) => element.releaseDate)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current;
+  }
+}
+
+class _Materials {
+  Iterable<InfoMaterial> getGroupMaterials(InfoMaterial material) {
+    return _db.infoMaterials.getItems().where((element) {
+      return element.group == material.group &&
+          element.subgroup == material.subgroup;
+    });
+  }
+
+  Iterable<InfoMaterial> getGroupMaterialsById(String id) {
+    final material = _db.infoMaterials.getItemOrNull(id);
+    if (material == null) return [];
+    return getGroupMaterials(material);
   }
 }
 

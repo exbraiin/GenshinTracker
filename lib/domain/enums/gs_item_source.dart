@@ -1,29 +1,23 @@
-enum GsItemSource {
-  none,
-  shop,
-  event,
-  fishing,
-  forging,
-  battlepass,
-  exploration,
-  wishesStandard,
-  wishesWeaponBanner,
-  wishesCharacterBanner,
-}
+import 'package:dartx/dartx.dart';
+import 'package:tracker/common/lang/lang.dart';
 
-extension GsItemSourceList on List<GsItemSource> {
-  GsItemSource fromName(String? id) {
-    return const {
-          'shop': GsItemSource.shop,
-          'event': GsItemSource.event,
-          'fishing': GsItemSource.fishing,
-          'forging': GsItemSource.forging,
-          'battlepass': GsItemSource.battlepass,
-          'exploration': GsItemSource.exploration,
-          'wishes_standard': GsItemSource.wishesStandard,
-          'wishes_weapon_banner': GsItemSource.wishesWeaponBanner,
-          'wishes_character_banner': GsItemSource.wishesCharacterBanner,
-        }[id] ??
-        GsItemSource.none;
-  }
+enum GsItemSource {
+  none('none', Labels.wsNone),
+  shop('shop', Labels.wsNone),
+  event('event', Labels.wsNone),
+  fishing('fishing', Labels.wsNone),
+  forging('forging', Labels.wsNone),
+  battlepass('battlepass', Labels.wsNone),
+  exploration('exploration', Labels.wsNone),
+  wishesStandard('wishes_standard', Labels.wsNone),
+  wishesWeaponBanner('wishes_weapon_banner', Labels.wsNone),
+  wishesCharacterBanner('wishes_character_banner', Labels.wsNone);
+
+  final String id;
+  final String label;
+  const GsItemSource(this.id, this.label);
+
+  static GsItemSource fromId(String? id) =>
+      GsItemSource.values.firstOrNullWhere((e) => e.id == id) ??
+      GsItemSource.none;
 }

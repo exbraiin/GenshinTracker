@@ -63,7 +63,7 @@ class InfoArtifactPiece {
       name: map['name'],
       icon: map['icon'],
       desc: map['desc'],
-      type: GsArtifactPieces.values.fromId(map['id']),
+      type: GsArtifactPieces.fromId(map['id']),
     );
   }
 }

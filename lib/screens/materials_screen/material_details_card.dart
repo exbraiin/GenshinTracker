@@ -58,8 +58,8 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   Widget _content(BuildContext context) {
-    final mats = GsDatabase.instance.infoMaterials
-        .getSubGroup(item)
+    final mats = GsUtils.materials
+        .getGroupMaterials(item)
         .sortedBy((e) => e.rarity)
         .thenBy((element) => element.id == item.id ? 0 : 1)
         .distinctBy((element) => element.rarity);

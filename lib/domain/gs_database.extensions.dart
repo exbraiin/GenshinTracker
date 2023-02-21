@@ -5,21 +5,6 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-// =============== Info extensions ===============
-
-extension InfoCityExt on JsonInfoDetails<InfoCity> {
-  int getCityMaxLevel(String id) => getItem(id).reputation.length;
-}
-
-extension InfoMaterialExt on JsonInfoDetails<InfoMaterial> {
-  Iterable<InfoMaterial> getSubGroup(InfoMaterial material) {
-    return getItems().where((element) {
-      return element.group == material.group &&
-          element.subgroup == material.subgroup;
-    });
-  }
-}
-
 // =============== Save extensions ===============
 
 extension SaveReputationExt on JsonSaveDetails<SaveReputation> {
@@ -250,8 +235,8 @@ extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
     int getCraftable(InfoMaterial e) =>
         getMaterialAmount(e.id) ~/ pow(3, mat.rarity - e.rarity);
 
-    return GsDatabase.instance.infoMaterials
-        .getSubGroup(mat)
+    return GsUtils.materials
+        .getGroupMaterials(mat)
         .where((e) => e.rarity < mat.rarity)
         .sumBy(getCraftable)
         .toInt();

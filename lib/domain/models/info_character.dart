@@ -58,7 +58,7 @@ class InfoCharacter implements IdData {
       region: GsRegion.values.fromName(map['region']),
       weapon: GsWeapon.values.fromName(map['weapon']),
       element: GsElement.values.fromName(map['element']),
-      source: GsItemSource.values.fromName(map['source']),
+      source: GsItemSource.fromId(map['source']),
     );
   }
 }

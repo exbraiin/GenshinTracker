@@ -1,35 +1,26 @@
+import 'package:dartx/dartx.dart';
+
 /// The artifact pieces
 enum GsArtifactPieces {
   /// 0 - Flower of life
-  flowerOfLife,
+  flowerOfLife('flower_of_life'),
 
   /// 1 - Plume of death
-  plumeOfDeath,
+  plumeOfDeath('plume_of_death'),
 
   /// 2 - Sands of Eon
-  sandsOfEon,
+  sandsOfEon('sands_of_eon'),
 
   /// 3 - Goblet of Eonothem
-  gobletOfEonothem,
+  gobletOfEonothem('goblet_of_eonothem'),
 
   /// 4 - Circlet of Logos
-  circletOfLogos,
-}
+  circletOfLogos('circlet_of_logos');
 
-extension GsArtifactPiecesList on List<GsArtifactPieces> {
-  String toId(GsArtifactPieces piece) => const {
-        GsArtifactPieces.flowerOfLife: 'flower_of_life',
-        GsArtifactPieces.plumeOfDeath: 'plume_of_death',
-        GsArtifactPieces.sandsOfEon: 'sands_of_eon',
-        GsArtifactPieces.gobletOfEonothem: 'goblet_of_eonothem',
-        GsArtifactPieces.circletOfLogos: 'circlet_of_logos',
-      }[piece]!;
+  final String id;
+  const GsArtifactPieces(this.id);
 
-  GsArtifactPieces fromId(String id) => const {
-        'flower_of_life': GsArtifactPieces.flowerOfLife,
-        'plume_of_death': GsArtifactPieces.plumeOfDeath,
-        'sands_of_eon': GsArtifactPieces.sandsOfEon,
-        'goblet_of_eonothem': GsArtifactPieces.gobletOfEonothem,
-        'circlet_of_logos': GsArtifactPieces.circletOfLogos,
-      }[id]!;
+  static GsArtifactPieces fromId(String id) =>
+      GsArtifactPieces.values.firstOrNullWhere((e) => e.id == id) ??
+      GsArtifactPieces.flowerOfLife;
 }

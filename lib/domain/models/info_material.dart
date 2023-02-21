@@ -35,7 +35,7 @@ class InfoMaterial implements IdData {
       desc: map['desc'] ?? '',
       image: map['image'],
       version: map['version'] ?? '',
-      group: GsMaterialGroup.values.fromId(map['group'] as String? ?? ''),
+      group: GsMaterialGroup.fromId(map['group'] as String? ?? ''),
       rarity: map['rarity'],
       source: map['source'] ?? '',
       subgroup: map['subgroup'],

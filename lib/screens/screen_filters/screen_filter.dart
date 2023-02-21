@@ -289,7 +289,7 @@ class ScreenFilters {
         key: 'weekdays',
       ),
       FilterSection<GsAttributeStat, InfoWeapon>(
-        GsAttributeStat.values.weaponStats,
+        GsAttributeStat.weaponStats,
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
         (c, i) => c.fromLabel(i.label),
@@ -311,7 +311,7 @@ class ScreenFilters {
         GsDatabase.instance.infoWeapons.getItems().map((e) => e.source).toSet(),
         (item) => item.source,
         (c) => c.fromLabel(Labels.source),
-        (c, i) => i.name,
+        (c, i) => c.fromLabel(i.name),
       ),
     ],
     sorting: [
@@ -380,7 +380,7 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
       ),
       FilterSection<GsAttributeStat, InfoCharacter>(
-        GsAttributeStat.values.characterStats,
+        GsAttributeStat.characterStats,
         (item) =>
             _db.infoCharactersInfo
                 .getItemOrNull(item.id)
