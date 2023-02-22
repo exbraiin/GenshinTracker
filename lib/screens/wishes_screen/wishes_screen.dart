@@ -93,7 +93,7 @@ class WishesScreen extends StatelessWidget {
     return banners.map(
       (banner) {
         final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
-        final filteredWishes = filter.match(bannerWishes);
+        final filteredWishes = filter.match(bannerWishes).sortedDescending();
 
         final hide = !filter.hasExtra('show');
         final showBanner = !hide || filteredWishes.isNotEmpty;
