@@ -22,6 +22,7 @@ class RemarkableChestListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final db = GsDatabase.instance;
     final owned = db.saveRemarkableChests.exists(item.id);
+    final region = db.infoCities.getItemOrNull(item.region.id);
 
     return GsItemCardButton(
       label: item.name,
@@ -45,6 +46,15 @@ class RemarkableChestListItem extends StatelessWidget {
                       : context.themeColors.mainColor1,
             ),
           ),
+          if (region != null)
+            Positioned(
+              right: kSeparator2,
+              bottom: kSeparator2,
+              child: ItemRarityBubble(
+                color: region.element.color,
+                image: region.image,
+              ),
+            ),
         ],
       ),
     );

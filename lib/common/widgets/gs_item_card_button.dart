@@ -71,9 +71,11 @@ class GsItemCardButton extends StatelessWidget {
     if (onTap == null) {
       return Opacity(
         opacity: disable ? kDisableOpacity : 1,
-        child: _getContent(context, false),
+        child: _getContent(context),
       );
     }
+
+    final child = _getContent(context);
 
     var animate = false;
     return StatefulBuilder(
@@ -85,7 +87,19 @@ class GsItemCardButton extends StatelessWidget {
             child: MouseRegion(
               onEnter: (event) => setState(() => animate = true),
               onExit: (event) => setState(() => animate = false),
-              child: _getContent(context, animate),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: radius,
+                  border: animate || selected
+                      ? Border.all(
+                          color: context.themeColors.almostWhite,
+                          width: 2,
+                        )
+                      : null,
+                ),
+                child: child,
+              ),
             ),
           ),
         );
@@ -93,24 +107,14 @@ class GsItemCardButton extends StatelessWidget {
     );
   }
 
-  Widget _getContent(BuildContext context, bool animate) {
-    return AnimatedContainer(
+  Widget _getContent(BuildContext context) {
+    return Container(
       width: width,
       height: height,
-      duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         borderRadius: radius,
         boxShadow: shadow ? kMainShadow : null,
-      ),
-      foregroundDecoration: BoxDecoration(
-        borderRadius: radius,
-        border: animate || selected
-            ? Border.all(
-                color: context.themeColors.almostWhite,
-                width: 2,
-              )
-            : null,
       ),
       child: Column(
         children: [

@@ -17,6 +17,7 @@ class SpincrystalListItem extends StatelessWidget {
     final table = GsDatabase.instance.saveSpincrystals;
     final save = table.getItemOrNull(item.id);
     final owned = save?.obtained ?? false;
+    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region.id);
     return Opacity(
       opacity: owned ? 1 : kDisableOpacity,
       child: GsItemCardButton(
@@ -38,6 +39,15 @@ class SpincrystalListItem extends StatelessWidget {
                 ),
               ),
             ),
+            if (region != null)
+              Positioned(
+                right: kSeparator2,
+                bottom: kSeparator2,
+                child: ItemRarityBubble(
+                  color: region.element.color,
+                  image: region.image,
+                ),
+              ),
           ],
         ),
       ),

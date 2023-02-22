@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
-import 'package:tracker/screens/changelog_screen/changelog_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
@@ -12,6 +11,7 @@ import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_scree
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
@@ -37,7 +37,7 @@ class TrackerRouter {
     SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),
     CharacterDetailsScreen.id: CharacterDetailsScreen.new,
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
-    ChangelogScreen.id: () => const ChangelogScreen(),
+    VersionScreen.id: () => const VersionScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {

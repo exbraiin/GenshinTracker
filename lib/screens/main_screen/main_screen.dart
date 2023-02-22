@@ -7,7 +7,6 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
-import 'package:tracker/screens/changelog_screen/changelog_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
@@ -19,6 +18,7 @@ import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_scree
 import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
@@ -285,9 +285,9 @@ final _menus = [
     initialPage: WeeklyScreen.id,
   ),
   Menu(
-    label: Labels.changelog,
+    label: Labels.version,
     icon: menuIconFeedback,
-    initialPage: ChangelogScreen.id,
+    initialPage: VersionScreen.id,
   ),
 ];
 

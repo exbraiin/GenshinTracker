@@ -18,7 +18,7 @@ class SpincrystalDetailsCard extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region);
+    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region.id);
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {

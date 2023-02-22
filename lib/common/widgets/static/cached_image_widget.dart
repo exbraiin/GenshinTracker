@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class CachedImageWidget extends StatelessWidget {
-  static String _getScaleUrl(String url, int? w) {
-    if (w == null || !url.startsWith('https://static.wikia.')) return url;
-    return '$url/revision/latest/scale-to-width-down/$w';
+  static String _getScaleUrl(String url, Size size) {
+    late final w = size.toCacheWidth;
+    late final h = size.toCacheHeight;
+    if (!url.startsWith('https://static.wikia.')) return url;
+    if (w != null) return '$url/revision/latest/scale-to-width-down/$w';
+    if (h != null) return '$url/revision/latest/scale-to-height-down/$h';
+    return url;
   }
 
   final BoxFit fit;
   final String? imageUrl;
   final Alignment alignment;
-  final bool scaleToWidth;
+  final bool scaleToSize;
   final bool showPlaceholder;
 
   const CachedImageWidget(
     this.imageUrl, {
     super.key,
-    this.scaleToWidth = true,
+    this.scaleToSize = true,
     this.showPlaceholder = true,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
@@ -31,9 +35,8 @@ class CachedImageWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, layout) {
         return CachedNetworkImage(
-          imageUrl: scaleToWidth
-              ? _getScaleUrl(imageUrl!, layout.biggest.toCacheWidth)
-              : imageUrl!,
+          imageUrl:
+              scaleToSize ? _getScaleUrl(imageUrl!, layout.biggest) : imageUrl!,
           fit: fit,
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
@@ -58,9 +61,8 @@ class CachedImageWidget extends StatelessWidget {
 }
 
 extension on Size {
-  int? get toCacheWidth =>
-      width.isFinite && width >= height ? width.toInt() : null;
-
-  int? get toCacheHeight =>
-      height.isFinite && height >= width ? height.toInt() : null;
+  int? get toCacheWidth => useW ? width.toInt() : null;
+  int? get toCacheHeight => useH ? height.toInt() : null;
+  bool get useW => width.isFinite && (width >= height || height.isInfinite);
+  bool get useH => height.isFinite && (height >= width || width.isInfinite);
 }

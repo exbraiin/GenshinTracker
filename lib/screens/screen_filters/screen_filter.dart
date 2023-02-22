@@ -44,6 +44,92 @@ class FilterSection<T, I> {
         _icon = icon,
         _asset = asset;
 
+  static FilterSection<String, I> version<I>(String Function(I item) match) {
+    String toMajorVersion(String version) => '${version.split('.').first}.x';
+    return FilterSection(
+      GsDatabase.instance.infoVersion
+          .getItems()
+          .map((e) => toMajorVersion(e.id))
+          .toSet(),
+      (item) => toMajorVersion(match(item)),
+      (c) => c.fromLabel(Labels.version),
+      (c, i) => i,
+    );
+  }
+
+  static FilterSection<int, I> rarity<I>(
+    int Function(I item) match, [
+    int min = 1,
+  ]) {
+    return FilterSection(
+      Iterable.generate(6 - min, (idx) => idx + min).toSet(),
+      match,
+      (c) => c.fromLabel(Labels.rarity),
+      (c, i) => c.fromLabel(Labels.rarityStar, i),
+    );
+  }
+
+  static FilterSection<GsRegion, I> region<I>(
+    GsRegion Function(I item) match,
+  ) {
+    return FilterSection(
+      GsRegion.values.toSet(),
+      match,
+      (c) => c.fromLabel(Labels.region),
+      (c, i) => c.fromLabel(i.label),
+    );
+  }
+
+  static FilterSection<GsWeapon, I> weapon<I>(GsWeapon Function(I item) match) {
+    return FilterSection(
+      GsWeapon.values.toSet(),
+      match,
+      (c) => c.fromLabel(Labels.weapon),
+      (c, e) => c.fromLabel(e.label),
+      asset: (e) => e.assetPath,
+    );
+  }
+
+  static FilterSection<GsElement, I> element<I>(
+    GsElement Function(I item) match,
+  ) {
+    return FilterSection(
+      GsElement.values.toSet(),
+      match,
+      (c) => c.fromLabel(Labels.element),
+      (c, i) => c.fromLabel(i.label),
+    );
+  }
+
+  static FilterSection<GsItem, I> item<I>(GsItem Function(I item) match) {
+    return FilterSection(
+      GsItem.values.toSet(),
+      match,
+      (c) => c.fromLabel(Labels.type),
+      (c, i) => c.fromLabel(i.label),
+    );
+  }
+
+  static FilterSection<bool, I> owned<I>(bool Function(I item) match) {
+    return FilterSection(
+      {true, false},
+      match,
+      (c) => c.fromLabel(Labels.status),
+      (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
+    );
+  }
+
+  static FilterSection<GsSetCategory, I> setCategory<I>(
+    GsSetCategory Function(I item) match,
+  ) {
+    return FilterSection(
+      GsSetCategory.values.toSet(),
+      match,
+      (c) => c.fromLabel(Labels.category),
+      (c, i) => c.fromLabel(i.label),
+    );
+  }
+
   IconData? icon(T i) => _icon?.call(i);
   String? asset(T i) => _asset?.call(i);
   String label(BuildContext c, T i) => _label(c, i);
@@ -98,46 +184,21 @@ class ScreenFilter<I> {
 class ScreenFilters {
   static final _db = GsDatabase.instance;
 
-  static String _toMajorVersion(String version) =>
-      '${version.split('.').first}.x';
-  static final _versions = GsDatabase.instance.infoVersion
-      .getItems()
-      .map((e) => _toMajorVersion(e.id))
-      .toSet();
   static final _weekdays =
       GsWeekday.values.exceptElement(GsWeekday.sunday).toSet();
+  static final _getItem = GsUtils.items.getItemData;
 
   static final itemDataFilter = ScreenFilter<ItemData>(
     sections: [
-      FilterSection<GsItem, ItemData>(
-        GsItem.values.toSet(),
-        (item) => item.type,
-        (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.label),
-      ),
-      FilterSection<int, ItemData>(
-        {3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, e) => c.fromLabel(Labels.rarityStar, e),
-      ),
+      FilterSection.item((item) => item.type),
+      FilterSection.rarity((item) => item.rarity, 3),
     ],
     sorting: [(a, b) => a.compareTo(b)],
   );
   static final saveWishFilter = ScreenFilter<SaveWish>(
     sections: [
-      FilterSection<GsItem, SaveWish>(
-        GsItem.values.toSet(),
-        (item) => GsUtils.items.getItemData(item.itemId).type,
-        (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.label),
-      ),
-      FilterSection<int, SaveWish>(
-        {3, 4, 5},
-        (item) => GsUtils.items.getItemData(item.itemId).rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, e) => c.fromLabel(Labels.rarityStar, e),
-      ),
+      FilterSection.item((item) => _getItem(item.itemId).type),
+      FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
     ],
     extras: {'show'},
   );
@@ -149,22 +210,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.type),
         (c, e) => e.capitalize(),
       ),
-      FilterSection<String, InfoNamecard>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
+      FilterSection.version((item) => item.version),
     ],
   );
   static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
     sections: [
-      FilterSection<int, InfoRecipe>(
-        {1, 2, 3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, e) => c.fromLabel(Labels.rarityStar, e),
-      ),
+      FilterSection.rarity((item) => item.rarity),
       FilterSection<GsRecipeBuff, InfoRecipe>(
         GsRecipeBuff.values.toSet(),
         (item) => item.effect,
@@ -172,14 +223,8 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
       ),
-      FilterSection<String, InfoRecipe>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
-      FilterSection<bool, InfoRecipe>(
-        {true, false},
+      FilterSection.version((item) => item.version),
+      FilterSection.owned(
         (item) {
           if (item.baseRecipe.isNotEmpty) {
             final id = _db.infoCharacters
@@ -190,8 +235,6 @@ class ScreenFilters {
           }
           return _db.saveRecipes.exists(item.id);
         },
-        (c) => c.fromLabel(Labels.status),
-        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
       ),
       FilterSection<bool, InfoRecipe>(
         {true, false},
@@ -216,35 +259,10 @@ class ScreenFilters {
   );
   static final infoRemarkableChestFilter = ScreenFilter<InfoRemarkableChest>(
     sections: [
-      FilterSection<int, InfoRemarkableChest>(
-        {1, 2, 3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, e) => c.fromLabel(Labels.rarityStar, e),
-      ),
-      FilterSection<String, InfoRemarkableChest>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
-      FilterSection<String, InfoRemarkableChest>(
-        _db.infoRemarkableChests
-            .getItems()
-            .map((e) => e.source)
-            .toSet()
-            .sorted()
-            .toSet(),
-        (item) => item.source,
-        (c) => c.fromLabel(Labels.source),
-        (c, i) => i,
-      ),
-      FilterSection<GsSetCategory, InfoRemarkableChest>(
-        GsSetCategory.values.toSet(),
-        (item) => item.type,
-        (c) => c.fromLabel(Labels.category),
-        (c, i) => c.fromLabel(i.label),
-      ),
+      FilterSection.rarity((item) => item.rarity),
+      FilterSection.version((item) => item.version),
+      FilterSection.region((item) => item.region),
+      FilterSection.setCategory((item) => item.type),
       FilterSection<String, InfoRemarkableChest>(
         GsDatabase.instance.infoRemarkableChests
             .getItems()
@@ -254,29 +272,20 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.type),
         (c, i) => i.capitalize(),
       ),
-      FilterSection<bool, InfoRemarkableChest>(
-        {true, false},
-        (item) => _db.saveRemarkableChests.exists(item.id),
-        (c) => c.fromLabel(Labels.status),
-        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-      ),
+      FilterSection.owned((item) => _db.saveRemarkableChests.exists(item.id)),
+    ],
+    sorting: [
+      (a, b) => a.region.index.compareTo(b.region.index),
+      (a, b) => a.rarity.compareTo(b.rarity),
+      (a, b) => a.name.compareTo(b.name),
     ],
   );
   static final infoWeaponFilter = ScreenFilter<InfoWeapon>(
     sections: [
-      FilterSection<GsWeapon, InfoWeapon>(
-        GsWeapon.values.toSet(),
-        (item) => item.type,
-        (c) => c.fromLabel(Labels.weapon),
-        (c, e) => c.fromLabel(e.label),
-        asset: (e) => e.assetPath,
-      ),
-      FilterSection<bool, InfoWeapon>(
-        {true, false},
-        (item) => _db.saveWishes.hasWeapon(item.id),
-        (c) => c.fromLabel(Labels.status),
-        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-      ),
+      FilterSection.weapon((item) => item.type),
+      FilterSection.rarity((item) => item.rarity),
+      FilterSection.version((item) => item.version),
+      FilterSection.owned((item) => _db.saveWishes.hasWeapon(item.id)),
       FilterSection<GsWeekday, InfoWeapon>.raw(
         _weekdays,
         (item, enabled) {
@@ -296,23 +305,11 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
         asset: (e) => e.assetPath,
       ),
-      FilterSection<int, InfoWeapon>(
-        {1, 2, 3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, e) => c.fromLabel(Labels.rarityStar, e),
-      ),
-      FilterSection<String, InfoWeapon>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
       FilterSection<GsItemSource, InfoWeapon>(
         GsDatabase.instance.infoWeapons.getItems().map((e) => e.source).toSet(),
         (item) => item.source,
         (c) => c.fromLabel(Labels.source),
-        (c, i) => c.fromLabel(i.name),
+        (c, i) => i.name.capitalize(),
       ),
     ],
     sorting: [
@@ -322,18 +319,8 @@ class ScreenFilters {
   );
   static final infoArtifactFilter = ScreenFilter<InfoArtifact>(
     sections: [
-      FilterSection<int, InfoArtifact>(
-        {3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, i) => c.fromLabel(Labels.rarityStar, i),
-      ),
-      FilterSection<String, InfoArtifact>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
+      FilterSection.rarity((item) => item.rarity, 3),
+      FilterSection.version((item) => item.version),
     ],
     sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
@@ -342,20 +329,8 @@ class ScreenFilters {
   );
   static final infoCharacterFilter = ScreenFilter<InfoCharacter>(
     sections: [
-      FilterSection<GsElement, InfoCharacter>(
-        GsElement.values.toSet(),
-        (item) => item.element,
-        (c) => c.fromLabel(Labels.element),
-        (c, i) => c.fromLabel(i.label),
-        asset: (i) => i.assetPath,
-      ),
-      FilterSection<GsWeapon, InfoCharacter>(
-        GsWeapon.values.toSet(),
-        (item) => item.weapon,
-        (c) => c.fromLabel(Labels.weapon),
-        (c, i) => c.fromLabel(i.label),
-        asset: (i) => i.assetPath,
-      ),
+      FilterSection.element((item) => item.element),
+      FilterSection.weapon((item) => item.weapon),
       FilterSection<GsWeekday, InfoCharacter>.raw(
         _weekdays,
         (item, enabled) {
@@ -368,18 +343,8 @@ class ScreenFilters {
         (c, i) => i.label,
         key: 'weekdays',
       ),
-      FilterSection<String, InfoCharacter>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
-      FilterSection<GsRegion, InfoCharacter>(
-        GsRegion.values.toSet(),
-        (item) => item.region,
-        (c) => c.fromLabel(Labels.region),
-        (c, i) => c.fromLabel(i.label),
-      ),
+      FilterSection.version((item) => item.version),
+      FilterSection.region((item) => item.region),
       FilterSection<GsAttributeStat, InfoCharacter>(
         GsAttributeStat.characterStats,
         (item) =>
@@ -398,12 +363,7 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
         filter: (i) => GsUtils.characters.hasCaracter(i.id),
       ),
-      FilterSection<bool, InfoCharacter>(
-        {true, false},
-        (item) => GsUtils.characters.hasCaracter(item.id),
-        (c) => c.fromLabel(Labels.status),
-        (c, i) => c.fromLabel(i ? Labels.owned : Labels.unowned),
-      ),
+      FilterSection.owned((item) => GsUtils.characters.hasCaracter(item.id)),
       FilterSection<bool, InfoCharacter>(
         {true, false},
         (item) => GsUtils.characters.isCharMaxAscended(item.id),
@@ -411,12 +371,7 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i ? Labels.max : Labels.ongoing),
         filter: (i) => GsUtils.characters.hasCaracter(i.id),
       ),
-      FilterSection<int, InfoCharacter>(
-        {4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, i) => c.fromLabel(Labels.rarityStar, i),
-      ),
+      FilterSection.rarity((item) => item.rarity, 4),
     ],
     sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
@@ -425,58 +380,28 @@ class ScreenFilters {
   );
   static final infoSereniteaSetFilter = ScreenFilter<InfoSereniteaSet>(
     sections: [
+      FilterSection.version((item) => item.version),
+      FilterSection.setCategory((item) => item.category),
       FilterSection<bool, InfoSereniteaSet>(
         {true, false},
         (item) => _db.saveSereniteaSets.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
       ),
-      FilterSection<GsSetCategory, InfoSereniteaSet>(
-        GsSetCategory.values.toSet(),
-        (item) => item.category,
-        (c) => c.fromLabel(Labels.type),
-        (c, e) => c.fromLabel(e.label),
-      ),
-      FilterSection<String, InfoSereniteaSet>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
     ],
     sorting: [(a, b) => a.name.compareTo(b.name)],
   );
   static final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
     sections: [
-      FilterSection<bool, InfoSpincrystal>(
-        {true, false},
-        (item) => _db.saveSpincrystals.exists(item.id),
-        (c) => c.fromLabel(Labels.status),
-        (c, e) => c.fromLabel(e ? Labels.owned : Labels.unowned),
-      ),
-      FilterSection<String, InfoSpincrystal>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
+      FilterSection.owned((item) => _db.saveSpincrystals.exists(item.id)),
+      FilterSection.version((item) => item.version),
     ],
     sorting: [(a, b) => a.number.compareTo(b.number)],
   );
   static final infoMaterialFilter = ScreenFilter<InfoMaterial>(
     sections: [
-      FilterSection<int, InfoMaterial>(
-        {1, 2, 3, 4, 5},
-        (item) => item.rarity,
-        (c) => c.fromLabel(Labels.rarity),
-        (c, i) => c.fromLabel(Labels.rarityStar, i),
-      ),
-      FilterSection<String, InfoMaterial>(
-        _versions,
-        (item) => _toMajorVersion(item.version),
-        (c) => c.fromLabel(Labels.version),
-        (c, i) => i,
-      ),
+      FilterSection.rarity((item) => item.rarity),
+      FilterSection.version((item) => item.version),
       FilterSection<GsMaterialGroup, InfoMaterial>(
         GsMaterialGroup.values.toSet(),
         (item) => item.group,

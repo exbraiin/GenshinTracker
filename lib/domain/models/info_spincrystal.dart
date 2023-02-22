@@ -7,7 +7,7 @@ class InfoSpincrystal implements IdData {
   final int rarity;
   final String name;
   final String desc;
-  final String region;
+  final GsRegion region;
   final String source;
   final String version;
 
@@ -19,7 +19,7 @@ class InfoSpincrystal implements IdData {
         desc = data.getString('desc'),
         number = data.getInt('number'),
         rarity = data.getInt('rarity', 4),
-        region = data.getString('region'),
+        region = data.getGsEnum('region', GsRegion.values),
         source = data.getString('source'),
         version = data.getString('version');
 }

@@ -11,6 +11,7 @@ class InfoRemarkableChest implements IdData {
   final String source;
   final String version;
   final String category;
+  final GsRegion region;
 
   InfoRemarkableChest.fromJsonData(JsonData data)
       : id = data.getString('id'),
@@ -21,5 +22,6 @@ class InfoRemarkableChest implements IdData {
         energy = data.getInt('energy'),
         source = data.getString('source'),
         version = data.getString('version'),
-        category = data.getString('category');
+        category = data.getString('category'),
+        region = data.getGsEnum('region', GsRegion.values);
 }
