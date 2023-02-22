@@ -7,6 +7,7 @@ class InfoCharacter implements IdData {
   final String title;
   final String version;
   final String constellation;
+  final String constellationImage;
   final String affiliation;
   final String specialDish;
   final String description;
@@ -26,6 +27,7 @@ class InfoCharacter implements IdData {
         title = data.getString('title'),
         version = data.getString('version'),
         constellation = data.getString('constellation'),
+        constellationImage = data.getString('constellation_image'),
         affiliation = data.getString('affiliation'),
         specialDish = data.getString('special_dish'),
         description = data.getString('description'),

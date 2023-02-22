@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -48,24 +49,38 @@ class CharacterDetailsScreen extends StatelessWidget {
                 image: AssetImage(getElementBgImage(item.element)),
               ),
             ),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(kSeparator4),
-              child: Column(
-                children: [
-                  _getInfo(context, item, info),
-                  _getAttributes(context, item),
-                  if (info != null) ...[
-                    const SizedBox(height: kSeparator8),
-                    _getAscension(context, info),
-                    const SizedBox(height: kSeparator8),
-                    _getTalents(context, info),
-                    const SizedBox(height: kSeparator8),
-                    _getConstellations(context, info),
-                    const SizedBox(height: kSeparator8),
-                    _getAllMaterials(context, info),
-                  ],
-                ],
-              ),
+            child: Stack(
+              children: [
+                if (item.constellationImage.isNotEmpty)
+                  Positioned.fill(
+                    child: CachedImageWidget(
+                      item.constellationImage,
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                      scaleToSize: false,
+                      showPlaceholder: false,
+                    ),
+                  ),
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(kSeparator4),
+                  child: Column(
+                    children: [
+                      _getInfo(context, item, info),
+                      _getAttributes(context, item),
+                      if (info != null) ...[
+                        const SizedBox(height: kSeparator8),
+                        _getAscension(context, info),
+                        const SizedBox(height: kSeparator8),
+                        _getTalents(context, info),
+                        const SizedBox(height: kSeparator8),
+                        _getConstellations(context, info),
+                        const SizedBox(height: kSeparator8),
+                        _getAllMaterials(context, info),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         );
