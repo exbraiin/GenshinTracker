@@ -192,8 +192,9 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         color: context.themeColors.mainColor0.withOpacity(0.6),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
+          width: 2,
           color: selected
-              ? Colors.orange.withOpacity(0.8)
+              ? context.themeColors.primary.withOpacity(0.8)
               : Colors.white.withOpacity(0.8),
         ),
       ),
@@ -225,7 +226,9 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
               padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
               child: Text(
                 label,
-                style: context.textTheme.cardLabel,
+                style: context.textTheme.cardLabel.copyWith(
+                  color: selected ? context.themeColors.primary : null,
+                ),
               ),
             ),
           ],

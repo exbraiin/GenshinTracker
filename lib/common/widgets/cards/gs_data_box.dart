@@ -23,7 +23,7 @@ class GsDataBox extends StatelessWidget {
               borderRadius: kMainRadius,
               boxShadow: kMainShadow,
               border: Border.all(
-                color: context.themeColors.mainColor3.withOpacity(0.4),
+                color: context.themeColors.dimWhite.withOpacity(0.2),
                 width: 2,
               ),
             ));

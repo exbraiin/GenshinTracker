@@ -63,15 +63,11 @@ class CharacterListItem extends StatelessWidget {
                 GsItemCardLabel(
                   asset: imageXp,
                   label: '$friend',
-                  onTap: () => GsDatabase.instance.saveCharacters
-                      .increaseFriendshipCharacter(item.id),
                 ),
               const Spacer(),
               GsItemCardLabel(
                 asset: item.element.assetPath,
                 label: charCons != null ? 'C$charCons' : null,
-                onTap: () => GsDatabase.instance.saveCharacters
-                    .increaseOwnedCharacter(item.id),
               ),
             ],
           ),

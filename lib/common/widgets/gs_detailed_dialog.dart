@@ -27,7 +27,7 @@ class GsDetailedDialog extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
         child: Container(
-          decoration: const BoxDecoration(boxShadow: kMainShadowWhite),
+          decoration: const BoxDecoration(boxShadow: kMainShadow),
           width: cardWidth,
           child: Material(
             color: Colors.transparent,

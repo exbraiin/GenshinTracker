@@ -142,8 +142,9 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     child: Text(
                       e.value.format(),
                       style: const TextStyle(
+                        fontSize: 14,
                         color: Colors.white,
-                        shadows: kMainShadowBlack,
+                        shadows: kMainShadow,
                       ),
                     ),
                   ),

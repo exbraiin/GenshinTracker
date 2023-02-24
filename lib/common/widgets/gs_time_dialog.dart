@@ -168,7 +168,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                     width: 100,
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      border: Border.all(color: context.themeColors.mainColor3),
+                      border: Border.all(color: context.themeColors.dimWhite),
                       borderRadius: kMainRadius,
                     ),
                     alignment: Alignment.center,

@@ -26,7 +26,7 @@ class GsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color ?? context.themeColors.mainColor3,
+      color: color ?? context.themeColors.dimWhite,
       borderRadius: borderRadius,
       child: InkWell(
         onTap: onPressed,

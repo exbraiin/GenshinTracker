@@ -15,13 +15,13 @@ class GsNoResultsState extends StatelessWidget {
         children: [
           Icon(
             Icons.info_outline_rounded,
-            color: context.themeColors.mainColor3,
+            color: context.themeColors.dimWhite,
           ),
           const SizedBox(height: 4),
           Text(
             Lang.of(context).getValue(Labels.noResults).toUpperCase(),
             style: context.textTheme.description.copyWith(
-              color: context.themeColors.mainColor3,
+              color: context.themeColors.dimWhite,
               fontFamily: 'ZenKurenaido',
             ),
           ),

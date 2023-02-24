@@ -254,10 +254,14 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                     child: Row(
                       children: List.generate(
                         widget.rarity,
-                        (i) => const Icon(
-                          Icons.star_rounded,
-                          color: Colors.yellow,
-                          size: 30,
+                        (i) => Transform.translate(
+                          offset: Offset(i * -6, 0),
+                          child: const Icon(
+                            Icons.star_rounded,
+                            size: 30,
+                            color: Colors.yellow,
+                            shadows: kMainShadow,
+                          ),
                         ),
                       ),
                     ),
@@ -346,7 +350,7 @@ class ItemDetailsCardContent {
 
     final labelStyle = TextStyle(
       fontSize: 16,
-      color: Color.lerp(Colors.black, Colors.orange, 0.8)!,
+      color: Color.lerp(Colors.black, context.themeColors.primary, 0.8)!,
       fontWeight: FontWeight.bold,
     );
 

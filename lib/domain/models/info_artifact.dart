@@ -24,7 +24,7 @@ class InfoArtifact implements IdData {
         desc2Pc = data.getString('2pc'),
         desc4Pc = data.getString('4pc'),
         rarity = data.getInt('rarity', 1),
-        pieces = data.getModelList('pieces', InfoArtifactPiece.fromJsonData);
+        pieces = data.getModelMapAsList('pieces', InfoArtifactPiece.fromJsonData);
 }
 
 class InfoArtifactPiece {

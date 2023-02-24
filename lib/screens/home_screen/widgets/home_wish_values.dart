@@ -243,7 +243,7 @@ class HomeWishesValues extends StatelessWidget {
                         border: Border.all(
                           width: state == WishState.won ? 2 : 1,
                           color: state == WishState.won
-                              ? context.themeColors.getRarityColor(5)
+                              ? context.themeColors.primary
                               : context.themeColors.dimWhite,
                         ),
                         borderRadius: BorderRadius.circular(100),

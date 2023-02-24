@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 const imageAppIcon = 'assets/image/icons/app_icon.png';
+const imageAppIconSmall = 'assets/image/icons/app_icon_40px.png';
 
 const imageIndoorSet = 'assets/image/icons/icon_indoor_set.png';
 const imageOutdoorSet = 'assets/image/icons/icon_outdoor_set.png';

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
@@ -58,13 +58,9 @@ class _ReputationListItemState extends State<ReputationListItem> {
                 children: [
                   Row(
                     children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            width: 34,
-                            child: CachedImageWidget(widget.city.image),
-                          ),
-                        ],
+                      SizedBox(
+                        width: 36,
+                        child: CachedImageWidget(widget.city.image),
                       ),
                       const SizedBox(width: kSeparator4),
                       Text(
@@ -75,17 +71,10 @@ class _ReputationListItemState extends State<ReputationListItem> {
                             .copyWith(color: Colors.white),
                       ),
                       const SizedBox(width: kSeparator4),
-                      CircleWidget(
-                        size: 16,
-                        color: context.themeColors.mainColor1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: Image.asset(
-                            widget.city.element.assetPath,
-                            width: 16,
-                            height: 16,
-                          ),
-                        ),
+                      const Spacer(),
+                      ItemRarityBubble(
+                        size: 24,
+                        asset: widget.city.element.assetPath,
                       ),
                     ],
                   ),
@@ -108,7 +97,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                   LinearProgressIndicator(
                     value: pg,
                     minHeight: 2,
-                    color: Colors.green,
+                    color: context.themeColors.primary,
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -138,7 +127,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
           Container(
             width: 100,
             decoration: BoxDecoration(
-              color: context.themeColors.mainColor3,
+              color: context.themeColors.mainColor1,
               borderRadius: BorderRadius.horizontal(
                 right: kMainRadius.topRight,
               ),

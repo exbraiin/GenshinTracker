@@ -10,11 +10,11 @@ class InfoCharacterInfo implements IdData {
   InfoCharacterInfo.fromJsonData(JsonData data)
       : id = data.getString('id'),
         ascension = InfoCharacterAscension.fromJsonData(data),
-        talents = data.getModelList(
+        talents = data.getModelListAsList(
           'talents',
           InfoCharacterTalent.fromJsonData,
         ),
-        constellations = data.getModelList(
+        constellations = data.getModelListAsList(
           'constellations',
           InfoCharacterConstellation.fromJsonData,
         );

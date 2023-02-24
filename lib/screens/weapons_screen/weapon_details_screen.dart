@@ -356,7 +356,7 @@ class WeaponDetailsScreen extends StatelessWidget {
           child: Text(
             '${hover || selected ? '✦' : '✧'} $text',
             style: context.textTheme.description2
-                .copyWith(color: selected ? Colors.orange : null),
+                .copyWith(color: selected ? context.themeColors.primary : null),
           ),
         );
       },

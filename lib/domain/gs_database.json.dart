@@ -33,10 +33,15 @@ class JsonData {
       .map((e) => e.trim())
       .where((e) => e.isNotBlank)
       .toList();
-  List<T> getModelList<T>(String s, ItemFromMap<T> create) =>
-      getDataOrDefault<Map<String, dynamic>>('pieces', {})
+  List<T> getModelMapAsList<T>(String key, ItemFromMap<T> create) =>
+      getDataOrDefault<Map<String, dynamic>>(key, {})
           .entries
           .map((e) => create(JsonData(e.value..['id'] = e.key)))
+          .toList();
+  List<T> getModelListAsList<T>(String key, ItemFromMap<T> create) =>
+      getDataOrDefault<List>(key, [])
+          .cast<Map<String, dynamic>>()
+          .map((e) => create(JsonData(e)))
           .toList();
 
   DateTime getDate(String key, [DateTime? df]) =>

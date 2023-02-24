@@ -77,19 +77,21 @@ class _MainScreenState extends State<MainScreen> {
       final selected = idx == _page.value;
       return Stack(
         children: [
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
             width: double.infinity,
             padding: const EdgeInsets.all(kSeparator2),
             decoration: BoxDecoration(
               color: idx == 0
-                  ? context.themeColors.mainColor3
+                  ? context.themeColors.primary
                   : selected
                       ? context.themeColors.mainColor1
                       : context.themeColors.mainColor2,
               borderRadius: kMainRadius,
               border: Border.all(
                 color: selected
-                    ? context.themeColors.mainColor3
+                    ? context.themeColors.mainColor2
                     : Colors.transparent,
                 width: 2,
               ),
@@ -202,7 +204,7 @@ class _MainScreenState extends State<MainScreen> {
 final _menus = [
   Menu(
     label: Labels.home,
-    icon: imageAppIcon,
+    icon: imageAppIconSmall,
     initialPage: HomeScreen.id,
   ),
   Menu(
