@@ -9,9 +9,9 @@ export 'package:tracker/domain/gs_database.utils.dart';
 
 class GsDatabase {
   static final instance = GsDatabase._();
-  static const dataPath =
-      kDebugMode ? 'D:/Software/Tracker_Genshin/db/data.json' : 'db/data.json';
-  static const savePath = 'db/save.json';
+  static const prefix = kDebugMode ? 'D:/Software/Tracker_Genshin/' : '';
+  static const dataPath = '${prefix}data/db/data.json';
+  static const savePath = 'data/db/save.json';
 
   bool _dataLoaded = false;
 
