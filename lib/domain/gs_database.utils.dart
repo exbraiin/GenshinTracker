@@ -162,6 +162,7 @@ class _Materials {
   Iterable<InfoMaterial> getGroupMaterials(InfoMaterial material) {
     return _db.infoMaterials.getItems().where((element) {
       return element.group == material.group &&
+          element.region == material.region &&
           element.subgroup == material.subgroup;
     });
   }

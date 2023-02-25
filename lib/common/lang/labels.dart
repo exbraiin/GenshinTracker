@@ -433,18 +433,6 @@ class Labels {
 	/// Normal Boss Drops
 	static const matNormalBossDrops = 'mat_normal_boss_drops';
 
-	/// Mat. Mondstadt
-	static const matLocalSpecialtiesMondstadt = 'mat_local_specialties_mondstadt';
-
-	/// Mat. Liyue
-	static const matLocalSpecialtiesLiyue = 'mat_local_specialties_liyue';
-
-	/// Mat. Inazuma
-	static const matLocalSpecialtiesInazuma = 'mat_local_specialties_inazuma';
-
-	/// Mat. Sumeru
-	static const matLocalSpecialtiesSumeru = 'mat_local_specialties_sumeru';
-
 	/// Normal Drops
 	static const matNormalDrops = 'mat_normal_drops';
 
@@ -457,29 +445,14 @@ class Labels {
 	/// Furnishing
 	static const matFurnishing = 'mat_furnishing';
 
-	/// Weapons Mondstadt
-	static const matWeaponMaterialsMondstadt = 'mat_weapon_materials_mondstadt';
+	/// Specialties
+	static const matLocalSpecialties = 'mat_local_specialties';
 
-	/// Weapons Liyue
-	static const matWeaponMaterialsLiyue = 'mat_weapon_materials_liyue';
+	/// Weapons
+	static const matWeaponMaterials = 'mat_weapon_materials';
 
-	/// Weapons Inazuma
-	static const matWeaponMaterialsInazuma = 'mat_weapon_materials_inazuma';
-
-	/// Weapons Sumeru
-	static const matWeaponMaterialsSumeru = 'mat_weapon_materials_sumeru';
-
-	/// Talents Mondstadt
-	static const matTalentMaterialsMondstadt = 'mat_talent_materials_mondstadt';
-
-	/// Talents Liyue
-	static const matTalentMaterialsLiyue = 'mat_talent_materials_liyue';
-
-	/// Talents Inazuma
-	static const matTalentMaterialsInazuma = 'mat_talent_materials_inazuma';
-
-	/// Talents Sumeru
-	static const matTalentMaterialsSumeru = 'mat_talent_materials_sumeru';
+	/// Talents
+	static const matTalentMaterials = 'mat_talent_materials';
 
 	/// Weekly Boss Drops
 	static const matWeeklyBossDrops = 'mat_weekly_boss_drops';

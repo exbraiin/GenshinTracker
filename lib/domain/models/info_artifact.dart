@@ -11,6 +11,7 @@ class InfoArtifact implements IdData {
   final String desc2Pc;
   final String desc4Pc;
   final int rarity;
+  final GsRegion region;
   final List<InfoArtifactPiece> pieces;
 
   String get image => pieces.firstOrNull?.icon ?? '';
@@ -18,13 +19,15 @@ class InfoArtifact implements IdData {
   InfoArtifact.fromJsonData(JsonData data)
       : id = data.getString('id'),
         name = data.getString('name'),
+        region = data.getGsEnum('region', GsRegion.values),
         domain = data.getString('domain'),
         version = data.getString('version'),
         desc1Pc = data.getString('1pc'),
         desc2Pc = data.getString('2pc'),
         desc4Pc = data.getString('4pc'),
         rarity = data.getInt('rarity', 1),
-        pieces = data.getModelMapAsList('pieces', InfoArtifactPiece.fromJsonData);
+        pieces =
+            data.getModelMapAsList('pieces', InfoArtifactPiece.fromJsonData);
 }
 
 class InfoArtifactPiece {

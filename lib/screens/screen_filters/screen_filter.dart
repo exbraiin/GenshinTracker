@@ -324,6 +324,9 @@ class ScreenFilters {
     ],
     sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),
+      (a, b) => a.region.index.compareTo(b.region.index),
+      (a, b) => a.version.compareTo(b.version),
+      (a, b) => a.domain.compareTo(b.domain),
       (a, b) => a.name.compareTo(b.name),
     ],
   );
@@ -412,6 +415,7 @@ class ScreenFilters {
     sorting: [
       (a, b) => a.group.index.compareTo(b.group.index),
       (a, b) => a.subgroup.compareTo(b.subgroup),
+      (a, b) => a.region.index.compareTo(b.region.index),
       (a, b) => a.rarity.compareTo(b.rarity),
       (a, b) => a.name.compareTo(b.name),
     ],
