@@ -507,4 +507,25 @@ class Labels {
 
 	/// Description
 	static const description = 'description';
+
+	/// Default
+	static const namecardDefault = 'namecard_default';
+
+	/// Achievement
+	static const namecardAchievement = 'namecard_achievement';
+
+	/// Battlepass
+	static const namecardBattlepass = 'namecard_battlepass';
+
+	/// Character
+	static const namecardCharacter = 'namecard_character';
+
+	/// Event
+	static const namecardEvent = 'namecard_event';
+
+	/// Offering
+	static const namecardOffering = 'namecard_offering';
+
+	/// Reputation
+	static const namecardReputation = 'namecard_reputation';
 }

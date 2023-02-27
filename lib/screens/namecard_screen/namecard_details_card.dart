@@ -1,4 +1,3 @@
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
@@ -20,7 +19,7 @@ class NamecardDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       banner: GsItemBanner.fromVersion(item.version),
       info: Align(
         alignment: Alignment.topLeft,
-        child: Text(item.type.capitalize()),
+        child: Text(context.fromLabel(item.type.label)),
       ),
       child: ItemDetailsCardContent.generate(context, [
         ItemDetailsCardContent(

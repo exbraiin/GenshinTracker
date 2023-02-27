@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class NamecardListItem extends StatelessWidget {
@@ -16,6 +18,17 @@ class NamecardListItem extends StatelessWidget {
       imageUrlPath: item.image,
       banner: GsItemBanner.fromVersion(item.version),
       onTap: onTap,
+      child: Stack(
+        children: [
+          Positioned(
+            right: kSeparator2,
+            bottom: kSeparator2,
+            child: ItemRarityBubble(
+              asset: item.type.asset,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

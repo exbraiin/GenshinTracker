@@ -167,5 +167,12 @@
     "changelog": "Changelog",
     "namecards": "Namecards",
     "image": "Image",
-    "description": "Description"
+    "description": "Description",
+    "namecard_default": "Default",
+    "namecard_achievement": "Achievement",
+    "namecard_battlepass": "Battlepass",
+    "namecard_character": "Character",
+    "namecard_event": "Event",
+    "namecard_offering": "Offering",
+    "namecard_reputation": "Reputation"
 }

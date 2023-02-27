@@ -204,13 +204,17 @@ class ScreenFilters {
   );
   static final infoNamecardFilter = ScreenFilter<InfoNamecard>(
     sections: [
-      FilterSection<String, InfoNamecard>(
-        GsDatabase.instance.infoNamecards.getItems().map((e) => e.type).toSet(),
+      FilterSection<GsNamecardType, InfoNamecard>(
+        GsNamecardType.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
-        (c, e) => e.capitalize(),
+        (c, e) => c.fromLabel(e.label),
       ),
       FilterSection.version((item) => item.version),
+    ],
+    sorting: [
+      (a, b) => a.type.index.compareTo(b.type.index),
+      (a, b) => a.name.compareTo(b.name),
     ],
   );
   static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
