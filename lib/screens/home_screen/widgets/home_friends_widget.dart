@@ -29,13 +29,13 @@ class HomeFriendsWidget extends StatelessWidget {
             .sortedByDescending((e) => chars.getCharFriendship(e.id));
 
         if (characters.isEmpty) {
-          return GsDataBox.summary(
+          return GsDataBox.info(
             title: context.fromLabel(Labels.friendship),
             child: const GsNoResultsState(),
           );
         }
 
-        return GsDataBox.summary(
+        return GsDataBox.info(
           title: context.fromLabel(Labels.friendship),
           child: LayoutBuilder(
             builder: (context, layout) {

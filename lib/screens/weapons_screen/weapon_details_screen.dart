@@ -6,6 +6,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -106,6 +107,7 @@ class WeaponDetailsScreen extends StatelessWidget {
                   const SizedBox(width: kSeparator8 * 2),
                   Expanded(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
@@ -370,7 +372,7 @@ class WeaponDetailsScreen extends StatelessWidget {
         context.fromLabel(info.type.label),
         context.fromLabel(info.statType.label),
       ]
-          .map<Widget>(GsDataBox.label)
+          .map<Widget>((e) => GsItemCardLabel(label: e))
           .separate(const SizedBox(width: kSeparator4))
           .toList(),
     );

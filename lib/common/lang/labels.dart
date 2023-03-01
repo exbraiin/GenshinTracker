@@ -118,7 +118,7 @@ class Labels {
 	/// Total
 	static const total = 'total';
 
-	/// Ch%
+	/// Percent
 	static const per = 'per';
 
 	/// {star}★
@@ -528,4 +528,10 @@ class Labels {
 
 	/// Reputation
 	static const namecardReputation = 'namecard_reputation';
+
+	/// Event
+	static const recipeEvent = 'recipe_event';
+
+	/// Permanent
+	static const recipePermanent = 'recipe_permanent';
 }

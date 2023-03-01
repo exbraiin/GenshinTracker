@@ -32,7 +32,6 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: actions,
-      elevation: 0,
     );
   }
 

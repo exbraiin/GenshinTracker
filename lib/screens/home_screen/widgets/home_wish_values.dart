@@ -37,18 +37,19 @@ class HomeWishesValues extends StatelessWidget {
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
     final summary = WishesSummary.fromList(wishes);
 
-    return GsDataBox.summary(
+    return GsDataBox.info(
       title: context.fromLabel(_bannerTitleLabel[banner]!),
       child: Column(
         children: [
           _summary(context, wishes, summary),
+          const SizedBox(height: kSeparator8),
           Row(
             children: [
               const Spacer(flex: 3),
               Expanded(
                 child: Center(
                   child: Text(
-                    Lang.of(context).getValue(Labels.total),
+                    context.fromLabel(Labels.total),
                     style: style,
                   ),
                 ),
@@ -56,7 +57,7 @@ class HomeWishesValues extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    Lang.of(context).getValue(Labels.per),
+                    context.fromLabel(Labels.per),
                     style: style,
                   ),
                 ),
@@ -64,7 +65,7 @@ class HomeWishesValues extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    Lang.of(context).getValue(Labels.pity),
+                    context.fromLabel(Labels.pity),
                     style: style,
                   ),
                 ),
@@ -72,11 +73,11 @@ class HomeWishesValues extends StatelessWidget {
             ],
           ),
           Divider(
-            color: context.themeColors.almostWhite,
+            color: context.themeColors.dimWhite,
             thickness: 1,
             height: 8,
           ),
-          _getInfo(
+          _getPullInfo(
             context,
             summary.wishesInfo5,
             context.fromLabel(Labels.rarityStar, 5),
@@ -84,59 +85,72 @@ class HomeWishesValues extends StatelessWidget {
           ),
           if (banner == GsBanner.standard) ...[
             Divider(
-              color: context.themeColors.almostWhite,
+              color: context.themeColors.dimWhite,
               thickness: 1,
               height: 8,
             ),
-            _getInfo(
+            _getPullInfo(
               context,
               summary.wishesInfo5Character,
-              '   > ${context.fromLabel(Labels.character)}',
+              '   ╚ ${context.fromLabel(Labels.character)}',
               context.themeColors.getRarityColor(5),
             ),
             Divider(
-              color: context.themeColors.almostWhite,
+              color: context.themeColors.dimWhite,
               thickness: 1,
               height: 8,
             ),
-            _getInfo(
+            _getPullInfo(
               context,
               summary.wishesInfo5Weapon,
-              '   > ${context.fromLabel(Labels.weapon)}',
+              '   ╚ ${context.fromLabel(Labels.weapon)}',
+              context.themeColors.getRarityColor(5),
+            ),
+          ],
+          if (banner == GsBanner.character) ...[
+            Divider(
+              color: context.themeColors.dimWhite,
+              thickness: 1,
+              height: 8,
+            ),
+            _getWonInfo(
+              context,
+              summary.wishesInfo5,
+              '   ╚ ${context.fromLabel(Labels.won5050)}',
               context.themeColors.getRarityColor(5),
             ),
           ],
           Divider(
-            color: context.themeColors.almostWhite,
+            color: context.themeColors.dimWhite,
             thickness: 1,
             height: 8,
           ),
-          _getInfo(
+          _getPullInfo(
             context,
             summary.wishesInfo4,
             context.fromLabel(Labels.rarityStar, 4),
             context.themeColors.getRarityColor(4),
           ),
           Divider(
-            color: context.themeColors.almostWhite,
+            color: context.themeColors.dimWhite,
             thickness: 1,
             height: 8,
           ),
-          _getInfo(
+          _getPullInfo(
             context,
             summary.wishesInfo4Character,
-            '   > ${context.fromLabel(Labels.character)}',
+            '   ╚ ${context.fromLabel(Labels.character)}',
             context.themeColors.getRarityColor(4),
           ),
           Divider(
-            color: context.themeColors.almostWhite,
+            color: context.themeColors.dimWhite,
             thickness: 1,
             height: 8,
           ),
-          _getInfo(
+          _getPullInfo(
             context,
             summary.wishesInfo4Weapon,
-            '   > ${context.fromLabel(Labels.weapon)}',
+            '   ╚ ${context.fromLabel(Labels.weapon)}',
             context.themeColors.getRarityColor(4),
           ),
           _getWishesList(
@@ -164,6 +178,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             wishes.length.format(),
             context.fromLabel(Labels.lifetimePulls),
+            valueColor: context.themeColors.almostWhite,
           ),
         ),
         Expanded(
@@ -291,7 +306,7 @@ class HomeWishesValues extends StatelessWidget {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4 * 2),
       decoration: BoxDecoration(
-        color: context.themeColors.mainColor1,
+        color: context.themeColors.mainColor0.withOpacity(0.4),
         borderRadius: kMainRadius,
       ),
       child: Center(
@@ -313,7 +328,7 @@ class HomeWishesValues extends StatelessWidget {
                 text: value,
                 style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 20,
-                  color: valueColor ?? context.themeColors.almostWhite,
+                  color: valueColor ?? context.themeColors.dimWhite,
                 ),
               ),
               const TextSpan(text: '\n'),
@@ -334,12 +349,12 @@ class HomeWishesValues extends StatelessWidget {
 
   Widget _getInfo(
     BuildContext context,
-    WishInfo info,
     String label,
     Color color,
+    List<num?> data,
   ) {
     final st = Theme.of(context).textTheme.titleSmall!;
-    final style = st.copyWith(color: context.themeColors.almostWhite);
+    final style = st.copyWith(color: context.themeColors.dimWhite);
     return Row(
       children: [
         Expanded(
@@ -352,7 +367,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: Center(
             child: Text(
-              info.wishes.length.toString(),
+              data[0]?.toString() ?? '',
               style: style.copyWith(color: color),
             ),
           ),
@@ -360,7 +375,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: Center(
             child: Text(
-              '${info.percentage.toStringAsFixed(1)}%',
+              data[1] != null ? '${data[1]!.toStringAsFixed(1)}%' : '',
               style: style.copyWith(color: color),
             ),
           ),
@@ -368,13 +383,45 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: Center(
             child: Text(
-              info.average.toStringAsFixed(1),
+              data[2]?.toStringAsFixed(1) ?? '',
               style: style.copyWith(color: color),
               textAlign: TextAlign.end,
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getPullInfo(
+    BuildContext context,
+    WishInfo info,
+    String label,
+    Color color,
+  ) {
+    return _getInfo(
+      context,
+      label,
+      color,
+      [info.wishes.length, info.percentage, info.average],
+    );
+  }
+
+  Widget _getWonInfo(
+    BuildContext context,
+    WishInfo info,
+    String label,
+    Color color,
+  ) {
+    final total = info.wishes
+        .map((e) => MapEntry(e, GsUtils.wishes.getWishState(info.wishes, e)))
+        .where((e) => e.value == WishState.won || e.value == WishState.lost);
+    final percent = total.count((e) => e.value == WishState.won) / total.length;
+    return _getInfo(
+      context,
+      label,
+      color,
+      [total.length, percent * 100, null],
     );
   }
 }

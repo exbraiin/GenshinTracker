@@ -32,7 +32,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final style = textTheme.titleSmall!.copyWith(color: Colors.white);
-    return GsDataBox.summary(
+    return GsDataBox.info(
       title: context.fromLabel(Labels.resourceCalculator),
       children: [
         Align(
@@ -143,7 +143,8 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
-        border: Border.all(color: context.themeColors.dimWhite, width: 0.6),
+        color: context.themeColors.mainColor0.withOpacity(0.4),
+        border: Border.all(color: context.themeColors.mainColor0, width: 0.6),
         borderRadius: kMainRadius,
       ),
       child: Text(

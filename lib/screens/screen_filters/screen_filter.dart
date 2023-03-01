@@ -255,6 +255,12 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.specialDish),
         (c, e) => c.fromLabel(e ? Labels.specialDish : Labels.wsNone),
       ),
+      FilterSection<GsRecipeType, InfoRecipe>(
+        GsRecipeType.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.type),
+        (c, i) => c.fromLabel(i.label),
+      ),
     ],
     sorting: [
       (a, b) => b.rarity.compareTo(a.rarity),

@@ -16,7 +16,7 @@ class HomeReputationWidget extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         final db = GsDatabase.instance;
-        return GsDataBox.summary(
+        return GsDataBox.info(
           title: context.fromLabel(Labels.reputation),
           child: HomeTable(
             headers: [

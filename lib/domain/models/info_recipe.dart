@@ -10,6 +10,7 @@ class InfoRecipe implements IdData {
   final String baseRecipe;
   final String effectDesc;
   final int rarity;
+  final GsRecipeType type;
   final GsRecipeBuff effect;
   final Map<String, int> ingredients;
 
@@ -24,6 +25,7 @@ class InfoRecipe implements IdData {
         description = data.getString('desc'),
         baseRecipe = data.getString('base_recipe'),
         effectDesc = data.getString('effect_desc'),
+        type = data.getGsEnum('type', GsRecipeType.values),
         effect = data.getGsEnum('effect', GsRecipeBuff.values),
         ingredients = data.getMap<String, int>('ingredients');
 }

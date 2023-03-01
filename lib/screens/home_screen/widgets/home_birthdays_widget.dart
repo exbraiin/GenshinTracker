@@ -21,7 +21,7 @@ class HomeBirthdaysWidget extends StatelessWidget {
         .sortedBy((e) => !e.birthday.isBefore(now) ? 0 : 1)
         .thenBy((e) => e.birthday);
 
-    return GsDataBox.summary(
+    return GsDataBox.info(
       title: context.fromLabel(Labels.birthday),
       child: LayoutBuilder(
         builder: (context, layout) {

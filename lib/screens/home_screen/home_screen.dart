@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, value, child) {
                 return AnimatedOpacity(
                   duration: const Duration(milliseconds: 400),
-                  opacity: value ? 0.2 : 1,
+                  opacity: value ? 0.08 : 1,
                   child: child,
                 );
               },

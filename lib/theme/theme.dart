@@ -75,7 +75,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         setOutdoor = const Color(0xFF303671);
 
   ThemeColors.darkTheme()
-      : primary = Colors.cyan,
+      : primary = Colors.yellow,
         dimWhite = const Color(0x80FFFFFF),
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF000000),

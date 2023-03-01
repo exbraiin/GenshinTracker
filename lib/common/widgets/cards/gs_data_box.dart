@@ -11,49 +11,6 @@ class GsDataBox extends StatelessWidget {
   final Iterable<Widget> children;
   final CrossAxisAlignment alignment;
 
-  GsDataBox.summary({
-    super.key,
-    this.title,
-    this.child,
-    this.children = const [],
-  })  : alignment = CrossAxisAlignment.center,
-        padding = const EdgeInsets.all(kSeparator8),
-        decoration = ((context) => BoxDecoration(
-              color: context.themeColors.mainColor2,
-              borderRadius: kMainRadius,
-              boxShadow: kMainShadow,
-              border: Border.all(
-                color: context.themeColors.dimWhite.withOpacity(0.2),
-                width: 2,
-              ),
-            ));
-
-  GsDataBox.label(
-    String label, {
-    super.key,
-  })  : title = null,
-        child = Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-          ),
-        ),
-        children = const [],
-        alignment = CrossAxisAlignment.start,
-        padding = const EdgeInsets.symmetric(
-          horizontal: kSeparator4,
-          vertical: kSeparator2,
-        ),
-        decoration = ((context) => BoxDecoration(
-              color: Colors.black.withOpacity(0.4),
-              borderRadius: BorderRadius.circular(kSeparator8),
-              border: Border.all(
-                color: Colors.black.withOpacity(0.4),
-                width: 1,
-              ),
-            ));
-
   GsDataBox.info({
     super.key,
     this.title,

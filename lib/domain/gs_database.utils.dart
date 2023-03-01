@@ -72,18 +72,21 @@ class _Wishes {
   /// Gets the wish state.
   WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
     final item = GsUtils.items.getItemData(wish.itemId);
-    if (item.rarity != 5) return WishState.none;
+    final rt = item.rarity;
+    if (rt != 5 && rt != 4) return WishState.none;
 
     final db = GsDatabase.instance;
     late final banner = db.infoBanners.getItem(wish.bannerId);
-    late final contained = banner.feature5.contains(wish.itemId);
+    late final featured = rt == 5 ? banner.feature5 : banner.feature4;
+    late final contained = featured.contains(wish.itemId);
 
     wishes = wishes.skipWhile((value) => value != wish).skip(1).toList();
-    final lastWish = _getLastWish(wishes);
+    final lastWish = _getLastWish(wishes, rt);
     if (lastWish == null) return contained ? WishState.won : WishState.lost;
 
     final lastBanner = db.infoBanners.getItem(lastWish.bannerId);
-    final lastBannerContains = lastBanner.feature5.contains(lastWish.itemId);
+    final lastFeatured = rt == 5 ? lastBanner.feature5 : lastBanner.feature4;
+    final lastBannerContains = lastFeatured.contains(lastWish.itemId);
 
     if (lastBannerContains && contained) return WishState.won;
     if (lastBannerContains && !contained) return WishState.lost;

@@ -19,7 +19,7 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        return GsDataBox.summary(
+        return GsDataBox.info(
           title: context.fromLabel(Labels.remarkableChests),
           children: [
             HomeTable(

@@ -1,6 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 class TextParserWidget extends StatelessWidget {
   final String text;
@@ -16,12 +17,12 @@ class TextParserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text.rich(
       TextSpan(
-        children: getChildren().toList(),
+        children: getChildren(context).toList(),
       ),
     );
   }
 
-  Iterable<TextSpan> getChildren() sync* {
+  Iterable<TextSpan> getChildren(BuildContext context) sync* {
     final bold = <FontWeight>[];
     final italic = <FontStyle>[];
     final underline = <TextDecoration>[];
@@ -34,7 +35,7 @@ class TextParserWidget extends StatelessWidget {
       '</i>': italic.pop,
       '<u>': () => underline.add(TextDecoration.underline),
       '</u>': underline.pop,
-      '<color=skill>': () => colorQueue.add(Colors.orange),
+      '<color=skill>': () => colorQueue.add(context.themeColors.primary),
       '<color=geo>': () => colorQueue.add(GsElement.geo.color),
       '<color=pyro>': () => colorQueue.add(GsElement.pyro.color),
       '<color=cryo>': () => colorQueue.add(GsElement.cryo.color),

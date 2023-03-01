@@ -37,7 +37,7 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final oChubbyColor = ownedChubby < totalChubby ? missing : Colors.white;
         final oAllColor = ownedAll < totalAll ? missing : Colors.white;
 
-        return GsDataBox.summary(
+        return GsDataBox.info(
           title: context.fromLabel(Labels.spincrystals),
           child: HomeTable(
             headers: [

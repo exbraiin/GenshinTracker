@@ -8,6 +8,7 @@ export 'enums/gs_item_source.dart';
 export 'enums/gs_material_group.dart';
 export 'enums/gs_namecard_type.dart';
 export 'enums/gs_recipe_buff.dart';
+export 'enums/gs_recipe_type.dart';
 export 'enums/gs_region.dart';
 export 'enums/gs_set_category.dart';
 export 'enums/gs_weapon.dart';

@@ -23,7 +23,7 @@ class HomeLastBannerWidget extends StatelessWidget {
         .map((chr) => _toMapEntry(chr, banners))
         .where((e) => e.value.inDays > 0)
         .sortedByDescending((e) => e.value);
-    return GsDataBox.summary(
+    return GsDataBox.info(
       title: context.fromLabel(Labels.lastBanner),
       child: LayoutBuilder(
         builder: (context, layout) {

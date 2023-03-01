@@ -38,7 +38,7 @@
     "next": "Next",
     "avg": "Avg",
     "total": "Total",
-    "per": "Ch%",
+    "per": "Percent",
     "rarity_star": "{star}★",
     "x10": "x10",
     "master": "Master",
@@ -174,5 +174,7 @@
     "namecard_character": "Character",
     "namecard_event": "Event",
     "namecard_offering": "Offering",
-    "namecard_reputation": "Reputation"
+    "namecard_reputation": "Reputation",
+    "recipe_event": "Event",
+    "recipe_permanent": "Permanent"
 }

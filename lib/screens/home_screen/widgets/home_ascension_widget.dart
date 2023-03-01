@@ -45,14 +45,14 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
             .thenBy((e) => e.name);
 
         if (characters.isEmpty) {
-          return GsDataBox.summary(
+          return GsDataBox.info(
             title: context.fromLabel(Labels.ascension),
             child: const GsNoResultsState(),
           );
         }
 
         final chars = GsUtils.characters;
-        return GsDataBox.summary(
+        return GsDataBox.info(
           title: context.fromLabel(Labels.ascension),
           child: LayoutBuilder(
             builder: (context, layout) {

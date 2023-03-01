@@ -37,7 +37,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
     final materials = GsDatabase.instance.infoMaterials
         .getItems()
         .where((element) => element.weekdays.contains(name))
-        .groupBy((e) => '${e.group}-${e.subgroup}')
+        .groupBy((e) => '${e.group}-${e.region.name}-${e.subgroup}')
         .entries
         .map((e) => e.value.sortedBy((r) => r.rarity).first);
 
