@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
@@ -68,7 +69,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       _getAttributes(context, item),
                       if (info != null) ...[
                         const SizedBox(height: kSeparator8),
-                        _getAscension(context, info),
+                        _getAscension(context, item, info),
                         const SizedBox(height: kSeparator8),
                         _getTalents(context, info),
                         const SizedBox(height: kSeparator8),
@@ -338,116 +339,123 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getAscension(
     BuildContext context,
+    InfoCharacter info,
     InfoCharacterInfo infos,
   ) {
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
+    final ascension =
+        GsDatabase.instance.infoCharactersInfo.characterAscension();
     return GsDataBox.info(
       key: _ascension,
       title: context.fromLabel(Labels.ascension),
-      children: [
-        Table(
-          columnWidths: const {
-            0: IntrinsicColumnWidth(),
-            5: IntrinsicColumnWidth(),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder(
-            horizontalInside: BorderSide(
-              color: context.themeColors.dimWhite,
-              width: 0.4,
-            ),
-          ),
-          children: [
-            TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                  child: Center(
-                    child: Text(context.fromLabel(Labels.level), style: style),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(GsAttributeStat.hp.label),
-                    style: style,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(GsAttributeStat.atk.label),
-                    style: style,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(GsAttributeStat.def.label),
-                    style: style,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(infos.ascension.ascStatType.label),
-                    style: style,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(Labels.materials),
-                    style: style,
-                  ),
-                ),
-              ],
-            ),
-            ...GsDatabase.instance.infoCharactersInfo
-                .characterAscension()
-                .mapIndexed((idx, cfg) {
-              final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
-              final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
-              final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
-              final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
-              if (hp == null && atk == null && def == null && stat == null) {
-                return null;
-              }
-              return TableRow(
+      child: IntValueStream(
+        builder: (context, notifier, child) {
+          final idx = notifier.value;
+          final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
+          final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
+          final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
+          final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
+          final mats = GsDatabase.instance.infoCharactersInfo
+              .getAscensionMaterials(infos.id, idx);
+          return Column(
+            children: [
+              Row(
+                children: ascension
+                    .mapIndexed<Widget>((idx, cfg) {
+                      return Opacity(
+                        opacity: notifier.value == idx ? 1 : kDisableOpacity,
+                        child: ItemRarityBubble(
+                          color:
+                              info.element.color.withOpacity(kDisableOpacity),
+                          child: IgnorePointer(
+                            child: Center(child: Text(cfg.level.toString())),
+                          ),
+                          onTap: () => notifier.value = idx,
+                        ),
+                      );
+                    })
+                    .separate(const SizedBox(width: kSeparator8))
+                    .toList(),
+              ),
+              const SizedBox(height: kSeparator2),
+              Divider(color: context.themeColors.dimWhite),
+              Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                columnWidths: const {
+                  0: IntrinsicColumnWidth(),
+                  1: IntrinsicColumnWidth(),
+                },
                 children: [
-                  Container(
-                    height: 64 + 24,
-                    margin: const EdgeInsets.symmetric(vertical: kSeparator4),
-                    child: Center(
-                      child: Text(
-                        cfg.level.toString(),
-                        style: context.textTheme.titleSmall!
-                            .copyWith(color: Colors.white),
+                  TableRow(
+                    children: [
+                      Text(
+                        context.fromLabel(GsAttributeStat.hp.label),
+                        style: style,
                       ),
-                    ),
+                      const SizedBox(width: kSeparator8, height: 24),
+                      Text(hp ?? '-', style: style),
+                    ],
                   ),
-                  Center(child: Text(hp ?? '-', style: style)),
-                  Center(child: Text(atk ?? '-', style: style)),
-                  Center(child: Text(def ?? '-', style: style)),
-                  Center(child: Text(stat ?? '-', style: style)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: GsDatabase.instance.infoCharactersInfo
-                        .getAscensionMaterials(infos.id, idx)
-                        .entries
-                        .map<Widget>((e) {
-                          final db = GsDatabase.instance.infoMaterials;
-                          final item = db.getItemOrNull(e.key);
-                          return GsRarityItemCard.withLabels(
-                            image: item?.image ?? '',
-                            rarity: item?.rarity ?? 1,
-                            labelFooter: e.value.format(),
-                          );
-                        })
-                        .separate(const SizedBox(width: kSeparator4))
-                        .toList(),
-                  )
+                  TableRow(
+                    children: [
+                      Text(
+                        context.fromLabel(GsAttributeStat.atk.label),
+                        style: style,
+                      ),
+                      const SizedBox(width: kSeparator8, height: 24),
+                      Text(atk ?? '-', style: style),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Text(
+                        context.fromLabel(GsAttributeStat.def.label),
+                        style: style,
+                      ),
+                      const SizedBox(width: kSeparator8, height: 24),
+                      Text(def ?? '-', style: style),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Text(
+                        context.fromLabel(infos.ascension.ascStatType.label),
+                        style: style,
+                      ),
+                      const SizedBox(width: kSeparator8, height: 24),
+                      Text(stat ?? '-', style: style),
+                    ],
+                  ),
+                  if (mats.isNotEmpty)
+                    TableRow(
+                      children: [
+                        Text(
+                          context.fromLabel(Labels.materials),
+                          style: style,
+                        ),
+                        const SizedBox(width: kSeparator8, height: 24),
+                        Row(
+                          children: mats.entries
+                              .map<Widget>((e) {
+                                final db = GsDatabase.instance.infoMaterials;
+                                final item = db.getItemOrNull(e.key);
+                                return GsRarityItemCard.withLabels(
+                                  image: item?.image ?? '',
+                                  rarity: item?.rarity ?? 1,
+                                  labelFooter: e.value.format(),
+                                );
+                              })
+                              .separate(const SizedBox(width: kSeparator4))
+                              .toList(),
+                        ),
+                      ],
+                    ),
                 ],
-              );
-            }).whereNotNull(),
-          ],
-        ),
-      ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -455,51 +463,57 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _talents,
       title: context.fromLabel(Labels.talents),
-      children: info.talents
-          .map<Widget>((e) {
-            return Padding(
-              padding: const EdgeInsets.all(kSeparator4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: IntValueStream(
+        builder: (context, notifier, child) {
+          final selected = info.talents[notifier.value];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: info.talents
+                    .mapIndexed<Widget>((i, e) {
+                      return Opacity(
+                        opacity: notifier.value == i ? 1 : kDisableOpacity,
+                        child: InkWell(
+                          onTap: () => notifier.value = i,
+                          child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CachedImageWidget(e.icon),
+                          ),
+                        ),
+                      );
+                    })
+                    .separate(const SizedBox(width: kSeparator8))
+                    .toList(),
+              ),
+              const SizedBox(height: kSeparator2),
+              Divider(color: context.themeColors.dimWhite),
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 46,
-                        height: 46,
-                        child: CachedImageWidget(e.icon),
-                      ),
-                      const SizedBox(width: kSeparator8),
-                      Text(
-                        e.name,
-                        style: context.textTheme.titleSmall!
-                            .copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(width: kSeparator8),
-                      Text(
-                        '(${e.type})',
-                        style: context.textTheme.description2
-                            .copyWith(fontStyle: FontStyle.italic),
-                      ),
-                    ],
+                  Text(
+                    selected.name,
+                    style: context.textTheme.titleLarge!
+                        .copyWith(color: context.themeColors.primary),
                   ),
-                  const SizedBox(height: kSeparator8),
-                  TextParserWidget(
-                    e.desc,
-                    style: context.textTheme.titleSmall!
-                        .copyWith(color: Colors.white),
+                  const SizedBox(width: kSeparator8),
+                  Text(
+                    '(${selected.type})',
+                    style: context.textTheme.description2
+                        .copyWith(fontStyle: FontStyle.italic),
                   ),
                 ],
               ),
-            );
-          })
-          .separate(
-            Divider(
-              color: context.themeColors.dimWhite,
-              thickness: 0.4,
-            ),
-          )
-          .toList(),
+              const SizedBox(height: kSeparator8),
+              TextParserWidget(
+                selected.desc,
+                style:
+                    context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -507,45 +521,47 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _constellation,
       title: context.fromLabel(Labels.constellation),
-      children: info.constellations
-          .map<Widget>((e) {
-            return Padding(
-              padding: const EdgeInsets.all(kSeparator4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 46,
-                        height: 46,
-                        child: CachedImageWidget(e.icon),
-                      ),
-                      const SizedBox(width: kSeparator8),
-                      Text(
-                        e.name,
-                        style: context.textTheme.titleSmall!
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: kSeparator8),
-                  TextParserWidget(
-                    e.desc,
-                    style: context.textTheme.titleSmall!
-                        .copyWith(color: Colors.white),
-                  ),
-                ],
+      child: IntValueStream(
+        builder: (context, notifier, child) {
+          final selected = info.constellations[notifier.value];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: info.constellations
+                    .mapIndexed<Widget>((i, e) {
+                      return Opacity(
+                        opacity: notifier.value == i ? 1 : kDisableOpacity,
+                        child: InkWell(
+                          onTap: () => notifier.value = i,
+                          child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CachedImageWidget(e.icon),
+                          ),
+                        ),
+                      );
+                    })
+                    .separate(const SizedBox(width: kSeparator8))
+                    .toList(),
               ),
-            );
-          })
-          .separate(
-            Divider(
-              color: context.themeColors.dimWhite,
-              thickness: 0.4,
-            ),
-          )
-          .toList(),
+              const SizedBox(height: kSeparator2),
+              Divider(color: context.themeColors.dimWhite),
+              Text(
+                selected.name,
+                style: context.textTheme.titleLarge!
+                    .copyWith(color: context.themeColors.primary),
+              ),
+              const SizedBox(height: kSeparator8),
+              TextParserWidget(
+                selected.desc,
+                style:
+                    context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -684,6 +700,52 @@ class CharacterDetailsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class IntValueStream extends StatefulWidget {
+  final int initialValue;
+  final Widget? child;
+  final Widget Function(
+    BuildContext context,
+    ValueNotifier<int> notifier,
+    Widget? child,
+  ) builder;
+
+  const IntValueStream({
+    super.key,
+    this.initialValue = 0,
+    this.child,
+    required this.builder,
+  });
+
+  @override
+  State<IntValueStream> createState() => _IntValueStreamState();
+}
+
+class _IntValueStreamState extends State<IntValueStream> {
+  late final ValueNotifier<int> _notifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = ValueNotifier(widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: _notifier,
+      builder: (context, value, child) =>
+          widget.builder(context, _notifier, child),
+      child: widget.child,
     );
   }
 }

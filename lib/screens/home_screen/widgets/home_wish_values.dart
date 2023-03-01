@@ -416,12 +416,12 @@ class HomeWishesValues extends StatelessWidget {
     final total = info.wishes
         .map((e) => MapEntry(e, GsUtils.wishes.getWishState(info.wishes, e)))
         .where((e) => e.value == WishState.won || e.value == WishState.lost);
-    final percent = total.count((e) => e.value == WishState.won) / total.length;
+    final won = total.count((e) => e.value == WishState.won);
     return _getInfo(
       context,
       label,
       color,
-      [total.length, percent * 100, null],
+      [won, won / total.length * 100, null],
     );
   }
 }

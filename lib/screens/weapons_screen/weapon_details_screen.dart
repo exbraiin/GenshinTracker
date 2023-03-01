@@ -7,11 +7,13 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
+import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/theme/theme.dart';
 
 class WeaponDetailsScreen extends StatelessWidget {
@@ -30,26 +32,40 @@ class WeaponDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: GsAppBar(label: info.name),
-      body: ValueStreamBuilder<bool>(
-        stream: GsDatabase.instance.loaded,
-        builder: (context, snapshot) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(kSeparator4),
-            child: Column(
-              children: [
-                _getInfo(context, info),
-                if (details != null) ...[
-                  const SizedBox(height: kSeparator8),
-                  if (hasEffect) _getEffect(context, details),
-                  if (hasEffect) const SizedBox(height: kSeparator8),
-                  _getAscension(context, info.rarity, details),
-                  const SizedBox(height: kSeparator8),
-                  _getAllMaterials(context, details),
-                ]
-              ],
-            ),
-          );
-        },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: context.themeColors
+              .getRarityColor(info.rarity)
+              .withOpacity(kDisableOpacity),
+          image: DecorationImage(
+            opacity: 0.1,
+            fit: BoxFit.cover,
+            image: AssetImage(getRarityBgImage(info.rarity)),
+          ),
+        ),
+        child: ValueStreamBuilder<bool>(
+          stream: GsDatabase.instance.loaded,
+          builder: (context, snapshot) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(kSeparator4),
+              child: Column(
+                children: [
+                  _getInfo(context, info),
+                  if (details != null) ...[
+                    const SizedBox(height: kSeparator8),
+                    if (hasEffect) _getEffect(context, details),
+                    if (hasEffect) const SizedBox(height: kSeparator8),
+                    _getAscension(context, info.rarity, details),
+                    const SizedBox(height: kSeparator8),
+                    _getAllMaterials(context, details),
+                  ]
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -145,98 +161,99 @@ class WeaponDetailsScreen extends StatelessWidget {
 
   Widget _getAscension(BuildContext context, int rarity, InfoWeaponInfo info) {
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
+    final ascension =
+        GsDatabase.instance.infoWeaponsInfo.weaponAscension(rarity);
     return GsDataBox.info(
       title: context.fromLabel(Labels.ascension),
-      children: [
-        Table(
-          columnWidths: const {
-            0: IntrinsicColumnWidth(),
-            5: IntrinsicColumnWidth(),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder(
-            horizontalInside: BorderSide(
-              color: context.themeColors.dimWhite,
-              width: 0.4,
-            ),
-          ),
-          children: [
-            TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                  child: Center(
-                    child: Text(context.fromLabel(Labels.level), style: style),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    context.fromLabel(GsAttributeStat.atk.label),
-                    style: style,
-                  ),
-                ),
-                if (info.ascStatType != GsAttributeStat.none)
-                  Center(
-                    child: Text(
-                      context.fromLabel(info.ascStatType.label),
-                      style: style,
+      child: IntValueStream(
+        builder: (context, notifier, child) {
+          final idx = notifier.value;
+          final mats = GsDatabase.instance.infoWeaponsInfo
+              .getAscensionMaterials(info.id, idx);
+          final atk = info.ascAtkValues.elementAtOrNull(idx);
+          final stat = info.ascStatValues.elementAtOrNull(idx);
+          return Column(
+            children: [
+              Row(
+                children: ascension
+                    .mapIndexed<Widget>((idx, cfg) {
+                      return Opacity(
+                        opacity: notifier.value == idx ? 1 : kDisableOpacity,
+                        child: ItemRarityBubble(
+                          color: context.themeColors
+                              .getRarityColor(rarity)
+                              .withOpacity(kDisableOpacity),
+                          child: IgnorePointer(
+                            child: Center(child: Text(cfg.level.toString())),
+                          ),
+                          onTap: () => notifier.value = idx,
+                        ),
+                      );
+                    })
+                    .separate(const SizedBox(width: kSeparator8))
+                    .toList(),
+              ),
+              const SizedBox(height: kSeparator2),
+              Divider(color: context.themeColors.dimWhite),
+              if (atk != null || stat != null)
+                Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  columnWidths: const {
+                    0: IntrinsicColumnWidth(),
+                    1: IntrinsicColumnWidth(),
+                  },
+                  children: [
+                    TableRow(
+                      children: [
+                        Text(
+                          context.fromLabel(GsAttributeStat.atk.label),
+                          style: style,
+                        ),
+                        const SizedBox(width: kSeparator8, height: 24),
+                        Text(atk ?? '-', style: style),
+                      ],
                     ),
-                  ),
-                Center(
-                  child: Text(
-                    context.fromLabel(Labels.materials),
-                    style: style,
-                  ),
-                ),
-              ],
-            ),
-            ...GsDatabase.instance.infoWeaponsInfo
-                .weaponAscension(rarity)
-                .mapIndexed((i, config) {
-              final atk = info.ascAtkValues.elementAtOrNull(i);
-              final stat = info.ascStatValues.elementAtOrNull(i);
-              if (atk == null && stat == null) {
-                return null;
-              }
-              return TableRow(
-                children: [
-                  Container(
-                    height: 64 + 24,
-                    margin: const EdgeInsets.symmetric(vertical: kSeparator4),
-                    child: Center(
-                      child: Text(
-                        config.level.toString(),
-                        style: context.textTheme.titleSmall!
-                            .copyWith(color: Colors.white),
+                    if (info.ascStatType != GsAttributeStat.none)
+                      TableRow(
+                        children: [
+                          Text(
+                            context.fromLabel(info.ascStatType.label),
+                            style: style,
+                          ),
+                          const SizedBox(width: kSeparator8, height: 24),
+                          Text(stat ?? '-', style: style),
+                        ],
                       ),
-                    ),
-                  ),
-                  Center(child: Text(atk ?? '-', style: style)),
-                  if (info.ascStatType != GsAttributeStat.none)
-                    Center(child: Text(stat ?? '-', style: style)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: GsDatabase.instance.infoWeaponsInfo
-                        .getAscensionMaterials(info.id, i)
-                        .entries
-                        .map<Widget>((e) {
-                          final db = GsDatabase.instance.infoMaterials;
-                          final item = db.getItemOrNull(e.key);
-                          return GsRarityItemCard.withLabels(
-                            image: item?.image ?? '',
-                            rarity: item?.rarity ?? 1,
-                            labelFooter: e.value.format(),
-                          );
-                        })
-                        .separate(const SizedBox(width: kSeparator4))
-                        .toList(),
-                  ),
-                ],
-              );
-            }).whereNotNull(),
-          ],
-        ),
-      ],
+                    if (mats.isNotEmpty)
+                      TableRow(
+                        children: [
+                          Text(
+                            context.fromLabel(Labels.materials),
+                            style: style,
+                          ),
+                          const SizedBox(width: kSeparator8, height: 24),
+                          Row(
+                            children: mats.entries
+                                .map<Widget>((e) {
+                                  final db = GsDatabase.instance.infoMaterials;
+                                  final item = db.getItemOrNull(e.key);
+                                  return GsRarityItemCard.withLabels(
+                                    image: item?.image ?? '',
+                                    rarity: item?.rarity ?? 1,
+                                    labelFooter: e.value.format(),
+                                  );
+                                })
+                                .separate(const SizedBox(width: kSeparator4))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 
