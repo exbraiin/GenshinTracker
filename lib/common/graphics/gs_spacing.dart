@@ -8,6 +8,13 @@ const kMainShadow = [
   ),
 ];
 
+const kMainShadowText = [
+  BoxShadow(
+    color: Colors.black38,
+    offset: Offset(1, 1),
+  ),
+];
+
 const double kSeparator2 = 2;
 const double kSeparator4 = 4;
 const double kSeparator8 = 8;

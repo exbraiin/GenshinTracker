@@ -295,13 +295,13 @@ class Labels {
 	/// Healing
 	static const wsHealing = 'ws_healing';
 
-	/// HP
+	/// HP%
 	static const wsHpPercent = 'ws_hp_percent';
 
-	/// ATK
+	/// ATK%
 	static const wsAtkPercent = 'ws_atk_percent';
 
-	/// DEF
+	/// DEF%
 	static const wsDefPercent = 'ws_def_percent';
 
 	/// Anemo DMG

@@ -21,10 +21,10 @@ class GsDetailedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pad = MediaQuery.of(context).size.width / 10;
+    final pad = MediaQuery.of(context).size.width / 20;
     return Container(
-      padding: EdgeInsets.all(pad),
       alignment: Alignment.topCenter,
+      padding: EdgeInsets.all(pad),
       child: SingleChildScrollView(
         child: Container(
           decoration: const BoxDecoration(boxShadow: kMainShadow),

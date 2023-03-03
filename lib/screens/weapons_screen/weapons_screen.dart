@@ -39,7 +39,7 @@ class WeaponsScreen extends StatelessWidget {
                       return WeaponListItem(
                         showItem: showItem,
                         showExtra: filter.hasExtra('info'),
-                        weapon: item,
+                        item: item,
                       );
                     },
                   );

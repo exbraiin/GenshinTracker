@@ -11,6 +11,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
+import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
@@ -348,7 +349,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _ascension,
       title: context.fromLabel(Labels.ascension),
-      child: IntValueStream(
+      child: ValueNotifierBuilder<int>(
+        value: 0,
         builder: (context, notifier, child) {
           final idx = notifier.value;
           final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
@@ -463,7 +465,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _talents,
       title: context.fromLabel(Labels.talents),
-      child: IntValueStream(
+      child: ValueNotifierBuilder<int>(
+        value: 0,
         builder: (context, notifier, child) {
           final selected = info.talents[notifier.value];
           return Column(
@@ -521,7 +524,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _constellation,
       title: context.fromLabel(Labels.constellation),
-      child: IntValueStream(
+      child: ValueNotifierBuilder<int>(
+        value: 0,
         builder: (context, notifier, child) {
           final selected = info.constellations[notifier.value];
           return Column(
@@ -700,52 +704,6 @@ class CharacterDetailsScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class IntValueStream extends StatefulWidget {
-  final int initialValue;
-  final Widget? child;
-  final Widget Function(
-    BuildContext context,
-    ValueNotifier<int> notifier,
-    Widget? child,
-  ) builder;
-
-  const IntValueStream({
-    super.key,
-    this.initialValue = 0,
-    this.child,
-    required this.builder,
-  });
-
-  @override
-  State<IntValueStream> createState() => _IntValueStreamState();
-}
-
-class _IntValueStreamState extends State<IntValueStream> {
-  late final ValueNotifier<int> _notifier;
-
-  @override
-  void initState() {
-    super.initState();
-    _notifier = ValueNotifier(widget.initialValue);
-  }
-
-  @override
-  void dispose() {
-    _notifier.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: _notifier,
-      builder: (context, value, child) =>
-          widget.builder(context, _notifier, child),
-      child: widget.child,
     );
   }
 }

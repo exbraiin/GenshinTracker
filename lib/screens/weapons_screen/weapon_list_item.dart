@@ -6,42 +6,39 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/weapons_screen/weapon_details_screen.dart';
+import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showItem;
   final bool showExtra;
-  final InfoWeapon weapon;
+  final InfoWeapon item;
 
   const WeaponListItem({
     super.key,
     this.showItem = false,
     required this.showExtra,
-    required this.weapon,
+    required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
-    final owned = GsDatabase.instance.saveWishes.hasWeapon(weapon.id);
+    final owned = GsDatabase.instance.saveWishes.hasWeapon(item.id);
     return Opacity(
       opacity: owned ? 1 : kDisableOpacity,
       child: GsItemCardButton(
-        label: weapon.name,
-        rarity: weapon.rarity,
-        banner: GsItemBanner.fromVersion(weapon.version),
-        imageUrlPath: weapon.image,
+        label: item.name,
+        rarity: item.rarity,
+        banner: GsItemBanner.fromVersion(item.version),
+        imageUrlPath: item.image,
         child: _getContent(context),
-        onTap: () => Navigator.of(context).pushNamed(
-          WeaponDetailsScreen.id,
-          arguments: weapon,
-        ),
+        onTap: () => WeaponDetailsCard(item).show(context),
       ),
     );
   }
 
   Widget _getContent(BuildContext context) {
     late final material = GsDatabase.instance.infoWeaponsInfo
-        .getAscensionMaterials(weapon.id)
+        .getAscensionMaterials(item.id)
         .entries
         .map((e) => GsDatabase.instance.infoMaterials.getItemOrNull(e.key))
         .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);
@@ -55,7 +52,7 @@ class WeaponListItem extends StatelessWidget {
             left: kSeparator2,
             child: ItemRarityBubble(
               size: 30,
-              asset: weapon.type.assetPath,
+              asset: item.type.assetPath,
             ),
           ),
           if (showExtra)
@@ -64,18 +61,18 @@ class WeaponListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   GsItemCardLabel(
-                    label: '${weapon.atk}',
+                    label: '${item.atk}',
                     asset: GsAttributeStat.atk.assetPath,
                   ),
-                  if (weapon.statType != GsAttributeStat.none)
+                  if (item.statType != GsAttributeStat.none)
                     Padding(
                       padding: const EdgeInsets.only(top: kSeparator2),
                       child: Tooltip(
-                        message: context.fromLabel(weapon.statType.label),
+                        message: context.fromLabel(item.statType.label),
                         child: GsItemCardLabel(
-                          label: weapon.statType
-                              .toIntOrPercentage(weapon.statValue),
-                          asset: weapon.statType.assetPath,
+                          label:
+                              item.statType.toIntOrPercentage(item.statValue),
+                          asset: item.statType.assetPath,
                         ),
                       ),
                     ),

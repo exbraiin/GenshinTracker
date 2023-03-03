@@ -20,7 +20,7 @@ final theme = ThemeData(
   tooltipTheme: TooltipThemeData(
     decoration: BoxDecoration(
       color: _themeColors.mainColor1,
-      borderRadius: kMainRadius,
+      borderRadius: BorderRadius.circular(1000),
       border: Border.all(color: _themeColors.dimWhite),
     ),
     textStyle: TextStyle(
@@ -49,6 +49,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color setIndoor;
   final Color setOutdoor;
 
+  Color get primary60 => Color.lerp(Colors.black, primary, 0.6)!;
+  Color get primary80 => Color.lerp(Colors.black, primary, 0.8)!;
+
   ThemeColors({
     required this.primary,
     required this.dimWhite,
@@ -75,7 +78,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         setOutdoor = const Color(0xFF303671);
 
   ThemeColors.darkTheme()
-      : primary = Colors.yellow,
+      : primary = Color.lerp(Colors.black, Colors.cyan, 0.6)!,
         dimWhite = const Color(0x80FFFFFF),
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF000000),

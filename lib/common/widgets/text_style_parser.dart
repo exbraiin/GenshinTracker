@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
 
@@ -50,11 +51,13 @@ class TextParserWidget extends StatelessWidget {
           .map((t) => MapEntry(t, text.indexOf(t, p)))
           .where((t) => t.value != -1);
 
+      late final color = colorQueue.peek;
       late final tempStyle = style.copyWith(
-        color: colorQueue.peek ?? style.color,
+        color: color ?? style.color,
         fontWeight: bold.peek ?? style.fontWeight,
         fontStyle: italic.peek ?? style.fontStyle,
         decoration: underline.peek ?? style.decoration,
+        shadows: color == context.themeColors.primary ? kMainShadowText : null,
       );
 
       final tag = idxs.minBy((e) => e.value);

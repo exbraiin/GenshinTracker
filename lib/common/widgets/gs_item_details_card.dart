@@ -350,7 +350,7 @@ class ItemDetailsCardContent {
 
     final labelStyle = TextStyle(
       fontSize: 16,
-      color: Color.lerp(Colors.black, context.themeColors.primary, 0.8)!,
+      color: context.themeColors.primary80,
       fontWeight: FontWeight.bold,
     );
 
