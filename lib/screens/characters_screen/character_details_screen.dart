@@ -14,7 +14,6 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/character_ascension_screen/character_ascension_material.dart';
 import 'package:tracker/theme/theme.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
@@ -275,8 +274,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 dish != null
                     ? Row(
                         children: [
-                          GsRarityItemCard(
-                            size: 48,
+                          ItemRarityBubble(
                             image: dish.image,
                             rarity: dish.rarity,
                           ),
@@ -302,10 +300,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                     spacing: kSeparator4,
                     runSpacing: kSeparator4,
                     children: [
-                      GsRarityItemCard.withLabels(
+                      ItemRarityBubble(
                         image: info.image,
                         rarity: info.rarity,
-                        labelFooter: info.name,
+                        tooltip: info.name,
                         onTap: () => GsDatabase.instance.saveCharacters
                             .setCharOutfit(info.id, ''),
                       ),
@@ -313,10 +311,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                           .getItems()
                           .where((element) => element.character == info.id)
                           .map((e) {
-                        return GsRarityItemCard.withLabels(
+                        return ItemRarityBubble(
                           image: e.image,
                           rarity: e.rarity,
-                          labelFooter: e.name,
+                          tooltip: e.name,
                           onTap: () => GsDatabase.instance.saveCharacters
                               .setCharOutfit(info.id, e.id),
                         );
@@ -441,10 +439,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                               .map<Widget>((e) {
                                 final db = GsDatabase.instance.infoMaterials;
                                 final item = db.getItemOrNull(e.key);
-                                return GsRarityItemCard.withLabels(
+                                return ItemRarityBubble.withLabel(
                                   image: item?.image ?? '',
                                   rarity: item?.rarity ?? 1,
-                                  labelFooter: e.value.format(),
+                                  label: e.value.compact(),
                                 );
                               })
                               .separate(const SizedBox(width: kSeparator4))
@@ -574,8 +572,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     final ic = GsDatabase.instance.infoCharactersInfo;
     final tltMats = ic.getTalentMaterials(details.id);
     final ascMats = ic.getAscensionMaterials(details.id);
-    final allMats = {...tltMats, ...ascMats}
-        .entries
+    final allMats = [...tltMats.entries, ...ascMats.entries]
         .groupBy((e) => e.key)
         .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
 
@@ -643,25 +640,32 @@ class CharacterDetailsScreen extends StatelessWidget {
           getTableRow(
             context.fromLabel(Labels.ascension),
             ascMats,
-            (e) => GsRarityItemCard.withLabels(
-              labelFooter: e.value.format(),
+            (e) => ItemRarityBubble.withLabel(
+              label: e.value.compact(),
               rarity: e.key!.rarity,
               image: e.key!.image,
+              tooltip: e.key!.name,
             ),
           ),
           getTableRow(
             context.fromLabel(Labels.talents),
             tltMats,
-            (e) => GsRarityItemCard.withLabels(
-              labelFooter: e.value.format(),
+            (e) => ItemRarityBubble.withLabel(
+              label: e.value.compact(),
               rarity: e.key!.rarity,
               image: e.key!.image,
+              tooltip: e.key!.name,
             ),
           ),
           getTableRow(
             context.fromLabel(Labels.total),
             allMats,
-            (e) => CharacterAscensionMaterial(e.key!.id, e.value),
+            (e) => ItemRarityBubble.withLabel(
+              label: e.value.compact(),
+              rarity: e.key!.rarity,
+              image: e.key!.image,
+              tooltip: e.key!.name,
+            ),
           ),
         ],
       ),

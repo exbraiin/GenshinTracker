@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 
-final _themeColors = ThemeColors.darkTheme();
+const defaultFontFamily = 'Comfortaa';
+final _themeColors = ThemeColors.defaultTheme();
 final theme = ThemeData(
   extensions: [_themeColors],
   scrollbarTheme: ScrollbarThemeData(
     thickness: MaterialStateProperty.all(0),
   ),
-  fontFamily: 'Bahnschrift',
+  fontFamily: defaultFontFamily,
   primarySwatch: Colors.blue,
   scaffoldBackgroundColor: _themeColors.mainColor1,
   splashColor: Colors.transparent,
@@ -66,7 +66,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   });
 
   ThemeColors.defaultTheme()
-      : primary = Colors.cyan,
+      : primary = Colors.teal,
         dimWhite = const Color(0xFFCCCCCC),
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF0C122E),

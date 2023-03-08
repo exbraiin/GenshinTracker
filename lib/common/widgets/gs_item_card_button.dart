@@ -56,7 +56,7 @@ class GsItemCardButton extends StatelessWidget {
     this.height,
     this.banner = const GsItemBanner(text: ''),
     this.subChild,
-    this.maxLines,
+    this.maxLines = 1,
     this.imageUrlPath,
     this.imageFilePath,
     this.imageAssetPath,
@@ -68,42 +68,30 @@ class GsItemCardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (onTap == null) {
-      return Opacity(
-        opacity: disable ? kDisableOpacity : 1,
-        child: _getContent(context),
-      );
-    }
+    final child = Opacity(
+      opacity: disable ? kDisableOpacity : 1,
+      child: _getContent(context),
+    );
+    if (onTap == null) return child;
 
-    final child = _getContent(context);
-
-    var animate = false;
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return Opacity(
-          opacity: disable ? kDisableOpacity : 1,
-          child: InkWell(
-            onTap: onTap,
-            child: MouseRegion(
-              onEnter: (event) => setState(() => animate = true),
-              onExit: (event) => setState(() => animate = false),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                foregroundDecoration: BoxDecoration(
-                  borderRadius: radius,
-                  border: animate || selected
-                      ? Border.all(
-                          color: context.themeColors.almostWhite,
-                          width: 2,
-                        )
-                      : null,
-                ),
-                child: child,
-              ),
-            ),
+    return InkWell(
+      onTap: onTap,
+      child: MouseHoverBuilder(
+        builder: (context, value, child) => AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          foregroundDecoration: BoxDecoration(
+            borderRadius: radius,
+            border: value || selected
+                ? Border.all(
+                    color: context.themeColors.almostWhite,
+                    width: 2,
+                  )
+                : null,
           ),
-        );
-      },
+          child: child,
+        ),
+        child: child,
+      ),
     );
   }
 
@@ -112,7 +100,7 @@ class GsItemCardButton extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: context.themeColors.mainColor1,
+        color: Colors.white,
         borderRadius: radius,
         boxShadow: shadow ? kMainShadow : null,
       ),
@@ -231,7 +219,7 @@ class GsItemCardLabel extends StatelessWidget {
             child: Text(
               label!,
               maxLines: 1,
-              style: context.textTheme.cardLabel,
+              style: context.textTheme.filterLabel,
             ),
           ),
         if (asset != null && asset!.isNotEmpty)
@@ -262,6 +250,33 @@ class GsItemCardLabel extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(kSeparator4),
       child: onTap != null ? InkWell(onTap: onTap, child: child) : child,
+    );
+  }
+}
+
+class MouseHoverBuilder extends StatefulWidget {
+  final Widget? child;
+  final ValueWidgetBuilder<bool> builder;
+
+  const MouseHoverBuilder({
+    super.key,
+    this.child,
+    required this.builder,
+  });
+
+  @override
+  State<MouseHoverBuilder> createState() => _MouseHoverBuilderState();
+}
+
+class _MouseHoverBuilderState extends State<MouseHoverBuilder> {
+  var _animate = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (event) => setState(() => _animate = true),
+      onExit: (event) => setState(() => _animate = false),
+      child: widget.builder(context, _animate, widget.child),
     );
   }
 }

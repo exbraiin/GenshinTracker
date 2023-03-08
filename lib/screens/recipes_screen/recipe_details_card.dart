@@ -133,21 +133,11 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             children: [
               ...item.ingredients.entries.map((e) {
                 final item = db.infoIngredients.getItemOrNull(e.key);
-                return ItemRarityBubble(
+                return ItemRarityBubble.withLabel(
                   image: item?.image ?? '',
                   rarity: item?.rarity ?? 1,
                   tooltip: item?.name ?? '',
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      e.value.format(),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                        shadows: kMainShadow,
-                      ),
-                    ),
-                  ),
+                  label: e.value.format(),
                 );
               }),
               if (baseRecipe != null) ...[

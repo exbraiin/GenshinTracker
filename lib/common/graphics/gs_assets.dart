@@ -30,12 +30,14 @@ const imageXp = 'assets/image/icons/Companion_xp.png';
 const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
 
 const kMainBgDecoration = BoxDecoration(
+/*
   image: DecorationImage(
     fit: BoxFit.cover,
     opacity: 0.1,
     image: AssetImage('assets/image/bg.jpg'),
   ),
-);
+*/
+    );
 
 String getRarityBgImage(int r) => 'assets/image/rarity/Item_${r}_Star.png';
 

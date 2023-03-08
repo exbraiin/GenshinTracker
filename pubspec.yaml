@@ -92,15 +92,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: Genshin
-      fonts:
-        - asset: assets/fonts/Genshin.ttf
-    - family: ZenKurenaido
-      fonts:
-        - asset: assets/fonts/ZenKurenaido.ttf
-    - family: NotoSans
-      fonts:
-        - asset: assets/fonts/NotoSans.ttf
     - family: Bahnschrift
       fonts:
         - asset: assets/fonts/Bahnschrift.ttf
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa.ttf

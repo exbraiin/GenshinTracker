@@ -4,7 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
@@ -60,12 +60,11 @@ class HomeLastBannerWidget extends StatelessWidget {
     BuildContext context,
     MapEntry<InfoCharacter, Duration> entry,
   ) {
-    return GsRarityItemCard.withLabels(
+    return ItemRarityBubble.withLabel(
       size: 70,
       image: entry.key.image,
       rarity: entry.key.rarity,
-      labelFooter: entry.key.name,
-      labelHeader: '${entry.value.inDays}d',
+      label: '${entry.value.inDays}d',
       onTap: () => Navigator.of(context)
           .pushNamed(CharacterDetailsScreen.id, arguments: entry.key),
     );

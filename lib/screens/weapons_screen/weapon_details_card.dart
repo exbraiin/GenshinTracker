@@ -133,7 +133,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                                 return Opacity(
                                   opacity: i == idx ? 1 : kDisableOpacity,
                                   child: GsItemCardLabel(
-                                    label: '✦${c.level}',
+                                    label: '${c.level}',
                                     onTap: () => notifier.value = i,
                                   ),
                                 );
@@ -183,21 +183,10 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                               .map<Widget>((e) {
                                 final db = GsDatabase.instance.infoMaterials;
                                 final item = db.getItemOrNull(e.key);
-                                return ItemRarityBubble(
+                                return ItemRarityBubble.withLabel(
                                   image: item?.image ?? '',
                                   rarity: item?.rarity ?? 1,
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Text(
-                                      e.value.compact(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        shadows: kMainShadow,
-                                      ),
-                                    ),
-                                  ),
-                                  // labelFooter: e.value.format(),
+                                  label: e.value.compact(),
                                 );
                               })
                               .separate(const SizedBox(width: kSeparator4))
@@ -235,21 +224,11 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             .thenBy((e) => e.key!.rarity)
             .thenBy((e) => e.key!.name)
             .map((e) {
-          return ItemRarityBubble(
+          return ItemRarityBubble.withLabel(
             rarity: e.key!.rarity,
             image: e.key!.image,
             tooltip: e.key!.name,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                e.value.compact(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  shadows: kMainShadow,
-                ),
-              ),
-            ),
+            label: e.value.compact(),
           );
         }).toList(),
       ),

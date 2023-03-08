@@ -127,7 +127,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
           Container(
             width: 100,
             decoration: BoxDecoration(
-              color: context.themeColors.mainColor1,
+              color: context.themeColors.mainColor0,
               borderRadius: BorderRadius.horizontal(
                 right: kMainRadius.topRight,
               ),

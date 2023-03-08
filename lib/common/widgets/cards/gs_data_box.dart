@@ -19,10 +19,10 @@ class GsDataBox extends StatelessWidget {
   })  : alignment = CrossAxisAlignment.start,
         padding = const EdgeInsets.all(kSeparator8),
         decoration = ((context) => BoxDecoration(
-              color: Colors.black.withOpacity(0.4),
+              color: context.themeColors.mainColor0.withOpacity(0.5),
               borderRadius: BorderRadius.circular(kSeparator8),
               border: Border.all(
-                color: Colors.black.withOpacity(0.4),
+                color: context.themeColors.mainColor0.withOpacity(0.8),
                 width: 2,
               ),
             ));
@@ -51,7 +51,6 @@ class GsDataBox extends StatelessWidget {
       title!,
       style: context.textTheme.bigTitle3.copyWith(
         fontSize: 18,
-        fontFamily: 'NotoSans',
         fontWeight: FontWeight.bold,
       ),
     );

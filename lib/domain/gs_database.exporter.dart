@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/theme/theme.dart';
 
 export 'gs_database.extensions.dart';
 
@@ -71,7 +72,7 @@ abstract class GsDatabaseExporter {
       CellStyle(
         bold: true,
         fontSize: 10,
-        fontFamily: 'Bahnschrift',
+        fontFamily: defaultFontFamily,
         verticalAlign: VerticalAlign.Center,
         horizontalAlign: HorizontalAlign.Center,
       ),
@@ -79,7 +80,7 @@ abstract class GsDatabaseExporter {
 
     final st = CellStyle(
       fontSize: 10,
-      fontFamily: 'Bahnschrift',
+      fontFamily: defaultFontFamily,
       verticalAlign: VerticalAlign.Center,
     );
 

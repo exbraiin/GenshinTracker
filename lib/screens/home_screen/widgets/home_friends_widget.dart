@@ -4,9 +4,8 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
-import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
@@ -21,7 +20,6 @@ class HomeFriendsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final chars = GsUtils.characters;
         final db = GsDatabase.instance;
-        final sc = db.saveCharacters;
         final characters = db.infoCharacters
             .getItems()
             .where((c) => chars.hasCaracter(c.id))
@@ -46,17 +44,12 @@ class HomeFriendsWidget extends StatelessWidget {
                 children: characters
                     .take(items)
                     .map<Widget>((e) {
-                      return GsRarityItemCard(
-                        key: ValueKey('friend_${e.id}'),
+                      return ItemRarityBubble.withLabel(
                         size: 70,
-                        image: GsUtils.characters.getImage(e.id),
+                        key: ValueKey('friend_${e.id}'),
+                        image: e.image,
                         rarity: e.rarity,
-                        footer: Text(e.name),
-                        header: GsNumberField(
-                          length: 2,
-                          onUpdate: (i) => sc.setCharFriendship(e.id, i),
-                          onDbUpdate: () => chars.getCharFriendship(e.id),
-                        ),
+                        label: chars.getCharFriendship(e.id).format(),
                         onTap: () => Navigator.of(context).pushNamed(
                           CharacterDetailsScreen.id,
                           arguments: e,

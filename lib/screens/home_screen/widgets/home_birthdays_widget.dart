@@ -4,7 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 
@@ -32,12 +32,11 @@ class HomeBirthdaysWidget extends StatelessWidget {
             children: characters
                 .take(items)
                 .map<Widget>((e) {
-                  return GsRarityItemCard.withLabels(
+                  return ItemRarityBubble.withLabel(
                     size: 70,
-                    rarity: e.rarity,
                     image: GsUtils.characters.getImage(e.id),
-                    labelFooter: e.name,
-                    labelHeader: e.birthday.toBirthday(),
+                    rarity: e.rarity,
+                    label: e.birthday.toBirthday(),
                     onTap: () => Navigator.of(context).pushNamed(
                       CharacterDetailsScreen.id,
                       arguments: e,

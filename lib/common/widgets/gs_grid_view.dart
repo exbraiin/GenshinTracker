@@ -34,8 +34,8 @@ class GsGridView extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedChildSize(
         childWidth: childWidth,
         childHeight: childHeight,
-        mainAxisSpacing: kSeparator4,
-        crossAxisSpacing: kSeparator4,
+        mainAxisSpacing: kSeparator6,
+        crossAxisSpacing: kSeparator6,
         alignment: CrossAxisAlignment.center,
       ),
     );

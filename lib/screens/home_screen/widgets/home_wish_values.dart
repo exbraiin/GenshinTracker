@@ -9,6 +9,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
 
+const _arrow = '→';
 const _bannerTitleLabel = {
   GsBanner.character: Labels.charWishes,
   GsBanner.beginner: Labels.noviceWishes,
@@ -92,7 +93,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.wishesInfo5Character,
-              '   ╚ ${context.fromLabel(Labels.character)}',
+              '   $_arrow ${context.fromLabel(Labels.character)}',
               context.themeColors.getRarityColor(5),
             ),
             Divider(
@@ -103,7 +104,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.wishesInfo5Weapon,
-              '   ╚ ${context.fromLabel(Labels.weapon)}',
+              '   $_arrow ${context.fromLabel(Labels.weapon)}',
               context.themeColors.getRarityColor(5),
             ),
           ],
@@ -116,7 +117,7 @@ class HomeWishesValues extends StatelessWidget {
             _getWonInfo(
               context,
               summary.wishesInfo5,
-              '   ╚ ${context.fromLabel(Labels.won5050)}',
+              '   $_arrow ${context.fromLabel(Labels.won5050)}',
               context.themeColors.getRarityColor(5),
             ),
           ],
@@ -139,7 +140,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.wishesInfo4Character,
-            '   ╚ ${context.fromLabel(Labels.character)}',
+            '   $_arrow ${context.fromLabel(Labels.character)}',
             context.themeColors.getRarityColor(4),
           ),
           Divider(
@@ -150,7 +151,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.wishesInfo4Weapon,
-            '   ╚ ${context.fromLabel(Labels.weapon)}',
+            '   $_arrow ${context.fromLabel(Labels.weapon)}',
             context.themeColors.getRarityColor(4),
           ),
           _getWishesList(

@@ -38,8 +38,14 @@ extension TextThemeExt on TextTheme {
         color: Colors.white,
       );
 
-  /// TS | 12 | white | 500 | none | 0.1
+  /// TS | 14 | black | 700 | none | 0.1
   TextStyle get cardLabel => titleSmall!.copyWith(
+        color: Colors.black87,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      );
+
+  TextStyle get filterLabel => titleSmall!.copyWith(
         color: Colors.white,
         fontSize: 12,
       );

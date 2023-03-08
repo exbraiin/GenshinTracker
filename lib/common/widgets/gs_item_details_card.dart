@@ -349,7 +349,7 @@ class ItemDetailsCardContent {
     final texts = <InlineSpan>[];
 
     final labelStyle = TextStyle(
-      fontSize: 16,
+      fontSize: 20,
       color: context.themeColors.primary80,
       fontWeight: FontWeight.bold,
     );
@@ -363,16 +363,33 @@ class ItemDetailsCardContent {
           texts.add(TextSpan(text: '  \u2022  ${item.description}'));
         }
         if (item.content != null) {
-          texts.add(WidgetSpan(child: item.content!));
+          texts.add(
+            WidgetSpan(
+              child: Padding(
+                padding: const EdgeInsets.only(top: kSeparator4),
+                child: item.content!,
+              ),
+            ),
+          );
         }
       } else if (item.description != null) {
         if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-        final style = TextStyle(color: Colors.grey[600]);
+        final style = TextStyle(fontSize: 14, color: Colors.grey[600]);
         texts.add(TextSpan(text: item.description, style: style));
       }
     }
 
-    return Text.rich(TextSpan(children: texts));
+    return DefaultTextStyle(
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.black.withOpacity(0.75),
+        fontWeight: FontWeight.bold,
+      ),
+      child: Text.rich(
+        TextSpan(children: texts),
+        style: const TextStyle(fontSize: 16),
+      ),
+    );
   }
 }
 
@@ -398,6 +415,39 @@ class ItemRarityBubble extends StatelessWidget {
     this.onTap,
   });
 
+  ItemRarityBubble.withLabel({
+    super.key,
+    this.size = 50,
+    this.rarity = 0,
+    this.asset = '',
+    this.image = '',
+    this.tooltip = '',
+    this.color,
+    this.onTap,
+    required String label,
+  }) : child = IgnorePointer(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(size),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                color: Colors.black54,
+                child: Align(
+                  alignment: Alignment.center,
+                  heightFactor: 1,
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      shadows: kMainShadow,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
   @override
   Widget build(BuildContext context) {
     final img = asset.isNotEmpty
@@ -408,14 +458,20 @@ class ItemRarityBubble extends StatelessWidget {
 
     Widget widget = Stack(
       children: [
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: context.themeColors.mainColor0.withOpacity(0.6),
-            borderRadius: BorderRadius.circular(size),
+        MouseHoverBuilder(
+          builder: (context, value, child) => AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: value && onTap != null
+                  ? context.themeColors.almostWhite
+                  : context.themeColors.mainColor0.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(size),
+            ),
+            padding: const EdgeInsets.all(kSeparator2),
+            child: child,
           ),
-          padding: const EdgeInsets.all(kSeparator2),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(size),
             child: Container(

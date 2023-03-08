@@ -18,38 +18,36 @@ class SpincrystalListItem extends StatelessWidget {
     final save = table.getItemOrNull(item.id);
     final owned = save?.obtained ?? false;
     final region = GsDatabase.instance.infoCities.getItemOrNull(item.region.id);
-    return Opacity(
-      opacity: owned ? 1 : kDisableOpacity,
-      child: GsItemCardButton(
-        label: item.name,
-        rarity: item.rarity,
-        onTap: onTap,
-        banner: GsItemBanner.fromVersion(item.version),
-        imageAssetPath: spincrystalAsset,
-        child: Stack(
-          children: [
-            Positioned(
-              top: kSeparator2,
-              left: kSeparator2,
-              child: ItemRarityBubble(
-                size: 30,
-                color: context.themeColors.mainColor2,
-                child: Center(
-                  child: Text(item.number.toString()),
-                ),
+    return GsItemCardButton(
+      label: item.name,
+      rarity: item.rarity,
+      onTap: onTap,
+      disable: !owned,
+      banner: GsItemBanner.fromVersion(item.version),
+      imageAssetPath: spincrystalAsset,
+      child: Stack(
+        children: [
+          Positioned(
+            top: kSeparator2,
+            left: kSeparator2,
+            child: ItemRarityBubble(
+              size: 30,
+              color: context.themeColors.mainColor2,
+              child: Center(
+                child: Text(item.number.toString()),
               ),
             ),
-            if (region != null)
-              Positioned(
-                right: kSeparator2,
-                bottom: kSeparator2,
-                child: ItemRarityBubble(
-                  color: region.element.color,
-                  image: region.image,
-                ),
+          ),
+          if (region != null)
+            Positioned(
+              right: kSeparator2,
+              bottom: kSeparator2,
+              child: ItemRarityBubble(
+                color: region.element.color,
+                image: region.image,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

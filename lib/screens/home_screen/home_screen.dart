@@ -14,6 +14,7 @@ import 'package:tracker/screens/home_screen/widgets/home_recipes_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_remarkable_chests_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_reputation_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_resource_cal_widget.dart';
+import 'package:tracker/screens/home_screen/widgets/home_serenitea_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_spincrystal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
 
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, value, child) {
                 return AnimatedOpacity(
                   duration: const Duration(milliseconds: 400),
-                  opacity: value ? 0.08 : 1,
+                  opacity: value ? 0.05 : 1,
                   child: child,
                 );
               },
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, value, child) {
                 return AnimatedOpacity(
                   duration: const Duration(milliseconds: 400),
-                  opacity: value ? 0.9 : 0,
+                  opacity: value ? 1 : 0,
                   child: child,
                 );
               },
@@ -132,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Lang.of(context).getValue(Labels.stndWishes),
                 banner: GsBanner.standard,
               ),
+              const HomeSpincrystalsWidget(),
               const HomeResourceCalcWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
@@ -145,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeBirthdaysWidget(),
               const HomeLastBannerWidget(),
               const HomeRecipesWidget(),
-              const HomeSpincrystalsWidget(),
+              const HomeSereniteaWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),

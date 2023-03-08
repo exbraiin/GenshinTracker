@@ -35,38 +35,36 @@ class RecipesListItem extends StatelessWidget {
     late final char = GsDatabase.instance.infoCharacters
         .getItems()
         .firstOrNullWhere((e) => e.specialDish == recipe.id);
-    return Opacity(
-      opacity: savedRecipe != null || hasSpecial ? 1 : kDisableOpacity,
-      child: GsItemCardButton(
-        label: recipe.name,
-        rarity: recipe.rarity,
-        selected: selected,
-        banner: GsItemBanner.fromVersion(recipe.version),
-        imageUrlPath: recipe.image,
-        onTap: onTap,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            if (recipe.effect != GsRecipeBuff.none)
-              Positioned(
-                top: kSeparator2,
-                left: kSeparator2,
-                child: ItemRarityBubble(
-                  size: 30,
-                  asset: recipe.effect.assetPath,
-                ),
+    return GsItemCardButton(
+      label: recipe.name,
+      rarity: recipe.rarity,
+      selected: selected,
+      disable: savedRecipe == null && !hasSpecial,
+      banner: GsItemBanner.fromVersion(recipe.version),
+      imageUrlPath: recipe.image,
+      onTap: onTap,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (recipe.effect != GsRecipeBuff.none)
+            Positioned(
+              top: kSeparator2,
+              left: kSeparator2,
+              child: ItemRarityBubble(
+                size: 30,
+                asset: recipe.effect.assetPath,
               ),
-            if (isSpecial)
-              Positioned(
-                right: kSeparator2,
-                bottom: kSeparator2,
-                child: ItemRarityBubble(
-                  image: GsUtils.characters.getImage(char?.id ?? ''),
-                  rarity: char?.rarity ?? 1,
-                ),
+            ),
+          if (isSpecial)
+            Positioned(
+              right: kSeparator2,
+              bottom: kSeparator2,
+              child: ItemRarityBubble(
+                image: GsUtils.characters.getImage(char?.id ?? ''),
+                rarity: char?.rarity ?? 1,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

@@ -23,16 +23,14 @@ class WeaponListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final owned = GsDatabase.instance.saveWishes.hasWeapon(item.id);
-    return Opacity(
-      opacity: owned ? 1 : kDisableOpacity,
-      child: GsItemCardButton(
-        label: item.name,
-        rarity: item.rarity,
-        banner: GsItemBanner.fromVersion(item.version),
-        imageUrlPath: item.image,
-        child: _getContent(context),
-        onTap: () => WeaponDetailsCard(item).show(context),
-      ),
+    return GsItemCardButton(
+      label: item.name,
+      rarity: item.rarity,
+      disable: !owned,
+      banner: GsItemBanner.fromVersion(item.version),
+      imageUrlPath: item.image,
+      child: _getContent(context),
+      onTap: () => WeaponDetailsCard(item).show(context),
     );
   }
 
