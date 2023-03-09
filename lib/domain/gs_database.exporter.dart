@@ -34,7 +34,7 @@ abstract class GsDatabaseExporter {
 
   static void writeWishes(Excel excel, String sheetName, GsBanner bannerType) {
     final db = GsDatabase.instance;
-    final list = db.saveWishes.getSaveWishesByBannerType(bannerType);
+    final list = GsUtils.wishes.getSaveWishesByBannerType(bannerType);
     final sheet = excel[sheetName];
 
     final rows = <_Row>[];

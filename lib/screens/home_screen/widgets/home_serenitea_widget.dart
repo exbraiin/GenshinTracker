@@ -4,8 +4,8 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
-import 'package:tracker/domain/enums/gs_set_category.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 import 'package:tracker/theme/theme.dart';
 
@@ -14,7 +14,7 @@ class HomeSereniteaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primogems = 20;
+    const primogems = GsDomain.primogemsPerCharSet;
     final sets = GsDatabase.instance.infoSereniteaSets.getItems();
     final ss = GsDatabase.instance.saveSereniteaSets;
     final hasChar = GsUtils.characters.hasCaracter;
@@ -28,7 +28,23 @@ class HomeSereniteaWidget extends StatelessWidget {
           return e.chars.where((c) => saved?.chars.contains(c) ?? false);
         }).length;
         return GsDataBox.info(
-          title: context.fromLabel(Labels.sereniteaSets),
+          title: Row(
+            children: [
+              Expanded(child: Text(context.fromLabel(Labels.sereniteaSets))),
+              Text(
+                ownedTotal < obtainableTotal
+                    ? '${(ownedTotal * primogems).format()} / '
+                        '${(obtainableTotal * primogems).format()}'
+                    : (ownedTotal * primogems).format(),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              const SizedBox(width: kSeparator2),
+              primoWidget(18, -1),
+            ],
+          ),
           children: [
             HomeTable(
               headers: [
@@ -62,21 +78,6 @@ class HomeSereniteaWidget extends StatelessWidget {
                 ];
               }).toList(),
             ),
-            const SizedBox(height: kSeparator4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  ownedTotal < obtainableTotal
-                      ? '${(ownedTotal * primogems).format()}/'
-                          '${(obtainableTotal * primogems).format()}'
-                      : (ownedTotal * primogems).format(),
-                  style: context.textTheme.titleSmall!
-                      .copyWith(fontSize: 16, color: Colors.white),
-                ),
-                primoWidget(16, 0),
-              ],
-            )
           ],
         );
       },

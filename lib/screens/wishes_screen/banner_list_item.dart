@@ -102,8 +102,7 @@ class BannerListItem extends StatelessWidget {
                   children: [
                     GsIconButton(
                       icon: Icons.remove,
-                      onPress: GsDatabase.instance.saveWishes
-                              .bannerHasWishes(banner.id)
+                      onPress: GsUtils.wishes.bannerHasWishes(banner.id)
                           ? () {
                               RemoveDialog.show(context, banner.name)
                                   .then((value) {

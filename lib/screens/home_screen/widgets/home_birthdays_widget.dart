@@ -22,7 +22,7 @@ class HomeBirthdaysWidget extends StatelessWidget {
         .thenBy((e) => e.birthday);
 
     return GsDataBox.info(
-      title: context.fromLabel(Labels.birthday),
+      title: Text(context.fromLabel(Labels.birthday)),
       child: LayoutBuilder(
         builder: (context, layout) {
           final width = layout.maxWidth;

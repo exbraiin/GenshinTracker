@@ -26,11 +26,14 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   CharacterDetailsScreen({super.key});
 
+  late final Color bgColor;
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     final item = args! as InfoCharacter;
     final info = GsDatabase.instance.infoCharactersInfo.getItemOrNull(item.id);
+    bgColor = Color.lerp(Colors.black, item.element.color, 0.2)!;
 
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,
@@ -201,7 +204,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     final dish = db.getItemOrNull(info.specialDish);
     return GsDataBox.info(
       key: _attributes,
-      title: context.fromLabel(Labels.attributes),
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.attributes)),
       children: [
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -345,7 +349,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     final ascension = GsUtils.characterMaterials.characterAscension();
     return GsDataBox.info(
       key: _ascension,
-      title: context.fromLabel(Labels.ascension),
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.ascension)),
       child: ValueNotifierBuilder<int>(
         value: 0,
         builder: (context, notifier, child) {
@@ -461,7 +466,8 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getTalents(BuildContext context, InfoCharacterInfo info) {
     return GsDataBox.info(
       key: _talents,
-      title: context.fromLabel(Labels.talents),
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.talents)),
       child: ValueNotifierBuilder<int>(
         value: 0,
         builder: (context, notifier, child) {
@@ -520,7 +526,8 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getConstellations(BuildContext context, InfoCharacterInfo info) {
     return GsDataBox.info(
       key: _constellation,
-      title: context.fromLabel(Labels.constellation),
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.constellation)),
       child: ValueNotifierBuilder<int>(
         value: 0,
         builder: (context, notifier, child) {
@@ -623,7 +630,8 @@ class CharacterDetailsScreen extends StatelessWidget {
 
     return GsDataBox.info(
       key: _materials,
-      title: context.fromLabel(Labels.materials),
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.materials)),
       child: Table(
         columnWidths: const {
           0: IntrinsicColumnWidth(),

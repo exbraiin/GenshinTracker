@@ -24,7 +24,7 @@ class HomeLastBannerWidget extends StatelessWidget {
         .where((e) => e.value.inDays > 0)
         .sortedByDescending((e) => e.value);
     return GsDataBox.info(
-      title: context.fromLabel(Labels.lastBanner),
+      title: Text(context.fromLabel(Labels.lastBanner)),
       child: LayoutBuilder(
         builder: (context, layout) {
           final width = layout.maxWidth;
@@ -62,7 +62,7 @@ class HomeLastBannerWidget extends StatelessWidget {
   ) {
     return ItemRarityBubble.withLabel(
       size: 70,
-      image: entry.key.image,
+      image: GsUtils.characters.getImage(entry.key.id),
       rarity: entry.key.rarity,
       label: '${entry.value.inDays}d',
       onTap: () => Navigator.of(context)

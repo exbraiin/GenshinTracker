@@ -22,7 +22,7 @@ class WeaponListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final owned = GsDatabase.instance.saveWishes.hasWeapon(item.id);
+    final owned = GsUtils.wishes.hasItem(item.id);
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,

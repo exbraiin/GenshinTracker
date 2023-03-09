@@ -108,7 +108,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           return Opacity(
                             opacity: exists ? 1 : kDisableOpacity,
                             child: ItemRarityBubble(
-                              image: info.image,
+                              image: GsUtils.characters.getImage(info.id),
                               rarity: info.rarity,
                               tooltip: info.name,
                               size: 60,

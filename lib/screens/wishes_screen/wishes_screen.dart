@@ -27,10 +27,9 @@ class WishesScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true || banner == null) return const SizedBox();
 
-        final db = GsDatabase.instance;
-        final sw = db.saveWishes;
-        final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
-        final banners = GsUtils.wishes.geReleasedInfoBannerByType(banner);
+        final ut = GsUtils.wishes;
+        final wishes = ut.getSaveWishesByBannerType(banner).sortedDescending();
+        final banners = ut.geReleasedInfoBannerByType(banner);
 
         return ScreenFilterBuilder<SaveWish>(
           filter: ScreenFilters.saveWishFilter,

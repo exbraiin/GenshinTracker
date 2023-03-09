@@ -45,14 +45,14 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
 
         if (characters.isEmpty) {
           return GsDataBox.info(
-            title: context.fromLabel(Labels.ascension),
+            title: Text(context.fromLabel(Labels.ascension)),
             child: const GsNoResultsState(),
           );
         }
 
         final chars = GsUtils.characters;
         return GsDataBox.info(
-          title: context.fromLabel(Labels.ascension),
+          title: Text(context.fromLabel(Labels.ascension)),
           child: LayoutBuilder(
             builder: (context, layout) {
               final width = layout.maxWidth;

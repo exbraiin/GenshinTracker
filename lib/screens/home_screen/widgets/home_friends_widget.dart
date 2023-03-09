@@ -28,13 +28,13 @@ class HomeFriendsWidget extends StatelessWidget {
 
         if (characters.isEmpty) {
           return GsDataBox.info(
-            title: context.fromLabel(Labels.friendship),
+            title: Text(context.fromLabel(Labels.friendship)),
             child: const GsNoResultsState(),
           );
         }
 
         return GsDataBox.info(
-          title: context.fromLabel(Labels.friendship),
+          title: Text(context.fromLabel(Labels.friendship)),
           child: LayoutBuilder(
             builder: (context, layout) {
               final width = layout.maxWidth;
@@ -47,7 +47,7 @@ class HomeFriendsWidget extends StatelessWidget {
                       return ItemRarityBubble.withLabel(
                         size: 70,
                         key: ValueKey('friend_${e.id}'),
-                        image: e.image,
+                        image: GsUtils.characters.getImage(e.id),
                         rarity: e.rarity,
                         label: chars.getCharFriendship(e.id).format(),
                         onTap: () => Navigator.of(context).pushNamed(

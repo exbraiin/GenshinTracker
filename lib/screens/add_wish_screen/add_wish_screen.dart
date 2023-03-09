@@ -69,8 +69,8 @@ class _AddWishScreenState extends State<AddWishScreen> {
                         child: ValueListenableBuilder<List<ItemData>>(
                           valueListenable: _wishes,
                           builder: (context, list, child) {
-                            final roll = GsDatabase.instance.saveWishes
-                                .countBannerWishes(banner.id);
+                            final roll =
+                                GsUtils.wishes.countBannerWishes(banner.id);
                             return ListView.separated(
                               itemCount: list.length,
                               separatorBuilder: (_, index) =>

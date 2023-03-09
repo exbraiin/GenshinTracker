@@ -38,7 +38,7 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final oAllColor = ownedAll < totalAll ? missing : Colors.white;
 
         return GsDataBox.info(
-          title: context.fromLabel(Labels.spincrystals),
+          title: Text(context.fromLabel(Labels.spincrystals)),
           child: HomeTable(
             headers: [
               HomeRow.header(Lang.of(context).getValue(Labels.source)),

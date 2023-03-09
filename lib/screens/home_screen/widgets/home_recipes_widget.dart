@@ -41,7 +41,7 @@ class HomeRecipesWidget extends StatelessWidget {
 
         late final badColor = context.themeColors.badValue;
         return GsDataBox.info(
-          title: context.fromLabel(Labels.recipes),
+          title: Text(context.fromLabel(Labels.recipes)),
           children: [
             HomeTable(
               headers: [

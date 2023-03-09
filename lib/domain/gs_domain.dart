@@ -41,4 +41,8 @@ export 'models/save_wish.dart';
 
 class GsDomain {
   GsDomain._();
+
+  static const cityXpPerWeek = 420;
+  static const primogemsPerWish = 160;
+  static const primogemsPerCharSet = 20;
 }

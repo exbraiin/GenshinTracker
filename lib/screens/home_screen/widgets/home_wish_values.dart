@@ -34,12 +34,25 @@ class HomeWishesValues extends StatelessWidget {
     final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: context.themeColors.almostWhite);
 
-    final sw = GsDatabase.instance.saveWishes;
+    final sw = GsUtils.wishes;
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
     final summary = WishesSummary.fromList(wishes);
 
     return GsDataBox.info(
-      title: context.fromLabel(_bannerTitleLabel[banner]!),
+      title: Row(
+        children: [
+          Expanded(child: Text(context.fromLabel(_bannerTitleLabel[banner]!))),
+          Text(
+            (wishes.length * GsDomain.primogemsPerWish).format(),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          const SizedBox(width: kSeparator2),
+          primoWidget(18, -1),
+        ],
+      ),
       child: Column(
         children: [
           _summary(context, wishes, summary),
@@ -330,6 +343,7 @@ class HomeWishesValues extends StatelessWidget {
                 style: context.textTheme.titleSmall!.copyWith(
                   fontSize: 20,
                   color: valueColor ?? context.themeColors.dimWhite,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const TextSpan(text: '\n'),

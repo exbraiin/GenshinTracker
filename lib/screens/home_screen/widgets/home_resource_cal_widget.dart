@@ -33,7 +33,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
     final textTheme = Theme.of(context).textTheme;
     final style = textTheme.titleSmall!.copyWith(color: Colors.white);
     return GsDataBox.info(
-      title: context.fromLabel(Labels.resourceCalculator),
+      title: Text(context.fromLabel(Labels.resourceCalculator)),
       children: [
         Align(
           alignment: Alignment.centerLeft,

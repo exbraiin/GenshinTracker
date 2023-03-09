@@ -51,7 +51,7 @@ class SereniteaSetListItem extends StatelessWidget {
                   right: kSeparator2 + i * kSeparator8,
                   bottom: kSeparator2,
                   child: ItemRarityBubble(
-                    image: e.image,
+                    image: GsUtils.characters.getImage(e.id),
                     rarity: e.rarity,
                   ),
                 ),
@@ -61,6 +61,3 @@ class SereniteaSetListItem extends StatelessWidget {
     );
   }
 }
-
-// final owns = GsUtils.characters.hasCaracter(char.id);
-// final marked = saved?.chars.contains(char.id) ?? false;
