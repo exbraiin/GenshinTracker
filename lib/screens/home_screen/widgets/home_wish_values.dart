@@ -4,6 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -121,7 +122,7 @@ class HomeWishesValues extends StatelessWidget {
               context.themeColors.getRarityColor(5),
             ),
           ],
-          if (banner == GsBanner.character) ...[
+          if (banner == GsBanner.character || banner == GsBanner.weapon) ...[
             Divider(
               color: context.themeColors.dimWhite,
               thickness: 1,
@@ -130,7 +131,7 @@ class HomeWishesValues extends StatelessWidget {
             _getWonInfo(
               context,
               summary.wishesInfo5,
-              '   $_arrow ${context.fromLabel(Labels.won5050)}',
+              '   $_arrow ${context.fromLabel(banner.getWonLabel(5))}',
               context.themeColors.getRarityColor(5),
             ),
           ],
@@ -258,45 +259,46 @@ class HomeWishesValues extends StatelessWidget {
                   children: summary.wishes5.reversed.map((wish) {
                     final item = GsUtils.items.getItemData(wish.itemId);
                     final pity = GsUtils.wishes.countPity(wishes, wish);
-                    final showState = banner == GsBanner.character;
+                    final showState = banner == GsBanner.character ||
+                        banner == GsBanner.weapon;
                     final state = showState
                         ? GsUtils.wishes.getWishState(wishes, wish)
                         : WishState.none;
+                    final pityColor =
+                        context.themeColors.getPityColor(pity, maxPity);
 
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kSeparator4,
-                        horizontal: kSeparator4 * 2,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: state == WishState.won ? 2 : 1,
-                          color: state == WishState.won
-                              ? context.themeColors.primary
-                              : context.themeColors.dimWhite,
+                    return Column(
+                      children: [
+                        ItemRarityBubble(
+                          rarity: item.rarity,
+                          image: item.image,
+                          tooltip: item.name,
+                          borderColor: state == WishState.won
+                              ? context.themeColors.goodValue
+                              : null,
                         ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: item.name, style: style),
-                            const WidgetSpan(
-                              child: SizedBox(width: kSeparator4),
-                            ),
-                            TextSpan(
-                              text: pity.toString(),
-                              style: style.copyWith(
-                                color: context.themeColors.getPityColor(pity),
+                        const SizedBox(height: kSeparator2),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: pity.toString(),
+                                style: style.copyWith(
+                                  color: pityColor,
+                                ),
                               ),
-                            ),
-                            if (state == WishState.guaranteed)
-                              const WidgetSpan(
-                                child: GsWishStateIcon(WishState.guaranteed),
-                              ),
-                          ],
+                              if (state == WishState.guaranteed)
+                                WidgetSpan(
+                                  child: GsWishStateIcon(
+                                    state,
+                                    color: pityColor,
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     );
                   }).toList(),
                 ),

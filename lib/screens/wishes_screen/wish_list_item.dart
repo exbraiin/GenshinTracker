@@ -16,6 +16,7 @@ class WishListItem extends StatelessWidget {
   final int index;
   final SaveWish wish;
   final WishState wishState;
+  final GsBanner bannerType;
   final ListType type;
 
   const WishListItem({
@@ -24,6 +25,7 @@ class WishListItem extends StatelessWidget {
     required this.index,
     required this.wish,
     required this.wishState,
+    required this.bannerType,
     this.type = ListType.none,
   });
 
@@ -66,7 +68,11 @@ class WishListItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(pity.toString(), style: style),
-              GsWishStateIcon(wishState),
+              GsWishStateIcon(
+                wishState,
+                rarity: item.rarity,
+                banner: bannerType,
+              ),
             ],
           ),
           Row(

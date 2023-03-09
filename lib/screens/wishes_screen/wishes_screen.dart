@@ -110,7 +110,9 @@ class WishesScreen extends StatelessWidget {
 
                 return WishListItem(
                   pity: GsUtils.wishes.countPity(wishesList, wish),
-                  wishState: gsBanner == GsBanner.character
+                  bannerType: gsBanner,
+                  wishState: gsBanner == GsBanner.character ||
+                          gsBanner == GsBanner.weapon
                       ? GsUtils.wishes.getWishState(wishesList, wish)
                       : WishState.none,
                   index: index,

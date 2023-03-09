@@ -400,6 +400,7 @@ class ItemRarityBubble extends StatelessWidget {
   final String asset;
   final String tooltip;
   final Color? color;
+  final Color? borderColor;
   final Widget? child;
   final VoidCallback? onTap;
 
@@ -411,6 +412,7 @@ class ItemRarityBubble extends StatelessWidget {
     this.image = '',
     this.tooltip = '',
     this.color,
+    this.borderColor,
     this.child,
     this.onTap,
   });
@@ -423,8 +425,10 @@ class ItemRarityBubble extends StatelessWidget {
     this.image = '',
     this.tooltip = '',
     this.color,
+    this.borderColor,
     this.onTap,
     required String label,
+    Color labelColor = Colors.white,
   }) : child = IgnorePointer(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(size),
@@ -437,8 +441,9 @@ class ItemRarityBubble extends StatelessWidget {
                   heightFactor: 1,
                   child: Text(
                     label,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
+                      color: labelColor,
                       shadows: kMainShadow,
                     ),
                   ),
@@ -466,7 +471,8 @@ class ItemRarityBubble extends StatelessWidget {
             decoration: BoxDecoration(
               color: value && onTap != null
                   ? context.themeColors.almostWhite
-                  : context.themeColors.mainColor0.withOpacity(0.6),
+                  : (borderColor ??
+                      context.themeColors.mainColor0.withOpacity(0.6)),
               borderRadius: BorderRadius.circular(size),
             ),
             padding: const EdgeInsets.all(kSeparator2),

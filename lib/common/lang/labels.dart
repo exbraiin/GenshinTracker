@@ -343,8 +343,14 @@ class Labels {
 	/// Won 50/50
 	static const won5050 = 'won_5050';
 
+	/// Won 75/25
+	static const won7525 = 'won_7525';
+
 	/// Lost 50/50
 	static const lost5050 = 'lost_5050';
+
+	/// Lost 75/25
+	static const lost7525 = 'lost_7525';
 
 	/// Guaranteed
 	static const guaranteed = 'guaranteed';
