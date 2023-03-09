@@ -46,7 +46,7 @@ class CharacterListItem extends StatelessWidget {
     int friend,
     int ascension,
   ) {
-    late final material = GsDatabase.instance.infoCharactersInfo
+    late final material = GsUtils.characterMaterials
         .getTalentMaterials(item.id)
         .entries
         .map((e) => GsDatabase.instance.infoMaterials.getItemOrNull(e.key))

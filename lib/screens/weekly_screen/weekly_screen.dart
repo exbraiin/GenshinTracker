@@ -91,7 +91,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         children: ic
                             .getItems()
                             .where(
-                              (char) => GsDatabase.instance.infoCharactersInfo
+                              (char) => GsUtils.characterMaterials
                                   .getAllMaterials(char.id)
                                   .containsKey(e.id),
                             )
@@ -124,7 +124,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         children: iw
                             .getItems()
                             .where(
-                              (weapon) => GsDatabase.instance.infoWeaponsInfo
+                              (weapon) => GsUtils.weaponMaterials
                                   .getAscensionMaterials(weapon.id)
                                   .containsKey(e.id),
                             )

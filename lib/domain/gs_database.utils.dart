@@ -16,6 +16,15 @@ class GsUtils {
   static final versions = _Versions();
   static final materials = _Materials();
   static final characters = _Characters();
+  static final sereniteaSets = _SereniteaSets();
+  static final weaponMaterials = _WeaponMaterials();
+  static final characterMaterials = _CharactersMaterials();
+
+  static final saveCities = _SaveCities();
+  static final saveRecipes = _SaveRecipes();
+  static final saveSpincrystals = _SaveSpincrystals();
+  static final saveSereniteaSets = _SaveSereniteaSets();
+  static final saveRemarkableChest = _SaveRemarkableChests();
 }
 
 enum WishState { none, won, lost, guaranteed }
@@ -30,15 +39,55 @@ class _Items {
 }
 
 class _Cities {
+  int getSavedReputation(String id) =>
+      _db.saveReputations.getItemOrNull(id)?.reputation ?? 0;
+
   int getCityMaxLevel(String id) =>
       _db.infoCities.getItem(id).reputation.length;
+
+  int getCityLevel(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRp = getSavedReputation(id);
+    return cities.getItem(id).reputation.lastIndexWhere((e) => e <= sRp) + 1;
+  }
+
+  int getCityPreviousXpValue(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRP = getSavedReputation(id);
+    final rep = cities.getItem(id).reputation;
+    return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
+  }
+
+  int getCityNextXpValue(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRP = getSavedReputation(id);
+    final rep = cities.getItem(id).reputation;
+    return rep.firstWhere((e) => e > sRP, orElse: () => -1);
+  }
+
+  int getCityNextLevelWeeks(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final sRp = getSavedReputation(id);
+    final rep = cities.getItem(id).reputation;
+    final idx = rep.lastIndexWhere((e) => e <= sRp);
+    final next = idx + 1 < rep.length ? rep[idx + 1] : rep.last;
+    final xp = next - sRp;
+    return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
+  }
+
+  int getCityMaxLevelWeeks(String id) {
+    final cities = GsDatabase.instance.infoCities;
+    final rep = cities.getItem(id).reputation;
+    final xp = rep.last - getSavedReputation(id);
+    return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
+  }
 }
 
 class _Wishes {
   /// Gets all released banners by [type]
   List<InfoBanner> geReleasedInfoBannerByType(GsBanner type) {
     final now = DateTime.now();
-    final banners = GsDatabase.instance.infoBanners;
+    final banners = _db.infoBanners;
     return banners
         .getItems()
         .where((e) => e.type == type && e.dateStart.isBefore(now))
@@ -75,8 +124,7 @@ class _Wishes {
     final rt = item.rarity;
     if (rt != 5 && rt != 4) return WishState.none;
 
-    final db = GsDatabase.instance;
-    late final banner = db.infoBanners.getItem(wish.bannerId);
+    late final banner = _db.infoBanners.getItem(wish.bannerId);
     late final featured = rt == 5 ? banner.feature5 : banner.feature4;
     late final contained = featured.contains(wish.itemId);
 
@@ -84,7 +132,7 @@ class _Wishes {
     final lastWish = _getLastWish(wishes, rt);
     if (lastWish == null) return contained ? WishState.won : WishState.lost;
 
-    final lastBanner = db.infoBanners.getItem(lastWish.bannerId);
+    final lastBanner = _db.infoBanners.getItem(lastWish.bannerId);
     final lastFeatured = rt == 5 ? lastBanner.feature5 : lastBanner.feature4;
     final lastBannerContains = lastFeatured.contains(lastWish.itemId);
 
@@ -96,8 +144,6 @@ class _Wishes {
 
   /// Gets a list of [ItemData] that can be obtained in banners.
   Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
-    final db = GsDatabase.instance;
-
     bool filterWeapon(InfoWeapon info) {
       late final isStandard = info.source == GsItemSource.wishesStandard;
       late final isFeatured = banner.feature5.contains(info.id);
@@ -114,28 +160,58 @@ class _Wishes {
     }
 
     return [
-      ...db.infoWeapons
+      ..._db.infoWeapons
           .getItems()
           .where(filterWeapon)
           .map((element) => ItemData(weapon: element)),
-      ...db.infoCharacters
+      ..._db.infoCharacters
           .getItems()
           .where(filterCharacter)
           .map((element) => ItemData(character: element)),
     ];
   }
+
+  /// Gets all wishes for the given [banner].
+  List<SaveWish> getBannerWishes(String banner) =>
+      _db.saveWishes.getItems().where((e) => e.bannerId == banner).toList();
+
+  /// Gets all saved wishes for a banner [type].
+  List<SaveWish> getSaveWishesByBannerType(GsBanner type) {
+    final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
+    final bannerIds = banners.map((e) => e.id);
+    return _db.saveWishes
+        .getItems()
+        .where((e) => bannerIds.contains(e.bannerId))
+        .toList();
+  }
+
+  /// Whether the [banner] has wishes.
+  bool bannerHasWishes(String banner) =>
+      _db.saveWishes.getItems().any((e) => e.bannerId == banner);
+
+  /// Counts the [banner] wishes.
+  int countBannerWishes(String banner) =>
+      _db.saveWishes.getItems().count((e) => e.bannerId == banner);
+
+  /// Counts the obtained amount of [itemId].
+  int countItem(String itemId) =>
+      _db.saveWishes.getItems().count((e) => e.itemId == itemId);
+
+  /// Whether the [itemId] was obtained.
+  bool hasItem(String itemId) =>
+      _db.saveWishes.getItems().any((e) => e.itemId == itemId);
 }
 
 class _Weapons {
   bool hasWeapon(String id) {
-    return GsDatabase.instance.saveWishes.getItems().any((e) => e.itemId == id);
+    return _db.saveWishes.getItems().any((e) => e.itemId == id);
   }
 }
 
 class _Versions {
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
-    final versions = GsDatabase.instance.infoVersion.getItems();
+    final versions = _db.infoVersion.getItems();
     final current = versions
         .sortedBy((element) => element.releaseDate)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
@@ -144,7 +220,7 @@ class _Versions {
 
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
-    final versions = GsDatabase.instance.infoVersion.getItems();
+    final versions = _db.infoVersion.getItems();
     final upcoming = versions
         .sortedBy((element) => element.releaseDate)
         .where((element) => element.releaseDate.isAfter(now));
@@ -153,7 +229,7 @@ class _Versions {
 
   InfoVersion? getCurrentVersion() {
     final now = DateTime.now();
-    final versions = GsDatabase.instance.infoVersion.getItems();
+    final versions = _db.infoVersion.getItems();
     final current = versions
         .sortedBy((element) => element.releaseDate)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
@@ -186,7 +262,7 @@ class _Characters {
 
   /// Whether the character with the given [id] has outfits or not.
   bool hasOutfits(String id) {
-    return GsDatabase.instance.infoCharactersOutfit
+    return _db.infoCharactersOutfit
         .getItems()
         .any((element) => element.character == id);
   }
@@ -215,7 +291,7 @@ class _Characters {
   /// Gets the character total constellations amount or null.
   int? getTotalCharConstellations(String id) {
     final char = _db.saveCharacters.getItemOrNull(id);
-    final total = _db.saveWishes.countItem(id);
+    final total = GsUtils.wishes.countItem(id);
     final sum = total + (char?.owned ?? 0);
     return sum > 0 ? (sum - 1) : null;
   }
@@ -233,6 +309,345 @@ class _Characters {
     late final charImg = _db.infoCharacters.getItemOrNull(id)?.fullImage ?? '';
     return url.isNotEmpty ? url : charImg;
   }
+}
+
+class _SereniteaSets {
+  bool isObtainable(String set) {
+    final item = _db.infoSereniteaSets.getItem(set);
+    final saved = _db.saveSereniteaSets.getItemOrNull(set);
+    final chars = saved?.chars ?? [];
+    bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
+    return item.chars.any((c) => !chars.contains(c) && hasChar(c));
+  }
+}
+
+class _WeaponMaterials {
+  List<WeaponAsc> weaponAscension(int r) => WeaponAsc.values[r - 1];
+
+  /// Gets all weapon ascension materials at level.
+  Map<String, int> getAscensionMaterials(String id, [int? level]) {
+    final item = _db.infoWeapons.getItemOrNull(id);
+    final info = _db.infoWeaponsInfo.getItemOrNull(id);
+    if (item == null || info == null) return const {};
+
+    return _getMaterials<WeaponAsc>(
+      WeaponAsc.values[item.rarity - 1],
+      {
+        'mora': (i) => i.moraAmount,
+        info.matElite: (i) => i.eliteAmount,
+        info.matCommon: (i) => i.commonAmount,
+        info.matWeapon: (i) => i.weaponAmount,
+      },
+      {
+        info.matElite: (i) => i.eliteIndex,
+        info.matCommon: (i) => i.commonIndex,
+        info.matWeapon: (i) => i.weaponIndex,
+      },
+      level,
+    );
+  }
+}
+
+class _CharactersMaterials {
+  List<CharacterTal> characterTalents() => CharacterTal.values;
+  List<CharacterAsc> characterAscension() => CharacterAsc.values;
+
+  List<AscendMaterial> getCharNextAscensionMats(String id) {
+    final max = GsUtils.characters.isCharMaxAscended(id);
+    if (max) return const [];
+    final ascension = GsUtils.characters.getCharAscension(id);
+    return getAscensionMaterials(id, ascension + 1)
+        .entries
+        .map((e) => AscendMaterial.fromId(e.key, e.value))
+        .toList();
+  }
+
+  /// Gets all character ascension materials at level.
+  Map<String, int> getAscensionMaterials(String id, [int? level]) {
+    final info = _db.infoCharactersInfo.getItemOrNull(id);
+    if (info == null) return const {};
+
+    return _getMaterials<CharacterAsc>(
+      CharacterAsc.values,
+      {
+        'mora': (i) => i.moraAmount,
+        info.ascension.matGem: (i) => i.gemAmount,
+        info.ascension.matBoss: (i) => i.bossAmount,
+        info.ascension.matRegion: (i) => i.regionAmount,
+        info.ascension.matCommon: (i) => i.commonAmount,
+      },
+      {
+        info.ascension.matGem: (i) => i.gemIndex,
+        info.ascension.matCommon: (i) => i.commonIndex,
+      },
+      level,
+    );
+  }
+
+  /// Gets all character talent materials at level.
+  /// * Returns materials for all 3 talents.
+  Map<String, int> getTalentMaterials(String id, [int? level]) {
+    final info = _db.infoCharactersInfo.getItemOrNull(id);
+    if (info == null) return const {};
+
+    return _getMaterials<CharacterTal>(
+      CharacterTal.values,
+      {
+        'mora': (i) => i.moraAmount,
+        'crown_of_insight': (i) => i.crownAmount,
+        info.ascension.matCommon: (i) => i.commonAmount,
+        info.ascension.matTalent: (i) => i.talentAmount,
+        info.ascension.matWeekly: (i) => i.weeklyAmount,
+      },
+      {
+        info.ascension.matCommon: (i) => i.commonIndex,
+        info.ascension.matTalent: (i) => i.talentIndex,
+      },
+      level,
+    ).map((key, value) => MapEntry(key, value * 3));
+  }
+
+  /// Gets all character ascension and talent materials.
+  Map<String, int> getAllMaterials(String id) {
+    return {...getTalentMaterials(id), ...getAscensionMaterials(id)}
+        .entries
+        .groupBy((e) => e.key)
+        .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
+  }
+}
+
+class _SaveCities {
+  void update(String id, int reputation) => GsDatabase.instance.saveReputations
+      .insertItem(SaveReputation(id: id, reputation: reputation));
+}
+
+class _SaveRecipes {
+  void update(
+    String id, {
+    bool? own,
+    int? proficiency,
+  }) {
+    if (own != null) {
+      final contains = _db.saveRecipes.exists(id);
+      if (own && !contains) {
+        _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: 0));
+      } else if (!own && contains) {
+        _db.saveRecipes.deleteItem(id);
+      }
+    }
+
+    if (proficiency != null) {
+      _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: proficiency));
+    }
+  }
+}
+
+class _SaveSpincrystals {
+  void update(int number, {required bool obtained}) {
+    final id = number.toString();
+    if (obtained) {
+      final spin = SaveSpincrystal(id: id, obtained: obtained);
+      _db.saveSpincrystals.insertItem(spin);
+    } else {
+      _db.saveSpincrystals.deleteItem(id);
+    }
+  }
+}
+
+class _SaveSereniteaSets {
+  void setSetCharacter(String set, String char, {required bool owned}) {
+    final sv = _db.saveSereniteaSets.getItemOrNull(set) ??
+        SaveSereniteaSet(id: set, chars: []);
+    final hasCharacter = sv.chars.contains(char);
+    if (owned && !hasCharacter) {
+      sv.chars.add(char);
+    } else if (!owned && hasCharacter) {
+      sv.chars.remove(char);
+    }
+    _db.saveSereniteaSets.insertItem(sv);
+  }
+}
+
+class _SaveRemarkableChests {
+  void update(String id, {required bool obtained}) {
+    if (obtained) {
+      _db.saveRemarkableChests
+          .insertItem(SaveRemarkableChest(id: id, obtained: obtained));
+    } else {
+      _db.saveRemarkableChests.deleteItem(id);
+    }
+  }
+}
+
+// === MATERIALS ===
+
+class CharacterAsc {
+  static const values = [
+    CharacterAsc(1, 0, 0, 0, 0, 0, 0, 0),
+    CharacterAsc(20, 1, 0, 3, 3, 20000, 0, 0),
+    CharacterAsc(40, 3, 2, 15, 10, 40000, 1, 0),
+    CharacterAsc(50, 6, 4, 12, 20, 60000, 1, 1),
+    CharacterAsc(60, 3, 8, 18, 30, 80000, 2, 1),
+    CharacterAsc(70, 6, 12, 12, 45, 100000, 2, 2),
+    CharacterAsc(80, 6, 20, 24, 60, 120000, 3, 2),
+    CharacterAsc(90, 0, 0, 0, 0, 0, 0, 0),
+  ];
+
+  final int level;
+  final int gemAmount;
+  final int bossAmount;
+  final int commonAmount;
+  final int regionAmount;
+  final int moraAmount;
+
+  final int gemIndex;
+  final int commonIndex;
+
+  const CharacterAsc(
+    this.level,
+    this.gemAmount,
+    this.bossAmount,
+    this.commonAmount,
+    this.regionAmount,
+    this.moraAmount,
+    this.gemIndex,
+    this.commonIndex,
+  );
+}
+
+class CharacterTal {
+  static const values = [
+    CharacterTal(0, 6, 3, 0, 0, 12500, 0, 0),
+    CharacterTal(0, 3, 2, 0, 0, 17500, 1, 1),
+    CharacterTal(0, 4, 4, 0, 0, 25000, 1, 1),
+    CharacterTal(0, 6, 6, 0, 0, 30000, 1, 1),
+    CharacterTal(0, 9, 9, 0, 0, 37500, 1, 1),
+    CharacterTal(0, 4, 4, 1, 0, 120000, 2, 2),
+    CharacterTal(0, 6, 6, 1, 0, 260000, 2, 2),
+    CharacterTal(0, 9, 12, 2, 0, 450000, 2, 2),
+    CharacterTal(0, 12, 16, 2, 1, 700000, 2, 2),
+  ];
+
+  final int level;
+  final int commonAmount;
+  final int talentAmount;
+  final int weeklyAmount;
+  final int crownAmount;
+  final int moraAmount;
+
+  final int commonIndex;
+  final int talentIndex;
+
+  const CharacterTal(
+    this.level,
+    this.commonAmount,
+    this.talentAmount,
+    this.weeklyAmount,
+    this.crownAmount,
+    this.moraAmount,
+    this.commonIndex,
+    this.talentIndex,
+  );
+}
+
+class WeaponAsc {
+  static const values = [
+    [
+      WeaponAsc(1, 0, 0, 0, 0, 0, 0, 0),
+      WeaponAsc(20, 0, 1, 1, 1, 0, 0, 0),
+      WeaponAsc(40, 5000, 2, 4, 1, 0, 0, 1),
+      WeaponAsc(50, 5000, 2, 2, 2, 1, 1, 1),
+      WeaponAsc(60, 10000, 3, 4, 1, 1, 1, 2),
+      WeaponAsc(70, 0, 0, 0, 0, 0, 0, 0),
+    ],
+    [
+      WeaponAsc(1, 0, 0, 0, 0, 0, 0, 0),
+      WeaponAsc(20, 5000, 1, 1, 1, 0, 0, 0),
+      WeaponAsc(40, 5000, 4, 5, 1, 0, 0, 1),
+      WeaponAsc(50, 10000, 3, 3, 3, 1, 1, 1),
+      WeaponAsc(60, 15000, 4, 5, 1, 1, 1, 2),
+      WeaponAsc(70, 0, 0, 0, 0, 0, 0, 0),
+    ],
+    [
+      WeaponAsc(1, 0, 0, 0, 0, 0, 0, 0),
+      WeaponAsc(20, 5000, 1, 2, 2, 0, 0, 0),
+      WeaponAsc(40, 10000, 5, 8, 2, 0, 0, 1),
+      WeaponAsc(50, 15000, 4, 4, 4, 1, 1, 1),
+      WeaponAsc(60, 20000, 6, 8, 2, 1, 1, 2),
+      WeaponAsc(70, 25000, 4, 6, 4, 2, 2, 2),
+      WeaponAsc(80, 30000, 8, 12, 3, 2, 2, 3),
+      WeaponAsc(90, 0, 0, 0, 0, 0, 0, 0),
+    ],
+    [
+      WeaponAsc(1, 0, 0, 0, 0, 0, 0, 0),
+      WeaponAsc(20, 5000, 2, 3, 3, 0, 0, 0),
+      WeaponAsc(40, 15000, 8, 12, 3, 0, 0, 1),
+      WeaponAsc(50, 20000, 6, 6, 6, 1, 1, 1),
+      WeaponAsc(60, 30000, 9, 12, 3, 1, 1, 2),
+      WeaponAsc(70, 35000, 6, 9, 6, 2, 2, 2),
+      WeaponAsc(80, 45000, 12, 18, 4, 2, 2, 3),
+      WeaponAsc(90, 0, 0, 0, 0, 0, 0, 0),
+    ],
+    [
+      WeaponAsc(1, 0, 0, 0, 0, 0, 0, 0),
+      WeaponAsc(20, 10000, 3, 5, 5, 0, 0, 0),
+      WeaponAsc(40, 20000, 12, 18, 5, 0, 0, 1),
+      WeaponAsc(50, 30000, 9, 9, 9, 1, 1, 1),
+      WeaponAsc(60, 45000, 14, 18, 5, 1, 1, 2),
+      WeaponAsc(70, 55000, 9, 14, 9, 2, 2, 2),
+      WeaponAsc(80, 65000, 18, 27, 6, 2, 2, 3),
+      WeaponAsc(90, 0, 0, 0, 0, 0, 0, 0),
+    ]
+  ];
+  final int level;
+  final int moraAmount;
+  final int commonAmount;
+  final int eliteAmount;
+  final int weaponAmount;
+
+  final int commonIndex;
+  final int eliteIndex;
+  final int weaponIndex;
+
+  const WeaponAsc(
+    this.level,
+    this.moraAmount,
+    this.commonAmount,
+    this.eliteAmount,
+    this.weaponAmount,
+    this.eliteIndex,
+    this.commonIndex,
+    this.weaponIndex,
+  );
+}
+
+Map<String, int> _getMaterials<T>(
+  List<T> items,
+  Map<String, int Function(T i)> amounts,
+  Map<String, int Function(T i)> indexes, [
+  int? level,
+]) {
+  if (level != null) {
+    final temp = items.elementAtOrNull(level);
+    items = temp != null ? [temp] : [];
+  }
+
+  final materials = amounts
+      .map((k, v) => MapEntry(k, GsUtils.materials.getGroupMaterialsById(k)));
+
+  final total = <String, int>{};
+  for (var item in items) {
+    for (var entry in materials.entries) {
+      final index = indexes[entry.key]?.call(item) ?? 0;
+      final material = index == 0
+          ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
+          : entry.value.elementAtOrNull(index);
+      if (material == null) continue;
+      final amount = amounts[entry.key]?.call(item) ?? 0;
+      total[material.id] = (total[material.id] ?? 0) + amount;
+    }
+  }
+  return total..removeWhere((key, value) => value == 0);
 }
 
 // === OLD ===

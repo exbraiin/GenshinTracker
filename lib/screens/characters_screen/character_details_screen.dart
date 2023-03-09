@@ -342,8 +342,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     InfoCharacterInfo infos,
   ) {
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
-    final ascension =
-        GsDatabase.instance.infoCharactersInfo.characterAscension();
+    final ascension = GsUtils.characterMaterials.characterAscension();
     return GsDataBox.info(
       key: _ascension,
       title: context.fromLabel(Labels.ascension),
@@ -355,8 +354,8 @@ class CharacterDetailsScreen extends StatelessWidget {
           final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
           final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
           final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
-          final mats = GsDatabase.instance.infoCharactersInfo
-              .getAscensionMaterials(infos.id, idx);
+          final mats =
+              GsUtils.characterMaterials.getAscensionMaterials(infos.id, idx);
           return Column(
             children: [
               Row(
@@ -569,7 +568,7 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getAllMaterials(BuildContext context, InfoCharacterInfo details) {
     final im = GsDatabase.instance.infoMaterials;
-    final ic = GsDatabase.instance.infoCharactersInfo;
+    final ic = GsUtils.characterMaterials;
     final tltMats = ic.getTalentMaterials(details.id);
     final ascMats = ic.getAscensionMaterials(details.id);
     final allMats = [...tltMats.entries, ...ascMats.entries]

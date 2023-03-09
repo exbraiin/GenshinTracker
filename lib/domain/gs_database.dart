@@ -4,7 +4,6 @@ import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.extensions.dart';
-export 'package:tracker/domain/gs_database.extensions2.dart';
 export 'package:tracker/domain/gs_database.utils.dart';
 
 class GsDatabase {
@@ -120,11 +119,6 @@ class GsDatabase {
     SaveSpincrystal.fromJsonData,
     _notify,
   );
-  final saveMaterials = JsonSaveDetails<SaveMaterial>(
-    'materials',
-    SaveMaterial.fromJsonData,
-    _notify,
-  );
 
   final _loaded = BehaviorSubject<bool>();
   final _saving = BehaviorSubject<bool>.seeded(false);
@@ -185,7 +179,6 @@ class GsDatabase {
       saveReputations.load(map);
       saveSereniteaSets.load(map);
       saveSpincrystals.load(map);
-      saveMaterials.load(map);
     });
   }
 
@@ -199,7 +192,6 @@ class GsDatabase {
       saveReputations,
       saveSereniteaSets,
       saveSpincrystals,
-      saveMaterials,
     ]);
   }
 

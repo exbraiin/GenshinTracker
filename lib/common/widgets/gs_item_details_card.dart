@@ -360,7 +360,7 @@ class ItemDetailsCardContent {
         texts.add(TextSpan(text: '${item.label}\n', style: labelStyle));
 
         if (item.description != null) {
-          texts.add(TextSpan(text: '  \u2022  ${item.description}'));
+          texts.add(TextSpan(text: '${item.description}'));
         }
         if (item.content != null) {
           texts.add(

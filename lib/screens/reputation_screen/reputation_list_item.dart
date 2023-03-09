@@ -29,12 +29,12 @@ class _ReputationListItemState extends State<ReputationListItem> {
 
   @override
   Widget build(BuildContext context) {
-    final db = GsDatabase.instance.saveReputations;
-    final rp = db.getSavedReputation(widget.city.id);
-    final pRep = db.getCityPreviousXpValue(widget.city.id);
-    final nRep = db.getCityNextXpValue(widget.city.id);
-    final nextLvlWeeks = db.getCityNextLevelWeeks(widget.city.id);
-    final lastLvlWeeks = db.getCityMaxLevelWeeks(widget.city.id);
+    final utils = GsUtils.cities;
+    final rp = utils.getSavedReputation(widget.city.id);
+    final pRep = utils.getCityPreviousXpValue(widget.city.id);
+    final nRep = utils.getCityNextXpValue(widget.city.id);
+    final nextLvlWeeks = utils.getCityNextLevelWeeks(widget.city.id);
+    final lastLvlWeeks = utils.getCityMaxLevelWeeks(widget.city.id);
 
     final current = rp - pRep;
     final total = nRep - pRep;
@@ -82,15 +82,13 @@ class _ReputationListItemState extends State<ReputationListItem> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: kSeparator4),
                     child: GsNumberField(
-                      onDbUpdate: () {
-                        final db = GsDatabase.instance.saveReputations;
-                        return db.getSavedReputation(widget.city.id);
-                      },
+                      onDbUpdate: () =>
+                          GsUtils.cities.getSavedReputation(widget.city.id),
                       onUpdate: (amount) {
-                        final db = GsDatabase.instance.saveReputations;
-                        final saved = db.getSavedReputation(widget.city.id);
+                        final saved =
+                            GsUtils.cities.getSavedReputation(widget.city.id);
                         if (saved == amount) return;
-                        db.setSavedReputation(widget.city.id, amount);
+                        GsUtils.saveCities.update(widget.city.id, amount);
                       },
                     ),
                   ),
@@ -145,7 +143,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                           .copyWith(color: Colors.white, fontSize: 16),
                     ),
                     TextSpan(
-                      text: db.getCityLevel(widget.city.id).toString(),
+                      text: utils.getCityLevel(widget.city.id).toString(),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!

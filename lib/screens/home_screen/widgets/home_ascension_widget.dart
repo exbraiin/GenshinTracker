@@ -91,12 +91,12 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
   Widget _getMaterialsList(Iterable<InfoCharacter> characters) {
     if (characters.isEmpty) return const SizedBox();
 
-    final db = GsDatabase.instance.infoCharactersInfo;
+    final db = GsUtils.characterMaterials;
     final materials = characters
         .expand((e) => db.getCharNextAscensionMats(e.id))
         .groupBy((e) => e.material?.id)
-        .map((key, value) => MapEntry(key, AscendMaterial.combine(value)))
         .values
+        .map(AscendMaterial.combine)
         .sortedBy((element) => element.material!.group.index)
         .thenBy((element) => element.material!.subgroup)
         .thenBy((element) => element.material!.rarity)

@@ -17,23 +17,26 @@ class HomeReputationWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final db = GsDatabase.instance;
         return GsDataBox.info(
-          title: context.fromLabel(Labels.reputation),
+          title: Text(context.fromLabel(Labels.reputation)),
           child: HomeTable(
             headers: [
               HomeRow.header(Lang.of(context).getValue(Labels.city)),
               HomeRow.header(Lang.of(context).getValue(Labels.current)),
               HomeRow.header(Lang.of(context).getValue(Labels.max)),
             ],
-            rows: db.infoCities.getItems().map((city) {
-              final sr = db.saveReputations;
-              final maxLvl = sr.getCityMaxLevelWeeks(city.id);
-              final nextLvl = sr.getCityNextLevelWeeks(city.id);
+            rows: db.infoCities
+                .getItems()
+                .where((e) => GsUtils.cities.getCityMaxLevel(e.id) > 1)
+                .map((city) {
+              final utils = GsUtils.cities;
+              final maxLvl = utils.getCityMaxLevelWeeks(city.id);
+              final nextLvl = utils.getCityNextLevelWeeks(city.id);
               final nColor = nextLvl > 0 ? badColor : Colors.white;
               final mColor = maxLvl > 0 ? badColor : Colors.white;
               return [
                 HomeRow(city.name),
                 HomeRow(
-                  '${sr.getCityLevel(city.id)}'
+                  '${utils.getCityLevel(city.id)}'
                   '${nextLvl > 0 ? ' ($nextLvl wk)' : ''}',
                   color: nColor,
                 ),

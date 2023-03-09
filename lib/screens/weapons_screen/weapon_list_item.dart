@@ -35,7 +35,7 @@ class WeaponListItem extends StatelessWidget {
   }
 
   Widget _getContent(BuildContext context) {
-    late final material = GsDatabase.instance.infoWeaponsInfo
+    late final material = GsUtils.weaponMaterials
         .getAscensionMaterials(item.id)
         .entries
         .map((e) => GsDatabase.instance.infoMaterials.getItemOrNull(e.key))

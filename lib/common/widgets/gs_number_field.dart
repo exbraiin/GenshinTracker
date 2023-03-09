@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 class GsNumberField extends StatefulWidget {
   final int length;
@@ -22,25 +21,6 @@ class GsNumberField extends StatefulWidget {
     this.onUpdate,
     this.onDbUpdate,
   });
-
-  GsNumberField.fromMaterial(
-    InfoMaterial? material, {
-    super.key,
-    this.fontSize = 12,
-  })  : enabled = material != null,
-        length = (material?.maxAmount ?? 0).toString().length,
-        onDbUpdate = (() {
-          if (material == null) return 0;
-          final sm = GsDatabase.instance.saveMaterials;
-          return sm.getItemOrNull(material.id)?.amount ?? 0;
-        }),
-        onUpdate = ((amount) {
-          if (material == null) return;
-          final sm = GsDatabase.instance.saveMaterials;
-          final saved = sm.getItemOrNull(material.id)?.amount ?? 0;
-          if (saved == amount) return;
-          sm.changeAmount(material.id, amount);
-        });
 
   @override
   State<GsNumberField> createState() => _GsNumberFieldState();

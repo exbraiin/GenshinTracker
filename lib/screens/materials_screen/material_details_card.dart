@@ -5,10 +5,8 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
-import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/theme/theme.dart';
 
 class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoMaterial item;
@@ -23,36 +21,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       image: item.image,
       rarity: item.rarity,
       banner: GsItemBanner.fromVersion(item.version),
-      info: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(context.fromLabel(item.group.label)),
-          const Spacer(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              width: 180,
-              padding: const EdgeInsets.all(kSeparator4),
-              decoration: BoxDecoration(
-                color: context.themeColors.mainColor2.withOpacity(0.3),
-                borderRadius: kMainRadius,
-                border: Border.all(
-                  color: context.themeColors.mainColor1.withOpacity(0.3),
-                ),
-              ),
-              child: Column(
-                children: [
-                  GsNumberField.fromMaterial(item, fontSize: 14),
-                  Text(
-                    context.fromLabel(Labels.owned),
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      info: Text(context.fromLabel(item.group.label)),
       child: _content(context),
     );
   }

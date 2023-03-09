@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dartx/dartx_io.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_database.json.dart';
@@ -7,71 +5,9 @@ import 'package:tracker/domain/gs_domain.dart';
 
 // =============== Save extensions ===============
 
-extension SaveReputationExt on JsonSaveDetails<SaveReputation> {
-  int getSavedReputation(String id) => getItemOrNull(id)?.reputation ?? 0;
-
-  void setSavedReputation(String id, int reputation) =>
-      insertItem(SaveReputation(id: id, reputation: reputation));
-
-  int getCityLevel(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final sRp = getSavedReputation(id);
-    return cities.getItem(id).reputation.lastIndexWhere((e) => e <= sRp) + 1;
-  }
-
-  int getCityPreviousXpValue(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final sRP = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
-    return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
-  }
-
-  int getCityNextXpValue(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final sRP = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
-    return rep.firstWhere((e) => e > sRP, orElse: () => -1);
-  }
-
-  int getCityNextLevelWeeks(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final sRp = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
-    final idx = rep.lastIndexWhere((e) => e <= sRp);
-    final next = idx + 1 < rep.length ? rep[idx + 1] : rep.last;
-    final xp = next - sRp;
-    return (xp / 420).ceil().coerceAtLeast(0);
-  }
-
-  int getCityMaxLevelWeeks(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final rep = cities.getItem(id).reputation;
-    final xp = rep.last - getSavedReputation(id);
-    return (xp / 420).ceil().coerceAtLeast(0);
-  }
-}
-
 extension SaveWishesExt on JsonSaveDetails<SaveWish> {
-  List<SaveWish> getBannerWishes(String banner) =>
-      getItems().where((e) => e.bannerId == banner).toList();
-
-  List<SaveWish> getSaveWishesByBannerType(GsBanner type) {
-    final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
-    final bannerIds = banners.map((e) => e.id);
-    return getItems().where((e) => bannerIds.contains(e.bannerId)).toList();
-  }
-
-  bool bannerHasWishes(String banner) =>
-      getItems().any((e) => e.bannerId == banner);
-
-  int countBannerWishes(String banner) =>
-      getItems().count((e) => e.bannerId == banner);
-
-  int countItem(String itemId) => getItems().count((e) => e.itemId == itemId);
-  bool hasItem(String itemId) => getItems().any((e) => e.itemId == itemId);
-
   void removeLastWish(String bannerId) {
-    final list = getBannerWishes(bannerId);
+    final list = GsUtils.wishes.getBannerWishes(bannerId);
     if (list.isEmpty) return;
     deleteItem(list.sorted().last.id);
   }
@@ -93,7 +29,7 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
     required DateTime date,
     required String bannerId,
   }) async {
-    final lastRoll = countBannerWishes(bannerId);
+    final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
     var i = 0;
     for (var id in ids) {
       final number = lastRoll + 1 + i++;
@@ -105,67 +41,6 @@ extension SaveWishesExt on JsonSaveDetails<SaveWish> {
         bannerId: bannerId,
       );
       insertItem(wish);
-    }
-  }
-
-  int getOwnedWeapon(String key) => countItem(key);
-
-  bool hasWeapon(String key) => hasItem(key);
-}
-
-extension SaveSereniteaSetExt on JsonSaveDetails<SaveSereniteaSet> {
-  void setSetCharacter(String set, String char, {required bool owned}) {
-    final sv = getItemOrNull(set) ?? SaveSereniteaSet(id: set, chars: []);
-    final hasCharacter = sv.chars.contains(char);
-    if (owned && !hasCharacter) {
-      sv.chars.add(char);
-    } else if (!owned && hasCharacter) {
-      sv.chars.remove(char);
-    }
-    insertItem(sv);
-  }
-
-  bool isObtainable(String set) {
-    final db = GsDatabase.instance;
-    final item = db.infoSereniteaSets.getItem(set);
-    final saved = getItemOrNull(set);
-    final chars = saved?.chars ?? [];
-    bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
-    return item.chars.any((c) => !chars.contains(c) && hasChar(c));
-  }
-}
-
-extension SaveSpincrystalExt on JsonSaveDetails<SaveSpincrystal> {
-  void updateSpincrystal(int number, {required bool obtained}) {
-    final spin = SaveSpincrystal(
-      id: number.toString(),
-      obtained: obtained,
-    );
-    insertItem(spin);
-  }
-}
-
-extension SaveRecipeExt on JsonSaveDetails<SaveRecipe> {
-  void ownRecipe(String id, {required bool own}) async {
-    final contains = exists(id);
-    if (own && !contains) {
-      insertItem(SaveRecipe(id: id, proficiency: 0));
-    } else if (!own && contains) {
-      deleteItem(id);
-    }
-  }
-
-  void changeSavedRecipe(String id, int proficiency) async {
-    insertItem(SaveRecipe(id: id, proficiency: proficiency));
-  }
-}
-
-extension SaveRemarkableChestExt on JsonSaveDetails<SaveRemarkableChest> {
-  void updateRemarkableChest(String id, {required bool obtained}) {
-    if (obtained) {
-      insertItem(SaveRemarkableChest(id: id, obtained: obtained));
-    } else {
-      deleteItem(id);
     }
   }
 }
@@ -186,7 +61,7 @@ extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
 
   void increaseOwnedCharacter(String id) {
     final char = getItemOrNull(id);
-    final wishes = GsDatabase.instance.saveWishes.countItem(id);
+    final wishes = GsUtils.wishes.countItem(id);
 
     var cOwned = char?.owned ?? 0;
     cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
@@ -214,69 +89,30 @@ extension SaveCharacterExt on JsonSaveDetails<SaveCharacter> {
   }
 }
 
-extension SaveMaterialExt on JsonSaveDetails<SaveMaterial> {
-  void changeAmount(String id, int amount) {
-    if (amount > 0) {
-      insertItem(SaveMaterial(id: id, amount: amount));
-    } else {
-      deleteItem(id);
-    }
-  }
-
-  int getMaterialAmount(String id) => getItemOrNull(id)?.amount ?? 0;
-
-  int getCraftableAmount(String id) {
-    final info = GsDatabase.instance.infoMaterials.getItemOrNull(id);
-    if (info == null) return 0;
-    return _getCraftableAmount(info);
-  }
-
-  int _getCraftableAmount(InfoMaterial mat) {
-    int getCraftable(InfoMaterial e) =>
-        getMaterialAmount(e.id) ~/ pow(3, mat.rarity - e.rarity);
-
-    return GsUtils.materials
-        .getGroupMaterials(mat)
-        .where((e) => e.rarity < mat.rarity)
-        .sumBy(getCraftable)
-        .toInt();
-  }
-}
-
 // =============== Ascend Materials ===============
 
 class AscendMaterial {
-  final int owned;
   final int required;
-  final int craftable;
   final InfoMaterial? material;
 
-  bool get hasRequired => owned + craftable >= required;
-
   AscendMaterial(
-    this.owned,
     this.required,
-    this.craftable,
     this.material,
   );
 
   factory AscendMaterial.fromId(String id, int required) {
     final db = GsDatabase.instance;
-    final owned = db.saveMaterials.getMaterialAmount(id);
-    final craft = db.saveMaterials.getCraftableAmount(id);
     final material = db.infoMaterials.getItemOrNull(id);
-    return AscendMaterial(owned, required, craft, material);
+    return AscendMaterial(required, material);
   }
 
   factory AscendMaterial.combine(List<AscendMaterial> mats) {
     final valid = mats.where((e) => e.material != null);
     final first = valid.firstOrNull;
-    if (first == null) return AscendMaterial(0, 0, 0, null);
+    if (first == null) return AscendMaterial(0, null);
     if (valid.map((e) => e.material!.id).toSet().length != 1) return first;
     return AscendMaterial(
-      first.owned,
       valid.sumBy((e) => e.required).toInt(),
-      first.craftable,
       first.material,
     );
   }

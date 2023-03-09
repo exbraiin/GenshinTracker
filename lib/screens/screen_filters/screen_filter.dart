@@ -295,14 +295,14 @@ class ScreenFilters {
       FilterSection.weapon((item) => item.type),
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
-      FilterSection.owned((item) => _db.saveWishes.hasWeapon(item.id)),
+      FilterSection.owned((item) => GsUtils.wishes.hasItem(item.id)),
       FilterSection<GsWeekday, InfoWeapon>.raw(
         _weekdays,
         (item, enabled) {
           final t = _db.infoMaterials.getItems();
           final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
-          final inMats = _db.infoWeaponsInfo.getAscensionMaterials(item.id);
-          return m.any((e) => inMats.containsKey(e.id));
+          final i = GsUtils.characterMaterials.getAscensionMaterials(item.id);
+          return m.any((e) => i.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
         (c, i) => i.label,
@@ -349,8 +349,8 @@ class ScreenFilters {
         (item, enabled) {
           final t = _db.infoMaterials.getItems();
           final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
-          final charMats = _db.infoCharactersInfo.getTalentMaterials(item.id);
-          return m.any((e) => charMats.containsKey(e.id));
+          final i = GsUtils.characterMaterials.getTalentMaterials(item.id);
+          return m.any((e) => i.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
         (c, i) => i.label,
@@ -397,7 +397,7 @@ class ScreenFilters {
       FilterSection.setCategory((item) => item.category),
       FilterSection<bool, InfoSereniteaSet>(
         {true, false},
-        (item) => _db.saveSereniteaSets.isObtainable(item.id),
+        (item) => GsUtils.sereniteaSets.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
       ),

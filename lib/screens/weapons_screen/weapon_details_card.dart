@@ -86,8 +86,8 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     BuildContext context,
     InfoWeaponInfo info,
   ) {
-    final ascension =
-        GsDatabase.instance.infoWeaponsInfo.weaponAscension(item.rarity);
+    final utils = GsUtils.weaponMaterials;
+    final ascension = utils.weaponAscension(item.rarity);
     final style = context.textTheme.titleSmall;
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.ascension),
@@ -95,8 +95,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         value: 0,
         builder: (context, notifier, child) {
           final idx = notifier.value;
-          final mats = GsDatabase.instance.infoWeaponsInfo
-              .getAscensionMaterials(info.id, idx);
+          final mats = utils.getAscensionMaterials(info.id, idx);
           final atk = info.ascAtkValues.elementAtOrNull(idx);
           final stat = info.ascStatValues.elementAtOrNull(idx);
           return Column(
@@ -209,7 +208,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     InfoWeaponInfo info,
   ) {
     final im = GsDatabase.instance.infoMaterials;
-    final iw = GsDatabase.instance.infoWeaponsInfo;
+    final iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.materials),
