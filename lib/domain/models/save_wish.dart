@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveWish extends Comparable<SaveWish> implements IdSaveData {
+class SaveWish extends Comparable<SaveWish> implements IdSaveData<SaveWish> {
   @override
   final String id;
   final int number;
@@ -25,6 +25,23 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData {
         bannerId = data.getString('banner'),
         date = data.getDate('date'),
         bannerDate = _getBannerDate(data.getString('banner'));
+
+  @override
+  SaveWish copyWith({
+    String? id,
+    int? number,
+    String? itemId,
+    String? bannerId,
+    DateTime? date,
+  }) {
+    return SaveWish(
+      id: id ?? this.id,
+      date: date ?? this.date,
+      itemId: itemId ?? this.itemId,
+      number: number ?? this.number,
+      bannerId: bannerId ?? this.bannerId,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() => {

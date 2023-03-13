@@ -9,7 +9,9 @@ import 'package:tracker/domain/gs_database.dart';
 class GsNumberField extends StatefulWidget {
   final int length;
   final bool enabled;
+  final bool hideText;
   final double fontSize;
+  final TextAlign align;
   final int Function()? onDbUpdate;
   final void Function(int)? onUpdate;
 
@@ -17,7 +19,9 @@ class GsNumberField extends StatefulWidget {
     super.key,
     this.length = 0,
     this.enabled = true,
+    this.hideText = false,
     this.fontSize = 12,
+    this.align = TextAlign.center,
     this.onUpdate,
     this.onDbUpdate,
   });
@@ -35,10 +39,11 @@ class _GsNumberFieldState extends State<GsNumberField> {
   void initState() {
     super.initState();
     _node = FocusNode()..addListener(_onNodeFocus);
-    _controller = TextEditingController(text: '0');
+    _controller = TextEditingController(text: '');
     _sub = GsDatabase.instance.loaded.listen((e) {
       if (widget.onDbUpdate == null) return;
-      _controller.text = widget.onDbUpdate!.call().toString();
+      final value = widget.onDbUpdate!.call();
+      _controller.text = value != 0 ? value.toString() : '';
       if (_node.hasFocus) _selectText();
     });
   }
@@ -78,7 +83,8 @@ class _GsNumberFieldState extends State<GsNumberField> {
       enabled: widget.enabled,
       focusNode: _node,
       style: context.textTheme.infoLabel.copyWith(fontSize: widget.fontSize),
-      textAlign: TextAlign.center,
+      textAlign: widget.align,
+      obscureText: widget.hideText,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         if (widget.length != 0) LengthLimitingTextInputFormatter(widget.length),

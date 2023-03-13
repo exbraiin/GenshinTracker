@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveCharacter implements IdSaveData {
+class SaveCharacter implements IdSaveData<SaveCharacter> {
   @override
   final String id;
   final String outfit;
@@ -32,6 +32,7 @@ class SaveCharacter implements IdSaveData {
         'friendship': friendship,
       };
 
+  @override
   SaveCharacter copyWith({
     int? owned,
     int? ascension,

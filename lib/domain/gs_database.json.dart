@@ -90,7 +90,7 @@ class JsonInfoDetails<T extends IdData> {
   Iterable<T> getItems() => _map.values;
 }
 
-class JsonSaveDetails<T extends IdSaveData> extends JsonInfoDetails<T> {
+class JsonSaveDetails<T extends IdSaveData<T>> extends JsonInfoDetails<T> {
   final VoidCallback? _onUpdate;
 
   JsonSaveDetails(String name, ItemFromMap<T> create, this._onUpdate)

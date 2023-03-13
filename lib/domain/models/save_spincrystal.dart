@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveSpincrystal implements IdSaveData {
+class SaveSpincrystal implements IdSaveData<SaveSpincrystal> {
   @override
   final String id;
   final bool obtained;
@@ -13,6 +13,16 @@ class SaveSpincrystal implements IdSaveData {
   SaveSpincrystal.fromJsonData(JsonData data)
       : id = data.getString('id'),
         obtained = data.getBool('obtained');
+
+  @override
+  SaveSpincrystal copyWith({
+    bool? obtained,
+  }) {
+    return SaveSpincrystal(
+      id: id,
+      obtained: obtained ?? this.obtained,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() => {

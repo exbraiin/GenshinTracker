@@ -107,8 +107,7 @@ class BannerListItem extends StatelessWidget {
                               RemoveDialog.show(context, banner.name)
                                   .then((value) {
                                 if (!value) return;
-                                GsDatabase.instance.saveWishes
-                                    .removeLastWish(banner.id);
+                                GsUtils.saveWishes.removeLastWish(banner.id);
                               });
                             }
                           : null,

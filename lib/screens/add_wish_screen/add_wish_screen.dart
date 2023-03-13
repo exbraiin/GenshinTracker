@@ -131,7 +131,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
     if (date == null) return;
 
     final ids = _wishes.value.reversed.map((e) => e.id);
-    GsDatabase.instance.saveWishes.addWishes(
+    GsUtils.saveWishes.addWishes(
       ids: ids,
       date: date,
       bannerId: banner.id,

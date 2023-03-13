@@ -301,7 +301,7 @@ class ScreenFilters {
         (item, enabled) {
           final t = _db.infoMaterials.getItems();
           final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
-          final i = GsUtils.characterMaterials.getAscensionMaterials(item.id);
+          final i = GsUtils.weaponMaterials.getAscensionMaterials(item.id);
           return m.any((e) => i.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),

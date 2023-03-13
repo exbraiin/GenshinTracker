@@ -21,7 +21,9 @@ class GsUtils {
   static final characterMaterials = _CharactersMaterials();
 
   static final saveCities = _SaveCities();
+  static final saveWishes = _SaveWishes();
   static final saveRecipes = _SaveRecipes();
+  static final saveCharacters = _SaveCharacters();
   static final saveSpincrystals = _SaveSpincrystals();
   static final saveSereniteaSets = _SaveSereniteaSets();
   static final saveRemarkableChest = _SaveRemarkableChests();
@@ -352,13 +354,14 @@ class _CharactersMaterials {
   List<CharacterTal> characterTalents() => CharacterTal.values;
   List<CharacterAsc> characterAscension() => CharacterAsc.values;
 
-  List<AscendMaterial> getCharNextAscensionMats(String id) {
+  List<MapEntry<InfoMaterial?, int>> getCharNextAscensionMats(String id) {
     final max = GsUtils.characters.isCharMaxAscended(id);
     if (max) return const [];
+    final db = GsDatabase.instance.infoMaterials;
     final ascension = GsUtils.characters.getCharAscension(id);
     return getAscensionMaterials(id, ascension + 1)
         .entries
-        .map((e) => AscendMaterial.fromId(e.key, e.value))
+        .map((e) => MapEntry(db.getItemOrNull(e.key), e.value))
         .toList();
   }
 
@@ -421,6 +424,43 @@ class _SaveCities {
       .insertItem(SaveReputation(id: id, reputation: reputation));
 }
 
+class _SaveWishes {
+  void removeLastWish(String bannerId) {
+    final db = GsDatabase.instance.saveWishes;
+    final list = GsUtils.wishes.getBannerWishes(bannerId);
+    if (list.isEmpty) return;
+    db.deleteItem(list.sorted().last.id);
+  }
+
+  void updateWishDate(SaveWish wish, DateTime date) {
+    final db = GsDatabase.instance.saveWishes;
+    if (!db.exists(wish.id)) return;
+    final newWish = wish.copyWith(date: date);
+    db.insertItem(newWish);
+  }
+
+  void addWishes({
+    required Iterable<String> ids,
+    required DateTime date,
+    required String bannerId,
+  }) async {
+    final db = GsDatabase.instance.saveWishes;
+    final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
+    var i = 0;
+    for (var id in ids) {
+      final number = lastRoll + 1 + i++;
+      final wish = SaveWish(
+        id: '${bannerId}_$number',
+        date: date,
+        itemId: id,
+        number: number,
+        bannerId: bannerId,
+      );
+      db.insertItem(wish);
+    }
+  }
+}
+
 class _SaveRecipes {
   void update(
     String id, {
@@ -439,6 +479,52 @@ class _SaveRecipes {
     if (proficiency != null) {
       _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: proficiency));
     }
+  }
+}
+
+class _SaveCharacters {
+  final db = GsDatabase.instance.saveCharacters;
+
+  void setCharOutfit(String id, String outfit) {
+    final char = db.getItemOrNull(id);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(outfit: outfit);
+    if (item.outfit != char?.outfit) db.insertItem(item);
+  }
+
+  void setCharFriendship(String id, int friendship) {
+    final char = db.getItemOrNull(id);
+    final friend = friendship.clamp(1, 10);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
+    if (item.friendship != char?.friendship) db.insertItem(item);
+  }
+
+  void increaseOwnedCharacter(String id) {
+    final char = db.getItemOrNull(id);
+    final wishes = GsUtils.wishes.countItem(id);
+
+    var cOwned = char?.owned ?? 0;
+    cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
+    final item = (char ?? SaveCharacter(id: id)).copyWith(owned: cOwned);
+    db.insertItem(item);
+  }
+
+  void increaseFriendshipCharacter(String id) {
+    final char = db.getItemOrNull(id);
+    var cFriendship = (char?.friendship) ?? 1;
+    cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
+
+    final item =
+        (char ?? SaveCharacter(id: id)).copyWith(friendship: cFriendship);
+    db.insertItem(item);
+  }
+
+  void increaseAscension(String id) {
+    final char = db.getItemOrNull(id);
+    var cAscension = char?.ascension ?? 0;
+    cAscension = (cAscension + 1) % 7;
+    final item =
+        (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
+    db.insertItem(item);
   }
 }
 

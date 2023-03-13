@@ -96,7 +96,6 @@ class CharacterDetailsScreen extends StatelessWidget {
     InfoCharacter info,
     InfoCharacterInfo? infos,
   ) {
-    final db = GsDatabase.instance.saveCharacters;
     final ascension = GsUtils.characters.getCharAscension(info.id);
     final friendship = GsUtils.characters.getCharFriendship(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
@@ -151,7 +150,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                     GsItemCardLabel(
                       asset: info.element.assetPath,
                       label: constellation != null ? 'C$constellation' : null,
-                      onTap: () => GsDatabase.instance.saveCharacters
+                      onTap: () => GsUtils.saveCharacters
                           .increaseOwnedCharacter(info.id),
                     ),
                     const SizedBox(width: kSeparator4),
@@ -159,14 +158,15 @@ class CharacterDetailsScreen extends StatelessWidget {
                       GsItemCardLabel(
                         asset: imageXp,
                         label: friendship.toString(),
-                        onTap: () => GsDatabase.instance.saveCharacters
+                        onTap: () => GsUtils.saveCharacters
                             .increaseFriendshipCharacter(info.id),
                       )
                   ],
                 ),
                 if (hasChar)
                   InkWell(
-                    onTap: () => db.increaseAscension(info.id),
+                    onTap: () =>
+                        GsUtils.saveCharacters.increaseAscension(info.id),
                     child: Text(
                       '${'✦' * ascension}${'✧' * (6 - ascension)}',
                       style: context.textTheme.bigTitle3,
@@ -308,8 +308,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                         image: info.image,
                         rarity: info.rarity,
                         tooltip: info.name,
-                        onTap: () => GsDatabase.instance.saveCharacters
-                            .setCharOutfit(info.id, ''),
+                        onTap: () =>
+                            GsUtils.saveCharacters.setCharOutfit(info.id, ''),
                       ),
                       ...GsDatabase.instance.infoCharactersOutfit
                           .getItems()
@@ -319,7 +319,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                           image: e.image,
                           rarity: e.rarity,
                           tooltip: e.name,
-                          onTap: () => GsDatabase.instance.saveCharacters
+                          onTap: () => GsUtils.saveCharacters
                               .setCharOutfit(info.id, e.id),
                         );
                       }),
@@ -347,42 +347,46 @@ class CharacterDetailsScreen extends StatelessWidget {
   ) {
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
     final ascension = GsUtils.characterMaterials.characterAscension();
-    return GsDataBox.info(
-      key: _ascension,
-      bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.ascension)),
-      child: ValueNotifierBuilder<int>(
-        value: 0,
-        builder: (context, notifier, child) {
-          final idx = notifier.value;
-          final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
-          final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
-          final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
-          final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
-          final mats =
-              GsUtils.characterMaterials.getAscensionMaterials(infos.id, idx);
-          return Column(
+    return ValueNotifierBuilder<int>(
+      value: 0,
+      builder: (context, notifier, child) {
+        final idx = notifier.value;
+        final utils = GsUtils.characterMaterials;
+        final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
+        final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
+        final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
+        final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
+        final mats = utils.getAscensionMaterials(infos.id, idx);
+        return GsDataBox.info(
+          key: _ascension,
+          bgColor: bgColor,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(context.fromLabel(Labels.ascension)),
+              const SizedBox(height: kSeparator6),
               Row(
                 children: ascension
                     .mapIndexed<Widget>((idx, cfg) {
-                      return Opacity(
-                        opacity: notifier.value == idx ? 1 : kDisableOpacity,
+                      return _asButton(
+                        selected: notifier.value == idx,
+                        onTap: () => notifier.value = idx,
                         child: ItemRarityBubble(
                           color:
                               info.element.color.withOpacity(kDisableOpacity),
                           child: IgnorePointer(
                             child: Center(child: Text(cfg.level.toString())),
                           ),
-                          onTap: () => notifier.value = idx,
                         ),
                       );
                     })
                     .separate(const SizedBox(width: kSeparator8))
                     .toList(),
               ),
-              const SizedBox(height: kSeparator2),
-              Divider(color: context.themeColors.dimWhite),
+            ],
+          ),
+          child: Column(
+            children: [
               Table(
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 columnWidths: const {
@@ -457,44 +461,42 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ],
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _getTalents(BuildContext context, InfoCharacterInfo info) {
-    return GsDataBox.info(
-      key: _talents,
-      bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.talents)),
-      child: ValueNotifierBuilder<int>(
-        value: 0,
-        builder: (context, notifier, child) {
-          final selected = info.talents[notifier.value];
-          return Column(
+    return ValueNotifierBuilder<int>(
+      value: 0,
+      builder: (context, notifier, child) {
+        final selected = info.talents[notifier.value];
+        return GsDataBox.info(
+          key: _talents,
+          bgColor: bgColor,
+          title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(context.fromLabel(Labels.talents)),
+              const SizedBox(height: kSeparator6),
               Row(
                 children: info.talents
                     .mapIndexed<Widget>((i, e) {
-                      return Opacity(
-                        opacity: notifier.value == i ? 1 : kDisableOpacity,
-                        child: InkWell(
-                          onTap: () => notifier.value = i,
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CachedImageWidget(e.icon),
-                          ),
-                        ),
+                      return _asButton(
+                        selected: notifier.value == i,
+                        onTap: () => notifier.value = i,
+                        child: CachedImageWidget(e.icon),
                       );
                     })
                     .separate(const SizedBox(width: kSeparator8))
                     .toList(),
               ),
-              const SizedBox(height: kSeparator2),
-              Divider(color: context.themeColors.dimWhite),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Row(
                 children: [
                   Text(
@@ -517,44 +519,42 @@ class CharacterDetailsScreen extends StatelessWidget {
                     context.textTheme.titleSmall!.copyWith(color: Colors.white),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _getConstellations(BuildContext context, InfoCharacterInfo info) {
-    return GsDataBox.info(
-      key: _constellation,
-      bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.constellation)),
-      child: ValueNotifierBuilder<int>(
-        value: 0,
-        builder: (context, notifier, child) {
-          final selected = info.constellations[notifier.value];
-          return Column(
+    return ValueNotifierBuilder<int>(
+      value: 0,
+      builder: (context, notifier, child) {
+        final selected = info.constellations[notifier.value];
+        return GsDataBox.info(
+          key: _constellation,
+          bgColor: bgColor,
+          title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(context.fromLabel(Labels.constellation)),
+              const SizedBox(height: kSeparator6),
               Row(
                 children: info.constellations
                     .mapIndexed<Widget>((i, e) {
-                      return Opacity(
-                        opacity: notifier.value == i ? 1 : kDisableOpacity,
-                        child: InkWell(
-                          onTap: () => notifier.value = i,
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CachedImageWidget(e.icon),
-                          ),
-                        ),
+                      return _asButton(
+                        selected: notifier.value == i,
+                        onTap: () => notifier.value = i,
+                        child: CachedImageWidget(e.icon),
                       );
                     })
                     .separate(const SizedBox(width: kSeparator8))
                     .toList(),
               ),
-              const SizedBox(height: kSeparator2),
-              Divider(color: context.themeColors.dimWhite),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
                 selected.name,
                 style: context.textTheme.titleLarge!
@@ -567,9 +567,9 @@ class CharacterDetailsScreen extends StatelessWidget {
                     context.textTheme.titleSmall!.copyWith(color: Colors.white),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -715,6 +715,39 @@ class CharacterDetailsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _asButton({
+    required Widget child,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return MouseHoverBuilder(
+      builder: (context, hover, child) {
+        return AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: hover || selected ? 1 : kDisableOpacity,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            foregroundDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(
+                color: selected
+                    ? context.themeColors.almostWhite
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: InkWell(onTap: onTap, child: child),
+      ),
     );
   }
 }

@@ -55,7 +55,7 @@ class WishListItem extends StatelessWidget {
               onTap: () async {
                 final date = await GsTimeDialog.show(context, wish.date);
                 if (date == null) return;
-                GsDatabase.instance.saveWishes.updateWishDate(wish, date);
+                GsUtils.saveWishes.updateWishDate(wish, date);
               },
               child: Text(
                 wish.date.format().replaceAll(' ', '\n'),

@@ -2,7 +2,8 @@ abstract class IdData {
   String get id;
 }
 
-abstract class IdSaveData extends IdData {
+abstract class IdSaveData<T extends IdSaveData<T>> extends IdData {
+  T copyWith();
   Map<String, dynamic> toMap();
 }
 

@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveSereniteaSet implements IdSaveData {
+class SaveSereniteaSet implements IdSaveData<SaveSereniteaSet> {
   @override
   final String id;
   final List<String> chars;
@@ -13,6 +13,16 @@ class SaveSereniteaSet implements IdSaveData {
   SaveSereniteaSet.fromJsonData(JsonData data)
       : id = data.getString('id'),
         chars = data.getStringList('chars');
+
+  @override
+  SaveSereniteaSet copyWith({
+    List<String>? chars,
+  }) {
+    return SaveSereniteaSet(
+      id: id,
+      chars: chars ?? this.chars,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() => {

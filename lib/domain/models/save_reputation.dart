@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveReputation implements IdSaveData {
+class SaveReputation implements IdSaveData<SaveReputation> {
   @override
   final String id;
   final int reputation;
@@ -13,6 +13,16 @@ class SaveReputation implements IdSaveData {
   SaveReputation.fromJsonData(JsonData data)
       : id = data.getString('id'),
         reputation = data.getInt('reputation');
+
+  @override
+  SaveReputation copyWith({
+    int? reputation,
+  }) {
+    return SaveReputation(
+      id: id,
+      reputation: reputation ?? this.reputation,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() => {

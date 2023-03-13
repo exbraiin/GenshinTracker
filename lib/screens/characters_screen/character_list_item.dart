@@ -54,42 +54,47 @@ class CharacterListItem extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(kSeparator2),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          showExtra && charCons != null
+              ? ItemRarityBubble.withLabel(
+                  size: 30,
+                  asset: item.element.assetPath,
+                  label: 'C$charCons',
+                )
+              : ItemRarityBubble(size: 30, asset: item.element.assetPath),
+          const Spacer(),
+          Column(
             children: [
               if (showExtra && charCons != null)
                 GsItemCardLabel(
                   asset: imageXp,
                   label: '$friend',
                 ),
+              if (showExtra &&
+                  charConsTotal != null &&
+                  charConsTotal != charCons)
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: const EdgeInsets.only(top: kSeparator2),
+                  child: GsItemCardLabel(
+                    asset: menuIconWish,
+                    label: 'C$charConsTotal',
+                  ),
+                ),
               const Spacer(),
-              GsItemCardLabel(
-                asset: item.element.assetPath,
-                label: charCons != null ? 'C$charCons' : null,
-              ),
+              if (showItem && material != null)
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ItemRarityBubble(
+                    image: material.image,
+                    tooltip: material.name,
+                    rarity: material.rarity,
+                  ),
+                ),
             ],
           ),
-          if (showExtra && charConsTotal != null && charConsTotal != charCons)
-            Container(
-              alignment: Alignment.topRight,
-              margin: const EdgeInsets.only(top: kSeparator2),
-              child: GsItemCardLabel(
-                asset: menuIconWish,
-                label: 'C$charConsTotal',
-              ),
-            ),
-          const Spacer(),
-          if (showItem && material != null)
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ItemRarityBubble(
-                image: material.image,
-                tooltip: material.name,
-                rarity: material.rarity,
-              ),
-            ),
         ],
       ),
     );

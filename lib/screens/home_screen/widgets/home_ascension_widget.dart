@@ -91,16 +91,26 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
   Widget _getMaterialsList(Iterable<InfoCharacter> characters) {
     if (characters.isEmpty) return const SizedBox();
 
+    MapEntry<InfoMaterial?, int> combine(
+      List<MapEntry<InfoMaterial?, int>> list,
+    ) {
+      final valid = list.where((e) => e.key != null);
+      final first = valid.firstOrNull;
+      if (first == null) return const MapEntry(null, 0);
+      if (valid.map((e) => e.key!.id).toSet().length != 1) return first;
+      return MapEntry(first.key, valid.sumBy((e) => e.value).toInt());
+    }
+
     final db = GsUtils.characterMaterials;
     final materials = characters
         .expand((e) => db.getCharNextAscensionMats(e.id))
-        .groupBy((e) => e.material?.id)
+        .groupBy((e) => e.key?.id)
         .values
-        .map(AscendMaterial.combine)
-        .sortedBy((element) => element.material!.group.index)
-        .thenBy((element) => element.material!.subgroup)
-        .thenBy((element) => element.material!.rarity)
-        .thenBy((element) => element.material!.name);
+        .map(combine)
+        .sortedBy((element) => element.key!.group.index)
+        .thenBy((element) => element.key!.subgroup)
+        .thenBy((element) => element.key!.rarity)
+        .thenBy((element) => element.key!.name);
 
     return ValueListenableBuilder<bool>(
       valueListenable: _notifier,
@@ -137,9 +147,9 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: materials.map((e) {
                     return ItemRarityBubble.withLabel(
-                      image: e.material!.image,
-                      rarity: e.material!.rarity,
-                      label: e.required.compact(),
+                      image: e.key!.image,
+                      rarity: e.key!.rarity,
+                      label: e.value.compact(),
                     );
                   }).toList(),
                 ),

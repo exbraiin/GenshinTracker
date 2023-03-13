@@ -3,6 +3,7 @@ import 'package:tracker/domain/gs_domain.dart';
 class InfoCharacter implements IdData {
   @override
   final String id;
+  final String enkaId;
   final String name;
   final String title;
   final String version;
@@ -23,6 +24,7 @@ class InfoCharacter implements IdData {
 
   InfoCharacter.fromJsonData(JsonData data)
       : id = data.getString('id'),
+        enkaId = data.getString('enka_id'),
         name = data.getString('name'),
         title = data.getString('title'),
         version = data.getString('version'),

@@ -10,6 +10,7 @@ import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_birthdays_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_last_banner_widget.dart';
+import 'package:tracker/screens/home_screen/widgets/home_player_info_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_recipes_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_remarkable_chests_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_reputation_widget.dart';
@@ -142,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: Column(
             children: [
+              const HomePlayerInfoWidget(),
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
               const HomeBirthdaysWidget(),

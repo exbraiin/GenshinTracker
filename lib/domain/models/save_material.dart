@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveMaterial implements IdSaveData {
+class SaveMaterial implements IdSaveData<SaveMaterial> {
   @override
   final String id;
   final int amount;
@@ -13,6 +13,16 @@ class SaveMaterial implements IdSaveData {
   SaveMaterial.fromJsonData(JsonData data)
       : id = data.getString('id'),
         amount = data.getInt('amount');
+
+  @override
+  SaveMaterial copyWith({
+    int? amount,
+  }) {
+    return SaveMaterial(
+      id: id,
+      amount: amount ?? this.amount,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() => {
