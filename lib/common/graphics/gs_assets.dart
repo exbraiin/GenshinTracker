@@ -28,6 +28,7 @@ const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
 const imageXp = 'assets/image/icons/Companion_xp.png';
 
 const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
+const fischlEmote = 'assets/image/illustrations/fischl.webp';
 
 const kMainBgDecoration = BoxDecoration(
 /*

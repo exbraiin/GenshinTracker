@@ -178,5 +178,8 @@
     "namecard_offering": "Offering",
     "namecard_reputation": "Reputation",
     "recipe_event": "Event",
-    "recipe_permanent": "Permanent"
+    "recipe_permanent": "Permanent",
+    "button_no": "No",
+    "button_yes": "Yes",
+    "update_all_wishes": "Update date for all {wishes} wishes?"
 }

@@ -29,7 +29,7 @@ class HomeFriendsWidget extends StatelessWidget {
         if (characters.isEmpty) {
           return GsDataBox.info(
             title: Text(context.fromLabel(Labels.friendship)),
-            child: const GsNoResultsState(),
+            child: const GsNoResultsState.small(),
           );
         }
 

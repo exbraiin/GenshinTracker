@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/gs_confirm_dialog.dart';
 import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -52,11 +53,7 @@ class WishListItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
-              onTap: () async {
-                final date = await GsTimeDialog.show(context, wish.date);
-                if (date == null) return;
-                GsUtils.saveWishes.updateWishDate(wish, date);
-              },
+              onTap: () => _updateDate(context),
               child: Text(
                 wish.date.format().replaceAll(' ', '\n'),
                 textAlign: TextAlign.center,
@@ -115,17 +112,6 @@ class WishListItem extends StatelessWidget {
                           : BorderSide.none,
                     ),
                   ),
-                  child: type == ListType.top
-                      ? Center(
-                          child: Text(
-                            Lang.of(context).getValue(Labels.x10),
-                            style: style.copyWith(
-                              fontSize: 8,
-                              color: context.themeColors.almostWhite,
-                            ),
-                          ),
-                        )
-                      : null,
                 )
               : const SizedBox(),
           Text(item.rarity.toString(), style: style),
@@ -134,5 +120,29 @@ class WishListItem extends StatelessWidget {
         ]).toList(),
       ),
     );
+  }
+
+  Future<void> _updateDate(BuildContext context) async {
+    final date = await GsTimeDialog.show(context, wish.date);
+    if (date == null || date == wish.date) return;
+
+    if (type != ListType.none) {
+      final wishes = GsUtils.wishes.getBannerWishes(wish.bannerId);
+      final same = wishes.where((e) => e.date == wish.date);
+      final amount = same.length;
+
+      // ignore: use_build_context_synchronously
+      if (!context.mounted) return;
+      final title = context.fromLabel(Labels.wishes);
+      final subtitle = context.fromLabel(Labels.updateAllWishes, amount);
+      final update = await GsConfirmDialog.show(context, title, subtitle);
+      if (update == true) {
+        for (var wish in same) {
+          GsUtils.saveWishes.updateWishDate(wish, date);
+        }
+        return;
+      }
+    }
+    GsUtils.saveWishes.updateWishDate(wish, date);
   }
 }

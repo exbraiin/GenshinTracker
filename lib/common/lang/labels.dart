@@ -540,4 +540,13 @@ class Labels {
 
 	/// Permanent
 	static const recipePermanent = 'recipe_permanent';
+
+	/// No
+	static const buttonNo = 'button_no';
+
+	/// Yes
+	static const buttonYes = 'button_yes';
+
+	/// Update date for all {wishes}?
+	static const updateAllWishes = 'update_all_wishes';
 }

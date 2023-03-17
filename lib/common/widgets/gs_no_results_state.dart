@@ -5,27 +5,30 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/theme/theme.dart';
 
 class GsNoResultsState extends StatelessWidget {
-  const GsNoResultsState({super.key});
+  final double size;
+
+  const GsNoResultsState.small({super.key}) : size = 60;
+  const GsNoResultsState({super.key, this.size = 100});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.info_outline_rounded,
-            color: context.themeColors.dimWhite,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            Lang.of(context).getValue(Labels.noResults).toUpperCase(),
-            style: context.textTheme.description.copyWith(
-              color: context.themeColors.dimWhite,
-              fontFamily: 'ZenKurenaido',
+      child: Padding(
+        padding: const EdgeInsets.all(kSeparator4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(fischlEmote, width: size, height: size),
+            const SizedBox(height: kSeparator4),
+            Text(
+              Lang.of(context).getValue(Labels.noResults),
+              style: context.textTheme.description.copyWith(
+                color: context.themeColors.dimWhite,
+                fontSize: 14,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

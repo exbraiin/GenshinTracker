@@ -90,9 +90,8 @@ class _MainScreenState extends State<MainScreen> {
                       : context.themeColors.mainColor2,
               borderRadius: kMainRadius,
               border: Border.all(
-                color: selected
-                    ? context.themeColors.mainColor2
-                    : Colors.transparent,
+                color:
+                    selected ? context.themeColors.primary : Colors.transparent,
                 width: 2,
               ),
             ),
@@ -117,6 +116,7 @@ class _MainScreenState extends State<MainScreen> {
                   opacity: hover ? 1 : 0,
                   child: Container(
                     alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.all(kSeparator2),
                     decoration: BoxDecoration(
                       color: context.themeColors.mainColor0.withOpacity(0.4),
                       borderRadius: kMainRadius.copyWith(
@@ -128,7 +128,7 @@ class _MainScreenState extends State<MainScreen> {
                       context.fromLabel(menu.label),
                       maxLines: 1,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
                 ),

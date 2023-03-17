@@ -77,7 +77,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                 ],
               ),
               child: info == null || info.nickname.isEmpty
-                  ? const GsNoResultsState()
+                  ? const GsNoResultsState.small()
                   : _getWidgetContent(context, info),
             );
           },

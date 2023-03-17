@@ -46,7 +46,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         if (characters.isEmpty) {
           return GsDataBox.info(
             title: Text(context.fromLabel(Labels.ascension)),
-            child: const GsNoResultsState(),
+            child: const GsNoResultsState.small(),
           );
         }
 
