@@ -215,7 +215,7 @@ class _Versions {
     final now = DateTime.now();
     final versions = _db.infoVersion.getItems();
     final current = versions
-        .sortedBy((element) => element.releaseDate)
+        .sorted()
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current?.id == version;
   }
@@ -223,9 +223,7 @@ class _Versions {
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
     final versions = _db.infoVersion.getItems();
-    final upcoming = versions
-        .sortedBy((element) => element.releaseDate)
-        .where((element) => element.releaseDate.isAfter(now));
+    final upcoming = versions.sorted().where((e) => e.releaseDate.isAfter(now));
     return upcoming.any((element) => element.id == version);
   }
 
@@ -233,7 +231,7 @@ class _Versions {
     final now = DateTime.now();
     final versions = _db.infoVersion.getItems();
     final current = versions
-        .sortedBy((element) => element.releaseDate)
+        .sorted()
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current;
   }
@@ -757,13 +755,15 @@ class ItemData extends Comparable<ItemData> {
 
   @override
   int compareTo(ItemData other) {
-    final r = rarity.compareTo(other.rarity);
-    if (r != 0) return r;
-    final t = type.index.compareTo(other.type.index);
-    if (t != 0) return t;
-    return name.compareTo(other.name);
+    return _comparator.compare(this, other);
   }
 }
+
+final _comparator = GsComparator<ItemData>([
+  (a, b) => a.rarity.compareTo(b.rarity),
+  (a, b) => a.type.index.compareTo(b.type.index),
+  (a, b) => a.name.compareTo(b.name),
+]);
 
 List<Widget> getSized(Iterable<Widget> widgets) {
   final sizes = <double>[100, 44, 0, 20, 64, 84, 56];

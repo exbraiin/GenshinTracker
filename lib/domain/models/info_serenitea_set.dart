@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoSereniteaSet implements IdData {
+class InfoSereniteaSet implements IdData<InfoSereniteaSet> {
   @override
   final String id;
   final String name;
@@ -20,4 +20,14 @@ class InfoSereniteaSet implements IdData {
         energy = data.getInt('energy'),
         category = data.getGsEnum('category', GsSetCategory.values),
         chars = data.getStringList('chars');
+
+  @override
+  int compareTo(InfoSereniteaSet other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoSereniteaSet>([
+  (a, b) => a.category.index.compareTo(b.category.index),
+  (a, b) => a.name.compareTo(b.name),
+]);

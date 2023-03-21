@@ -65,7 +65,7 @@ class JsonData {
       getDataOrDefault<Map<String, dynamic>>(key, {}).cast<K, V>();
 }
 
-class JsonInfoDetails<T extends IdData> {
+class JsonInfoDetails<T extends IdData<T>> {
   final String name;
   final ItemFromMap<T> create;
   final _map = <String, T>{};
@@ -124,7 +124,7 @@ class JsonSaveDetails<T extends IdSaveData<T>> extends JsonInfoDetails<T> {
   }
 }
 
-class JsonInfoSingle<T extends IdData> {
+class JsonInfoSingle<T extends IdData<T>> {
   final String name;
   final ItemFromMap<T> create;
   late T data;

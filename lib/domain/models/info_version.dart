@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoVersion implements IdData {
+class InfoVersion implements IdData<InfoVersion> {
   @override
   final String id;
   final String name;
@@ -12,4 +12,9 @@ class InfoVersion implements IdData {
         name = data.getString('name'),
         image = data.getString('image'),
         releaseDate = data.getDate('release_date');
+
+  @override
+  int compareTo(InfoVersion other) {
+    return releaseDate.compareTo(other.releaseDate);
+  }
 }

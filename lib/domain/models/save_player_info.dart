@@ -124,4 +124,9 @@ class SavePlayerInfo implements IdSaveData<SavePlayerInfo> {
         'tower_chamber': towerChamber,
         'avatars': avatars,
       };
+
+  @override
+  int compareTo(SavePlayerInfo other) {
+    return id.compareTo(other.id);
+  }
 }

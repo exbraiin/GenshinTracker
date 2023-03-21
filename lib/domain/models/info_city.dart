@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCity implements IdData {
+class InfoCity implements IdData<InfoCity> {
   @override
   final String id;
   final String name;
@@ -14,4 +14,9 @@ class InfoCity implements IdData {
         image = data.getString('image'),
         element = data.getGsEnum('element', GsElement.values),
         reputation = data.getIntList('reputation');
+
+  @override
+  int compareTo(InfoCity other) {
+    return element.index.compareTo(other.element.index);
+  }
 }

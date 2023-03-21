@@ -29,4 +29,9 @@ class SaveSereniteaSet implements IdSaveData<SaveSereniteaSet> {
         'id': id,
         'chars': chars,
       };
+
+  @override
+  int compareTo(SaveSereniteaSet other) {
+    return id.compareTo(other.id);
+  }
 }

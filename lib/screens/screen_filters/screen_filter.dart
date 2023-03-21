@@ -98,6 +98,7 @@ class FilterSection<T, I> {
       match,
       (c) => c.fromLabel(Labels.element),
       (c, i) => c.fromLabel(i.label),
+      asset: (i) => i.assetPath,
     );
   }
 
@@ -142,21 +143,17 @@ class FilterSection<T, I> {
   void toggle(T v) => enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
 }
 
-class ScreenFilter<I> {
+class ScreenFilter<I extends Comparable<I>> {
   final Set<String> extras;
-  final Iterable<Comparator<I>> sorting;
   final List<FilterSection<dynamic, I>> sections;
 
   ScreenFilter({
     this.sections = const [],
-    this.sorting = const [],
     Set<String>? extras,
   }) : extras = extras ?? {};
 
   List<I> match(Iterable<I> items) {
-    final sorters = _chain(sorting);
-    final filtr = items.where((e) => sections.every((s) => s._filter(e)));
-    return filtr.sortedWith(sorters);
+    return items.where((e) => sections.every((s) => s._filter(e))).sorted();
   }
 
   void reset() {
@@ -193,7 +190,6 @@ class ScreenFilters {
       FilterSection.item((item) => item.type),
       FilterSection.rarity((item) => item.rarity, 3),
     ],
-    sorting: [(a, b) => a.compareTo(b)],
   );
   static final saveWishFilter = ScreenFilter<SaveWish>(
     sections: [
@@ -211,10 +207,6 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e.label),
       ),
       FilterSection.version((item) => item.version),
-    ],
-    sorting: [
-      (a, b) => a.type.index.compareTo(b.type.index),
-      (a, b) => a.name.compareTo(b.name),
     ],
   );
   static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
@@ -262,10 +254,6 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
       ),
     ],
-    sorting: [
-      (a, b) => b.rarity.compareTo(a.rarity),
-      (a, b) => a.name.compareTo(b.name),
-    ],
   );
   static final infoRemarkableChestFilter = ScreenFilter<InfoRemarkableChest>(
     sections: [
@@ -283,11 +271,6 @@ class ScreenFilters {
         (c, i) => i.capitalize(),
       ),
       FilterSection.owned((item) => _db.saveRemarkableChests.exists(item.id)),
-    ],
-    sorting: [
-      (a, b) => a.region.index.compareTo(b.region.index),
-      (a, b) => a.rarity.compareTo(b.rarity),
-      (a, b) => a.name.compareTo(b.name),
     ],
   );
   static final infoWeaponFilter = ScreenFilter<InfoWeapon>(
@@ -322,22 +305,11 @@ class ScreenFilters {
         (c, i) => i.name.capitalize(),
       ),
     ],
-    sorting: [
-      (a, b) => b.rarity.compareTo(a.rarity),
-      (a, b) => a.name.compareTo(b.name),
-    ],
   );
   static final infoArtifactFilter = ScreenFilter<InfoArtifact>(
     sections: [
       FilterSection.rarity((item) => item.rarity, 3),
       FilterSection.version((item) => item.version),
-    ],
-    sorting: [
-      (a, b) => b.rarity.compareTo(a.rarity),
-      (a, b) => a.region.index.compareTo(b.region.index),
-      (a, b) => a.version.compareTo(b.version),
-      (a, b) => a.domain.compareTo(b.domain),
-      (a, b) => a.name.compareTo(b.name),
     ],
   );
   static final infoCharacterFilter = ScreenFilter<InfoCharacter>(
@@ -368,6 +340,7 @@ class ScreenFilters {
             GsAttributeStat.none,
         (c) => 'Special Stat',
         (c, i) => c.fromLabel(i.label),
+        asset: (i) => i.assetPath,
       ),
       FilterSection<bool, InfoCharacter>(
         {true, false},
@@ -386,10 +359,6 @@ class ScreenFilters {
       ),
       FilterSection.rarity((item) => item.rarity, 4),
     ],
-    sorting: [
-      (a, b) => b.rarity.compareTo(a.rarity),
-      (a, b) => a.name.compareTo(b.name),
-    ],
   );
   static final infoSereniteaSetFilter = ScreenFilter<InfoSereniteaSet>(
     sections: [
@@ -402,14 +371,18 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
       ),
     ],
-    sorting: [(a, b) => a.name.compareTo(b.name)],
   );
   static final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
     sections: [
       FilterSection.owned((item) => _db.saveSpincrystals.exists(item.id)),
       FilterSection.version((item) => item.version),
+      FilterSection(
+        {true, false},
+        (item) => item.source == 'Chubby',
+        (c) => c.fromLabel(Labels.source),
+        (c, i) => i ? 'Chubby' : 'World',
+      ),
     ],
-    sorting: [(a, b) => a.number.compareTo(b.number)],
   );
   static final infoMaterialFilter = ScreenFilter<InfoMaterial>(
     sections: [
@@ -422,16 +395,5 @@ class ScreenFilters {
         (c, i) => c.fromLabel(i.label),
       ),
     ],
-    sorting: [
-      (a, b) => a.group.index.compareTo(b.group.index),
-      (a, b) => a.subgroup.compareTo(b.subgroup),
-      (a, b) => a.region.index.compareTo(b.region.index),
-      (a, b) => a.rarity.compareTo(b.rarity),
-      (a, b) => a.name.compareTo(b.name),
-    ],
   );
-}
-
-Comparator<E> _chain<E>(Iterable<Comparator<E>> selectors) {
-  return selectors.fold((a, b) => 0, (p, e) => p.compose(e));
 }

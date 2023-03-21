@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCharacter implements IdData {
+class InfoCharacter implements IdData<InfoCharacter> {
   @override
   final String id;
   final String enkaId;
@@ -42,4 +42,14 @@ class InfoCharacter implements IdData {
         weapon = data.getGsEnum('weapon', GsWeapon.values),
         element = data.getGsEnum('element', GsElement.values),
         source = data.getGsEnum('source', GsItemSource.values);
+
+  @override
+  int compareTo(InfoCharacter other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoCharacter>([
+  (a, b) => b.rarity.compareTo(a.rarity),
+  (a, b) => a.name.compareTo(b.name),
+]);

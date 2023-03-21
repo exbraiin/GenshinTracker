@@ -88,7 +88,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   ) {
     final utils = GsUtils.weaponMaterials;
     final ascension = utils.weaponAscension(item.rarity);
-    final style = context.textTheme.titleSmall;
+    final style = context.textTheme.titleSmall?.copyWith(color: Colors.black);
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.ascension),
       content: ValueNotifierBuilder<int>(
@@ -218,10 +218,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         children: mats.entries
             .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
             .where((e) => e.key != null)
-            .sortedBy((e) => e.key!.group.index)
-            .thenBy((e) => e.key!.subgroup)
-            .thenBy((e) => e.key!.rarity)
-            .thenBy((e) => e.key!.name)
+            .sorted()
             .map((e) {
           return ItemRarityBubble.withLabel(
             rarity: e.key!.rarity,

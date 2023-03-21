@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoRemarkableChest implements IdData {
+class InfoRemarkableChest implements IdData<InfoRemarkableChest> {
   @override
   final String id;
   final String name;
@@ -24,4 +24,15 @@ class InfoRemarkableChest implements IdData {
         version = data.getString('version'),
         category = data.getString('category'),
         region = data.getGsEnum('region', GsRegion.values);
+
+  @override
+  int compareTo(InfoRemarkableChest other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoRemarkableChest>([
+  (a, b) => a.region.index.compareTo(b.region.index),
+  (a, b) => a.rarity.compareTo(b.rarity),
+  (a, b) => a.name.compareTo(b.name),
+]);

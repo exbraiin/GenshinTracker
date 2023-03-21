@@ -13,6 +13,7 @@ enum GsElement implements GsEnum {
 
   @override
   String get id => name;
+  String get assetPath => 'assets/image/element/$name.png';
 
   final Color color;
   final String label;

@@ -5,14 +5,14 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/theme/theme.dart';
 
-typedef FilterBuilder<T> = Widget Function(
+typedef FilterBuilder<T extends Comparable<T>> = Widget Function(
   BuildContext context,
   ScreenFilter<T> filter,
   Widget button,
   void Function(String extra) toggle,
 );
 
-class ScreenFilterBuilder<T> extends StatelessWidget {
+class ScreenFilterBuilder<T extends Comparable<T>> extends StatelessWidget {
   final notifier = ValueNotifier(false);
   final ScreenFilter<T> filter;
   final FilterBuilder<T> builder;
@@ -121,7 +121,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                             children: widget.filter.sections
                                 .take(half)
                                 .map(_filter)
-                                .separate(const SizedBox(height: kSeparator8))
+                                .separate(const SizedBox(height: 12))
                                 .toList(),
                           ),
                         ),
@@ -132,7 +132,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                             children: widget.filter.sections
                                 .skip(half)
                                 .map(_filter)
-                                .separate(const SizedBox(height: kSeparator8))
+                                .separate(const SizedBox(height: 12))
                                 .toList(),
                           ),
                         ),
@@ -154,7 +154,11 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
       children: [
         Text(
           section.title(context),
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: kSeparator8),
         Wrap(
@@ -189,13 +193,20 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
     return Container(
       height: 28,
       decoration: BoxDecoration(
-        color: context.themeColors.mainColor0.withOpacity(0.6),
+        gradient: LinearGradient(
+          colors: [
+            context.themeColors.mainColor0,
+            context.themeColors.mainColor2,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
           width: 2,
           color: selected
-              ? context.themeColors.primary.withOpacity(0.8)
-              : Colors.white.withOpacity(0.8),
+              ? context.themeColors.primary80
+              : context.themeColors.dimWhite,
         ),
       ),
       padding: const EdgeInsets.all(kSeparator4),

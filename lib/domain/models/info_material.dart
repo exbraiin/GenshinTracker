@@ -1,7 +1,7 @@
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoMaterial implements IdData {
+class InfoMaterial implements IdData<InfoMaterial> {
   @override
   final String id;
   final String name;
@@ -29,4 +29,17 @@ class InfoMaterial implements IdData {
         subgroup = data.getInt('subgroup'),
         region = data.getGsEnum('region', GsRegion.values),
         weekdays = data.getGsEnumList('weekdays', GsWeekday.values);
+
+  @override
+  int compareTo(InfoMaterial other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoMaterial>([
+  (a, b) => a.group.index.compareTo(b.group.index),
+  (a, b) => a.subgroup.compareTo(b.subgroup),
+  (a, b) => a.region.index.compareTo(b.region.index),
+  (a, b) => a.rarity.compareTo(b.rarity),
+  (a, b) => a.name.compareTo(b.name),
+]);

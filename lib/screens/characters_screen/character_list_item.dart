@@ -1,5 +1,6 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
@@ -25,23 +26,21 @@ class CharacterListItem extends StatelessWidget {
     final chars = GsUtils.characters;
     final friend = chars.getCharFriendship(item.id);
     final ascension = chars.getCharAscension(item.id);
-    final charCons = chars.getCharConstellations(item.id);
     final charConsTotal = chars.getTotalCharConstellations(item.id);
 
     return GsItemCardButton(
       onTap: onTap,
       label: item.name,
       rarity: item.rarity,
-      disable: charCons == null,
+      disable: charConsTotal == null,
       banner: GsItemBanner.fromVersion(item.version),
       imageUrlPath: GsUtils.characters.getImage(item.id),
-      child: _child(context, charCons, charConsTotal, friend, ascension),
+      child: _child(context, charConsTotal, friend, ascension),
     );
   }
 
   Widget _child(
     BuildContext context,
-    int? charCons,
     int? charConsTotal,
     int friend,
     int ascension,
@@ -57,31 +56,20 @@ class CharacterListItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          showExtra && charCons != null
+          showExtra && charConsTotal != null
               ? ItemRarityBubble.withLabel(
                   size: 30,
                   asset: item.element.assetPath,
-                  label: 'C$charCons',
+                  label: 'C${charConsTotal.compact()}',
                 )
               : ItemRarityBubble(size: 30, asset: item.element.assetPath),
           const Spacer(),
           Column(
             children: [
-              if (showExtra && charCons != null)
+              if (showExtra && charConsTotal != null)
                 GsItemCardLabel(
                   asset: imageXp,
                   label: '$friend',
-                ),
-              if (showExtra &&
-                  charConsTotal != null &&
-                  charConsTotal != charCons)
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: const EdgeInsets.only(top: kSeparator2),
-                  child: GsItemCardLabel(
-                    asset: menuIconWish,
-                    label: 'C$charConsTotal',
-                  ),
                 ),
               const Spacer(),
               if (showItem && material != null)

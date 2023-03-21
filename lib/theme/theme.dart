@@ -14,7 +14,7 @@ final theme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: _themeColors.mainColor1,
   ),
-  colorScheme: ColorScheme.light(
+  colorScheme: ColorScheme.dark(
     background: _themeColors.mainColor1,
   ),
   tooltipTheme: TooltipThemeData(

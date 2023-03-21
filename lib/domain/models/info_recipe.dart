@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoRecipe implements IdData {
+class InfoRecipe implements IdData<InfoRecipe> {
   @override
   final String id;
   final String name;
@@ -28,4 +28,14 @@ class InfoRecipe implements IdData {
         type = data.getGsEnum('type', GsRecipeType.values),
         effect = data.getGsEnum('effect', GsRecipeBuff.values),
         ingredients = data.getMap<String, int>('ingredients');
+
+  @override
+  int compareTo(InfoRecipe other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoRecipe>([
+  (a, b) => b.rarity.compareTo(a.rarity),
+  (a, b) => a.name.compareTo(b.name),
+]);

@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoSpincrystal implements IdData {
+class InfoSpincrystal implements IdData<InfoSpincrystal> {
   @override
   final String id;
   final int number;
@@ -22,4 +22,9 @@ class InfoSpincrystal implements IdData {
         region = data.getGsEnum('region', GsRegion.values),
         source = data.getString('source'),
         version = data.getString('version');
+
+  @override
+  int compareTo(InfoSpincrystal other) {
+    return number.compareTo(other.number);
+  }
 }

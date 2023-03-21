@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCharacterOutfit implements IdData {
+class InfoCharacterOutfit implements IdData<InfoCharacterOutfit> {
   @override
   final String id;
   final String name;
@@ -18,4 +18,9 @@ class InfoCharacterOutfit implements IdData {
         character = data.getString('character'),
         image = data.getString('image'),
         fullImage = data.getString('full_image');
+
+  @override
+  int compareTo(InfoCharacterOutfit other) {
+    return id.compareTo(other.id);
+  }
 }

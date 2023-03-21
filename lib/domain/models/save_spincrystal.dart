@@ -29,4 +29,9 @@ class SaveSpincrystal implements IdSaveData<SaveSpincrystal> {
         'id': id,
         'obtained': obtained,
       };
+
+  @override
+  int compareTo(SaveSpincrystal other) {
+    return id.compareTo(other.id);
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoArtifact implements IdData {
+class InfoArtifact implements IdData<InfoArtifact> {
   @override
   final String id;
   final String name;
@@ -28,7 +28,20 @@ class InfoArtifact implements IdData {
         rarity = data.getInt('rarity', 1),
         pieces =
             data.getModelMapAsList('pieces', InfoArtifactPiece.fromJsonData);
+
+  @override
+  int compareTo(InfoArtifact other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoArtifact>([
+  (a, b) => b.rarity.compareTo(a.rarity),
+  (a, b) => a.region.index.compareTo(b.region.index),
+  (a, b) => a.version.compareTo(b.version),
+  (a, b) => a.domain.compareTo(b.domain),
+  (a, b) => a.name.compareTo(b.name),
+]);
 
 class InfoArtifactPiece {
   final String name;

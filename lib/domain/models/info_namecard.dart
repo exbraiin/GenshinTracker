@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoNamecard implements IdData {
+class InfoNamecard implements IdData<InfoNamecard> {
   @override
   final String id;
   final int rarity;
@@ -22,4 +22,14 @@ class InfoNamecard implements IdData {
         fullImage = data.getString('full_image'),
         obtain = data.getString('obtain'),
         version = data.getString('version');
+
+  @override
+  int compareTo(InfoNamecard other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoNamecard>([
+  (a, b) => a.type.index.compareTo(b.type.index),
+  (a, b) => a.name.compareTo(b.name),
+]);

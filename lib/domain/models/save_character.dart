@@ -47,4 +47,9 @@ class SaveCharacter implements IdSaveData<SaveCharacter> {
       friendship: friendship ?? this.friendship,
     );
   }
+
+  @override
+  int compareTo(SaveCharacter other) {
+    return id.compareTo(other.id);
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoWeapon implements IdData {
+class InfoWeapon implements IdData<InfoWeapon> {
   @override
   final String id;
   final String name;
@@ -28,4 +28,14 @@ class InfoWeapon implements IdData {
         type = data.getGsEnum('type', GsWeapon.values),
         source = data.getGsEnum('source', GsItemSource.values),
         statType = data.getGsEnum('stat_type', GsAttributeStat.values);
+
+  @override
+  int compareTo(InfoWeapon other) {
+    return _comparator.compare(this, other);
+  }
 }
+
+final _comparator = GsComparator<InfoWeapon>([
+  (a, b) => b.rarity.compareTo(a.rarity),
+  (a, b) => a.name.compareTo(b.name),
+]);

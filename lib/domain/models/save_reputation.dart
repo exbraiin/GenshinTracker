@@ -29,4 +29,9 @@ class SaveReputation implements IdSaveData<SaveReputation> {
         'id': id,
         'reputation': reputation,
       };
+
+  @override
+  int compareTo(SaveReputation other) {
+    return id.compareTo(other.id);
+  }
 }

@@ -29,4 +29,9 @@ class SaveRecipe implements IdSaveData<SaveRecipe> {
         'id': id,
         'proficiency': proficiency,
       };
+
+  @override
+  int compareTo(SaveRecipe other) {
+    return id.compareTo(other.id);
+  }
 }

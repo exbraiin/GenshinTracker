@@ -45,19 +45,8 @@ String getRarityBgImage(int r) => 'assets/image/rarity/Item_${r}_Star.png';
 String getElementBgImage(GsElement e) =>
     'assets/image/backgrounds/${e.name}.gif';
 
-extension GsElementExt on GsElement {
-  String get assetPath => 'assets/image/element/$name.png';
-}
-
 extension GsWeaponExt on GsWeapon {
   String get assetPath => 'assets/image/weapon_type/$name.png';
-}
-
-extension GsWeaponStatExt on GsAttributeStat {
-  String get assetPath {
-    if (this == GsAttributeStat.none) return '';
-    return 'assets/image/weapon_stat/$name.png';
-  }
 }
 
 extension GsRecipeBuffExt on GsRecipeBuff {
