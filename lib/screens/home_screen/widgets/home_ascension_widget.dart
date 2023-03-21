@@ -107,7 +107,8 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         .groupBy((e) => e.key?.id)
         .values
         .map(combine)
-        .sorted();
+        .where((e) => e.key != null)
+        .sortedBy((e) => e.key!);
 
     return ValueListenableBuilder<bool>(
       valueListenable: _notifier,

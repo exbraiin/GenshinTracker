@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoVersion implements IdData<InfoVersion> {
+class InfoVersion extends IdData<InfoVersion> {
   @override
   final String id;
   final String name;

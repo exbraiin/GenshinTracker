@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveRemarkableChest implements IdSaveData<SaveRemarkableChest> {
+class SaveRemarkableChest extends IdSaveData<SaveRemarkableChest> {
   @override
   final String id;
   final bool obtained;

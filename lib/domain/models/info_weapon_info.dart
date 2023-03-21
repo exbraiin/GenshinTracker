@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoWeaponInfo implements IdData<InfoWeaponInfo> {
+class InfoWeaponInfo extends IdData<InfoWeaponInfo> {
   @override
   final String id;
   final String effectName;
@@ -22,9 +22,4 @@ class InfoWeaponInfo implements IdData<InfoWeaponInfo> {
         ascAtkValues = data.getStringAsStringList('asc_atk_values'),
         ascStatValues = data.getStringAsStringList('asc_stat_values'),
         ascStatType = data.getGsEnum('asc_stat_type', GsAttributeStat.values);
-
-  @override
-  int compareTo(InfoWeaponInfo other) {
-    return id.compareTo(other.id);
-  }
 }

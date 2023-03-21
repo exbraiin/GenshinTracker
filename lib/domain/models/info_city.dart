@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCity implements IdData<InfoCity> {
+class InfoCity extends IdData<InfoCity> {
   @override
   final String id;
   final String name;

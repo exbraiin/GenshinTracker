@@ -1,5 +1,8 @@
 abstract class IdData<T extends IdData<T>> implements Comparable<T> {
   String get id;
+
+  @override
+  int compareTo(T other) => id.compareTo(other.id);
 }
 
 abstract class IdSaveData<T extends IdSaveData<T>> extends IdData<T> {

@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCharacter implements IdData<InfoCharacter> {
+class InfoCharacter extends IdData<InfoCharacter> {
   @override
   final String id;
   final String enkaId;

@@ -1,7 +1,7 @@
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoMaterial implements IdData<InfoMaterial> {
+class InfoMaterial extends IdData<InfoMaterial> {
   @override
   final String id;
   final String name;

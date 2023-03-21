@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoNamecard implements IdData<InfoNamecard> {
+class InfoNamecard extends IdData<InfoNamecard> {
   @override
   final String id;
   final int rarity;

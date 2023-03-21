@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoSpincrystal implements IdData<InfoSpincrystal> {
+class InfoSpincrystal extends IdData<InfoSpincrystal> {
   @override
   final String id;
   final int number;

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SavePlayerInfo implements IdSaveData<SavePlayerInfo> {
+class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
   @override
   final String id;
   final String avatarId;

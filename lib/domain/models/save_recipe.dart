@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveRecipe implements IdSaveData<SaveRecipe> {
+class SaveRecipe extends IdSaveData<SaveRecipe> {
   @override
   final String id;
   final int proficiency;

@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveReputation implements IdSaveData<SaveReputation> {
+class SaveReputation extends IdSaveData<SaveReputation> {
   @override
   final String id;
   final int reputation;

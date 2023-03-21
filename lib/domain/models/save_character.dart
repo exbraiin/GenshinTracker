@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveCharacter implements IdSaveData<SaveCharacter> {
+class SaveCharacter extends IdSaveData<SaveCharacter> {
   @override
   final String id;
   final String outfit;

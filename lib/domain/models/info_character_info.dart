@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoCharacterInfo implements IdData<InfoCharacterInfo> {
+class InfoCharacterInfo extends IdData<InfoCharacterInfo> {
   @override
   final String id;
   final InfoCharacterAscension ascension;
@@ -18,11 +18,6 @@ class InfoCharacterInfo implements IdData<InfoCharacterInfo> {
           'constellations',
           InfoCharacterConstellation.fromJsonData,
         );
-
-  @override
-  int compareTo(InfoCharacterInfo other) {
-    return id.compareTo(other.id);
-  }
 }
 
 class InfoCharacterTalent {

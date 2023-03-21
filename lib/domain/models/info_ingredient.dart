@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class InfoIngredient implements IdData<InfoIngredient> {
+class InfoIngredient extends IdData<InfoIngredient> {
   @override
   final String id;
   final String name;

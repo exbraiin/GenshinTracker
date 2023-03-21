@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveSereniteaSet implements IdSaveData<SaveSereniteaSet> {
+class SaveSereniteaSet extends IdSaveData<SaveSereniteaSet> {
   @override
   final String id;
   final List<String> chars;

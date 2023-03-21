@@ -1,6 +1,6 @@
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveWish extends Comparable<SaveWish> implements IdSaveData<SaveWish> {
+class SaveWish extends IdSaveData<SaveWish> {
   @override
   final String id;
   final int number;
@@ -54,19 +54,19 @@ class SaveWish extends Comparable<SaveWish> implements IdSaveData<SaveWish> {
 
   @override
   int compareTo(SaveWish other) {
-    final c0 = bannerDate.compareTo(other.bannerDate);
-    if (c0 != 0) return c0;
-    final c1 = bannerId.compareTo(other.bannerId);
-    if (c1 != 0) return c1;
-    final c2 = number.compareTo(other.number);
-    if (c2 != 0) return c2;
-    return date.compareTo(other.date);
+    return _comparator.compare(this, other);
   }
 }
 
+final _comparator = GsComparator<SaveWish>([
+  (a, b) => a.bannerDate.compareTo(b.bannerDate),
+  (a, b) => a.bannerId.compareTo(b.bannerId),
+  (a, b) => a.number.compareTo(b.number),
+  (a, b) => a.date.compareTo(b.date),
+]);
+
 DateTime _getBannerDate(String bannerId) {
   final e = bannerId.split('_').toList();
-  return DateTime.parse(
-    '${e[e.length - 3]}-${e[e.length - 2]}-${e[e.length - 1]}',
-  );
+  final date = '${e[e.length - 3]}-${e[e.length - 2]}-${e[e.length - 1]}';
+  return DateTime.parse(date);
 }
