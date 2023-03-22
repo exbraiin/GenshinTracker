@@ -24,12 +24,8 @@ class InfoNamecard extends IdData<InfoNamecard> {
         version = data.getString('version');
 
   @override
-  int compareTo(InfoNamecard other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoNamecard>> get comparators => [
+        (a, b) => a.type.index.compareTo(b.type.index),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoNamecard>([
-  (a, b) => a.type.index.compareTo(b.type.index),
-  (a, b) => a.name.compareTo(b.name),
-]);

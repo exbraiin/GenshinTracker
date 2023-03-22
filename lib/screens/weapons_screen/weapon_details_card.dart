@@ -10,6 +10,7 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/theme/theme.dart';
 
 class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
@@ -86,120 +87,9 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     BuildContext context,
     InfoWeaponInfo info,
   ) {
-    final utils = GsUtils.weaponMaterials;
-    final ascension = utils.weaponAscension(item.rarity);
-    final style = context.textTheme.titleSmall?.copyWith(color: Colors.black);
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.ascension),
-      content: ValueNotifierBuilder<int>(
-        value: 0,
-        builder: (context, notifier, child) {
-          final idx = notifier.value;
-          final mats = utils.getAscensionMaterials(info.id, idx);
-          final atk = info.ascAtkValues.elementAtOrNull(idx);
-          final stat = info.ascStatValues.elementAtOrNull(idx);
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: kSeparator4),
-              Table(
-                border: TableBorder(
-                  horizontalInside: BorderSide(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                  verticalInside: BorderSide(
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                ),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: const {0: IntrinsicColumnWidth()},
-                children: [
-                  TableRow(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(kSeparator4),
-                        child: Text(
-                          context.fromLabel(Labels.level),
-                          style: style,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: ascension
-                              .mapIndexed<Widget>((i, c) {
-                                return Opacity(
-                                  opacity: i == idx ? 1 : kDisableOpacity,
-                                  child: GsItemCardLabel(
-                                    label: '${c.level}',
-                                    onTap: () => notifier.value = i,
-                                  ),
-                                );
-                              })
-                              .separate(const SizedBox(width: kSeparator4))
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  ...{
-                    GsAttributeStat.atk: atk,
-                    info.ascStatType: stat,
-                  }
-                      .entries
-                      .where((e) => e.key != GsAttributeStat.none)
-                      .map((e) {
-                    return TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(kSeparator4),
-                          child: Text(
-                            context.fromLabel(e.key.label),
-                            style: style,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(e.value ?? '-', style: style),
-                        ),
-                      ],
-                    );
-                  }),
-                  TableRow(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(kSeparator4),
-                        child: Text(
-                          context.fromLabel(Labels.materials),
-                          style: style,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(kSeparator4),
-                        child: Row(
-                          children: mats.entries
-                              .map<Widget>((e) {
-                                final db = GsDatabase.instance.infoMaterials;
-                                final item = db.getItemOrNull(e.key);
-                                return ItemRarityBubble.withLabel(
-                                  image: item?.image ?? '',
-                                  rarity: item?.rarity ?? 1,
-                                  label: e.value.compact(),
-                                );
-                              })
-                              .separate(const SizedBox(width: kSeparator4))
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
+      content: AscensionTable.weapon(item, info),
     );
   }
 

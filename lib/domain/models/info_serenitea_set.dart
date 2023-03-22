@@ -22,12 +22,8 @@ class InfoSereniteaSet extends IdData<InfoSereniteaSet> {
         chars = data.getStringList('chars');
 
   @override
-  int compareTo(InfoSereniteaSet other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoSereniteaSet>> get comparators => [
+        (a, b) => a.category.index.compareTo(b.category.index),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoSereniteaSet>([
-  (a, b) => a.category.index.compareTo(b.category.index),
-  (a, b) => a.name.compareTo(b.name),
-]);

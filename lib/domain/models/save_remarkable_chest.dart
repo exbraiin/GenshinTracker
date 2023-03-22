@@ -29,9 +29,4 @@ class SaveRemarkableChest extends IdSaveData<SaveRemarkableChest> {
         'id': id,
         'obtained': obtained,
       };
-
-  @override
-  int compareTo(SaveRemarkableChest other) {
-    return id.compareTo(other.id);
-  }
 }

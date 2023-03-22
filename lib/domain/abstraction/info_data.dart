@@ -1,8 +1,16 @@
 abstract class IdData<T extends IdData<T>> implements Comparable<T> {
   String get id;
 
+  List<Comparator<T>> get comparators => const [];
+
   @override
-  int compareTo(T other) => id.compareTo(other.id);
+  int compareTo(T other) {
+    for (final comparator in comparators) {
+      final result = comparator(this as T, other);
+      if (result != 0) return result;
+    }
+    return id.compareTo(other.id);
+  }
 }
 
 abstract class IdSaveData<T extends IdSaveData<T>> extends IdData<T> {
@@ -12,18 +20,4 @@ abstract class IdSaveData<T extends IdSaveData<T>> extends IdData<T> {
 
 abstract class GsEnum {
   String get id;
-}
-
-class GsComparator<T> {
-  final List<Comparator<T>> comparators;
-
-  const GsComparator(this.comparators);
-
-  int compare(T a, T b) {
-    for (final comparator in comparators) {
-      final result = comparator(a, b);
-      if (result != 0) return result;
-    }
-    return 0;
-  }
 }

@@ -29,9 +29,4 @@ class SaveMaterial extends IdSaveData<SaveMaterial> {
         'id': id,
         'amount': amount,
       };
-
-  @override
-  int compareTo(SaveMaterial other) {
-    return id.compareTo(other.id);
-  }
 }

@@ -14,6 +14,7 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/theme/theme.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
@@ -345,125 +346,11 @@ class CharacterDetailsScreen extends StatelessWidget {
     InfoCharacter info,
     InfoCharacterInfo infos,
   ) {
-    final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
-    final ascension = GsUtils.characterMaterials.characterAscension();
-    return ValueNotifierBuilder<int>(
-      value: 0,
-      builder: (context, notifier, child) {
-        final idx = notifier.value;
-        final utils = GsUtils.characterMaterials;
-        final hp = infos.ascension.ascHpValues.elementAtOrNull(idx);
-        final atk = infos.ascension.ascAtkValues.elementAtOrNull(idx);
-        final def = infos.ascension.ascDefValues.elementAtOrNull(idx);
-        final stat = infos.ascension.ascStatValues.elementAtOrNull(idx);
-        final mats = utils.getAscensionMaterials(infos.id, idx);
-        return GsDataBox.info(
-          key: _ascension,
-          bgColor: bgColor,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(context.fromLabel(Labels.ascension)),
-              const SizedBox(height: kSeparator6),
-              Row(
-                children: ascension
-                    .mapIndexed<Widget>((idx, cfg) {
-                      return _asButton(
-                        selected: notifier.value == idx,
-                        onTap: () => notifier.value = idx,
-                        child: ItemRarityBubble(
-                          color:
-                              info.element.color.withOpacity(kDisableOpacity),
-                          child: IgnorePointer(
-                            child: Center(child: Text(cfg.level.toString())),
-                          ),
-                        ),
-                      );
-                    })
-                    .separate(const SizedBox(width: kSeparator8))
-                    .toList(),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Table(
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: const {
-                  0: IntrinsicColumnWidth(),
-                  1: IntrinsicColumnWidth(),
-                },
-                children: [
-                  TableRow(
-                    children: [
-                      Text(
-                        context.fromLabel(GsAttributeStat.hp.label),
-                        style: style,
-                      ),
-                      const SizedBox(width: kSeparator8, height: 24),
-                      Text(hp ?? '-', style: style),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        context.fromLabel(GsAttributeStat.atk.label),
-                        style: style,
-                      ),
-                      const SizedBox(width: kSeparator8, height: 24),
-                      Text(atk ?? '-', style: style),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        context.fromLabel(GsAttributeStat.def.label),
-                        style: style,
-                      ),
-                      const SizedBox(width: kSeparator8, height: 24),
-                      Text(def ?? '-', style: style),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        context.fromLabel(infos.ascension.ascStatType.label),
-                        style: style,
-                      ),
-                      const SizedBox(width: kSeparator8, height: 24),
-                      Text(stat ?? '-', style: style),
-                    ],
-                  ),
-                  if (mats.isNotEmpty)
-                    TableRow(
-                      children: [
-                        Text(
-                          context.fromLabel(Labels.materials),
-                          style: style,
-                        ),
-                        const SizedBox(width: kSeparator8, height: 24),
-                        Row(
-                          children: mats.entries
-                              .map<Widget>((e) {
-                                final db = GsDatabase.instance.infoMaterials;
-                                final item = db.getItemOrNull(e.key);
-                                return ItemRarityBubble.withLabel(
-                                  image: item?.image ?? '',
-                                  rarity: item?.rarity ?? 1,
-                                  label: e.value.compact(),
-                                );
-                              })
-                              .separate(const SizedBox(width: kSeparator4))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+    return GsDataBox.info(
+      key: _ascension,
+      bgColor: bgColor,
+      title: Text(context.fromLabel(Labels.ascension)),
+      child: AscensionTable.character(info, infos),
     );
   }
 

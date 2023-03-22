@@ -31,15 +31,11 @@ class InfoMaterial extends IdData<InfoMaterial> {
         weekdays = data.getGsEnumList('weekdays', GsWeekday.values);
 
   @override
-  int compareTo(InfoMaterial other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoMaterial>> get comparators => [
+        (a, b) => a.group.index.compareTo(b.group.index),
+        (a, b) => a.subgroup.compareTo(b.subgroup),
+        (a, b) => a.region.index.compareTo(b.region.index),
+        (a, b) => a.rarity.compareTo(b.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoMaterial>([
-  (a, b) => a.group.index.compareTo(b.group.index),
-  (a, b) => a.subgroup.compareTo(b.subgroup),
-  (a, b) => a.region.index.compareTo(b.region.index),
-  (a, b) => a.rarity.compareTo(b.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);

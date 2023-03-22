@@ -736,10 +736,11 @@ Map<String, int> _getMaterials<T>(
 
 // === OLD ===
 
-class ItemData extends Comparable<ItemData> {
+class ItemData extends IdData<ItemData> {
   final InfoWeapon? weapon;
   final InfoCharacter? character;
 
+  @override
   String get id => weapon?.id ?? character?.id ?? '';
   String get name => weapon?.name ?? character?.name ?? '';
   String get image => weapon?.image ?? character?.image ?? '';
@@ -754,16 +755,12 @@ class ItemData extends Comparable<ItemData> {
   String? getUrlImg() => weapon != null ? weapon?.image : character?.image;
 
   @override
-  int compareTo(ItemData other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<ItemData>> get comparators => [
+        (a, b) => a.rarity.compareTo(b.rarity),
+        (a, b) => a.type.index.compareTo(b.type.index),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<ItemData>([
-  (a, b) => a.rarity.compareTo(b.rarity),
-  (a, b) => a.type.index.compareTo(b.type.index),
-  (a, b) => a.name.compareTo(b.name),
-]);
 
 List<Widget> getSized(Iterable<Widget> widgets) {
   final sizes = <double>[100, 44, 0, 20, 64, 84, 56];

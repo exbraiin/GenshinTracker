@@ -74,9 +74,10 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
   static Future<SavePlayerInfo> fetchEnkaPlayerInfo(String uid) async {
     final url = 'https://enka.network/api/uid/$uid?info';
     final client = HttpClient();
-    final request = await client.getUrl(Uri.parse(url));
-    final response = await request.close();
-    final data = await response.transform(utf8.decoder).join();
+    final data = await client
+        .getUrl(Uri.parse(url))
+        .then((value) => value.close())
+        .then((value) => value.transform(utf8.decoder).join());
     client.close();
     final info = JsonData(jsonDecode(data) as Map<String, dynamic>);
     return SavePlayerInfo.fromRequestMap(info);
@@ -124,9 +125,4 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
         'tower_chamber': towerChamber,
         'avatars': avatars,
       };
-
-  @override
-  int compareTo(SavePlayerInfo other) {
-    return id.compareTo(other.id);
-  }
 }

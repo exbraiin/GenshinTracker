@@ -30,18 +30,14 @@ class InfoArtifact extends IdData<InfoArtifact> {
             data.getModelMapAsList('pieces', InfoArtifactPiece.fromJsonData);
 
   @override
-  int compareTo(InfoArtifact other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoArtifact>> get comparators => [
+        (a, b) => b.rarity.compareTo(a.rarity),
+        (a, b) => a.region.index.compareTo(b.region.index),
+        (a, b) => a.version.compareTo(b.version),
+        (a, b) => a.domain.compareTo(b.domain),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoArtifact>([
-  (a, b) => b.rarity.compareTo(a.rarity),
-  (a, b) => a.region.index.compareTo(b.region.index),
-  (a, b) => a.version.compareTo(b.version),
-  (a, b) => a.domain.compareTo(b.domain),
-  (a, b) => a.name.compareTo(b.name),
-]);
 
 class InfoArtifactPiece {
   final String name;

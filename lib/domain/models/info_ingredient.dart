@@ -18,12 +18,8 @@ class InfoIngredient extends IdData<InfoIngredient> {
         version = data.getString('version');
 
   @override
-  int compareTo(InfoIngredient other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoIngredient>> get comparators => [
+        (a, b) => a.rarity.compareTo(b.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoIngredient>([
-  (a, b) => a.rarity.compareTo(b.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);

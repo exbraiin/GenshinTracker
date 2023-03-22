@@ -30,12 +30,8 @@ class InfoWeapon extends IdData<InfoWeapon> {
         statType = data.getGsEnum('stat_type', GsAttributeStat.values);
 
   @override
-  int compareTo(InfoWeapon other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoWeapon>> get comparators => [
+        (a, b) => b.rarity.compareTo(a.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoWeapon>([
-  (a, b) => b.rarity.compareTo(a.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);

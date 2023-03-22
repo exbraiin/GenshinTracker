@@ -53,17 +53,13 @@ class SaveWish extends IdSaveData<SaveWish> {
       };
 
   @override
-  int compareTo(SaveWish other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<SaveWish>> get comparators => [
+        (a, b) => a.date.compareTo(b.date),
+        (a, b) => a.number.compareTo(b.number),
+        (a, b) => a.bannerId.compareTo(b.bannerId),
+        (a, b) => a.bannerDate.compareTo(b.bannerDate),
+      ];
 }
-
-final _comparator = GsComparator<SaveWish>([
-  (a, b) => a.date.compareTo(b.date),
-  (a, b) => a.number.compareTo(b.number),
-  (a, b) => a.bannerId.compareTo(b.bannerId),
-  (a, b) => a.bannerDate.compareTo(b.bannerDate),
-]);
 
 DateTime _getBannerDate(String bannerId) {
   final e = bannerId.split('_').toList();

@@ -30,12 +30,8 @@ class InfoRecipe extends IdData<InfoRecipe> {
         ingredients = data.getMap<String, int>('ingredients');
 
   @override
-  int compareTo(InfoRecipe other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoRecipe>> get comparators => [
+        (a, b) => b.rarity.compareTo(a.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoRecipe>([
-  (a, b) => b.rarity.compareTo(a.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);

@@ -26,13 +26,9 @@ class InfoRemarkableChest extends IdData<InfoRemarkableChest> {
         region = data.getGsEnum('region', GsRegion.values);
 
   @override
-  int compareTo(InfoRemarkableChest other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoRemarkableChest>> get comparators => [
+        (a, b) => a.region.index.compareTo(b.region.index),
+        (a, b) => a.rarity.compareTo(b.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoRemarkableChest>([
-  (a, b) => a.region.index.compareTo(b.region.index),
-  (a, b) => a.rarity.compareTo(b.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);

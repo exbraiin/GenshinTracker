@@ -44,12 +44,8 @@ class InfoCharacter extends IdData<InfoCharacter> {
         source = data.getGsEnum('source', GsItemSource.values);
 
   @override
-  int compareTo(InfoCharacter other) {
-    return _comparator.compare(this, other);
-  }
+  List<Comparator<InfoCharacter>> get comparators => [
+        (a, b) => b.rarity.compareTo(a.rarity),
+        (a, b) => a.name.compareTo(b.name),
+      ];
 }
-
-final _comparator = GsComparator<InfoCharacter>([
-  (a, b) => b.rarity.compareTo(a.rarity),
-  (a, b) => a.name.compareTo(b.name),
-]);
