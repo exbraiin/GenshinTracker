@@ -218,7 +218,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         children: mats.entries
             .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
             .where((e) => e.key != null)
-            .sorted()
+            .sortedBy((e) => e.key!)
             .map((e) {
           return ItemRarityBubble.withLabel(
             rarity: e.key!.rarity,

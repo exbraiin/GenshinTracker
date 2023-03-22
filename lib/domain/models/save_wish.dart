@@ -59,10 +59,10 @@ class SaveWish extends IdSaveData<SaveWish> {
 }
 
 final _comparator = GsComparator<SaveWish>([
-  (a, b) => a.bannerDate.compareTo(b.bannerDate),
-  (a, b) => a.bannerId.compareTo(b.bannerId),
-  (a, b) => a.number.compareTo(b.number),
   (a, b) => a.date.compareTo(b.date),
+  (a, b) => a.number.compareTo(b.number),
+  (a, b) => a.bannerId.compareTo(b.bannerId),
+  (a, b) => a.bannerDate.compareTo(b.bannerDate),
 ]);
 
 DateTime _getBannerDate(String bannerId) {
