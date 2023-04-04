@@ -36,11 +36,11 @@ class WishesScreen extends StatelessWidget {
           builder: (context, filter, button, toggle) {
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.wishes),
+                label: context.fromLabel(Labels.wishes),
                 bottom: _header(context),
                 actions: [
                   Tooltip(
-                    message: Lang.of(context).getValue(Labels.hideEmptyBanners),
+                    message: context.fromLabel(Labels.hideEmptyBanners),
                     child: IconButton(
                       icon: Icon(
                         filter.hasExtra('show')
@@ -68,14 +68,15 @@ class WishesScreen extends StatelessWidget {
     );
   }
 
-  ListType _getListType(List<SaveWish> filteredWishes, int index) {
-    final wish = filteredWishes[index];
-    final p = filteredWishes.elementAtOrNull(index - 1);
-    final n = filteredWishes.elementAtOrNull(index + 1);
+  ListType _getListType(List<SaveWish> wishes, int index) {
+    late final cWish = wishes.elementAtOrNull(index);
+    late final pWish = wishes.elementAtOrNull(index - 1);
+    late final nWish = wishes.elementAtOrNull(index + 1);
+    if (cWish == null) return ListType.none;
 
-    late final isTop = p?.date != wish.date && n?.date == wish.date;
-    late final isMid = p?.date == wish.date && n?.date == wish.date;
-    late final isBot = p?.date == wish.date && n?.date != wish.date;
+    late final isTop = pWish?.date != cWish.date && nWish?.date == cWish.date;
+    late final isMid = pWish?.date == cWish.date && nWish?.date == cWish.date;
+    late final isBot = pWish?.date == cWish.date && nWish?.date != cWish.date;
     if (isTop) return ListType.top;
     if (isMid) return ListType.middle;
     if (isBot) return ListType.bottom;
@@ -92,7 +93,11 @@ class WishesScreen extends StatelessWidget {
     return banners.map(
       (banner) {
         final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
-        final filteredWishes = filter.match(bannerWishes).sortedDescending();
+        final filteredWishes = filter
+            .match(bannerWishes)
+            // This keeps the sorting by number inside the banner.
+            .sortedByDescending((e) => e.number)
+            .thenWith((a, b) => b.compareTo(a));
 
         final hide = !filter.hasExtra('show');
         final showBanner = !hide || filteredWishes.isNotEmpty;
