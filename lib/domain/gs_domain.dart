@@ -31,6 +31,7 @@ export 'models/info_version.dart';
 export 'models/info_weapon.dart';
 export 'models/info_weapon_info.dart';
 export 'models/save_character.dart';
+export 'models/save_config.dart';
 export 'models/save_material.dart';
 export 'models/save_player_info.dart';
 export 'models/save_recipe.dart';

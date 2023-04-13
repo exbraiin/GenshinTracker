@@ -1,12 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
+class SavePlayerInfo extends SaveConfig {
   @override
-  final String id;
+  final String id = SaveConfig.kPlayerInfo;
+  final String uid;
   final String avatarId;
   final String nickname;
   final String signature;
@@ -19,7 +17,7 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
   final Map<String, int> avatars;
 
   SavePlayerInfo({
-    required this.id,
+    this.uid = '',
     this.avatarId = '',
     this.nickname = '',
     this.signature = '',
@@ -33,7 +31,7 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
   });
 
   SavePlayerInfo.fromJsonData(JsonData m)
-      : id = m.getString('id'),
+      : uid = m.getString('uid'),
         avatarId = m.getString('avatar_id'),
         nickname = m.getString('nickname'),
         signature = m.getString('signature'),
@@ -54,7 +52,7 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
         .cast<Map<String, dynamic>>()
         .map(JsonData.new);
     return SavePlayerInfo(
-      id: m.getString('uid'),
+      uid: m.getString('uid'),
       avatarId: avtId,
       nickname: info.getString('nickname'),
       signature: info.getString('signature'),
@@ -71,20 +69,9 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
     );
   }
 
-  static Future<SavePlayerInfo> fetchEnkaPlayerInfo(String uid) async {
-    final url = 'https://enka.network/api/uid/$uid?info';
-    final client = HttpClient();
-    final data = await client
-        .getUrl(Uri.parse(url))
-        .then((value) => value.close())
-        .then((value) => value.transform(utf8.decoder).join());
-    client.close();
-    final info = JsonData(jsonDecode(data) as Map<String, dynamic>);
-    return SavePlayerInfo.fromRequestMap(info);
-  }
-
   @override
   SavePlayerInfo copyWith({
+    String? uid,
     String? avatarId,
     String? nickname,
     String? signature,
@@ -97,7 +84,7 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
     Map<String, int>? avatars,
   }) {
     return SavePlayerInfo(
-      id: id,
+      uid: uid ?? this.uid,
       avatarId: avatarId ?? this.avatarId,
       nickname: nickname ?? this.nickname,
       signature: signature ?? this.signature,
@@ -114,6 +101,7 @@ class SavePlayerInfo extends IdSaveData<SavePlayerInfo> {
   @override
   Map<String, dynamic> toMap() => {
         'id': id,
+        'uid': uid,
         'avatar_id': avatarId,
         'nickname': nickname,
         'signature': signature,

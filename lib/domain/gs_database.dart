@@ -117,9 +117,9 @@ class GsDatabase {
     SaveSpincrystal.fromJsonData,
     _notify,
   );
-  final savePlayerInfo = JsonSaveDetails<SavePlayerInfo>(
-    'player_info',
-    SavePlayerInfo.fromJsonData,
+  final saveUserConfigs = JsonSaveDetails<SaveConfig>(
+    'user_configs',
+    SaveConfig.fromJsonData,
     _notify,
   );
 
@@ -182,7 +182,7 @@ class GsDatabase {
       saveReputations.load(map);
       saveSereniteaSets.load(map);
       saveSpincrystals.load(map);
-      savePlayerInfo.load(map);
+      saveUserConfigs.load(map);
     });
   }
 
@@ -196,7 +196,7 @@ class GsDatabase {
       saveReputations,
       saveSereniteaSets,
       saveSpincrystals,
-      savePlayerInfo,
+      saveUserConfigs,
     ]);
   }
 

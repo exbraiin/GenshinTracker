@@ -140,7 +140,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     if (other is! ThemeColors) return this;
 
     Color clerp(Color Function(ThemeColors c) selector) =>
-        Color.lerp(selector(other), selector(this), t)!;
+        Color.lerp(selector(this), selector(other), t)!;
 
     return ThemeColors(
       primary: clerp((c) => c.primary),

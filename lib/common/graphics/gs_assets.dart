@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 const imageAppIcon = 'assets/image/icons/app_icon.png';
 const imageAppIconSmall = 'assets/image/icons/app_icon_40px.png';
@@ -30,28 +29,7 @@ const imageXp = 'assets/image/icons/Companion_xp.png';
 const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
 const fischlEmote = 'assets/image/illustrations/fischl.webp';
 
-const kMainBgDecoration = BoxDecoration(
-/*
-  image: DecorationImage(
-    fit: BoxFit.cover,
-    opacity: 0.1,
-    image: AssetImage('assets/image/bg.jpg'),
-  ),
-*/
-    );
+const kMainBgDecoration = BoxDecoration();
 
-String getRarityBgImage(int r) => 'assets/image/rarity/Item_${r}_Star.png';
-
-String getElementBgImage(GsElement e) =>
-    'assets/image/backgrounds/${e.name}.gif';
-
-extension GsWeaponExt on GsWeapon {
-  String get assetPath => 'assets/image/weapon_type/$name.png';
-}
-
-extension GsRecipeBuffExt on GsRecipeBuff {
-  String get assetPath {
-    if (this == GsRecipeBuff.none) return '';
-    return 'assets/image/recipe_buff/$name.png';
-  }
-}
+String getRarityBgImage(int rarity) =>
+    'assets/image/rarity/Item_${rarity}_Star.png';

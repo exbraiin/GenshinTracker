@@ -10,6 +10,7 @@ enum GsWeapon implements GsEnum {
 
   @override
   String get id => name;
+  String get assetPath => 'assets/image/weapon_type/$name.png';
 
   final String label;
   const GsWeapon(this.label);

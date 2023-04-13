@@ -50,7 +50,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(getElementBgImage(item.element)),
+                image: AssetImage(item.element.assetBgPath),
               ),
             ),
             child: Stack(

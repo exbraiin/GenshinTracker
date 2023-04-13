@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -18,7 +21,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = GsDatabase.instance.savePlayerInfo;
+    final db = GsDatabase.instance.saveUserConfigs;
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, notifier, child) {
@@ -26,8 +29,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return ValueStreamBuilder<bool>(
           stream: GsDatabase.instance.loaded,
           builder: (context, snapshot) {
-            final info = db.getItems().firstOrNull;
-            final hasValidId = info?.id.toString().length == 9;
+            final info = db.getItemOrNullAs<SavePlayerInfo>();
+            final hasValidId = info?.uid.length == 9;
             return GsDataBox.info(
               title: Row(
                 children: [
@@ -38,13 +41,13 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       length: 9,
                       align: TextAlign.right,
                       onDbUpdate: () {
-                        final info = db.getItems().firstOrNull;
-                        return int.tryParse(info?.id ?? '') ?? 0;
+                        final info = db.getItemOrNullAs<SavePlayerInfo>();
+                        return int.tryParse(info?.uid ?? '') ?? 0;
                       },
                       onUpdate: (i) {
-                        if (info?.id == i.toString()) return;
+                        if (info?.uid == i.toString()) return;
                         if (i.toString().length != 9) {
-                          if (info != null) db.deleteItem(info.id);
+                          db.deleteItem(SaveConfig.kPlayerInfo);
                           return;
                         }
                         _fetchAndInsert(i.toString());
@@ -67,7 +70,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                           onPressed: info != null && hasValidId
                               ? () {
                                   notifier.value = true;
-                                  _fetchAndInsert(info.id).whenComplete(
+                                  _fetchAndInsert(info.uid).whenComplete(
                                     () => notifier.value = false,
                                   );
                                 }
@@ -187,12 +190,16 @@ class HomePlayerInfoWidget extends StatelessWidget {
     );
   }
 
-  Future<void> _fetchAndInsert(String id) {
-    final db = GsDatabase.instance.savePlayerInfo;
-    return SavePlayerInfo.fetchEnkaPlayerInfo(id).then((v) {
-      final ids = db.getItems().map((e) => e.id).toSet();
-      ids.forEach(db.deleteItem);
-      db.insertItem(v);
-    });
+  Future<void> _fetchAndInsert(String uid) async {
+    final url = 'https://enka.network/api/uid/$uid?info';
+    final client = HttpClient();
+    final data = await client
+        .getUrl(Uri.parse(url))
+        .then((value) => value.close())
+        .then((value) => value.transform(utf8.decoder).join());
+    client.close();
+    final info = JsonData(jsonDecode(data) as Map<String, dynamic>);
+    final item = SavePlayerInfo.fromRequestMap(info);
+    GsDatabase.instance.saveUserConfigs.insertItem(item);
   }
 }

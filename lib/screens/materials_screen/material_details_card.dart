@@ -43,7 +43,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       if (item.weekdays.isNotEmpty)
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.weeklyTasks),
-          description: item.weekdays.join(', '),
+          description: item.weekdays.map((e) => '\u2022 ${e.label}').join('\n'),
         ),
       if (mats.length > 1)
         ItemDetailsCardContent(

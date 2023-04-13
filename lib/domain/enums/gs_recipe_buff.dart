@@ -41,6 +41,10 @@ enum GsRecipeBuff implements GsEnum {
 
   @override
   String get id => name;
+  String get assetPath {
+    if (this == GsRecipeBuff.none) return '';
+    return 'assets/image/recipe_buff/$name.png';
+  }
 
   final String label;
   const GsRecipeBuff(this.label);

@@ -31,6 +31,10 @@
 .pub/
 /build/
 
+# Custom ignore...
+/data/
+/lib/_testing/
+
 # Web related
 lib/generated_plugin_registrant.dart
 
