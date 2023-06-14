@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class CachedImageWidget extends StatelessWidget {
-  static String _getScaleUrl(String url, Size size) {
+  static String _getScaleUrl(String url, Size size, bool scale) {
     late final w = size.toCacheWidth;
     late final h = size.toCacheHeight;
+    if (!scale) return url;
     if (!url.startsWith('https://static.wikia.')) return url;
     if (w != null) return '$url/revision/latest/scale-to-width-down/$w';
-    if (h != null) return '$url/revision/latest/scale-to-height-down/$h';
+    if (h != null) return '$url/revision/latest/scale-to-width-down/$h';
+    // TODO: Fandom return weird image if scaled to height...
+    // if (h != null) return '$url/revision/latest/scale-to-height-down/$h';
     return url;
   }
 
@@ -35,8 +38,7 @@ class CachedImageWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, layout) {
         return CachedNetworkImage(
-          imageUrl:
-              scaleToSize ? _getScaleUrl(imageUrl!, layout.biggest) : imageUrl!,
+          imageUrl: _getScaleUrl(imageUrl!, layout.biggest, scaleToSize),
           fit: fit,
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,

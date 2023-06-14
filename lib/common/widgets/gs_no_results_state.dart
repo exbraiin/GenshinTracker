@@ -7,6 +7,7 @@ import 'package:tracker/theme/theme.dart';
 class GsNoResultsState extends StatelessWidget {
   final double size;
 
+  const GsNoResultsState.xSmall({super.key}) : size = 40;
   const GsNoResultsState.small({super.key}) : size = 60;
   const GsNoResultsState({super.key, this.size = 100});
 

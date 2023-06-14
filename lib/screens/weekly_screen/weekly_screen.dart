@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -6,6 +8,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -21,7 +24,7 @@ class WeeklyScreen extends StatefulWidget {
 }
 
 class _WeeklyScreenState extends State<WeeklyScreen> {
-  var _owned = false;
+  var _owned = true;
   var _weekday = 0;
 
   @override
@@ -34,12 +37,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
   Widget build(BuildContext context) {
     final now = DateTime.now().weekday - 1;
     final name = GsWeekday.values[_weekday - 1];
-    final materials = GsDatabase.instance.infoMaterials
-        .getItems()
-        .where((element) => element.weekdays.contains(name))
-        .groupBy((e) => '${e.group}-${e.region.name}-${e.subgroup}')
-        .entries
-        .map((e) => e.value.sortedBy((r) => r.rarity).first);
+    final materials = GsUtils.materials.getWeekdayMaterials(name);
 
     final ic = GsDatabase.instance.infoCharacters;
     final iw = GsDatabase.instance.infoWeapons;
@@ -64,6 +62,33 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
           padding: const EdgeInsets.all(kSeparator4),
           children: materials
               .map<Widget>((e) {
+                final characters = ic
+                    .getItems()
+                    .where(
+                      (char) => GsUtils.characterMaterials
+                          .getAllMaterials(char.id)
+                          .containsKey(e.id),
+                    )
+                    .where(
+                      (e) => !_owned || GsUtils.characters.hasCaracter(e.id),
+                    )
+                    .sortedByDescending((element) => element.rarity)
+                    .thenBy((element) => element.name);
+                final weapons = iw
+                    .getItems()
+                    .where(
+                      (weapon) => GsUtils.weaponMaterials
+                          .getAscensionMaterials(weapon.id)
+                          .containsKey(e.id),
+                    )
+                    .where(
+                      (e) => !_owned || GsUtils.weapons.hasWeapon(e.id),
+                    )
+                    .sortedByDescending((element) => element.rarity)
+                    .thenBy((element) => element.name);
+
+                final noContent = characters.isEmpty && weapons.isEmpty;
+
                 return GsDataBox.info(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,8 +96,8 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                       Row(
                         children: [
                           SizedBox(
-                            width: 32,
-                            height: 32,
+                            width: 50,
+                            height: 50,
                             child: CachedImageWidget(e.image),
                           ),
                           const SizedBox(width: kSeparator4),
@@ -83,26 +108,13 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         ],
                       ),
                       Divider(color: context.themeColors.dimWhite),
+                      if (noContent) const GsNoResultsState.small(),
                       Wrap(
                         spacing: kSeparator4,
                         runSpacing: kSeparator4,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
-                        children: ic
-                            .getItems()
-                            .where(
-                              (char) => GsUtils.characterMaterials
-                                  .getAllMaterials(char.id)
-                                  .containsKey(e.id),
-                            )
-                            .where(
-                              (e) =>
-                                  !_owned ||
-                                  GsUtils.characters.hasCaracter(e.id),
-                            )
-                            .sortedByDescending((element) => element.rarity)
-                            .thenBy((element) => element.name)
-                            .map((info) {
+                        children: characters.map((info) {
                           final exists =
                               GsUtils.characters.hasCaracter(info.id);
                           return Opacity(
@@ -121,19 +133,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         runSpacing: kSeparator4,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
-                        children: iw
-                            .getItems()
-                            .where(
-                              (weapon) => GsUtils.weaponMaterials
-                                  .getAscensionMaterials(weapon.id)
-                                  .containsKey(e.id),
-                            )
-                            .where(
-                              (e) => !_owned || GsUtils.weapons.hasWeapon(e.id),
-                            )
-                            .sortedByDescending((element) => element.rarity)
-                            .thenBy((element) => element.name)
-                            .map((info) {
+                        children: weapons.map((info) {
                           return Opacity(
                             opacity: GsUtils.weapons.hasWeapon(info.id)
                                 ? 1
@@ -151,7 +151,12 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                   ),
                 );
               })
-              .separate(const SizedBox(height: kSeparator4))
+              .toGrid(
+                crossCount: 2,
+                mainSpacing: kSeparator4,
+                crossSpacing: kSeparator4,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              )
               .toList(),
         ),
       ),
@@ -184,6 +189,45 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         borderRadius: kMainRadius,
         elevation: 1,
       ),
+    );
+  }
+}
+
+extension on Iterable<Widget> {
+  static Iterable<E> _separated<E>(
+    int count,
+    E Function(int) itemBuilder,
+    E Function(int) separatorBuilder,
+  ) {
+    return List.generate(math.max(0, count * 2 - 1), (i) {
+      final itemIndex = i ~/ 2;
+      if (i.isEven) return itemBuilder(itemIndex);
+      return separatorBuilder(itemIndex);
+    });
+  }
+
+  Iterable<Widget> toGrid({
+    int crossCount = 2,
+    double mainSpacing = 12,
+    double crossSpacing = 12,
+    bool shrinkRows = true,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  }) sync* {
+    yield* _separated(
+      (length / crossCount).ceil(),
+      (i) => Row(
+        crossAxisAlignment: crossAxisAlignment,
+        children: _separated(
+          shrinkRows
+              ? crossCount
+              : (length - i * crossCount).clamp(0, crossCount),
+          (n) => i * crossCount + n < length
+              ? Expanded(child: elementAt(i * crossCount + n))
+              : const Spacer(),
+          (n) => SizedBox(width: crossSpacing),
+        ).toList(),
+      ),
+      (i) => SizedBox(height: mainSpacing),
     );
   }
 }

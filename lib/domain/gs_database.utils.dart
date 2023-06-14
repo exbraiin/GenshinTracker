@@ -1,6 +1,7 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -250,6 +251,15 @@ class _Materials {
     final material = _db.infoMaterials.getItemOrNull(id);
     if (material == null) return [];
     return getGroupMaterials(material);
+  }
+
+  Iterable<InfoMaterial> getWeekdayMaterials(GsWeekday weekday) {
+    return _db.infoMaterials
+        .getItems()
+        .where((e) => e.weekdays.contains(weekday))
+        .groupBy((e) => '${e.group}-${e.region.name}-${e.subgroup}')
+        .entries
+        .map((e) => e.value.minBy((e) => e.rarity)!);
   }
 }
 
