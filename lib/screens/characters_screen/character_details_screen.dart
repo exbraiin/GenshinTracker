@@ -388,7 +388,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 children: [
                   Text(
                     selected.name,
-                    style: context.textTheme.titleLarge!
+                    style: context.textTheme.titleMedium!
                         .copyWith(color: context.themeColors.primary),
                   ),
                   const SizedBox(width: kSeparator8),
@@ -444,7 +444,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             children: [
               Text(
                 selected.name,
-                style: context.textTheme.titleLarge!
+                style: context.textTheme.titleMedium!
                     .copyWith(color: context.themeColors.primary),
               ),
               const SizedBox(height: kSeparator8),

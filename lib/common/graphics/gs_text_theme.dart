@@ -41,7 +41,7 @@ extension TextThemeExt on TextTheme {
   /// TS | 14 | black | 700 | none | 0.1
   TextStyle get cardLabel => titleSmall!.copyWith(
         color: Colors.black87,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.bold,
       );
 
