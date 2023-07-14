@@ -547,6 +547,6 @@ class Labels {
 	/// Yes
 	static const buttonYes = 'button_yes';
 
-	/// Update date for all {wishes}?
+	/// Update date for all {wishes} wishes?
 	static const updateAllWishes = 'update_all_wishes';
 }

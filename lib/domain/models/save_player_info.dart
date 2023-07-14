@@ -1,5 +1,5 @@
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/remote/enka_service.dart';
 
 class SavePlayerInfo extends SaveConfig {
   @override
@@ -43,31 +43,18 @@ class SavePlayerInfo extends SaveConfig {
         towerChamber = m.getInt('tower_chamber'),
         avatars = m.getMap<String, int>('avatars');
 
-  factory SavePlayerInfo.fromRequestMap(JsonData m) {
-    final info = JsonData(m.getDataOrDefault('playerInfo', const {}));
-    final avtInfo = JsonData(info.getDataOrDefault('profilePicture', const {}));
-    final avtId = avtInfo.getInt('avatarId').toString();
-    final avatars = info
-        .getDataOrDefault('showAvatarInfoList', const [])
-        .cast<Map<String, dynamic>>()
-        .map(JsonData.new);
-    return SavePlayerInfo(
-      uid: m.getString('uid'),
-      avatarId: avtId,
-      nickname: info.getString('nickname'),
-      signature: info.getString('signature'),
-      level: info.getInt('level'),
-      worldLevel: info.getInt('worldLevel'),
-      namecardId: info.getInt('nameCardId'),
-      achievements: info.getInt('finishAchievementNum'),
-      towerFloor: info.getInt('towerFloorIndex'),
-      towerChamber: info.getInt('towerLevelIndex'),
-      avatars: avatars.toMap(
-        (e) => e.getInt('avatarId').toString(),
-        (e) => e.getInt('level'),
-      ),
-    );
-  }
+  SavePlayerInfo.fromEnkaInfo(EnkaPlayerInfo player)
+      : uid = player.uid,
+        avatarId = player.avatarId,
+        nickname = player.nickname,
+        signature = player.signature,
+        level = player.level,
+        worldLevel = player.worldLevel,
+        namecardId = player.namecardId,
+        achievements = player.achievements,
+        towerFloor = player.towerFloor,
+        towerChamber = player.towerChamber,
+        avatars = player.avatars;
 
   @override
   SavePlayerInfo copyWith({

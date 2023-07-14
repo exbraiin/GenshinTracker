@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class HoverDetector extends StatelessWidget {
   final Widget? child;
   final VoidCallback? onTap;
-  final Decoration Function(bool) decoration;
+  final Decoration Function({bool hover}) decoration;
 
   const HoverDetector({
     super.key,
@@ -20,7 +20,7 @@ class HoverDetector extends StatelessWidget {
       builder: (context, setState) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          foregroundDecoration: decoration(isHover),
+          foregroundDecoration: decoration(hover: isHover),
           child: InkWell(
             onTap: onTap,
             onHover: (h) => setState(() => isHover = h),

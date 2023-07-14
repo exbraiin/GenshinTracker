@@ -518,7 +518,7 @@ class _SaveCharacters {
 
   void increaseFriendshipCharacter(String id) {
     final char = db.getItemOrNull(id);
-    var cFriendship = (char?.friendship) ?? 1;
+    var cFriendship = char?.friendship ?? 1;
     cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
 
     final item =

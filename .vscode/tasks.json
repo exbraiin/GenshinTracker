@@ -11,16 +11,6 @@
                 "${workspaceFolder}/assets/lang/generate.dart"
             ],
             "problemMatcher": []
-        },
-        {
-            "label": "Build Windows",
-            "type": "flutter",
-            "command": "flutter",
-            "args": [
-                "build",
-                "windows"
-            ],
-            "problemMatcher": []
-        },
+        }
     ]
 }

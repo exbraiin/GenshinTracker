@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -13,6 +10,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/remote/enka_service.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/theme/theme.dart';
 
@@ -93,7 +91,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
     final char = GsDatabase.instance.infoCharacters
         .getItems()
         .firstOrNullWhere((c) => c.enkaId == info.avatarId);
-    return DefaultTextStyle(
+    final child = DefaultTextStyle(
       style: context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
           const TextStyle(color: Colors.white),
       child: Column(
@@ -188,18 +186,30 @@ class HomePlayerInfoWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  Future<void> _fetchAndInsert(String uid) async {
-    final url = 'https://enka.network/api/uid/$uid?info';
-    final client = HttpClient();
-    final data = await client
-        .getUrl(Uri.parse(url))
-        .then((value) => value.close())
-        .then((value) => value.transform(utf8.decoder).join());
-    client.close();
-    final info = JsonData(jsonDecode(data) as Map<String, dynamic>);
-    final item = SavePlayerInfo.fromRequestMap(info);
-    GsDatabase.instance.saveUserConfigs.insertItem(item);
+    return FutureBuilder<String>(
+      future: EnkaService.i.getNamecardUrl(info.namecardId),
+      builder: (context, snaphot) {
+        final url = snaphot.data;
+        return Container(
+          decoration: url != null
+              ? BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(url),
+                    fit: BoxFit.cover,
+                    opacity: 0.4,
+                  ),
+                )
+              : null,
+          child: child,
+        );
+      },
+    );
   }
+}
+
+Future<void> _fetchAndInsert(String uid) async {
+  final player = await EnkaService.i.getPlayerInfo(uid);
+  final item = SavePlayerInfo.fromEnkaInfo(player);
+  GsDatabase.instance.saveUserConfigs.insertItem(item);
 }

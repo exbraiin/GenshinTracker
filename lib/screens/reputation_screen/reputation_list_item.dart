@@ -101,7 +101,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                   Row(
                     children: [
                       Text(
-                        pRep.toString(),
+                        pRep.format(),
                         style: context.textTheme.titleSmall!.copyWith(
                           fontSize: 10,
                           color: context.themeColors.almostWhite,
