@@ -3,7 +3,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
-import 'package:tracker/theme/theme.dart';
 
 typedef FilterBuilder<T extends Comparable<T>> = Widget Function(
   BuildContext context,

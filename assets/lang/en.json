@@ -181,5 +181,14 @@
     "recipe_permanent": "Permanent",
     "button_no": "No",
     "button_yes": "Yes",
-    "update_all_wishes": "Update date for all {wishes} wishes?"
+    "update_all_wishes": "Update date for all {wishes} wishes?",
+    "ach_type_none": "Other",
+    "ach_type_boss": "Boss",
+    "ach_type_quest": "Quest",
+    "ach_type_commission": "Commission",
+    "ach_type_exploration": "Exploration",
+    "ach_hidden": "Hidden",
+    "ach_visible": "Visible",
+    "featured": "Featured",
+    "settings": "Settings"
 }

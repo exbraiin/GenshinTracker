@@ -3,7 +3,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_card_dialog.dart';
-import 'package:tracker/theme/theme.dart';
 
 class GsConfirmDialog extends StatelessWidget {
   static Future<bool?> show(

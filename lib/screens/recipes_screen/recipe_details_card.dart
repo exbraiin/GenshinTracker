@@ -11,7 +11,6 @@ import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/theme/theme.dart';
 
 class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoRecipe item;

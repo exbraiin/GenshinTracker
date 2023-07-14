@@ -1,3 +1,4 @@
+import 'package:tracker/domain/enums/gs_spincrystal_source.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class InfoSpincrystal extends IdData<InfoSpincrystal> {
@@ -8,10 +9,10 @@ class InfoSpincrystal extends IdData<InfoSpincrystal> {
   final String name;
   final String desc;
   final GsRegion region;
-  final String source;
+  final GsSpincrystalSource source;
   final String version;
 
-  bool get fromChubby => source == 'Chubby';
+  bool get fromChubby => source == GsSpincrystalSource.chubby;
 
   InfoSpincrystal.fromJsonData(JsonData data)
       : id = data.getString('id'),
@@ -20,7 +21,7 @@ class InfoSpincrystal extends IdData<InfoSpincrystal> {
         number = data.getInt('number'),
         rarity = data.getInt('rarity', 4),
         region = data.getGsEnum('region', GsRegion.values),
-        source = data.getString('source'),
+        source = GsSpincrystalSource.fromId(data.getString('source')),
         version = data.getString('version');
 
   @override

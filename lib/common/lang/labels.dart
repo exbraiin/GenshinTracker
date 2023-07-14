@@ -549,4 +549,31 @@ class Labels {
 
 	/// Update date for all {wishes} wishes?
 	static const updateAllWishes = 'update_all_wishes';
+
+	/// Other
+	static const achTypeNone = 'ach_type_none';
+
+	/// Boss
+	static const achTypeBoss = 'ach_type_boss';
+
+	/// Quest
+	static const achTypeQuest = 'ach_type_quest';
+
+	/// Commission
+	static const achTypeCommission = 'ach_type_commission';
+
+	/// Exploration
+	static const achTypeExploration = 'ach_type_exploration';
+
+	/// Hidden
+	static const achHidden = 'ach_hidden';
+
+	/// Visible
+	static const achVisible = 'ach_visible';
+
+	/// Featured
+	static const featured = 'featured';
+
+	/// Settings
+	static const settings = 'settings';
 }

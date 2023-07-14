@@ -194,13 +194,15 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return Container(
           decoration: url != null
               ? BoxDecoration(
+                  borderRadius: kMainRadius,
                   image: DecorationImage(
                     image: NetworkImage(url),
                     fit: BoxFit.cover,
-                    opacity: 0.4,
+                    opacity: 0.5,
                   ),
                 )
               : null,
+          padding: const EdgeInsets.all(kSeparator4),
           child: child,
         );
       },

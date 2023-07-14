@@ -4,7 +4,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/theme/theme.dart';
 
 typedef Action<R> = R Function(BuildContext context, int page);
 

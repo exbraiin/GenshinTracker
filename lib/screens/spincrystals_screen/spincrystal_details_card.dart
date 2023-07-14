@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/theme/theme.dart';
 
 class SpincrystalDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
@@ -62,7 +61,7 @@ class SpincrystalDetailsCard extends StatelessWidget
               ),
             ItemDetailsCardContent(
               label: context.fromLabel(Labels.source),
-              description: item.source,
+              description: context.fromLabel(item.source.label),
             ),
           ]),
         );

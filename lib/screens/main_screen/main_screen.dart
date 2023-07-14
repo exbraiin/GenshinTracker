@@ -7,6 +7,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
@@ -24,7 +25,6 @@ import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
-import 'package:tracker/theme/theme.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -234,6 +234,11 @@ final _menus = [
     initialArgument: GsBanner.beginner,
   ),
   Menu(
+    label: Labels.achievements,
+    icon: menuIconAchievements,
+    initialPage: AchievementGroupsScreen.id,
+  ),
+  Menu(
     label: Labels.characters,
     icon: menuIconCharacters,
     initialPage: CharactersScreen.id,
@@ -295,7 +300,7 @@ final _menus = [
   ),
   if (!kReleaseMode)
     Menu(
-      label: 'Settings',
+      label: Labels.settings,
       icon: menuIconFeedback,
       initialPage: SettingsScreen.id,
     ),

@@ -1,7 +1,7 @@
 import 'package:dartx/dartx.dart';
 
 extension IntExt on int {
-  String format([String separator = '\'']) {
+  String format([String separator = ' ']) {
     final list = toString().characters.reversed;
     return Iterable.generate(
       (list.length / 3).ceil(),

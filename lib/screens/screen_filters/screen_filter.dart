@@ -197,6 +197,29 @@ class ScreenFilters {
     ],
     extras: {'show'},
   );
+  static final infoAchievement = ScreenFilter<InfoAchievement>(
+    sections: [
+      FilterSection<bool, InfoAchievement>(
+        {true, false},
+        (item) => item.hidden,
+        (c) => c.fromLabel(Labels.achHidden),
+        (c, e) => c.fromLabel(e ? Labels.achHidden : Labels.achVisible),
+      ),
+      FilterSection<GsAchievementType, InfoAchievement>(
+        GsAchievementType.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.type),
+        (c, e) => c.fromLabel(e.label),
+      ),
+      FilterSection<bool, InfoAchievement>(
+        {true, false},
+        (item) => GsUtils.saveAchievements.isObtainable(item.id),
+        (c) => c.fromLabel(Labels.status),
+        (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
+      ),
+      FilterSection.version((item) => item.version),
+    ],
+  );
   static final infoNamecardFilter = ScreenFilter<InfoNamecard>(
     sections: [
       FilterSection<GsNamecardType, InfoNamecard>(
@@ -377,9 +400,9 @@ class ScreenFilters {
       FilterSection.version((item) => item.version),
       FilterSection(
         {true, false},
-        (item) => item.source == 'Chubby',
+        (item) => item.fromChubby,
         (c) => c.fromLabel(Labels.source),
-        (c, i) => i ? 'Chubby' : 'World',
+        (c, i) => c.fromLabel(i ? Labels.chubby : Labels.world),
       ),
     ],
   );

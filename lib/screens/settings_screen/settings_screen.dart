@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
         if (snapshot.data != true) return const SizedBox();
         return Scaffold(
           appBar: GsAppBar(
-            label: context.fromLabel('TODO'),
+            label: context.fromLabel(Labels.settings),
           ),
           body: Container(
             decoration: kMainBgDecoration,

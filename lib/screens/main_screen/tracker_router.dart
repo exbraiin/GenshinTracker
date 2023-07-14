@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
+import 'package:tracker/screens/achievements_screen/achievements_screen.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
@@ -38,6 +40,8 @@ class TrackerRouter {
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
     VersionScreen.id: () => const VersionScreen(),
     SettingsScreen.id: () => const SettingsScreen(),
+    AchievementGroupsScreen.id: () => const AchievementGroupsScreen(),
+    AchievementsScreen.id: () => const AchievementsScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {

@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/file_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/theme/theme.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 

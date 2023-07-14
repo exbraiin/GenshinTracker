@@ -16,6 +16,14 @@ class GsDatabase {
     'details',
     InfoDetails.fromJsonData,
   );
+  final infoAchievementGroups = JsonInfoDetails<InfoAchievementGroup>(
+    'achievement_categories',
+    InfoAchievementGroup.fromJsonData,
+  );
+  final infoAchievements = JsonInfoDetails(
+    'achievements',
+    InfoAchievement.fromJsonData,
+  );
   final infoCities = JsonInfoDetails<InfoCity>(
     'cities',
     InfoCity.fromJsonData,
@@ -82,6 +90,11 @@ class GsDatabase {
   );
 
   bool _saveLoaded = false;
+  final saveAchievements = JsonSaveDetails<SaveAchievement>(
+    'achievements',
+    SaveAchievement.fromJsonData,
+    _notify,
+  );
   final saveWishes = JsonSaveDetails<SaveWish>(
     'wishes',
     SaveWish.fromJsonData,
@@ -151,6 +164,8 @@ class GsDatabase {
     if (_dataLoaded) return;
     _dataLoaded = true;
     await JsonInfoDetails.loadInfo().then((info) {
+      infoAchievementGroups.load(info);
+      infoAchievements.load(info);
       infoCities.load(info);
       infoBanners.load(info);
       infoDetails.load(info);
@@ -175,6 +190,7 @@ class GsDatabase {
     if (_saveLoaded) return;
     _saveLoaded = true;
     await JsonSaveDetails.loadInfo().then((map) {
+      saveAchievements.load(map);
       saveWishes.load(map);
       saveRecipes.load(map);
       saveRemarkableChests.load(map);
@@ -189,6 +205,7 @@ class GsDatabase {
   Future<void> _saveAll() async {
     _saving.add(false);
     await JsonSaveDetails.saveInfo([
+      saveAchievements,
       saveWishes,
       saveRecipes,
       saveRemarkableChests,

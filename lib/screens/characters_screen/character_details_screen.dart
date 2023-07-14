@@ -15,7 +15,6 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
-import 'package:tracker/theme/theme.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();

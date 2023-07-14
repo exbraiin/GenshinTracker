@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/theme/theme.dart';
 
 class GsDataBox extends StatelessWidget {
   final Widget? title;

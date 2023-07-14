@@ -6,6 +6,7 @@ import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/home_screen/widgets/home_achievements_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_birthdays_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
@@ -116,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Lang.of(context).getValue(Labels.noviceWishes),
                 banner: GsBanner.beginner,
               ),
+              const HomeAchievementsWidget(),
               const HomeRemarkableChestsWidget(),
               const HomeReputationWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),

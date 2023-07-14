@@ -7,7 +7,6 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
-import 'package:tracker/theme/theme.dart';
 
 class HomeSereniteaWidget extends StatelessWidget {
   const HomeSereniteaWidget({super.key});

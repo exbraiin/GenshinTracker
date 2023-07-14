@@ -25,6 +25,7 @@ class GsUtils {
   static final saveWishes = _SaveWishes();
   static final saveRecipes = _SaveRecipes();
   static final saveCharacters = _SaveCharacters();
+  static final saveAchievements = _SaveAchievements();
   static final saveSpincrystals = _SaveSpincrystals();
   static final saveSereniteaSets = _SaveSereniteaSets();
   static final saveRemarkableChest = _SaveRemarkableChests();
@@ -533,6 +534,55 @@ class _SaveCharacters {
     final item =
         (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
     db.insertItem(item);
+  }
+}
+
+class _SaveAchievements {
+  void update(String id, {required int obtained}) {
+    final saved = _db.saveAchievements.getItemOrNull(id)?.obtained ?? 0;
+    if (saved >= obtained) obtained -= 1;
+    if (obtained > 0) {
+      final item = SaveAchievement(id: id, obtained: obtained);
+      _db.saveAchievements.insertItem(item);
+    } else {
+      _db.saveAchievements.deleteItem(id);
+    }
+  }
+
+  bool isObtainable(String id) {
+    final saved = _db.saveAchievements.getItemOrNull(id);
+    if (saved == null) return true;
+    final item = _db.infoAchievements.getItemOrNull(id);
+    return (item?.phases.length ?? 0) > saved.obtained;
+  }
+
+  int countTotal([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) => e.phases.length).toInt();
+  }
+
+  int countTotalRewards([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
+  }
+
+  int countSaved([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items
+        .sumBy((e) => _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0)
+        .toInt();
+  }
+
+  int countSavedRewards([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) {
+      final i = _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0;
+      return e.phases.take(i).sumBy((element) => element.reward);
+    }).toInt();
   }
 }
 

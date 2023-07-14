@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
-import 'package:tracker/theme/theme.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
   const HomeResourceCalcWidget({super.key});
