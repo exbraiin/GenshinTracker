@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -55,9 +53,11 @@ class AchievementGroupsScreen extends StatelessWidget {
                                 data
                                     .getItems()
                                     .where((e) => e.group == item.id)
-                                    .where((element) => element.name
-                                        .toLowerCase()
-                                        .contains(sNotifier.value)),
+                                    .where(
+                                      (element) => element.name
+                                          .toLowerCase()
+                                          .contains(sNotifier.value),
+                                    ),
                               );
                               return Row(
                                 children: [
@@ -156,52 +156,51 @@ class AchievementGroupsScreen extends StatelessWidget {
       height: 100,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
-      color: context.themeColors.mainColor0,
-      foregroundDecoration: BoxDecoration(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: selected
+            ? context.themeColors.mainColor2
+            : context.themeColors.mainColor0,
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          opacity: 0.23,
+          alignment: Alignment.centerRight,
+          image: AssetImage(getRarityBgImage(1)),
+        ),
         border: Border.all(
-          color: selected ? context.themeColors.primary : Colors.transparent,
-          width: selected ? 4 : 1,
+          color: const Color(0xFF626d83),
+          width: 1,
         ),
       ),
-      child: Container(
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color(0xFF626d83),
-            width: 1,
-          ),
-        ),
-        child: InkWell(
-          onTap: select,
-          child: Row(
-            children: [
-              Image.network(item.icon),
-              const SizedBox(width: kSeparator4),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: context.textTheme.titleMedium,
+      child: InkWell(
+        onTap: select,
+        child: Row(
+          children: [
+            Image.network(item.icon),
+            const SizedBox(width: kSeparator4),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: context.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: kSeparator4),
+                  Text(
+                    '${(percentage * 100).toInt()}% ($saved/$total)',
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: context.themeColors.dimWhite,
                     ),
-                    const SizedBox(height: kSeparator4),
-                    Text(
-                      '${(percentage * 100).toInt()}% ($saved/$total)',
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: context.themeColors.dimWhite,
-                      ),
-                    ),
-                    const SizedBox(height: kSeparator4),
-                    _progressBar(percentage),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: kSeparator4),
+                  _progressBar(percentage),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

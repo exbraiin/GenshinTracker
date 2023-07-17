@@ -10,7 +10,7 @@ class GsDataBox extends StatelessWidget {
   final Iterable<Widget> children;
   final CrossAxisAlignment alignment;
 
-  GsDataBox.info({
+  GsDataBox.info_({
     super.key,
     this.title,
     this.child,
@@ -27,6 +27,31 @@ class GsDataBox extends StatelessWidget {
               color: color.withOpacity(0.8),
               width: 2,
             ),
+          );
+        });
+
+  GsDataBox.info({
+    super.key,
+    this.title,
+    this.child,
+    Color? bgColor,
+    this.children = const [],
+  })  : alignment = CrossAxisAlignment.start,
+        padding = const EdgeInsets.all(kSeparator8),
+        decoration = ((ctx) {
+          final color = bgColor?.withOpacity(0.5) ??
+              ctx.themeColors.mainColor1.withOpacity(0.6);
+          return BoxDecoration(
+            color: color,
+            borderRadius: kMainRadius,
+            boxShadow: [
+              if (color.opacity > 0.55)
+                BoxShadow(
+                  blurRadius: 4,
+                  offset: const Offset(2, 2),
+                  color: Colors.black.withOpacity(0.6),
+                ),
+            ],
           );
         });
 

@@ -5,7 +5,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
-import 'package:tracker/theme/theme.dart';
 
 class HomeRecipesWidget extends StatelessWidget {
   const HomeRecipesWidget({super.key});
@@ -39,7 +38,6 @@ class HomeRecipesWidget extends StatelessWidget {
               0;
         }
 
-        late final badColor = context.themeColors.badValue;
         return GsDataBox.info(
           title: Text(context.fromLabel(Labels.recipes)),
           children: [
@@ -55,12 +53,10 @@ class HomeRecipesWidget extends StatelessWidget {
                 final m = master(i);
                 final o = owned(i);
                 final t = groups[i]?.length ?? 0;
-                final mColor = m < o ? badColor : Colors.white;
-                final oColor = o < t ? badColor : Colors.white;
                 return [
                   HomeRow('$i★'),
-                  HomeRow('$m', color: mColor),
-                  HomeRow('$o', color: oColor),
+                  HomeRow.missing(context, m, o),
+                  HomeRow.missing(context, o, t),
                   HomeRow('$t'),
                 ];
               }),

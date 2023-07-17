@@ -6,7 +6,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
-import 'package:tracker/theme/theme.dart';
 
 class HomeRemarkableChestsWidget extends StatelessWidget {
   const HomeRemarkableChestsWidget({super.key});
@@ -15,7 +14,6 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ic = GsDatabase.instance.infoRemarkableChests;
     final sc = GsDatabase.instance.saveRemarkableChests;
-    late final badColor = context.themeColors.badValue;
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
@@ -36,10 +34,9 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
                   .map((entry) {
                 final owned = entry.value.count((e) => sc.exists(e.id));
                 final total = entry.value.length;
-                final color = owned < total ? badColor : Colors.white;
                 return [
                   HomeRow(entry.key),
-                  HomeRow(owned.format(), color: color),
+                  HomeRow.missing(context, owned, total),
                   HomeRow(total.format()),
                 ];
               }).toList(),

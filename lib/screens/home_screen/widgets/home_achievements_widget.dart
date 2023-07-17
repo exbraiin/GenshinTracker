@@ -46,11 +46,9 @@ class HomeAchievementsWidget extends StatelessWidget {
                 final utils = GsUtils.saveAchievements;
                 final saved = utils.countSaved((a) => a.type == e);
                 final total = utils.countTotal((a) => a.type == e);
-                final color =
-                    saved < total ? context.themeColors.badValue : Colors.white;
                 return [
                   HomeRow(context.fromLabel(e.label)),
-                  HomeRow(saved.format(), color: color),
+                  HomeRow.missing(context, saved, total),
                   HomeRow(total.format()),
                 ];
               }).toList(),

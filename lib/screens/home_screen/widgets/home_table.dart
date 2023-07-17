@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 
 class HomeTable extends StatelessWidget {
   final List<Widget> headers;
@@ -37,6 +39,7 @@ class HomeTable extends StatelessWidget {
 
 class HomeRow extends StatelessWidget {
   final String label;
+  final Widget? child;
   final double fontSize;
   final Color color;
 
@@ -45,23 +48,52 @@ class HomeRow extends StatelessWidget {
     super.key,
     this.fontSize = 12,
     this.color = Colors.white,
+    this.child,
   });
 
   factory HomeRow.header(String label, {Color color = Colors.white}) =>
       HomeRow(label, fontSize: 14, color: color);
 
+  factory HomeRow.missing(BuildContext context, int owned, int total) {
+    final missing = total - owned;
+    final color = missing > 0 ? context.themeColors.badValue : Colors.white;
+    return HomeRow(
+      '',
+      color: color,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            owned.format(),
+            textAlign: TextAlign.end,
+          ),
+          if (missing > 0)
+            Text(
+              ' +${missing.format()}',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontSize: 10,
+                color: context.themeColors.goodValue,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2),
-      child: Text(
-        label,
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall!
+      child: DefaultTextStyle(
+        style: context.textTheme.titleSmall!
             .copyWith(fontSize: fontSize, color: color),
-        textAlign: TextAlign.center,
-        maxLines: 1,
+        child: child ??
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+            ),
       ),
     );
   }

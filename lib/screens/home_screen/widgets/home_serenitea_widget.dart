@@ -66,12 +66,9 @@ class HomeSereniteaWidget extends StatelessWidget {
                       .where((c) => saved?.chars.contains(c) ?? false);
                 });
 
-                final color = owned.length < obtainable.length
-                    ? context.themeColors.badValue
-                    : Colors.white;
                 return [
                   HomeRow(context.fromLabel(e.label)),
-                  HomeRow(owned.length.format(), color: color),
+                  HomeRow.missing(context, owned.length, obtainable.length),
                   HomeRow(obtainable.length.format()),
                   HomeRow(total.length.format()),
                 ];
