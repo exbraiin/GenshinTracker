@@ -14,6 +14,10 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ic = GsDatabase.instance.infoRemarkableChests;
     final sc = GsDatabase.instance.saveRemarkableChests;
+
+    final totalOwned = ic.getItems().count((e) => sc.exists(e.id));
+    final totalTotal = ic.getItems().length;
+
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
@@ -22,24 +26,32 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(Lang.of(context).getValue(Labels.source)),
-                HomeRow.header(Lang.of(context).getValue(Labels.owned)),
-                HomeRow.header(Lang.of(context).getValue(Labels.total)),
+                HomeRow.header(context.fromLabel(Labels.source)),
+                HomeRow.header(context.fromLabel(Labels.owned)),
+                HomeRow.header(context.fromLabel(Labels.total)),
               ],
-              rows: ic
-                  .getItems()
-                  .groupBy((e) => e.source)
-                  .entries
-                  .sortedBy((e) => e.key)
-                  .map((entry) {
-                final owned = entry.value.count((e) => sc.exists(e.id));
-                final total = entry.value.length;
-                return [
-                  HomeRow(entry.key),
-                  HomeRow.missing(context, owned, total),
-                  HomeRow(total.format()),
-                ];
-              }).toList(),
+              rows: [
+                ...ic
+                    .getItems()
+                    .groupBy((e) => e.source)
+                    .entries
+                    .sortedBy((e) => e.key)
+                    .map((entry) {
+                  final owned = entry.value.count((e) => sc.exists(e.id));
+                  final total = entry.value.length;
+                  return [
+                    HomeRow(entry.key),
+                    HomeRow.missing(context, owned, total),
+                    HomeRow(total.format()),
+                  ];
+                }),
+                List.generate(3, (i) => const Divider()),
+                [
+                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow.missing(context, totalOwned, totalTotal),
+                  HomeRow(totalTotal.format()),
+                ],
+              ],
             ),
           ],
         );

@@ -1,9 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
 class HomeRecipesWidget extends StatelessWidget {
@@ -20,46 +22,58 @@ class HomeRecipesWidget extends StatelessWidget {
         final saved = GsDatabase.instance.saveRecipes.getItems();
         final groups = all.groupBy((e) => e.rarity);
 
-        int owned(int rarity) {
-          return groups[rarity]
-                  ?.where((e) => saved.any((t) => t.id == e.id))
-                  .length ??
-              0;
+        int owned([int? rarity]) {
+          final values = groups[rarity] ?? groups.values.expand((e) => e);
+          return values.count((e) => saved.any((t) => t.id == e.id));
         }
 
-        int master(int rarity) {
-          return groups[rarity]
-                  ?.where(
-                    (e) => saved.any(
-                      (t) => t.id == e.id && t.proficiency == e.maxProficiency,
-                    ),
-                  )
-                  .length ??
-              0;
+        int master([int? rarity]) {
+          final values = groups[rarity] ?? groups.values.expand((e) => e);
+          bool compare(InfoRecipe i) => saved
+              .any((t) => t.id == i.id && t.proficiency == i.maxProficiency);
+          return values.count(compare);
         }
+
+        int total([int? rarity]) {
+          final values = groups[rarity] ?? groups.values.expand((e) => e);
+          return values.length;
+        }
+
+        final tm = master();
+        final to = owned();
+        final tt = total();
 
         return GsDataBox.info(
           title: Text(context.fromLabel(Labels.recipes)),
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(Lang.of(context).getValue(Labels.rarity)),
-                HomeRow.header(Lang.of(context).getValue(Labels.master)),
-                HomeRow.header(Lang.of(context).getValue(Labels.owned)),
-                HomeRow.header(Lang.of(context).getValue(Labels.total)),
+                HomeRow.header(context.fromLabel(Labels.rarity)),
+                HomeRow.header(context.fromLabel(Labels.master)),
+                HomeRow.header(context.fromLabel(Labels.owned)),
+                HomeRow.header(context.fromLabel(Labels.total)),
               ],
-              rows: List.generate(5, (i) {
-                i++;
-                final m = master(i);
-                final o = owned(i);
-                final t = groups[i]?.length ?? 0;
-                return [
-                  HomeRow('$i★'),
-                  HomeRow.missing(context, m, o),
-                  HomeRow.missing(context, o, t),
-                  HomeRow('$t'),
-                ];
-              }),
+              rows: [
+                ...Iterable.generate(5, (i) {
+                  i++;
+                  final m = master(i);
+                  final o = owned(i);
+                  final t = total(i);
+                  return [
+                    HomeRow('$i★'),
+                    HomeRow.missing(context, m, o),
+                    HomeRow.missing(context, o, t),
+                    HomeRow('$t'),
+                  ];
+                }),
+                List.generate(4, (i) => const Divider()),
+                [
+                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow.missing(context, tm, to),
+                  HomeRow.missing(context, to, tt),
+                  HomeRow(tt.format()),
+                ],
+              ],
             ),
           ],
         );

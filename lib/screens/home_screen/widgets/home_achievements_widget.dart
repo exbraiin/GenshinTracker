@@ -18,6 +18,11 @@ class HomeAchievementsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final isaved = GsUtils.saveAchievements.countSavedRewards();
         final itotal = GsUtils.saveAchievements.countTotalRewards();
+
+        final utils = GsUtils.saveAchievements;
+        final totalSaved = utils.countSaved((a) => true);
+        final totalTotal = utils.countTotal((a) => true);
+
         return GsDataBox.info(
           title: Row(
             children: [
@@ -39,19 +44,26 @@ class HomeAchievementsWidget extends StatelessWidget {
             HomeTable(
               headers: [
                 HomeRow.header(context.fromLabel(Labels.type)),
-                HomeRow.header(Lang.of(context).getValue(Labels.owned)),
-                HomeRow.header(Lang.of(context).getValue(Labels.total)),
+                HomeRow.header(context.fromLabel(Labels.owned)),
+                HomeRow.header(context.fromLabel(Labels.total)),
               ],
-              rows: GsAchievementType.values.map((e) {
-                final utils = GsUtils.saveAchievements;
-                final saved = utils.countSaved((a) => a.type == e);
-                final total = utils.countTotal((a) => a.type == e);
-                return [
-                  HomeRow(context.fromLabel(e.label)),
-                  HomeRow.missing(context, saved, total),
-                  HomeRow(total.format()),
-                ];
-              }).toList(),
+              rows: [
+                ...GsAchievementType.values.map((e) {
+                  final saved = utils.countSaved((a) => a.type == e);
+                  final total = utils.countTotal((a) => a.type == e);
+                  return [
+                    HomeRow(context.fromLabel(e.label)),
+                    HomeRow.missing(context, saved, total),
+                    HomeRow(total.format()),
+                  ];
+                }),
+                List.generate(3, (i) => const Divider()),
+                [
+                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow.missing(context, totalSaved, totalTotal),
+                  HomeRow(totalTotal.format()),
+                ],
+              ],
             ),
           ],
         );

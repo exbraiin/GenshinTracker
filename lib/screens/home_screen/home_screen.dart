@@ -110,16 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: <Widget>[
               HomeWishesValues(
-                title: Lang.of(context).getValue(Labels.charWishes),
+                title: context.fromLabel(Labels.charWishes),
                 banner: GsBanner.character,
               ),
               HomeWishesValues(
-                title: Lang.of(context).getValue(Labels.noviceWishes),
+                title: context.fromLabel(Labels.noviceWishes),
                 banner: GsBanner.beginner,
               ),
               const HomeAchievementsWidget(),
               const HomeRemarkableChestsWidget(),
-              const HomeReputationWidget(),
+              const HomeSereniteaWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),
@@ -128,16 +128,17 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: <Widget>[
               HomeWishesValues(
-                title: Lang.of(context).getValue(Labels.weaponWishes),
+                title: context.fromLabel(Labels.weaponWishes),
                 banner: GsBanner.weapon,
                 maxPity: 80,
               ),
               HomeWishesValues(
-                title: Lang.of(context).getValue(Labels.stndWishes),
+                title: context.fromLabel(Labels.stndWishes),
                 banner: GsBanner.standard,
               ),
               const HomeSpincrystalsWidget(),
-              const HomeResourceCalcWidget(),
+              const HomeRecipesWidget(),
+              const HomeReputationWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),
@@ -150,8 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeAscensionWidget(),
               const HomeBirthdaysWidget(),
               const HomeLastBannerWidget(),
-              const HomeRecipesWidget(),
-              const HomeSereniteaWidget(),
+              const HomeResourceCalcWidget(),
             ].separate(const SizedBox(height: kSeparator4)).toList(),
           ),
         ),

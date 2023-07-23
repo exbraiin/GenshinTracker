@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -20,21 +21,23 @@ class HomeSereniteaWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        final obtainableTotal =
-            sets.expand((e) => e.chars.where(hasChar)).length;
-        final ownedTotal = sets.expand((e) {
+        final ic = GsDatabase.instance.infoCharacters;
+        final totalTotal = sets.expand((e) => e.chars).count(ic.exists);
+        final totalObtain = sets.expand((e) => e.chars.where(hasChar)).length;
+        final totalOwned = sets.expand((e) {
           final saved = ss.getItemOrNull(e.id);
           return e.chars.where((c) => saved?.chars.contains(c) ?? false);
         }).length;
+
         return GsDataBox.info(
           title: Row(
             children: [
               Expanded(child: Text(context.fromLabel(Labels.sereniteaSets))),
               Text(
-                ownedTotal < obtainableTotal
-                    ? '${(ownedTotal * primogems).format()} / '
-                        '${(obtainableTotal * primogems).format()}'
-                    : (ownedTotal * primogems).format(),
+                totalOwned < totalObtain
+                    ? '${(totalOwned * primogems).format()} / '
+                        '${(totalObtain * primogems).format()}'
+                    : (totalOwned * primogems).format(),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
@@ -48,31 +51,39 @@ class HomeSereniteaWidget extends StatelessWidget {
             HomeTable(
               headers: [
                 HomeRow.header(context.fromLabel(Labels.type)),
-                HomeRow.header(Lang.of(context).getValue(Labels.owned)),
-                HomeRow.header(Lang.of(context).getValue(Labels.obtainable)),
-                HomeRow.header(Lang.of(context).getValue(Labels.total)),
+                HomeRow.header(context.fromLabel(Labels.owned)),
+                HomeRow.header(context.fromLabel(Labels.obtainable)),
+                HomeRow.header(context.fromLabel(Labels.total)),
               ],
-              rows: GsSetCategory.values.map((e) {
-                final cat = sets.where((s) => s.category == e);
-                final ic = GsDatabase.instance.infoCharacters;
-                final total = cat.expand((e) => e.chars).where(ic.exists);
+              rows: [
+                ...GsSetCategory.values.map((e) {
+                  final cat = sets.where((s) => s.category == e);
+                  final total = cat.expand((e) => e.chars).where(ic.exists);
 
-                final hasChar = GsUtils.characters.hasCaracter;
-                final obtainable = total.where(hasChar);
+                  final hasChar = GsUtils.characters.hasCaracter;
+                  final obtainable = total.where(hasChar);
 
-                final owned = cat.expand((e) {
-                  final saved = ss.getItemOrNull(e.id);
-                  return e.chars
-                      .where((c) => saved?.chars.contains(c) ?? false);
-                });
+                  final owned = cat.expand((e) {
+                    final saved = ss.getItemOrNull(e.id);
+                    return e.chars
+                        .where((c) => saved?.chars.contains(c) ?? false);
+                  });
 
-                return [
-                  HomeRow(context.fromLabel(e.label)),
-                  HomeRow.missing(context, owned.length, obtainable.length),
-                  HomeRow(obtainable.length.format()),
-                  HomeRow(total.length.format()),
-                ];
-              }).toList(),
+                  return [
+                    HomeRow(context.fromLabel(e.label)),
+                    HomeRow.missing(context, owned.length, obtainable.length),
+                    HomeRow(obtainable.length.format()),
+                    HomeRow(total.length.format()),
+                  ];
+                }),
+                List.generate(4, (i) => const Divider()),
+                [
+                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow.missing(context, totalOwned, totalObtain),
+                  HomeRow(totalObtain.format()),
+                  HomeRow(totalTotal.format()),
+                ]
+              ],
             ),
           ],
         );
