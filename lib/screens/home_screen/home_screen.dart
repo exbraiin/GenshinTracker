@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GsAppBar(
-        label: Lang.of(context).getValue(Labels.home),
+        label: context.fromLabel(Labels.home),
         actions: [
           ValueListenableBuilder<bool>(
             valueListenable: _notifier,

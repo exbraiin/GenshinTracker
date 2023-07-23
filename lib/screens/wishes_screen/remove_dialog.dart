@@ -31,7 +31,7 @@ class RemoveDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              Lang.of(context).getValue(Labels.youSure),
+              context.fromLabel(Labels.youSure),
               style: context.textTheme.headlineSmall!
                   .copyWith(color: Colors.white),
             ),
@@ -53,7 +53,7 @@ class RemoveDialog extends StatelessWidget {
                   borderRadius: kMainRadius,
                 ),
                 child: Text(
-                  Lang.of(context).getValue(Labels.remove).toUpperCase(),
+                  context.fromLabel(Labels.remove).toUpperCase(),
                   style: context.textTheme.titleSmall!
                       .copyWith(color: Colors.red, letterSpacing: -1),
                 ),

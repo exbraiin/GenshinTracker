@@ -107,7 +107,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
 
     return Center(
       child: GsCardDialog(
-        title: Lang.of(context).getValue(Labels.selectDate),
+        title: context.fromLabel(Labels.selectDate),
         constraints: const BoxConstraints(maxHeight: 190, maxWidth: 280),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +172,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      Lang.of(context).getValue(Labels.ok),
+                      context.fromLabel(Labels.ok),
                       style: style,
                     ),
                   ),

@@ -142,36 +142,36 @@ class WishesScreen extends StatelessWidget {
           children: getSized(
             [
               Text(
-                Lang.of(context).getValue(Labels.time),
+                context.fromLabel(Labels.time),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
               Text(
-                Lang.of(context).getValue(Labels.pity),
+                context.fromLabel(Labels.pity),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 44),
                 child: Text(
-                  Lang.of(context).getValue(Labels.name),
+                  context.fromLabel(Labels.name),
                   textAlign: TextAlign.center,
                   style: context.textTheme.headerButtonLabel,
                 ),
               ),
               const SizedBox(),
               Text(
-                Lang.of(context).getValue(Labels.rarity),
+                context.fromLabel(Labels.rarity),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
               Text(
-                Lang.of(context).getValue(Labels.type),
+                context.fromLabel(Labels.type),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),
               Text(
-                Lang.of(context).getValue(Labels.roll),
+                context.fromLabel(Labels.roll),
                 textAlign: TextAlign.center,
                 style: context.textTheme.headerButtonLabel,
               ),

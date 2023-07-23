@@ -21,7 +21,7 @@ class GsNoResultsState extends StatelessWidget {
             Image.asset(fischlEmote, width: size, height: size),
             const SizedBox(height: kSeparator4),
             Text(
-              Lang.of(context).getValue(Labels.noResults),
+              context.fromLabel(Labels.noResults),
               style: context.textTheme.description.copyWith(
                 color: context.themeColors.dimWhite,
                 fontSize: 14,

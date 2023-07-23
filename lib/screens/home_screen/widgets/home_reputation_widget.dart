@@ -20,9 +20,9 @@ class HomeReputationWidget extends StatelessWidget {
           title: Text(context.fromLabel(Labels.reputation)),
           child: HomeTable(
             headers: [
-              HomeRow.header(Lang.of(context).getValue(Labels.city)),
-              HomeRow.header(Lang.of(context).getValue(Labels.current)),
-              HomeRow.header(Lang.of(context).getValue(Labels.max)),
+              HomeRow.header(context.fromLabel(Labels.city)),
+              HomeRow.header(context.fromLabel(Labels.current)),
+              HomeRow.header(context.fromLabel(Labels.max)),
             ],
             rows: db.infoCities
                 .getItems()

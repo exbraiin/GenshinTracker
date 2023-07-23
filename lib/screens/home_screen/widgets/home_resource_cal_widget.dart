@@ -37,7 +37,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            Lang.of(context).getValue(Labels.required),
+            context.fromLabel(Labels.required),
             style: style.copyWith(fontSize: 14),
           ),
         ),
@@ -57,7 +57,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            Lang.of(context).getValue(Labels.owned),
+            context.fromLabel(Labels.owned),
             style: style.copyWith(fontSize: 14),
           ),
         ),
@@ -94,7 +94,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                Lang.of(context).getValue(Labels.craftable),
+                context.fromLabel(Labels.craftable),
                 style: style.copyWith(fontSize: 14),
               ),
             ),
@@ -113,7 +113,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                Lang.of(context).getValue(Labels.missing),
+                context.fromLabel(Labels.missing),
                 style: style.copyWith(fontSize: 14),
               ),
             ),

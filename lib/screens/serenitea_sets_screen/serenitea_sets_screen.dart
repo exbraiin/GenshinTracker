@@ -30,7 +30,7 @@ class SereniteaSetsScreen extends StatelessWidget {
             final filtered = filter.match(setsList);
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.sereniteaSets),
+                label: context.fromLabel(Labels.sereniteaSets),
                 actions: [button],
               ),
               body: Container(

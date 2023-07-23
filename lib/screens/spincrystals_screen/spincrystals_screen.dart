@@ -43,7 +43,7 @@ class SpincrystalsScreen extends StatelessWidget {
 
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.spincrystals),
+                label: context.fromLabel(Labels.spincrystals),
                 actions: [button],
               ),
               body: Container(

@@ -49,7 +49,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
         if (banner == null) return const SizedBox();
         return Scaffold(
           appBar: GsAppBar(
-            label: Lang.of(context).getValue(Labels.addWishes),
+            label: context.fromLabel(Labels.addWishes),
             leading: const CloseButton(),
             actions: [button],
           ),

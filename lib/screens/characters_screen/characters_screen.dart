@@ -45,10 +45,10 @@ class CharactersScreen extends StatelessWidget {
                   );
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.characters),
+                label: context.fromLabel(Labels.characters),
                 actions: [
                   Tooltip(
-                    message: Lang.of(context).getValue(Labels.showExtraInfo),
+                    message: context.fromLabel(Labels.showExtraInfo),
                     child: IconButton(
                       icon: Icon(
                         filter.hasExtra('info')

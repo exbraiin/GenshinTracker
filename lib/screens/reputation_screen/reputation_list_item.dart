@@ -135,7 +135,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: Lang.of(context).getValue(Labels.levelShort),
+                      text: context.fromLabel(Labels.levelShort),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
@@ -155,10 +155,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                               nargs: {'from': nextLvlWeeks, 'to': lastLvlWeeks},
                             )}'
                           : lastLvlWeeks != 0
-                              ? '\n${context.fromLabel(
-                                  Labels.nWeeks,
-                                  lastLvlWeeks,
-                                )}'
+                              ? '\n${context.fromLabel(Labels.nWeeks, lastLvlWeeks)}'
                               : '',
                       style: context.textTheme.titleSmall!
                           .copyWith(color: Colors.white, fontSize: 10),

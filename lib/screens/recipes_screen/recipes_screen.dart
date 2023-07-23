@@ -33,7 +33,7 @@ class RecipesScreen extends StatelessWidget {
 
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.recipes),
+                label: context.fromLabel(Labels.recipes),
                 actions: [button],
               ),
               body: Container(

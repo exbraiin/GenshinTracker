@@ -43,12 +43,12 @@ class HomeSpincrystalsWidget extends StatelessWidget {
             ],
             rows: [
               [
-                HomeRow(Lang.of(context).getValue(Labels.world)),
+                HomeRow(context.fromLabel(Labels.world)),
                 HomeRow.missing(context, ownedWorld, totalWorld),
                 HomeRow('$totalWorld'),
               ],
               [
-                HomeRow(Lang.of(context).getValue(Labels.chubby)),
+                HomeRow(context.fromLabel(Labels.chubby)),
                 HomeRow.missing(context, ownedChubby, totalChubby),
                 HomeRow('$totalChubby'),
               ],

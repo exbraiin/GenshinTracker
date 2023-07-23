@@ -46,10 +46,10 @@ class WeaponsScreen extends StatelessWidget {
 
             return Scaffold(
               appBar: GsAppBar(
-                label: Lang.of(context).getValue(Labels.weapons),
+                label: context.fromLabel(Labels.weapons),
                 actions: [
                   Tooltip(
-                    message: Lang.of(context).getValue(Labels.showExtraInfo),
+                    message: context.fromLabel(Labels.showExtraInfo),
                     child: IconButton(
                       icon: Icon(
                         filter.hasExtra('info')
