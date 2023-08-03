@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class GsDataBox extends StatelessWidget {
@@ -39,26 +38,17 @@ class GsDataBox extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: alignment,
         children: [
-          ..._buildTitle(context),
+          if (title != null) ...[
+            DefaultTextStyle(
+              style: context.themeStyles.title18n,
+              child: title!,
+            ),
+            Divider(color: context.themeColors.almostWhite, thickness: 0.5),
+          ],
           if (child != null) child!,
           ...children,
         ],
       ),
     );
-  }
-
-  Iterable<Widget> _buildTitle(
-    BuildContext context,
-  ) sync* {
-    final title = this.title;
-    if (title == null) return;
-    yield DefaultTextStyle(
-      style: context.textTheme.bigTitle3.copyWith(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-      child: title,
-    );
-    yield Divider(color: context.themeColors.almostWhite, thickness: 0.5);
   }
 }

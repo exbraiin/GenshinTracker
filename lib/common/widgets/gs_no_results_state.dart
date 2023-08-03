@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 
@@ -22,10 +21,7 @@ class GsNoResultsState extends StatelessWidget {
             const SizedBox(height: kSeparator4),
             Text(
               context.fromLabel(Labels.noResults),
-              style: context.textTheme.description.copyWith(
-                color: context.themeColors.dimWhite,
-                fontSize: 14,
-              ),
+              style: context.themeStyles.emptyState,
             ),
           ],
         ),

@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
@@ -102,7 +101,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           const SizedBox(width: kSeparator4),
                           Text(
                             e.name,
-                            style: context.textTheme.bigTitle3,
+                            style: context.themeStyles.title20n,
                           ),
                         ],
                       ),
@@ -166,7 +165,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
     return Padding(
       padding: const EdgeInsets.all(kSeparator4),
       child: DropdownButton(
-        style: context.textTheme.description2.copyWith(color: Colors.white),
+        style: context.themeStyles.label12n,
         value: _weekday - 1,
         underline: const SizedBox(),
         focusColor: Colors.transparent,

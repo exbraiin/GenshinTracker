@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
@@ -144,36 +143,36 @@ class WishesScreen extends StatelessWidget {
               Text(
                 context.fromLabel(Labels.time),
                 textAlign: TextAlign.center,
-                style: context.textTheme.headerButtonLabel,
+                style: context.themeStyles.label14n,
               ),
               Text(
                 context.fromLabel(Labels.pity),
                 textAlign: TextAlign.center,
-                style: context.textTheme.headerButtonLabel,
+                style: context.themeStyles.label14n,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 44),
                 child: Text(
                   context.fromLabel(Labels.name),
                   textAlign: TextAlign.center,
-                  style: context.textTheme.headerButtonLabel,
+                  style: context.themeStyles.label14n,
                 ),
               ),
               const SizedBox(),
               Text(
                 context.fromLabel(Labels.rarity),
                 textAlign: TextAlign.center,
-                style: context.textTheme.headerButtonLabel,
+                style: context.themeStyles.label14n,
               ),
               Text(
                 context.fromLabel(Labels.type),
                 textAlign: TextAlign.center,
-                style: context.textTheme.headerButtonLabel,
+                style: context.themeStyles.label14n,
               ),
               Text(
                 context.fromLabel(Labels.roll),
                 textAlign: TextAlign.center,
-                style: context.textTheme.headerButtonLabel,
+                style: context.themeStyles.label14n,
               ),
             ].map((widget) {
               return Padding(

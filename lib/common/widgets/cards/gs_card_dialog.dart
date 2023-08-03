@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class GsCardDialog extends StatelessWidget {
@@ -30,7 +29,7 @@ class GsCardDialog extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             title.toUpperCase(),
-            style: context.textTheme.cardDialogTitle,
+            style: context.themeStyles.title20n,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),

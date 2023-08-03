@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/gs_database.dart';
 
@@ -82,7 +81,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
       controller: _controller,
       enabled: widget.enabled,
       focusNode: _node,
-      style: context.textTheme.infoLabel.copyWith(fontSize: widget.fontSize),
+      style: context.themeStyles.label16n.copyWith(fontSize: widget.fontSize),
       textAlign: widget.align,
       obscureText: widget.hideText,
       inputFormatters: [
@@ -93,7 +92,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
         isDense: true,
         border: InputBorder.none,
         hintText: '0',
-        hintStyle: context.textTheme.infoLabel.copyWith(
+        hintStyle: context.themeStyles.label16n.copyWith(
           fontSize: widget.fontSize,
           color: Colors.white.withOpacity(0.4),
         ),

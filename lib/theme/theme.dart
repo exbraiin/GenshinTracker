@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 const defaultFontFamily = 'Comfortaa';
 final _themeColors = ThemeColors.defaultTheme();
+final _textStyle = ThemeStyles.defaultTheme(_themeColors);
 final theme = ThemeData(
-  extensions: [_themeColors],
+  extensions: [_themeColors, _textStyle],
   scrollbarTheme: ScrollbarThemeData(
     thickness: MaterialStateProperty.all(0),
   ),
@@ -157,6 +158,108 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   }
 }
 
+class ThemeStyles extends ThemeExtension<ThemeStyles> {
+  /// 14 | normal | dimWhite
+  final TextStyle emptyState;
+
+  /// 24 | normal | white
+  final TextStyle title24n;
+
+  /// 20 | normal | white
+  final TextStyle title20n;
+
+  /// 18 | notmal | white
+  final TextStyle title18n;
+
+  /// 16 | normal | white
+  final TextStyle label16n;
+
+  /// 14 | normal | white
+  final TextStyle label14n;
+
+  /// 12 | normal | white
+  final TextStyle label12n;
+
+  /// 12 | italic | white
+  final TextStyle label12i;
+
+  /// 12 | bold | white
+  final TextStyle label12b;
+
+  /// 12 | bold | black
+  final TextStyle fgLabel12b;
+
+  ThemeStyles({
+    required this.emptyState,
+    required this.title24n,
+    required this.title20n,
+    required this.title18n,
+    required this.label16n,
+    required this.label14n,
+    required this.label12n,
+    required this.label12i,
+    required this.label12b,
+    required this.fgLabel12b,
+  });
+
+  ThemeStyles.defaultTheme(ThemeColors colors)
+      : emptyState = _style(14, colors.dimWhite),
+        title24n = _style(24, Colors.white),
+        title20n = _style(20, Colors.white),
+        title18n = _style(18, Colors.white),
+        label16n = _style(16, Colors.white),
+        label14n = _style(14, Colors.white),
+        label12n = _style(12, Colors.white),
+        label12i = _style(12, colors.dimWhite, s: FontStyle.italic),
+        label12b = _style(12, Colors.white, w: FontWeight.bold),
+        fgLabel12b = _style(12, Colors.black87, w: FontWeight.bold);
+
+  static TextStyle _style(
+    double fontSize,
+    Color color, {
+    FontStyle s = FontStyle.normal,
+    FontWeight w = FontWeight.normal,
+  }) {
+    return TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontStyle: s,
+      fontWeight: w,
+      fontFamily: defaultFontFamily,
+    );
+  }
+
+  @override
+  ThemeExtension<ThemeStyles> copyWith() {
+    return this;
+  }
+
+  @override
+  ThemeExtension<ThemeStyles> lerp(
+    covariant ThemeExtension<ThemeStyles>? other,
+    double t,
+  ) {
+    if (other is! ThemeStyles) return this;
+
+    TextStyle tlerp(TextStyle Function(ThemeStyles c) selector) =>
+        TextStyle.lerp(selector(this), selector(other), t)!;
+
+    return ThemeStyles(
+      emptyState: tlerp((c) => c.emptyState),
+      title24n: tlerp((c) => c.title24n),
+      title20n: tlerp((c) => c.title20n),
+      title18n: tlerp((c) => c.title18n),
+      label16n: tlerp((c) => c.label16n),
+      label14n: tlerp((c) => c.label14n),
+      label12n: tlerp((c) => c.label12n),
+      label12i: tlerp((c) => c.label12i),
+      label12b: tlerp((c) => c.label12b),
+      fgLabel12b: tlerp((c) => c.fgLabel12b),
+    );
+  }
+}
+
 extension ThemeExt on BuildContext {
   ThemeColors get themeColors => Theme.of(this).extension<ThemeColors>()!;
+  ThemeStyles get themeStyles => Theme.of(this).extension<ThemeStyles>()!;
 }

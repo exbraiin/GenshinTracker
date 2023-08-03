@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/file_image_widget.dart';
@@ -178,7 +177,7 @@ class GsItemCardButton extends StatelessWidget {
                       maxLines: subChild != null ? 1 : (maxLines ?? 2),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      style: context.textTheme.cardLabel,
+                      style: context.themeStyles.fgLabel12b,
                     ),
                   if (subChild != null) subChild!,
                 ],
@@ -234,8 +233,7 @@ class GsItemCardLabel extends StatelessWidget {
             child: Text(
               label!,
               maxLines: 1,
-              style: context.textTheme.filterLabel
-                  .copyWith(color: fgColor, fontWeight: FontWeight.bold),
+              style: context.themeStyles.label12n.copyWith(color: fgColor),
             ),
           ),
         if (asset != null && asset!.isNotEmpty)

@@ -79,11 +79,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
   }
 
   Widget _getResourceInfo() {
-    final textTheme = Theme.of(context).textTheme;
-    final style = textTheme.infoLabel.copyWith(
-      fontSize: 12,
-      color: Colors.white,
-    );
+    final style = context.themeStyles.label12n;
     return ValueListenableBuilder<_ResourceInfo>(
       valueListenable: _notifier,
       builder: (context, value, child) {

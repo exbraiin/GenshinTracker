@@ -145,7 +145,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   children: [
                     Text(
                       info.name,
-                      style: Theme.of(context).textTheme.bigTitle2,
+                      style: context.themeStyles.title24n,
                     ),
                     const SizedBox(width: kSeparator8),
                     GsItemCardLabel(
@@ -170,13 +170,13 @@ class CharacterDetailsScreen extends StatelessWidget {
                         GsUtils.saveCharacters.increaseAscension(info.id),
                     child: Text(
                       '${'✦' * ascension}${'✧' * (6 - ascension)}',
-                      style: context.textTheme.bigTitle3,
+                      style: context.themeStyles.title20n,
                     ),
                   ),
                 const SizedBox(height: kSeparator4),
                 Text(
                   info.description,
-                  style: context.textTheme.description2,
+                  style: context.themeStyles.label12n,
                 ),
                 const SizedBox(height: kSeparator8),
                 _getTags(context, info, infos),
@@ -394,8 +394,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   const SizedBox(width: kSeparator8),
                   Text(
                     '(${selected.type})',
-                    style: context.textTheme.description2
-                        .copyWith(fontStyle: FontStyle.italic),
+                    style: context.themeStyles.label12i,
                   ),
                 ],
               ),
@@ -598,7 +597,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           onHover: (h) => setState(() => hover = h),
           child: Text(
             '${hover ? '✦' : '✧'} $text',
-            style: context.textTheme.description2,
+            style: context.themeStyles.label12n,
           ),
         );
       },

@@ -236,7 +236,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
               padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
               child: Text(
                 label,
-                style: context.textTheme.filterLabel.copyWith(
+                style: context.themeStyles.label12n.copyWith(
                   color: selected ? context.themeColors.primary : null,
                 ),
               ),
