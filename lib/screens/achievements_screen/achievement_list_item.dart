@@ -19,59 +19,68 @@ class AchievementListItem extends StatelessWidget {
     final obtained = db.getItemOrNull(item.id)?.obtained ?? 0;
 
     return GsDataBox.info(
+      bgColor: context.themeColors.mainColor0,
       title: Row(
         children: [
           Text(item.name),
           const SizedBox(width: kSeparator8),
-          GsItemCardLabel(label: item.version),
-          if (item.type != GsAchievementType.none) ...[
-            const SizedBox(width: kSeparator4),
-            GsItemCardLabel(label: context.fromLabel(item.type.label)),
-          ],
+          const Spacer(),
           if (item.hidden) ...[
+            GsItemCardLabel.chip(label: context.fromLabel(Labels.achHidden)),
             const SizedBox(width: kSeparator4),
-            GsItemCardLabel(label: context.fromLabel(Labels.achHidden)),
           ],
+          if (item.type != GsAchievementType.none) ...[
+            GsItemCardLabel.chip(label: context.fromLabel(item.type.label)),
+            const SizedBox(width: kSeparator4),
+          ],
+          GsItemCardLabel.chip(label: item.version),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: kSeparator8 * 2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: kSeparator4),
-            ...item.phases.mapIndexed<Widget>((idx, e) {
-              return InkWell(
-                onTap: () =>
-                    GsUtils.saveAchievements.update(item.id, obtained: idx + 1),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text(e.desc)),
-                      GsItemCardLabel(
-                        label: e.reward.format(),
-                        asset: imagePrimogem,
-                      ),
-                      const SizedBox(width: kSeparator8),
-                      Icon(
-                        obtained > idx
-                            ? Icons.radio_button_checked_rounded
-                            : Icons.radio_button_off_rounded,
-                        color: context.themeColors.almostWhite,
-                      ),
-                    ],
-                  ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: kSeparator4),
+          ...item.phases.mapIndexed<Widget>((idx, e) {
+            return InkWell(
+              onTap: () =>
+                  GsUtils.saveAchievements.update(item.id, obtained: idx + 1),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  kSeparator4,
+                  kSeparator4,
+                  0,
+                  kSeparator4,
                 ),
-              );
-            }).separate(
-              Divider(
-                height: kSeparator4,
-                color: context.themeColors.mainColor2,
+                child: Row(
+                  children: [
+                    Icon(
+                      obtained > idx
+                          ? Icons.radio_button_checked_rounded
+                          : Icons.radio_button_off_rounded,
+                      color: context.themeColors.almostWhite,
+                    ),
+                    const SizedBox(width: kSeparator8),
+                    Expanded(
+                      child: Text(
+                        e.desc,
+                        strutStyle: const StrutStyle(height: 1.185),
+                      ),
+                    ),
+                    GsItemCardLabel(
+                      label: e.reward.format(),
+                      asset: imagePrimogem,
+                    ),
+                  ],
+                ),
               ),
+            );
+          }).separate(
+            Divider(
+              height: kSeparator4,
+              color: context.themeColors.mainColor2,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

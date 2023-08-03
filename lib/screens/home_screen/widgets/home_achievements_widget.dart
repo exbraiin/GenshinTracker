@@ -16,12 +16,13 @@ class HomeAchievementsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        final isaved = GsUtils.saveAchievements.countSavedRewards();
-        final itotal = GsUtils.saveAchievements.countTotalRewards();
+        final info = GsUtils.achievements;
+        final save = GsUtils.saveAchievements;
+        final itotal = info.countTotalRewards();
+        final isaved = save.countSavedRewards();
 
-        final utils = GsUtils.saveAchievements;
-        final totalSaved = utils.countSaved((a) => true);
-        final totalTotal = utils.countTotal((a) => true);
+        final totalSaved = save.countSaved();
+        final totalTotal = info.countTotal();
 
         return GsDataBox.info(
           title: Row(
@@ -49,8 +50,8 @@ class HomeAchievementsWidget extends StatelessWidget {
               ],
               rows: [
                 ...GsAchievementType.values.map((e) {
-                  final saved = utils.countSaved((a) => a.type == e);
-                  final total = utils.countTotal((a) => a.type == e);
+                  final saved = save.countSaved((a) => a.type == e);
+                  final total = info.countTotal((a) => a.type == e);
                   return [
                     HomeRow(context.fromLabel(e.label)),
                     HomeRow.missing(context, saved, total),

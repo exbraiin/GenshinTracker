@@ -29,8 +29,8 @@ class AchievementGroupsScreen extends StatelessWidget {
             if (snapshot.data != true) return const SizedBox();
             final data = GsDatabase.instance.infoAchievementGroups;
             final gList = data.getItems().toList();
+            final total = GsUtils.achievements.countTotal();
             final saved = GsUtils.saveAchievements.countSaved();
-            final total = GsUtils.saveAchievements.countTotal();
             return Scaffold(
               appBar: GsAppBar(
                 label:
@@ -98,7 +98,10 @@ class AchievementGroupsScreen extends StatelessWidget {
         Container(
           height: 50,
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.all(kSeparator4),
+          padding: const EdgeInsets.symmetric(
+            vertical: kSeparator4,
+            horizontal: kSeparator8,
+          ),
           child: TextField(
             style: const TextStyle(fontSize: 16),
             maxLines: 1,
@@ -135,10 +138,10 @@ class AchievementGroupsScreen extends StatelessWidget {
     if (list.isEmpty) return const GsNoResultsState();
     return ListView.separated(
       key: ValueKey(list.length),
-      padding: const EdgeInsets.all(kSeparator4),
+      padding: const EdgeInsets.all(kSeparator6),
       itemCount: list.length,
       itemBuilder: (context, index) => AchievementListItem(list[index]),
-      separatorBuilder: (context, index) => const SizedBox(height: kSeparator4),
+      separatorBuilder: (context, index) => const SizedBox(height: kSeparator6),
     );
   }
 
@@ -150,13 +153,13 @@ class AchievementGroupsScreen extends StatelessWidget {
   ) {
     final utils = GsUtils.saveAchievements;
     final saved = utils.countSaved((e) => e.group == item.id);
-    final total = utils.countTotal((e) => e.group == item.id);
+    final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
     return AnimatedContainer(
       height: 100,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8*2),
       decoration: BoxDecoration(
         color: selected
             ? context.themeColors.mainColor2
@@ -177,7 +180,7 @@ class AchievementGroupsScreen extends StatelessWidget {
         child: Row(
           children: [
             Image.network(item.icon),
-            const SizedBox(width: kSeparator4),
+            const SizedBox(width: kSeparator8),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -187,7 +190,7 @@ class AchievementGroupsScreen extends StatelessWidget {
                     item.name,
                     style: context.textTheme.titleMedium,
                   ),
-                  const SizedBox(height: kSeparator4),
+                  const SizedBox(height: kSeparator6),
                   Text(
                     '${(percentage * 100).toInt()}% ($saved/$total)',
                     style: context.textTheme.titleMedium?.copyWith(
@@ -195,7 +198,7 @@ class AchievementGroupsScreen extends StatelessWidget {
                       color: context.themeColors.dimWhite,
                     ),
                   ),
-                  const SizedBox(height: kSeparator4),
+                  const SizedBox(height: kSeparator6),
                   _progressBar(percentage),
                 ],
               ),

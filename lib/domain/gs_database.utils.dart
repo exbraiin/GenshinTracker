@@ -17,6 +17,7 @@ class GsUtils {
   static final versions = _Versions();
   static final materials = _Materials();
   static final characters = _Characters();
+  static final achievements = _Achievements();
   static final sereniteaSets = _SereniteaSets();
   static final weaponMaterials = _WeaponMaterials();
   static final characterMaterials = _CharactersMaterials();
@@ -322,6 +323,20 @@ class _Characters {
   }
 }
 
+class _Achievements {
+  int countTotal([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) => e.phases.length).toInt();
+  }
+
+  int countTotalRewards([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
+  }
+}
+
 class _SereniteaSets {
   bool isObtainable(String set) {
     final item = _db.infoSereniteaSets.getItem(set);
@@ -554,18 +569,6 @@ class _SaveAchievements {
     if (saved == null) return true;
     final item = _db.infoAchievements.getItemOrNull(id);
     return (item?.phases.length ?? 0) > saved.obtained;
-  }
-
-  int countTotal([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
-    if (test != null) items = items.where(test);
-    return items.sumBy((e) => e.phases.length).toInt();
-  }
-
-  int countTotalRewards([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
-    if (test != null) items = items.where(test);
-    return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
   }
 
   int countSaved([bool Function(InfoAchievement)? test]) {

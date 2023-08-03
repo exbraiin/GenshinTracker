@@ -33,7 +33,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     final args = ModalRoute.of(context)?.settings.arguments;
     final item = args! as InfoCharacter;
     final info = GsDatabase.instance.infoCharactersInfo.getItemOrNull(item.id);
-    bgColor = Color.lerp(Colors.black, item.element.color, 0.2)!;
+    final color = item.element.color;
+    bgColor = Color.lerp(Colors.black, color, 0.2)!.withOpacity(0.5);
 
     return ValueStreamBuilder<bool>(
       stream: GsDatabase.instance.loaded,

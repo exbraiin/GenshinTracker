@@ -195,7 +195,8 @@ class GsItemCardLabel extends StatelessWidget {
   final String? asset;
   final String? label;
   final IconData? icon;
-  final Color? bgColor;
+  final Color Function(BuildContext c)? fgColor;
+  final Color Function(BuildContext c)? bgColor;
   final VoidCallback? onTap;
 
   const GsItemCardLabel({
@@ -204,11 +205,26 @@ class GsItemCardLabel extends StatelessWidget {
     this.label,
     this.icon,
     this.onTap,
+    this.fgColor,
     this.bgColor,
   });
 
+  GsItemCardLabel.chip({
+    super.key,
+    this.asset,
+    this.label,
+    this.icon,
+    this.onTap,
+    Color? fgColor,
+    Color? bgColor,
+  })  : fgColor = ((c) => fgColor ?? c.themeColors.mainColor0),
+        bgColor = ((c) => bgColor ?? c.themeColors.almostWhite);
+
   @override
   Widget build(BuildContext context) {
+    late final dBgColor = context.themeColors.mainColor0.withOpacity(0.6);
+    final fgColor = this.fgColor?.call(context) ?? Colors.white;
+    final bgColor = this.bgColor?.call(context) ?? dBgColor;
     final child = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -218,7 +234,8 @@ class GsItemCardLabel extends StatelessWidget {
             child: Text(
               label!,
               maxLines: 1,
-              style: context.textTheme.filterLabel,
+              style: context.textTheme.filterLabel
+                  .copyWith(color: fgColor, fontWeight: FontWeight.bold),
             ),
           ),
         if (asset != null && asset!.isNotEmpty)
@@ -234,7 +251,7 @@ class GsItemCardLabel extends StatelessWidget {
             padding: const EdgeInsets.all(1),
             child: Icon(
               icon!,
-              color: Colors.white,
+              color: fgColor,
               size: 14,
             ),
           ),
@@ -244,7 +261,7 @@ class GsItemCardLabel extends StatelessWidget {
     return Container(
       height: 24,
       decoration: BoxDecoration(
-        color: bgColor ?? context.themeColors.mainColor0.withOpacity(0.6),
+        color: bgColor,
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(kSeparator4),
