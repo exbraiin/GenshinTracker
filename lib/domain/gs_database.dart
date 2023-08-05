@@ -48,10 +48,6 @@ class GsDatabase {
     'remarkable_chests',
     InfoRemarkableChest.fromJsonData,
   );
-  final infoIngredients = JsonInfoDetails<InfoIngredient>(
-    'ingredients',
-    InfoIngredient.fromJsonData,
-  );
   final infoWeapons = JsonInfoDetails<InfoWeapon>(
     'weapons',
     InfoWeapon.fromJsonData,
@@ -171,7 +167,6 @@ class GsDatabase {
       infoDetails.load(info);
       infoRecipes.load(info);
       infoRemarkableChests.load(info);
-      infoIngredients.load(info);
       infoWeapons.load(info);
       infoWeaponsInfo.load(info);
       infoArtifacts.load(info);

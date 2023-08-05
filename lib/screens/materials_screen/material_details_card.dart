@@ -21,9 +21,21 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       image: item.image,
       rarity: item.rarity,
       banner: GsItemBanner.fromVersion(item.version),
-      info: Text(context.fromLabel(item.group.label)),
+      info: Text(_getLabel(context)),
       child: _content(context),
     );
+  }
+
+  String _getLabel(BuildContext context) {
+    late final group = context.fromLabel(item.group.label);
+    late final ingredient = context.fromLabel(Labels.ingredients);
+
+    if (item.ingredient) {
+      return item.group == GsMaterialGroup.none
+          ? ingredient
+          : '$ingredient & $group';
+    }
+    return group;
   }
 
   Widget _content(BuildContext context) {
@@ -45,7 +57,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           label: context.fromLabel(Labels.weeklyTasks),
           description: item.weekdays.map((e) => '\u2022 ${e.label}').join('\n'),
         ),
-      if (mats.length > 1)
+      if (mats.length > 1 && item.group != GsMaterialGroup.none)
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.materials),
           content: Wrap(

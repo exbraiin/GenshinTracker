@@ -410,6 +410,12 @@ class ScreenFilters {
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
+      FilterSection(
+        {true},
+        (item) => item.ingredient,
+        (c) => c.fromLabel(Labels.ingredients),
+        (c, i) => c.fromLabel(Labels.buttonYes),
+      ),
       FilterSection<GsMaterialGroup, InfoMaterial>(
         GsMaterialGroup.values.toSet(),
         (item) => item.group,

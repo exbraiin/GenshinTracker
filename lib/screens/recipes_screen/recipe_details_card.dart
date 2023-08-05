@@ -129,7 +129,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               ...item.ingredients.entries.map((e) {
-                final item = db.infoIngredients.getItemOrNull(e.key);
+                final item = db.infoMaterials.getItemOrNull(e.key);
                 return ItemRarityBubble.withLabel(
                   image: item?.image ?? '',
                   rarity: item?.rarity ?? 1,

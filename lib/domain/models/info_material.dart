@@ -11,6 +11,7 @@ class InfoMaterial extends IdData<InfoMaterial> {
   final String version;
   final int rarity;
   final int subgroup;
+  final bool ingredient;
   final GsRegion region;
   final GsMaterialGroup group;
   final List<GsWeekday> weekdays;
@@ -27,6 +28,7 @@ class InfoMaterial extends IdData<InfoMaterial> {
         rarity = data.getInt('rarity', 1),
         source = data.getString('source'),
         subgroup = data.getInt('subgroup'),
+        ingredient = data.getBool('ingredient'),
         region = data.getGsEnum('region', GsRegion.values),
         weekdays = data.getGsEnumList('weekdays', GsWeekday.values);
 

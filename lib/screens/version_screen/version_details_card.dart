@@ -69,11 +69,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final ingredients = GsDatabase.instance.infoIngredients
-        .getItems()
-        .where((element) => element.version == item.id)
-        .sortedByDescending((element) => element.rarity)
-        .thenBy((element) => element.name);
     final banners = GsDatabase.instance.infoBanners
         .getItems()
         .where((element) => element.version == item.id)
@@ -195,21 +190,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               children: crystals.map((e) {
                 return ItemRarityBubble(
                   asset: spincrystalAsset,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (ingredients.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.fromLabel(Labels.ingredients),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: ingredients.map((e) {
-                return ItemRarityBubble(
-                  image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
                 );
