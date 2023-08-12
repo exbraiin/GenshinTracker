@@ -101,7 +101,6 @@ class CharacterDetailsScreen extends StatelessWidget {
     final friendship = GsUtils.characters.getCharFriendship(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
     final hasChar = GsUtils.characters.hasCaracter(info.id);
-    late final char = GsDatabase.instance.saveCharacters.getItem(info.id);
 
     return SizedBox(
       height: 260,
@@ -167,8 +166,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ),
                 if (hasChar)
                   InkWell(
-                    onTap: () =>
-                        GsUtils.characters.increaseAscension(info.id),
+                    onTap: () => GsUtils.characters.increaseAscension(info.id),
                     child: Text(
                       '${'✦' * ascension}${'✧' * (6 - ascension)}',
                       style: context.themeStyles.title20n,
@@ -321,8 +319,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                           image: e.image,
                           rarity: e.rarity,
                           tooltip: e.name,
-                          onTap: () => GsUtils.characters
-                              .setCharOutfit(info.id, e.id),
+                          onTap: () =>
+                              GsUtils.characters.setCharOutfit(info.id, e.id),
                         );
                       }),
                     ],

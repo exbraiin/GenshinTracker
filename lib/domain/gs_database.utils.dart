@@ -473,23 +473,6 @@ class _Characters {
         (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
     _db.saveCharacters.insertItem(item);
   }
-
-  /// Increases the character talents
-  ///
-  /// {@macro db_update}
-  void increaseTalent(String id, int idx, {required bool current}) {
-    final char = _db.saveCharacters.getItemOrNull(id) ?? SaveCharacter(id: id);
-    final dst = char.targetTal;
-    final src = char.currentTal;
-
-    final s = current ? 1 : 0;
-    final d = current ? 0 : 1;
-    src[idx] = ((src[idx] + s) % 11).clamp(1, 10);
-    dst[idx] = ((dst[idx] + d) % 11).clamp(src[idx], 10);
-
-    final item = char.copyWith(targetTal: dst, currentTal: src);
-    _db.saveCharacters.insertItem(item);
-  }
 }
 
 class _Achievements {
