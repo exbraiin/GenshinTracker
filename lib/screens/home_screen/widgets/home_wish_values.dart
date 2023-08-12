@@ -50,7 +50,7 @@ class HomeWishesValues extends StatelessWidget {
             ),
           ),
           const SizedBox(width: kSeparator2),
-          primoWidget(18, -1),
+          const PrimogemIcon(size: 18, offset: Offset(0, -1)),
         ],
       ),
       child: Column(
@@ -321,7 +321,7 @@ class HomeWishesValues extends StatelessWidget {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4 * 2),
       decoration: BoxDecoration(
-        color: context.themeColors.mainColor0.withOpacity(0.4),
+        color: context.themeColors.mainColor1.withOpacity(0.4),
         borderRadius: kMainRadius,
       ),
       child: Center(

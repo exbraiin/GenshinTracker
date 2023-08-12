@@ -101,6 +101,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     final friendship = GsUtils.characters.getCharFriendship(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
     final hasChar = GsUtils.characters.hasCaracter(info.id);
+    late final char = GsDatabase.instance.saveCharacters.getItem(info.id);
 
     return SizedBox(
       height: 260,
@@ -151,15 +152,15 @@ class CharacterDetailsScreen extends StatelessWidget {
                     GsItemCardLabel(
                       asset: info.element.assetPath,
                       label: constellation != null ? 'C$constellation' : null,
-                      onTap: () => GsUtils.saveCharacters
-                          .increaseOwnedCharacter(info.id),
+                      onTap: () =>
+                          GsUtils.characters.increaseOwnedCharacter(info.id),
                     ),
                     const SizedBox(width: kSeparator4),
                     if (hasChar)
                       GsItemCardLabel(
                         asset: imageXp,
                         label: friendship.toString(),
-                        onTap: () => GsUtils.saveCharacters
+                        onTap: () => GsUtils.characters
                             .increaseFriendshipCharacter(info.id),
                       )
                   ],
@@ -167,7 +168,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 if (hasChar)
                   InkWell(
                     onTap: () =>
-                        GsUtils.saveCharacters.increaseAscension(info.id),
+                        GsUtils.characters.increaseAscension(info.id),
                     child: Text(
                       '${'✦' * ascension}${'✧' * (6 - ascension)}',
                       style: context.themeStyles.title20n,
@@ -310,7 +311,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                         rarity: info.rarity,
                         tooltip: info.name,
                         onTap: () =>
-                            GsUtils.saveCharacters.setCharOutfit(info.id, ''),
+                            GsUtils.characters.setCharOutfit(info.id, ''),
                       ),
                       ...GsDatabase.instance.infoCharactersOutfit
                           .getItems()
@@ -320,7 +321,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                           image: e.image,
                           rarity: e.rarity,
                           tooltip: e.name,
-                          onTap: () => GsUtils.saveCharacters
+                          onTap: () => GsUtils.characters
                               .setCharOutfit(info.id, e.id),
                         );
                       }),

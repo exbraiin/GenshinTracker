@@ -213,7 +213,7 @@ class ScreenFilters {
       ),
       FilterSection<bool, InfoAchievement>(
         {true, false},
-        (item) => GsUtils.saveAchievements.isObtainable(item.id),
+        (item) => GsUtils.achievements.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
       ),

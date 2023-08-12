@@ -17,11 +17,10 @@ class HomeAchievementsWidget extends StatelessWidget {
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
         final info = GsUtils.achievements;
-        final save = GsUtils.saveAchievements;
         final itotal = info.countTotalRewards();
-        final isaved = save.countSavedRewards();
+        final isaved = info.countSavedRewards();
 
-        final totalSaved = save.countSaved();
+        final totalSaved = info.countSaved();
         final totalTotal = info.countTotal();
 
         return GsDataBox.info(
@@ -38,7 +37,7 @@ class HomeAchievementsWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: kSeparator2),
-              primoWidget(18, -1),
+              const PrimogemIcon(size: 18, offset: Offset(0, -1)),
             ],
           ),
           children: [
@@ -50,7 +49,7 @@ class HomeAchievementsWidget extends StatelessWidget {
               ],
               rows: [
                 ...GsAchievementType.values.map((e) {
-                  final saved = save.countSaved((a) => a.type == e);
+                  final saved = info.countSaved((a) => a.type == e);
                   final total = info.countTotal((a) => a.type == e);
                   return [
                     HomeRow(context.fromLabel(e.label)),

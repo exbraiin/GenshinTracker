@@ -35,10 +35,6 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
   Widget build(BuildContext context) {
     final now = DateTime.now().weekday - 1;
     final name = GsWeekday.values[_weekday - 1];
-    final materials = GsUtils.materials.getWeekdayMaterials(name);
-
-    final ic = GsDatabase.instance.infoCharacters;
-    final iw = GsDatabase.instance.infoWeapons;
 
     return Scaffold(
       appBar: GsAppBar(
@@ -58,35 +54,30 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         decoration: kMainBgDecoration,
         child: ListView(
           padding: const EdgeInsets.all(kSeparator4),
-          children: materials
-              .map<Widget>((e) {
-                final characters = ic
-                    .getItems()
+          children: GsUtils.items
+              .getItemsByMaterial(name)
+              .entries
+              .map((entry) {
+                final e = entry.key;
+                final characters = entry.value
                     .where(
-                      (char) => GsUtils.characterMaterials
-                          .getAllMaterials(char.id)
-                          .containsKey(e.id),
-                    )
-                    .where(
-                      (e) => !_owned || GsUtils.characters.hasCaracter(e.id),
+                      (e) =>
+                          e.character != null &&
+                          (!_owned || GsUtils.characters.hasCaracter(e.id)),
                     )
                     .sortedByDescending((element) => element.rarity)
                     .thenBy((element) => element.name);
-                final weapons = iw
-                    .getItems()
+
+                final weapons = entry.value
                     .where(
-                      (weapon) => GsUtils.weaponMaterials
-                          .getAscensionMaterials(weapon.id)
-                          .containsKey(e.id),
+                      (e) =>
+                          e.weapon != null &&
+                          (!_owned || GsUtils.weapons.hasWeapon(e.id)),
                     )
-                    .where(
-                      (e) => !_owned || GsUtils.weapons.hasWeapon(e.id),
-                    )
-                    .sortedByDescending((element) => element.rarity)
+                    .sortedBy((element) => element.rarity)
                     .thenBy((element) => element.name);
 
                 final noContent = characters.isEmpty && weapons.isEmpty;
-
                 return GsDataBox.info(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

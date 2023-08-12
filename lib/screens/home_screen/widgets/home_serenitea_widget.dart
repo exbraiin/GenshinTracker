@@ -44,7 +44,7 @@ class HomeSereniteaWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: kSeparator2),
-              primoWidget(18, -1),
+              const PrimogemIcon(size: 18, offset: Offset(0, -1)),
             ],
           ),
           children: [

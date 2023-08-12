@@ -137,11 +137,11 @@ class WishListItem extends StatelessWidget {
       final update = await GsConfirmDialog.show(context, title, subtitle);
       if (update == true) {
         for (var wish in same) {
-          GsUtils.saveWishes.updateWishDate(wish, date);
+          GsUtils.wishes.updateWishDate(wish, date);
         }
         return;
       }
     }
-    GsUtils.saveWishes.updateWishDate(wish, date);
+    GsUtils.wishes.updateWishDate(wish, date);
   }
 }

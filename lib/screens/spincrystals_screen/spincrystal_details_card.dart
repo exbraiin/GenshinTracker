@@ -43,7 +43,7 @@ class SpincrystalDetailsCard extends StatelessWidget
                       ? context.themeColors.goodValue
                       : context.themeColors.badValue,
                   icon: owned ? Icons.check : Icons.close,
-                  onPress: () => GsUtils.saveSpincrystals
+                  onPress: () => GsUtils.spincrystals
                       .update(item.number, obtained: !owned),
                 ),
               )

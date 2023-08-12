@@ -1,10 +1,14 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
+/// {@template db_update}
+/// Updates db collection
+/// {@endtemplate}
 final _db = GsDatabase.instance;
 
 class GsUtils {
@@ -13,23 +17,18 @@ class GsUtils {
   static final items = _Items();
   static final cities = _Cities();
   static final wishes = _Wishes();
+  static final recipes = _Recipes();
   static final weapons = _Weapons();
   static final versions = _Versions();
   static final materials = _Materials();
   static final characters = _Characters();
   static final achievements = _Achievements();
+  static final spincrystals = _Spincrystals();
+  static final playerConfigs = _PlayerConfigs();
   static final sereniteaSets = _SereniteaSets();
   static final weaponMaterials = _WeaponMaterials();
+  static final remarkableChests = _RemarkableChests();
   static final characterMaterials = _CharactersMaterials();
-
-  static final saveCities = _SaveCities();
-  static final saveWishes = _SaveWishes();
-  static final saveRecipes = _SaveRecipes();
-  static final saveCharacters = _SaveCharacters();
-  static final saveAchievements = _SaveAchievements();
-  static final saveSpincrystals = _SaveSpincrystals();
-  static final saveSereniteaSets = _SaveSereniteaSets();
-  static final saveRemarkableChest = _SaveRemarkableChests();
 }
 
 enum WishState { none, won, lost, guaranteed }
@@ -41,21 +40,41 @@ class _Items {
         ? ItemData(weapon: _db.infoWeapons.getItem(id))
         : ItemData(character: _db.infoCharacters.getItem(id));
   }
+
+  Map<InfoMaterial, List<ItemData>> getItemsByMaterial(GsWeekday weekday) {
+    final getMat = _db.infoMaterials.getItem;
+
+    return [
+      ..._db.infoCharactersInfo
+          .getItems()
+          .map((element) => MapEntry(element.id, element.ascension.matTalent)),
+      ..._db.infoWeaponsInfo
+          .getItems()
+          .map((element) => MapEntry(element.id, element.matWeapon)),
+    ]
+        .groupBy((element) => element.value)
+        .entries
+        .where((element) => getMat(element.key).weekdays.contains(weekday))
+        .toMap(
+          (e) => _db.infoMaterials.getItem(e.key),
+          (e) => e.value.map((e) => getItemData(e.key)).toList(),
+        );
+  }
 }
 
 class _Cities {
-  int getSavedReputation(String id) =>
-      _db.saveReputations.getItemOrNull(id)?.reputation ?? 0;
-
+  /// Gets the city max level
   int getCityMaxLevel(String id) =>
       _db.infoCities.getItem(id).reputation.length;
 
+  /// Gets the user saved city current level.
   int getCityLevel(String id) {
     final cities = GsDatabase.instance.infoCities;
     final sRp = getSavedReputation(id);
     return cities.getItem(id).reputation.lastIndexWhere((e) => e <= sRp) + 1;
   }
 
+  /// Gets the previous level max xp value.
   int getCityPreviousXpValue(String id) {
     final cities = GsDatabase.instance.infoCities;
     final sRP = getSavedReputation(id);
@@ -63,6 +82,7 @@ class _Cities {
     return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
   }
 
+  /// Gets the current level max xp value.
   int getCityNextXpValue(String id) {
     final cities = GsDatabase.instance.infoCities;
     final sRP = getSavedReputation(id);
@@ -70,6 +90,7 @@ class _Cities {
     return rep.firstWhere((e) => e > sRP, orElse: () => -1);
   }
 
+  /// Gets the amount of weeks required to reach the next level based on bounties and quests.
   int getCityNextLevelWeeks(String id) {
     final cities = GsDatabase.instance.infoCities;
     final sRp = getSavedReputation(id);
@@ -80,11 +101,24 @@ class _Cities {
     return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
   }
 
+  /// Gets the amount of weeks required to reach the max level based on bounties and quests.
   int getCityMaxLevelWeeks(String id) {
     final cities = GsDatabase.instance.infoCities;
     final rep = cities.getItem(id).reputation;
     final xp = rep.last - getSavedReputation(id);
     return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
+  }
+
+  /// Gets the user saved reputation xp
+  int getSavedReputation(String id) =>
+      _db.saveReputations.getItemOrNull(id)?.reputation ?? 0;
+
+  /// Sets the user saved reputation xp
+  ///
+  /// {@macro db_update}
+  void updateReputation(String id, int reputation) {
+    _db.saveReputations
+        .insertItem(SaveReputation(id: id, reputation: reputation));
   }
 }
 
@@ -205,6 +239,74 @@ class _Wishes {
   /// Whether the [itemId] was obtained.
   bool hasItem(String itemId) =>
       _db.saveWishes.getItems().any((e) => e.itemId == itemId);
+
+  /// Removes the [bannerId] last wish
+  ///
+  /// {@macro db_update}
+  void removeLastWish(String bannerId) {
+    final db = GsDatabase.instance.saveWishes;
+    final list = GsUtils.wishes.getBannerWishes(bannerId);
+    if (list.isEmpty) return;
+    db.deleteItem(list.sorted().last.id);
+  }
+
+  /// Updates the given [wish] date.
+  ///
+  /// {@macro db_update}
+  void updateWishDate(SaveWish wish, DateTime date) {
+    final db = GsDatabase.instance.saveWishes;
+    if (!db.exists(wish.id)) return;
+    final newWish = wish.copyWith(date: date);
+    db.insertItem(newWish);
+  }
+
+  /// Adds the items with the given [ids] to the given [bannerId].
+  ///
+  /// {@macro db_update}
+  void addWishes({
+    required Iterable<String> ids,
+    required DateTime date,
+    required String bannerId,
+  }) async {
+    final db = GsDatabase.instance.saveWishes;
+    final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
+    var i = 0;
+    for (var id in ids) {
+      final number = lastRoll + 1 + i++;
+      final wish = SaveWish(
+        id: '${bannerId}_$number',
+        date: date,
+        itemId: id,
+        number: number,
+        bannerId: bannerId,
+      );
+      db.insertItem(wish);
+    }
+  }
+}
+
+class _Recipes {
+  /// Updates the recipe as [own] or the recipe [proficiency].
+  ///
+  /// {@macro db_update}
+  void update(
+    String id, {
+    bool? own,
+    int? proficiency,
+  }) {
+    if (own != null) {
+      final contains = _db.saveRecipes.exists(id);
+      if (own && !contains) {
+        _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: 0));
+      } else if (!own && contains) {
+        _db.saveRecipes.deleteItem(id);
+      }
+    }
+
+    if (proficiency != null) {
+      _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: proficiency));
+    }
+  }
 }
 
 class _Weapons {
@@ -253,15 +355,6 @@ class _Materials {
     final material = _db.infoMaterials.getItemOrNull(id);
     if (material == null) return [];
     return getGroupMaterials(material);
-  }
-
-  Iterable<InfoMaterial> getWeekdayMaterials(GsWeekday weekday) {
-    return _db.infoMaterials
-        .getItems()
-        .where((e) => e.weekdays.contains(weekday))
-        .groupBy((e) => '${e.group}-${e.region.name}-${e.subgroup}')
-        .entries
-        .map((e) => e.value.minBy((e) => e.rarity)!);
   }
 }
 
@@ -321,6 +414,82 @@ class _Characters {
     late final charImg = _db.infoCharacters.getItemOrNull(id)?.fullImage ?? '';
     return url.isNotEmpty ? url : charImg;
   }
+
+  /// Sets the character outfit
+  ///
+  /// {@macro db_update}
+  void setCharOutfit(String id, String outfit) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(outfit: outfit);
+    if (item.outfit != char?.outfit) _db.saveCharacters.insertItem(item);
+  }
+
+  /// Sets the character friendship
+  ///
+  /// {@macro db_update}
+  void setCharFriendship(String id, int friendship) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    final friend = friendship.clamp(1, 10);
+    final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
+    if (item.friendship != char?.friendship) {
+      _db.saveCharacters.insertItem(item);
+    }
+  }
+
+  /// Increases the amount of owned characters
+  ///
+  /// {@macro db_update}
+  void increaseOwnedCharacter(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    final wishes = GsUtils.wishes.countItem(id);
+
+    var cOwned = char?.owned ?? 0;
+    cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
+    final item = (char ?? SaveCharacter(id: id)).copyWith(owned: cOwned);
+    _db.saveCharacters.insertItem(item);
+  }
+
+  /// Increases the character friendship
+  ///
+  /// {@macro db_update}
+  void increaseFriendshipCharacter(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    var cFriendship = char?.friendship ?? 1;
+    cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
+
+    final item =
+        (char ?? SaveCharacter(id: id)).copyWith(friendship: cFriendship);
+    _db.saveCharacters.insertItem(item);
+  }
+
+  /// Increases the character ascension
+  ///
+  /// {@macro db_update}
+  void increaseAscension(String id) {
+    final char = _db.saveCharacters.getItemOrNull(id);
+    var cAscension = char?.ascension ?? 0;
+    cAscension = (cAscension + 1) % 7;
+    final item =
+        (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
+    _db.saveCharacters.insertItem(item);
+  }
+
+  /// Increases the character talents
+  ///
+  /// {@macro db_update}
+  void increaseTalent(String id, int idx, {required bool current}) {
+    final char = _db.saveCharacters.getItemOrNull(id) ?? SaveCharacter(id: id);
+    final dst = char.targetTal;
+    final src = char.currentTal;
+
+    final s = current ? 1 : 0;
+    final d = current ? 0 : 1;
+    src[idx] = ((src[idx] + s) % 11).clamp(1, 10);
+    dst[idx] = ((dst[idx] + d) % 11).clamp(src[idx], 10);
+
+    final item = char.copyWith(targetTal: dst, currentTal: src);
+    _db.saveCharacters.insertItem(item);
+  }
 }
 
 class _Achievements {
@@ -335,6 +504,70 @@ class _Achievements {
     if (test != null) items = items.where(test);
     return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
   }
+
+  /// Updates the achievement obtained phase
+  ///
+  /// {@macro db_update}
+  void update(String id, {required int obtained}) {
+    final saved = _db.saveAchievements.getItemOrNull(id)?.obtained ?? 0;
+    if (saved >= obtained) obtained -= 1;
+    if (obtained > 0) {
+      final item = SaveAchievement(id: id, obtained: obtained);
+      _db.saveAchievements.insertItem(item);
+    } else {
+      _db.saveAchievements.deleteItem(id);
+    }
+  }
+
+  bool isObtainable(String id) {
+    final saved = _db.saveAchievements.getItemOrNull(id);
+    if (saved == null) return true;
+    final item = _db.infoAchievements.getItemOrNull(id);
+    return (item?.phases.length ?? 0) > saved.obtained;
+  }
+
+  int countSaved([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items
+        .sumBy((e) => _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0)
+        .toInt();
+  }
+
+  int countSavedRewards([bool Function(InfoAchievement)? test]) {
+    var items = _db.infoAchievements.getItems();
+    if (test != null) items = items.where(test);
+    return items.sumBy((e) {
+      final i = _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0;
+      return e.phases.take(i).sumBy((element) => element.reward);
+    }).toInt();
+  }
+}
+
+class _Spincrystals {
+  /// Updates the spincrystal as owned or not.
+  ///
+  /// {@macro db_update}
+  void update(int number, {required bool obtained}) {
+    final id = number.toString();
+    if (obtained) {
+      final spin = SaveSpincrystal(id: id, obtained: obtained);
+      _db.saveSpincrystals.insertItem(spin);
+    } else {
+      _db.saveSpincrystals.deleteItem(id);
+    }
+  }
+}
+
+class _PlayerConfigs {
+  SavePlayerInfo? getPlayerInfo() {
+    return _db.saveUserConfigs.getItemOrNull(SaveConfig.kPlayerInfo)
+        as SavePlayerInfo?;
+  }
+
+  void deletePlayerInfo() {
+    _db.saveUserConfigs.deleteItem(SaveConfig.kPlayerInfo);
+  }
 }
 
 class _SereniteaSets {
@@ -344,6 +577,21 @@ class _SereniteaSets {
     final chars = saved?.chars ?? [];
     bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
     return item.chars.any((c) => !chars.contains(c) && hasChar(c));
+  }
+
+  /// Sets the serenitea character as obtained or not.
+  ///
+  /// {@macro db_update}
+  void setSetCharacter(String set, String char, {required bool owned}) {
+    final sv = _db.saveSereniteaSets.getItemOrNull(set) ??
+        SaveSereniteaSet(id: set, chars: []);
+    final hasCharacter = sv.chars.contains(char);
+    if (owned && !hasCharacter) {
+      sv.chars.add(char);
+    } else if (!owned && hasCharacter) {
+      sv.chars.remove(char);
+    }
+    _db.saveSereniteaSets.insertItem(sv);
   }
 }
 
@@ -371,6 +619,20 @@ class _WeaponMaterials {
       },
       level,
     );
+  }
+}
+
+class _RemarkableChests {
+  /// Updates the remarkable chest as obtained or not.
+  ///
+  /// {@macro db_update}
+  void update(String id, {required bool obtained}) {
+    if (obtained) {
+      _db.saveRemarkableChests
+          .insertItem(SaveRemarkableChest(id: id, obtained: obtained));
+    } else {
+      _db.saveRemarkableChests.deleteItem(id);
+    }
   }
 }
 
@@ -440,189 +702,6 @@ class _CharactersMaterials {
         .entries
         .groupBy((e) => e.key)
         .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
-  }
-}
-
-class _SaveCities {
-  void update(String id, int reputation) => GsDatabase.instance.saveReputations
-      .insertItem(SaveReputation(id: id, reputation: reputation));
-}
-
-class _SaveWishes {
-  void removeLastWish(String bannerId) {
-    final db = GsDatabase.instance.saveWishes;
-    final list = GsUtils.wishes.getBannerWishes(bannerId);
-    if (list.isEmpty) return;
-    db.deleteItem(list.sorted().last.id);
-  }
-
-  void updateWishDate(SaveWish wish, DateTime date) {
-    final db = GsDatabase.instance.saveWishes;
-    if (!db.exists(wish.id)) return;
-    final newWish = wish.copyWith(date: date);
-    db.insertItem(newWish);
-  }
-
-  void addWishes({
-    required Iterable<String> ids,
-    required DateTime date,
-    required String bannerId,
-  }) async {
-    final db = GsDatabase.instance.saveWishes;
-    final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
-    var i = 0;
-    for (var id in ids) {
-      final number = lastRoll + 1 + i++;
-      final wish = SaveWish(
-        id: '${bannerId}_$number',
-        date: date,
-        itemId: id,
-        number: number,
-        bannerId: bannerId,
-      );
-      db.insertItem(wish);
-    }
-  }
-}
-
-class _SaveRecipes {
-  void update(
-    String id, {
-    bool? own,
-    int? proficiency,
-  }) {
-    if (own != null) {
-      final contains = _db.saveRecipes.exists(id);
-      if (own && !contains) {
-        _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: 0));
-      } else if (!own && contains) {
-        _db.saveRecipes.deleteItem(id);
-      }
-    }
-
-    if (proficiency != null) {
-      _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: proficiency));
-    }
-  }
-}
-
-class _SaveCharacters {
-  final db = GsDatabase.instance.saveCharacters;
-
-  void setCharOutfit(String id, String outfit) {
-    final char = db.getItemOrNull(id);
-    final item = (char ?? SaveCharacter(id: id)).copyWith(outfit: outfit);
-    if (item.outfit != char?.outfit) db.insertItem(item);
-  }
-
-  void setCharFriendship(String id, int friendship) {
-    final char = db.getItemOrNull(id);
-    final friend = friendship.clamp(1, 10);
-    final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
-    if (item.friendship != char?.friendship) db.insertItem(item);
-  }
-
-  void increaseOwnedCharacter(String id) {
-    final char = db.getItemOrNull(id);
-    final wishes = GsUtils.wishes.countItem(id);
-
-    var cOwned = char?.owned ?? 0;
-    cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
-    final item = (char ?? SaveCharacter(id: id)).copyWith(owned: cOwned);
-    db.insertItem(item);
-  }
-
-  void increaseFriendshipCharacter(String id) {
-    final char = db.getItemOrNull(id);
-    var cFriendship = char?.friendship ?? 1;
-    cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
-
-    final item =
-        (char ?? SaveCharacter(id: id)).copyWith(friendship: cFriendship);
-    db.insertItem(item);
-  }
-
-  void increaseAscension(String id) {
-    final char = db.getItemOrNull(id);
-    var cAscension = char?.ascension ?? 0;
-    cAscension = (cAscension + 1) % 7;
-    final item =
-        (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
-    db.insertItem(item);
-  }
-}
-
-class _SaveAchievements {
-  void update(String id, {required int obtained}) {
-    final saved = _db.saveAchievements.getItemOrNull(id)?.obtained ?? 0;
-    if (saved >= obtained) obtained -= 1;
-    if (obtained > 0) {
-      final item = SaveAchievement(id: id, obtained: obtained);
-      _db.saveAchievements.insertItem(item);
-    } else {
-      _db.saveAchievements.deleteItem(id);
-    }
-  }
-
-  bool isObtainable(String id) {
-    final saved = _db.saveAchievements.getItemOrNull(id);
-    if (saved == null) return true;
-    final item = _db.infoAchievements.getItemOrNull(id);
-    return (item?.phases.length ?? 0) > saved.obtained;
-  }
-
-  int countSaved([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
-    if (test != null) items = items.where(test);
-    return items
-        .sumBy((e) => _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0)
-        .toInt();
-  }
-
-  int countSavedRewards([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
-    if (test != null) items = items.where(test);
-    return items.sumBy((e) {
-      final i = _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0;
-      return e.phases.take(i).sumBy((element) => element.reward);
-    }).toInt();
-  }
-}
-
-class _SaveSpincrystals {
-  void update(int number, {required bool obtained}) {
-    final id = number.toString();
-    if (obtained) {
-      final spin = SaveSpincrystal(id: id, obtained: obtained);
-      _db.saveSpincrystals.insertItem(spin);
-    } else {
-      _db.saveSpincrystals.deleteItem(id);
-    }
-  }
-}
-
-class _SaveSereniteaSets {
-  void setSetCharacter(String set, String char, {required bool owned}) {
-    final sv = _db.saveSereniteaSets.getItemOrNull(set) ??
-        SaveSereniteaSet(id: set, chars: []);
-    final hasCharacter = sv.chars.contains(char);
-    if (owned && !hasCharacter) {
-      sv.chars.add(char);
-    } else if (!owned && hasCharacter) {
-      sv.chars.remove(char);
-    }
-    _db.saveSereniteaSets.insertItem(sv);
-  }
-}
-
-class _SaveRemarkableChests {
-  void update(String id, {required bool obtained}) {
-    if (obtained) {
-      _db.saveRemarkableChests
-          .insertItem(SaveRemarkableChest(id: id, obtained: obtained));
-    } else {
-      _db.saveRemarkableChests.deleteItem(id);
-    }
   }
 }
 
@@ -838,21 +917,33 @@ List<Widget> getSized(Iterable<Widget> widgets) {
   );
 }
 
-Widget primoWidget([double size = 20, double offset = 3]) {
-  return Transform.translate(
-    offset: Offset(0, offset),
-    child: Padding(
-      padding: const EdgeInsets.only(right: 4),
-      child: Image.asset(
-        imagePrimogem,
-        width: size,
-        height: size,
-        fit: BoxFit.fitHeight,
-        cacheWidth: size.toInt(),
-        cacheHeight: size.toInt(),
+class PrimogemIcon extends StatelessWidget {
+  final double size;
+  final Offset offset;
+
+  const PrimogemIcon({
+    super.key,
+    this.size = 20,
+    this.offset = const Offset(0, 3),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: offset,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 4),
+        child: Image.asset(
+          imagePrimogem,
+          width: size,
+          height: size,
+          fit: BoxFit.fitHeight,
+          cacheWidth: size.toInt(),
+          cacheHeight: size.toInt(),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class WishesSummary {

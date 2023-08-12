@@ -87,7 +87,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                         final saved =
                             GsUtils.cities.getSavedReputation(widget.city.id);
                         if (saved == amount) return;
-                        GsUtils.saveCities.update(widget.city.id, amount);
+                        GsUtils.cities.updateReputation(widget.city.id, amount);
                       },
                     ),
                   ),

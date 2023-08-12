@@ -55,7 +55,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                           ? context.themeColors.goodValue
                           : context.themeColors.badValue,
                       icon: saved != null ? Icons.check : Icons.close,
-                      onPress: () => GsUtils.saveRecipes
+                      onPress: () => GsUtils.recipes
                           .update(item.id, own: saved == null),
                     ),
                   ),
@@ -79,7 +79,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                           GsNumberField(
                             onUpdate: (i) {
                               final amount = i.clamp(0, item.maxProficiency);
-                              GsUtils.saveRecipes
+                              GsUtils.recipes
                                   .update(item.id, proficiency: amount);
                             },
                             onDbUpdate: () {

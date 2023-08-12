@@ -30,7 +30,7 @@ class AchievementGroupsScreen extends StatelessWidget {
             final data = GsDatabase.instance.infoAchievementGroups;
             final gList = data.getItems().toList();
             final total = GsUtils.achievements.countTotal();
-            final saved = GsUtils.saveAchievements.countSaved();
+            final saved = GsUtils.achievements.countSaved();
             return Scaffold(
               appBar: GsAppBar(
                 label:
@@ -151,7 +151,7 @@ class AchievementGroupsScreen extends StatelessWidget {
     bool selected,
     VoidCallback? select,
   ) {
-    final utils = GsUtils.saveAchievements;
+    final utils = GsUtils.achievements;
     final saved = utils.countSaved((e) => e.group == item.id);
     final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
@@ -159,7 +159,8 @@ class AchievementGroupsScreen extends StatelessWidget {
       height: 100,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
-      padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8*2),
+      padding:
+          const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8 * 2),
       decoration: BoxDecoration(
         color: selected
             ? context.themeColors.mainColor2

@@ -193,6 +193,7 @@ class GsItemCardButton extends StatelessWidget {
 class GsItemCardLabel extends StatelessWidget {
   final String? asset;
   final String? label;
+  final Widget? child;
   final IconData? icon;
   final Color Function(BuildContext c)? fgColor;
   final Color Function(BuildContext c)? bgColor;
@@ -202,6 +203,7 @@ class GsItemCardLabel extends StatelessWidget {
     super.key,
     this.asset,
     this.label,
+    this.child,
     this.icon,
     this.onTap,
     this.fgColor,
@@ -212,6 +214,7 @@ class GsItemCardLabel extends StatelessWidget {
     super.key,
     this.asset,
     this.label,
+    this.child,
     this.icon,
     this.onTap,
     Color? fgColor,
@@ -236,6 +239,7 @@ class GsItemCardLabel extends StatelessWidget {
               style: context.themeStyles.label12n.copyWith(color: fgColor),
             ),
           ),
+        if (this.child != null) this.child!,
         if (asset != null && asset!.isNotEmpty)
           Image.asset(
             asset!,

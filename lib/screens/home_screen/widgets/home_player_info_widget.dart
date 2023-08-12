@@ -19,7 +19,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = GsDatabase.instance.saveUserConfigs;
+    final info = GsUtils.playerConfigs.getPlayerInfo();
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, notifier, child) {
@@ -27,7 +27,6 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return ValueStreamBuilder<bool>(
           stream: GsDatabase.instance.loaded,
           builder: (context, snapshot) {
-            final info = db.getItemOrNullAs<SavePlayerInfo>();
             final hasValidId = info?.uid.length == 9;
             return GsDataBox.info(
               title: Row(
@@ -39,13 +38,13 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       length: 9,
                       align: TextAlign.right,
                       onDbUpdate: () {
-                        final info = db.getItemOrNullAs<SavePlayerInfo>();
+                        final info = GsUtils.playerConfigs.getPlayerInfo();
                         return int.tryParse(info?.uid ?? '') ?? 0;
                       },
                       onUpdate: (i) {
                         if (info?.uid == i.toString()) return;
                         if (i.toString().length != 9) {
-                          db.deleteItem(SaveConfig.kPlayerInfo);
+                          GsUtils.playerConfigs.deletePlayerInfo();
                           return;
                         }
                         _fetchAndInsert(i.toString());

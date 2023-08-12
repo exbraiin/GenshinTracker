@@ -79,7 +79,7 @@ class BannerListItem extends StatelessWidget {
                           style:
                               TextStyle(color: context.themeColors.almostWhite),
                         ),
-                        WidgetSpan(child: primoWidget()),
+                        const WidgetSpan(child: PrimogemIcon()),
                         TextSpan(
                           text: '${(rolls * 160).format()} Primogems',
                           style:
@@ -107,7 +107,7 @@ class BannerListItem extends StatelessWidget {
                               RemoveDialog.show(context, banner.name)
                                   .then((value) {
                                 if (!value) return;
-                                GsUtils.saveWishes.removeLastWish(banner.id);
+                                GsUtils.wishes.removeLastWish(banner.id);
                               });
                             }
                           : null,

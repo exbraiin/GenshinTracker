@@ -85,7 +85,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
                       image: GsUtils.characters.getImage(char.id),
                       rarity: char.rarity,
                       onTap: owns
-                          ? () => GsUtils.saveSereniteaSets
+                          ? () => GsUtils.sereniteaSets
                               .setSetCharacter(item.id, char.id, owned: !marked)
                           : null,
                       child: marked
