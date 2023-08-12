@@ -45,6 +45,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color mainColor1;
   final Color mainColor2;
 
+  final Color divider;
   final Color badValue;
   final Color goodValue;
   final Color setIndoor;
@@ -60,6 +61,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.mainColor0,
     required this.mainColor1,
     required this.mainColor2,
+    required this.divider,
     required this.badValue,
     required this.goodValue,
     required this.setIndoor,
@@ -73,6 +75,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         mainColor0 = const Color(0xFF0C122E),
         mainColor1 = const Color(0xFF1E2240),
         mainColor2 = const Color(0xFF2B2F4E),
+        divider = Colors.grey.withOpacity(0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
         setIndoor = const Color(0xFFA01F2E),
@@ -85,6 +88,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         mainColor0 = const Color(0xFF000000),
         mainColor1 = const Color(0xFF191919),
         mainColor2 = const Color(0xFF202020),
+        divider = Colors.grey.withOpacity(0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
         setIndoor = const Color(0xFFA01F2E),
@@ -114,6 +118,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? mainColor0,
     Color? mainColor1,
     Color? mainColor2,
+    Color? divider,
     Color? badValue,
     Color? goodValue,
     Color? setIndoor,
@@ -126,6 +131,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       mainColor0: mainColor0 ?? this.mainColor0,
       mainColor1: mainColor1 ?? this.mainColor1,
       mainColor2: mainColor2 ?? this.mainColor2,
+      divider: divider ?? this.divider,
       badValue: badValue ?? this.badValue,
       goodValue: goodValue ?? this.goodValue,
       setIndoor: setIndoor ?? this.setIndoor,
@@ -150,6 +156,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       mainColor0: clerp((c) => c.mainColor0),
       mainColor1: clerp((c) => c.mainColor1),
       mainColor2: clerp((c) => c.mainColor2),
+      divider: clerp((c) => c.divider),
       badValue: clerp((c) => c.badValue),
       goodValue: clerp((c) => c.goodValue),
       setIndoor: clerp((c) => c.setIndoor),

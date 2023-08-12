@@ -156,7 +156,7 @@ class AchievementGroupsScreen extends StatelessWidget {
     final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
     return AnimatedContainer(
-      height: 100,
+      height: 86,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
       padding:

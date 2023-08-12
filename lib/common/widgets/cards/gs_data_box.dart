@@ -43,7 +43,7 @@ class GsDataBox extends StatelessWidget {
               style: context.themeStyles.title18n,
               child: title!,
             ),
-            Divider(color: context.themeColors.almostWhite, thickness: 0.5),
+            Divider(color: context.themeColors.divider, thickness: 0.5),
           ],
           if (child != null) child!,
           ...children,

@@ -26,7 +26,7 @@ class BannerListItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         border: Border(
-          bottom: BorderSide(color: Colors.white.withOpacity(0.5)),
+          bottom: BorderSide(color: context.themeColors.divider),
         ),
       ),
       child: Stack(

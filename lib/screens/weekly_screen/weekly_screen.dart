@@ -33,8 +33,8 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now().weekday - 1;
-    final name = GsWeekday.values[_weekday - 1];
+    final index = DateTime.now().weekday - 1;
+    final weekday = GsWeekday.values[_weekday - 1];
 
     return Scaffold(
       appBar: GsAppBar(
@@ -47,7 +47,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
             ),
             onPressed: () => setState(() => _owned = !_owned),
           ),
-          _getDropdown(context, now),
+          _getDropdown(context, index),
         ],
       ),
       body: Container(
@@ -55,7 +55,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         child: ListView(
           padding: const EdgeInsets.all(kSeparator4),
           children: GsUtils.items
-              .getItemsByMaterial(name)
+              .getItemsByMaterial(weekday)
               .entries
               .map((entry) {
                 final e = entry.key;
@@ -96,7 +96,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           ),
                         ],
                       ),
-                      Divider(color: context.themeColors.dimWhite),
+                      Divider(color: context.themeColors.divider),
                       if (noContent) const GsNoResultsState.small(),
                       Wrap(
                         spacing: kSeparator4,

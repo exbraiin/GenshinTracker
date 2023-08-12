@@ -87,7 +87,7 @@ class HomeWishesValues extends StatelessWidget {
             ],
           ),
           Divider(
-            color: context.themeColors.dimWhite,
+            color: context.themeColors.divider,
             thickness: 1,
             height: 8,
           ),
@@ -99,7 +99,7 @@ class HomeWishesValues extends StatelessWidget {
           ),
           if (banner == GsBanner.standard) ...[
             Divider(
-              color: context.themeColors.dimWhite,
+              color: context.themeColors.divider,
               thickness: 1,
               height: 8,
             ),
@@ -110,7 +110,7 @@ class HomeWishesValues extends StatelessWidget {
               context.themeColors.getRarityColor(5),
             ),
             Divider(
-              color: context.themeColors.dimWhite,
+              color: context.themeColors.divider,
               thickness: 1,
               height: 8,
             ),
@@ -123,7 +123,7 @@ class HomeWishesValues extends StatelessWidget {
           ],
           if (banner == GsBanner.character || banner == GsBanner.weapon) ...[
             Divider(
-              color: context.themeColors.dimWhite,
+              color: context.themeColors.divider,
               thickness: 1,
               height: 8,
             ),
@@ -135,7 +135,7 @@ class HomeWishesValues extends StatelessWidget {
             ),
           ],
           Divider(
-            color: context.themeColors.dimWhite,
+            color: context.themeColors.divider,
             thickness: 1,
             height: 8,
           ),
@@ -146,7 +146,7 @@ class HomeWishesValues extends StatelessWidget {
             context.themeColors.getRarityColor(4),
           ),
           Divider(
-            color: context.themeColors.dimWhite,
+            color: context.themeColors.divider,
             thickness: 1,
             height: 8,
           ),
@@ -157,7 +157,7 @@ class HomeWishesValues extends StatelessWidget {
             context.themeColors.getRarityColor(4),
           ),
           Divider(
-            color: context.themeColors.dimWhite,
+            color: context.themeColors.divider,
             thickness: 1,
             height: 8,
           ),

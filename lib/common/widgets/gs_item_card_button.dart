@@ -219,8 +219,8 @@ class GsItemCardLabel extends StatelessWidget {
     this.onTap,
     Color? fgColor,
     Color? bgColor,
-  })  : fgColor = ((c) => fgColor ?? c.themeColors.mainColor0),
-        bgColor = ((c) => bgColor ?? c.themeColors.almostWhite);
+  })  : fgColor = ((c) => fgColor ?? c.themeColors.almostWhite),
+        bgColor = ((c) => bgColor ?? c.themeColors.mainColor1);
 
   @override
   Widget build(BuildContext context) {

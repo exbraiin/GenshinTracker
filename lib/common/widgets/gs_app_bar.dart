@@ -25,7 +25,7 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: context.themeColors.dimWhite),
+              bottom: BorderSide(color: context.themeColors.divider),
             ),
           ),
           child: bottom,
