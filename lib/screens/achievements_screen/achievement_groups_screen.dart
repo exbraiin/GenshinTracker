@@ -151,8 +151,7 @@ class AchievementGroupsScreen extends StatelessWidget {
     bool selected,
     VoidCallback? select,
   ) {
-    final utils = GsUtils.achievements;
-    final saved = utils.countSaved((e) => e.group == item.id);
+    final saved = GsUtils.achievements.countSaved((e) => e.group == item.id);
     final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
     return AnimatedContainer(

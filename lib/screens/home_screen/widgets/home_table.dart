@@ -21,16 +21,8 @@ class HomeTable extends StatelessWidget {
         ),
       ),
       children: [
-        TableRow(
-          children: headers
-              .map(
-                (e) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: e,
-                ),
-              )
-              .toList(),
-        ),
+        TableRow(children: headers.map((e) => e).toList()),
+        TableRow(children: headers.map((e) => const Divider()).toList()),
         ...rows.map((e) => TableRow(children: e.map((e) => e).toList())),
       ],
     );
@@ -84,7 +76,7 @@ class HomeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(kSeparator2),
       child: DefaultTextStyle(
         style: context.textTheme.titleSmall!
             .copyWith(fontSize: fontSize, color: color),
