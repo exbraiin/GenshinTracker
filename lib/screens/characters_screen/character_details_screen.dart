@@ -248,7 +248,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.vision), style: stLabel),
+                Text(context.fromLabel(Labels.element), style: stLabel),
                 Text(context.fromLabel(info.element.label), style: stStyle),
                 Text(context.fromLabel(Labels.affiliation), style: stLabel),
                 Text(info.affiliation, style: stStyle),

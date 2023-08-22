@@ -487,9 +487,6 @@ class Labels {
 	/// Title
 	static const title = 'title';
 
-	/// Vision
-	static const vision = 'vision';
-
 	/// Affiliation
 	static const affiliation = 'affiliation';
 

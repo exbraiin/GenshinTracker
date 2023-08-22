@@ -22,7 +22,7 @@ final theme = ThemeData(
     decoration: BoxDecoration(
       color: _themeColors.mainColor1,
       borderRadius: BorderRadius.circular(1000),
-      border: Border.all(color: _themeColors.dimWhite),
+      border: Border.all(color: _themeColors.mainColor2),
     ),
     textStyle: TextStyle(
       fontSize: 12,
