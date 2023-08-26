@@ -21,30 +21,27 @@ class GsWishStateIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? message;
-    IconData? icon;
-    switch (wishState) {
-      case WishState.won:
-        icon = Icons.star_rounded;
-        message = context.fromLabel(banner.getWonLabel(rarity));
-        break;
-      case WishState.lost:
-        icon = Icons.star_border_rounded;
-        message = context.fromLabel(banner.getLostLabel(rarity));
-        break;
-      case WishState.guaranteed:
-        icon = Icons.star_half_rounded;
-        message = context.fromLabel(Labels.guaranteed);
-        break;
-      default:
-        return const SizedBox();
-    }
+    final state = _getState(context);
+    if (state == null) return const SizedBox();
+
     return Padding(
       padding: padding,
       child: Tooltip(
-        message: message,
-        child: Icon(icon, color: color, size: 16),
+        message: state.msg,
+        child: Icon(state.icon, color: color, size: 16),
       ),
     );
+  }
+
+  ({String msg, IconData icon})? _getState(BuildContext context) {
+    late final wonLabel = context.fromLabel(banner.getWonLabel(rarity));
+    late final lostLabel = context.fromLabel(banner.getLostLabel(rarity));
+    late final grtdLabel = context.fromLabel(Labels.guaranteed);
+    return switch (wishState) {
+      WishState.won => (msg: wonLabel, icon: Icons.star_rounded),
+      WishState.lost => (msg: lostLabel, icon: Icons.star_border_rounded),
+      WishState.guaranteed => (msg: grtdLabel, icon: Icons.star_half_rounded),
+      _ => null,
+    };
   }
 }

@@ -4,12 +4,10 @@ abstract class SaveConfig extends IdSaveData<SaveConfig> {
   static const kPlayerInfo = 'player_info';
 
   static SaveConfig fromJsonData(JsonData m) {
-    switch (m.getString('id')) {
-      case kPlayerInfo:
-        return SavePlayerInfo.fromJsonData(m);
-      default:
-        return _EmptySaveConfig();
-    }
+    return switch (m.getString('id')) {
+      kPlayerInfo => SavePlayerInfo.fromJsonData(m),
+      _ => _EmptySaveConfig()
+    };
   }
 }
 

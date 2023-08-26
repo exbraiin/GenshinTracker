@@ -19,7 +19,6 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final info = GsUtils.playerConfigs.getPlayerInfo();
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, notifier, child) {
@@ -27,6 +26,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return ValueStreamBuilder<bool>(
           stream: GsDatabase.instance.loaded,
           builder: (context, snapshot) {
+            final info = GsUtils.playerConfigs.getPlayerInfo();
             final hasValidId = info?.uid.length == 9;
             return GsDataBox.info(
               title: Row(
