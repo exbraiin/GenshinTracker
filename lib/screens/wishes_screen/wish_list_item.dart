@@ -77,7 +77,7 @@ class WishListItem extends StatelessWidget {
                 width: 44,
                 margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
                 child: CachedImageWidget(
-                  item.getUrlImg(),
+                  item.image,
                   fit: BoxFit.cover,
                 ),
               ),

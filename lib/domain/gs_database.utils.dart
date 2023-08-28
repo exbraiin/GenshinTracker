@@ -37,8 +37,8 @@ class _Items {
   /// Gets a weapon or a character by the given [id].
   ItemData getItemData(String id) {
     return _db.infoWeapons.exists(id)
-        ? ItemData(weapon: _db.infoWeapons.getItem(id))
-        : ItemData(character: _db.infoCharacters.getItem(id));
+        ? ItemData.weapon(_db.infoWeapons.getItem(id))
+        : ItemData.character(_db.infoCharacters.getItem(id));
   }
 
   Map<InfoMaterial, List<ItemData>> getItemsByMaterial(GsWeekday weekday) {
@@ -183,7 +183,7 @@ class _Wishes {
 
   /// Gets a list of [ItemData] that can be obtained in banners.
   Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
-    bool filterWeapon(InfoWeapon info) {
+    bool filterWp(InfoWeapon info) {
       late final isStandard = info.source == GsItemSource.wishesStandard;
       late final isFeatured = banner.feature5.contains(info.id);
       late final isChar = banner.type == GsBanner.character && info.rarity == 5;
@@ -191,7 +191,7 @@ class _Wishes {
       return (isStandard || isFeatured) && !isChar && !isBegn;
     }
 
-    bool filterCharacter(InfoCharacter info) {
+    bool filterCh(InfoCharacter info) {
       late final isStandard = info.source == GsItemSource.wishesStandard;
       late final isFeatured = banner.feature5.contains(info.id);
       late final isWeap = banner.type == GsBanner.weapon && info.rarity == 5;
@@ -199,14 +199,8 @@ class _Wishes {
     }
 
     return [
-      ..._db.infoWeapons
-          .getItems()
-          .where(filterWeapon)
-          .map((element) => ItemData(weapon: element)),
-      ..._db.infoCharacters
-          .getItems()
-          .where(filterCharacter)
-          .map((element) => ItemData(character: element)),
+      ..._db.infoWeapons.getItems().where(filterWp).map(ItemData.weapon),
+      ..._db.infoCharacters.getItems().where(filterCh).map(ItemData.character),
     ];
   }
 
@@ -872,12 +866,8 @@ class ItemData extends IdData<ItemData> {
   GsItem get type => weapon != null ? GsItem.weapon : GsItem.character;
   int get rarity => weapon?.rarity ?? character?.rarity ?? 0;
 
-  ItemData({
-    this.weapon,
-    this.character,
-  }) : assert(weapon != null || character != null);
-
-  String? getUrlImg() => weapon != null ? weapon?.image : character?.image;
+  ItemData.weapon(this.weapon) : character = null;
+  ItemData.character(this.character) : weapon = null;
 
   @override
   List<Comparator<ItemData>> get comparators => [
