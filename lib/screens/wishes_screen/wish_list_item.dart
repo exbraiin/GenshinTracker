@@ -125,23 +125,45 @@ class WishListItem extends StatelessWidget {
     final date = await GsTimeDialog.show(context, wish.date);
     if (date == null || date == wish.date) return;
 
-    if (type != ListType.none) {
-      final wishes = GsUtils.wishes.getBannerWishes(wish.bannerId);
-      final same = wishes.where((e) => e.date == wish.date);
-      final amount = same.length;
+    if (type == ListType.none) {
+      GsUtils.wishes.updateWishDate(wish, date);
+      return;
+    }
 
+    final list = _getWishesAround(wish);
+    bool? update = false;
+    if (list.length > 1) {
       // ignore: use_build_context_synchronously
       if (!context.mounted) return;
       final title = context.fromLabel(Labels.wishes);
-      final subtitle = context.fromLabel(Labels.updateAllWishes, amount);
-      final update = await GsConfirmDialog.show(context, title, subtitle);
-      if (update == true) {
-        for (var wish in same) {
-          GsUtils.wishes.updateWishDate(wish, date);
-        }
-        return;
-      }
+      final subtitle = context.fromLabel(Labels.updateAllWishes, list.length);
+      update = await GsConfirmDialog.show(context, title, subtitle);
+      if (update == null) return;
     }
-    GsUtils.wishes.updateWishDate(wish, date);
+    
+    if (update) {
+      for (var wish in list) {
+        GsUtils.wishes.updateWishDate(wish, date);
+      }
+    } else {
+      GsUtils.wishes.updateWishDate(wish, date);
+    }
+  }
+
+  List<SaveWish> _getWishesAround(SaveWish wish) {
+    final list = <SaveWish>[wish];
+    final sorted = GsUtils.wishes.getBannerWishes(wish.bannerId);
+    final index = sorted.indexWhere((e) => e.id == wish.id);
+    if (index == -1) return list;
+    final idxWish = sorted[index];
+    for (var i = index + 1; i < sorted.length; ++i) {
+      if (idxWish.date != sorted[i].date) break;
+      list.add(sorted[i]);
+    }
+    for (var i = index - 1; i >= 0; --i) {
+      if (idxWish.date != sorted[i].date) break;
+      list.add(sorted[i]);
+    }
+    return list;
   }
 }
