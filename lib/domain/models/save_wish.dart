@@ -3,6 +3,7 @@ import 'package:tracker/domain/gs_domain.dart';
 class SaveWish extends IdSaveData<SaveWish> {
   @override
   final String id;
+  final int pity;
   final int number;
   final String itemId;
   final String bannerId;
@@ -12,6 +13,7 @@ class SaveWish extends IdSaveData<SaveWish> {
 
   SaveWish({
     required this.id,
+    required this.pity,
     required this.date,
     required this.itemId,
     required this.number,
@@ -20,6 +22,7 @@ class SaveWish extends IdSaveData<SaveWish> {
 
   SaveWish.fromJsonData(JsonData data)
       : number = data.getInt('number'),
+        pity = data.getInt('pity'),
         id = data.getString('id'),
         itemId = data.getString('item'),
         bannerId = data.getString('banner'),
@@ -29,6 +32,7 @@ class SaveWish extends IdSaveData<SaveWish> {
   @override
   SaveWish copyWith({
     String? id,
+    int? pity,
     int? number,
     String? itemId,
     String? bannerId,
@@ -36,6 +40,7 @@ class SaveWish extends IdSaveData<SaveWish> {
   }) {
     return SaveWish(
       id: id ?? this.id,
+      pity: pity ?? this.pity,
       date: date ?? this.date,
       itemId: itemId ?? this.itemId,
       number: number ?? this.number,
@@ -46,6 +51,7 @@ class SaveWish extends IdSaveData<SaveWish> {
   @override
   Map<String, dynamic> toMap() => {
         'id': id,
+        'pity': pity,
         'date': date.toString().split('.').first,
         'number': number,
         'item': itemId,
