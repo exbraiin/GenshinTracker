@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 
 enum ListType { none, top, middle, bottom }
 
@@ -47,8 +48,8 @@ class WishListItem extends StatelessWidget {
         color: color.withOpacity(0.75),
         borderRadius: kMainRadius,
       ),
-      child: Row(
-        children: getSized([
+      child: WishListInfoWidget(
+        children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
@@ -116,7 +117,7 @@ class WishListItem extends StatelessWidget {
           Text(item.rarity.toString(), style: style),
           Text(context.fromLabel(item.type.label), style: style),
           Text(wish.number.toString(), style: style),
-        ]).toList(),
+        ],
       ),
     );
   }
@@ -140,7 +141,7 @@ class WishListItem extends StatelessWidget {
       update = await GsConfirmDialog.show(context, title, subtitle);
       if (update == null) return;
     }
-    
+
     if (update) {
       for (var wish in list) {
         GsUtils.wishes.updateWishDate(wish, date);

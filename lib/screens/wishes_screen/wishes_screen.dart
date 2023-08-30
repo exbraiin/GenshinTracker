@@ -10,6 +10,7 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
+import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 
 class WishesScreen extends StatelessWidget {
@@ -137,50 +138,43 @@ class WishesScreen extends StatelessWidget {
       preferredSize: const Size.fromHeight(44),
       child: SizedBox(
         height: 44,
-        child: Row(
-          children: getSized(
-            [
-              Text(
-                context.fromLabel(Labels.time),
-                textAlign: TextAlign.center,
+        child: WishListInfoWidget(
+          children: [
+            Text(
+              context.fromLabel(Labels.time),
+              textAlign: TextAlign.center,
+              style: context.themeStyles.label14n,
+            ),
+            Text(
+              context.fromLabel(Labels.pity),
+              textAlign: TextAlign.center,
+              style: context.themeStyles.label14n,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 60),
+              child: Text(
+                context.fromLabel(Labels.name),
+                textAlign: TextAlign.left,
                 style: context.themeStyles.label14n,
               ),
-              Text(
-                context.fromLabel(Labels.pity),
-                textAlign: TextAlign.center,
-                style: context.themeStyles.label14n,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 44),
-                child: Text(
-                  context.fromLabel(Labels.name),
-                  textAlign: TextAlign.center,
-                  style: context.themeStyles.label14n,
-                ),
-              ),
-              const SizedBox(),
-              Text(
-                context.fromLabel(Labels.rarity),
-                textAlign: TextAlign.center,
-                style: context.themeStyles.label14n,
-              ),
-              Text(
-                context.fromLabel(Labels.type),
-                textAlign: TextAlign.center,
-                style: context.themeStyles.label14n,
-              ),
-              Text(
-                context.fromLabel(Labels.roll),
-                textAlign: TextAlign.center,
-                style: context.themeStyles.label14n,
-              ),
-            ].map((widget) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Center(child: widget),
-              );
-            }),
-          ),
+            ),
+            const SizedBox(),
+            Text(
+              context.fromLabel(Labels.rarity),
+              textAlign: TextAlign.center,
+              style: context.themeStyles.label14n,
+            ),
+            Text(
+              context.fromLabel(Labels.type),
+              textAlign: TextAlign.center,
+              style: context.themeStyles.label14n,
+            ),
+            Text(
+              context.fromLabel(Labels.roll),
+              textAlign: TextAlign.center,
+              style: context.themeStyles.label14n,
+            ),
+          ],
         ),
       ),
     );

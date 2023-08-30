@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/primogem_icon.dart';
 
 const _arrow = '→';
 const _bannerTitleLabel = {

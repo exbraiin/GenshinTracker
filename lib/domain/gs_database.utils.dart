@@ -1,7 +1,5 @@
 import 'package:dartx/dartx_io.dart';
-import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -897,48 +895,6 @@ class ItemData extends IdData<ItemData> {
         (a, b) => a.type.index.compareTo(b.type.index),
         (a, b) => a.name.compareTo(b.name),
       ];
-}
-
-List<Widget> getSized(Iterable<Widget> widgets) {
-  final sizes = <double>[100, 44, 0, 20, 64, 84, 56];
-  return List.generate(
-    sizes.length,
-    (i) => sizes[i] == 0
-        ? Expanded(child: Row(children: [widgets.elementAt(i)]))
-        : SizedBox(
-            width: sizes[i],
-            child: Center(child: widgets.elementAt(i)),
-          ),
-  );
-}
-
-class PrimogemIcon extends StatelessWidget {
-  final double size;
-  final Offset offset;
-
-  const PrimogemIcon({
-    super.key,
-    this.size = 20,
-    this.offset = const Offset(0, 3),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: offset,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 4),
-        child: Image.asset(
-          imagePrimogem,
-          width: size,
-          height: size,
-          fit: BoxFit.fitHeight,
-          cacheWidth: size.toInt(),
-          cacheHeight: size.toInt(),
-        ),
-      ),
-    );
-  }
 }
 
 class WishesSummary {
