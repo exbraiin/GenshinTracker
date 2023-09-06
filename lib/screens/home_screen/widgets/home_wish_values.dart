@@ -258,13 +258,14 @@ class HomeWishesValues extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: summary.wishes5.reversed.map((wish) {
                     final item = GsUtils.items.getItemData(wish.itemId);
+                    final pity = GsUtils.wishes.countPity(wishes, wish);
                     final showState = banner == GsBanner.character ||
                         banner == GsBanner.weapon;
                     final state = showState
                         ? GsUtils.wishes.getWishState(wishes, wish)
                         : WishState.none;
                     final pityColor =
-                        context.themeColors.getPityColor(wish.pity, maxPity);
+                        context.themeColors.getPityColor(pity, maxPity);
 
                     return Column(
                       children: [
@@ -281,7 +282,7 @@ class HomeWishesValues extends StatelessWidget {
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: wish.pity.toString(),
+                                text: pity.toString(),
                                 style: style.copyWith(
                                   color: pityColor,
                                 ),

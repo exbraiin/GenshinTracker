@@ -109,12 +109,13 @@ class WishesScreen extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 final wish = filteredWishes[index];
+                final pity = GsUtils.wishes.countPity(wishesList, wish);
                 final type = filter.isDefault()
                     ? _getListType(filteredWishes, index)
                     : ListType.none;
 
                 return WishListItem(
-                  pity: wish.pity,
+                  pity: pity,
                   bannerType: gsBanner,
                   wishState: gsBanner == GsBanner.character ||
                           gsBanner == GsBanner.weapon

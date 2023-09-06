@@ -261,34 +261,12 @@ class _Wishes {
     required String bannerId,
   }) async {
     final db = GsDatabase.instance.saveWishes;
-    final type = GsDatabase.instance.infoBanners.getItem(bannerId).type;
     final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
-    final wishes = GsUtils.wishes.getSaveWishesByBannerType(type);
-    final sorted = wishes.sortedDescending();
-
-    final getItem = GsUtils.items.getItemData;
-    var w4 = sorted.takeWhile((e) => getItem(e.itemId).rarity != 4).length;
-    var w5 = sorted.takeWhile((e) => getItem(e.itemId).rarity != 5).length;
-
     var i = 0;
     for (var id in ids) {
-      final item = getItem(id);
       final number = lastRoll + 1 + i++;
-
-      w4++;
-      w5++;
-      var pity = 1;
-      if (item.rarity == 4) {
-        pity = w4;
-        w4 = 0;
-      } else if (item.rarity == 5) {
-        pity = w5;
-        w5 = 0;
-      }
-
       final wish = SaveWish(
         id: '${bannerId}_$number',
-        pity: pity,
         date: date,
         itemId: id,
         number: number,
@@ -974,10 +952,11 @@ class WishInfo {
     List<SaveWish> wishes,
     bool Function(ItemData item) selector,
   ) {
+    final pity = GsUtils.wishes.countPity;
     final getItem = GsUtils.items.getItemData;
     final g = wishes.where((e) => selector(getItem(e.itemId)));
     final lst = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
-    final avg = g.isNotEmpty ? g.averageBy((e) => e.pity) : 0.0;
+    final avg = g.isNotEmpty ? g.averageBy((e) => pity(wishes, e)) : 0.0;
     final per = g.length * 100 / wishes.length.coerceAtLeast(1);
     return WishInfo(
       last: lst,

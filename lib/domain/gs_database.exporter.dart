@@ -42,13 +42,14 @@ abstract class GsDatabaseExporter {
       final wish = wishes[i];
       final item = GsUtils.items.getItemData(wish.itemId);
       final banner = db.infoBanners.getItem(wish.bannerId);
+      final pity = GsUtils.wishes.countPity(wishes, wish);
 
       final row = _Row(
         type: item.type.name.capitalize(),
         name: item.name,
         date: wish.date.format(),
         rarity: item.rarity,
-        pity: wish.pity,
+        pity: pity,
         roll: wish.number,
         banner: banner.name,
       );
