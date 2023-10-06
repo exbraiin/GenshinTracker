@@ -5,6 +5,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -179,7 +180,10 @@ class AchievementGroupsScreen extends StatelessWidget {
         onTap: select,
         child: Row(
           children: [
-            Image.network(item.icon),
+            SizedBox(
+              width: 82,
+              child: CachedImageWidget(item.icon),
+            ),
             const SizedBox(width: kSeparator8),
             Expanded(
               child: Column(
