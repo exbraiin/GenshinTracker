@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -155,6 +156,8 @@ class AchievementGroupsScreen extends StatelessWidget {
     final saved = GsUtils.achievements.countSaved((e) => e.group == item.id);
     final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
+    final namecards = GsDatabase.instance.infoNamecards;
+    final namecard = namecards.getItemOrNull(item.namecard);
     return AnimatedContainer(
       height: 86,
       duration: const Duration(milliseconds: 400),
@@ -165,12 +168,19 @@ class AchievementGroupsScreen extends StatelessWidget {
         color: selected
             ? context.themeColors.mainColor2
             : context.themeColors.mainColor0,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          opacity: 0.23,
-          alignment: Alignment.centerRight,
-          image: AssetImage(getRarityBgImage(1)),
-        ),
+        image: namecard != null
+            ? DecorationImage(
+                fit: BoxFit.cover,
+                opacity: 0.4,
+                alignment: Alignment.centerRight,
+                image: CachedNetworkImageProvider(namecard.fullImage),
+              )
+            : DecorationImage(
+                fit: BoxFit.cover,
+                opacity: 0.2,
+                alignment: Alignment.centerRight,
+                image: AssetImage(getRarityBgImage(1)),
+              ),
         border: Border.all(
           color: const Color(0xFF626d83),
           width: 1,
