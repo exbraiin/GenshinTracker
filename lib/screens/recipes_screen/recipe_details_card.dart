@@ -55,8 +55,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                           ? context.themeColors.goodValue
                           : context.themeColors.badValue,
                       icon: saved != null ? Icons.check : Icons.close,
-                      onPress: () => GsUtils.recipes
-                          .update(item.id, own: saved == null),
+                      onPress: () =>
+                          GsUtils.recipes.update(item.id, own: saved == null),
                     ),
                   ),
                 if (!isSpecial && owned)
@@ -152,7 +152,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     image: GsUtils.characters.getImage(char.id),
                     rarity: char.rarity,
                     tooltip: char.name,
-                  )
+                  ),
               ],
             ],
           ),

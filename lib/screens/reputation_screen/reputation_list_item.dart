@@ -116,7 +116,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                           ),
                         ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -164,7 +164,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

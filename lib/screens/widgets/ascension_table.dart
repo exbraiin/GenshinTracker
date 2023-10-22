@@ -132,7 +132,7 @@ class AscensionTable extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  )
+                  ),
               ],
             ),
             ..._levels.mapIndexed((lvlIdx, lvl) {

@@ -46,7 +46,7 @@ class SpincrystalDetailsCard extends StatelessWidget
                   onPress: () => GsUtils.spincrystals
                       .update(item.number, obtained: !owned),
                 ),
-              )
+              ),
             ],
           ),
           child: ItemDetailsCardContent.generate(context, [

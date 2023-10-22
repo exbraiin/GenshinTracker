@@ -26,7 +26,7 @@ class NamecardDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           label: context.fromLabel(Labels.obtainable),
           description: item.obtain,
         ),
-        ItemDetailsCardContent(description: item.desc)
+        ItemDetailsCardContent(description: item.desc),
       ]),
     );
   }

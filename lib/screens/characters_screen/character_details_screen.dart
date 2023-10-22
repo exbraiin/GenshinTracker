@@ -161,7 +161,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                         label: friendship.toString(),
                         onTap: () => GsUtils.characters
                             .increaseFriendshipCharacter(info.id),
-                      )
+                      ),
                   ],
                 ),
                 if (hasChar)
@@ -190,7 +190,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               showPlaceholder: false,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -333,7 +333,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                     child: e,
                   );
                 }).toList(),
-              )
+              ),
           ],
         ),
       ],

@@ -26,7 +26,7 @@ class GsCircleIcon extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.5),
             blurRadius: 2,
-          )
+          ),
         ],
       ),
       child: Center(

@@ -91,7 +91,7 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                                 color: Colors.white,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

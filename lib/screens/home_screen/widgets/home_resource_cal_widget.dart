@@ -198,12 +198,13 @@ class _ResourceInfo {
 
   int getRequired(int idx) => required[idx];
 
-  int getCraftable(int idx) => idx < 1
-      ? 0
-      : ((getCraftable(idx - 1) + getOwned(idx - 1) - getRequired(idx - 1))
-                  .coerceAtLeast(0) /
-              3)
-          .floor();
+  int getCraftable(int idx) {
+    if (idx < 1) return 0;
+    final crf = getCraftable(idx - 1);
+    final own = getOwned(idx - 1);
+    final req = getRequired(idx - 1);
+    return ((crf + own - req).coerceAtLeast(0) / 3).floor();
+  }
 
   int getMissing(int idx) =>
       (getRequired(idx) - getOwned(idx) - getCraftable(idx)).coerceAtLeast(0);

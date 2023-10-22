@@ -141,7 +141,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -245,7 +245,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                             color: Colors.black45,
                             offset: Offset(1, 1),
                             blurRadius: 1,
-                          )
+                          ),
                         ],
                       ),
                       child: ValueListenableBuilder<int>(
@@ -318,7 +318,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   ],
                 );
               },
-            )
+            ),
         ],
       ),
     );
@@ -517,7 +517,7 @@ class ItemRarityBubble extends StatelessWidget {
                       const TextStyle(),
               child: child!,
             ),
-          )
+          ),
       ],
     );
     if (tooltip.isNotEmpty) {
