@@ -7,6 +7,9 @@ class InfoCharacterInfo extends IdData<InfoCharacterInfo> {
   final List<InfoCharacterTalent> talents;
   final List<InfoCharacterConstellation> constellations;
 
+  bool get hasTalents => talents.any((e) => e.name.isNotEmpty);
+  bool get hasConstellations => constellations.any((e) => e.name.isNotEmpty);
+
   InfoCharacterInfo.fromJsonData(JsonData data)
       : id = data.getString('id'),
         ascension = InfoCharacterAscension.fromJsonData(data),
@@ -54,7 +57,7 @@ class InfoCharacterAscension {
   final List<String> ascHpValues;
   final List<String> ascAtkValues;
   final List<String> ascDefValues;
-  final List<String> ascStatValues;
+  final List<String> ascStatValues; 
   final GsAttributeStat ascStatType;
 
   InfoCharacterAscension.fromJsonData(JsonData data)

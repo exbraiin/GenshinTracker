@@ -75,10 +75,14 @@ class CharacterDetailsScreen extends StatelessWidget {
                         const SizedBox(height: kSeparator8),
                         _getAscension(context, item, info),
                         const SizedBox(height: kSeparator8),
-                        _getTalents(context, info),
-                        const SizedBox(height: kSeparator8),
-                        _getConstellations(context, info),
-                        const SizedBox(height: kSeparator8),
+                        if (info.hasTalents) ...[
+                          _getTalents(context, info),
+                          const SizedBox(height: kSeparator8),
+                        ],
+                        if (info.hasConstellations) ...[
+                          _getConstellations(context, info),
+                          const SizedBox(height: kSeparator8),
+                        ],
                         _getAllMaterials(context, info),
                       ],
                     ],
@@ -184,10 +188,11 @@ class CharacterDetailsScreen extends StatelessWidget {
           ),
           SizedBox(
             width: 310,
+            height: 310,
             child: CachedImageWidget(
               GsUtils.characters.getFullImage(info.id),
               fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
+              alignment: Alignment.center,
               showPlaceholder: false,
             ),
           ),

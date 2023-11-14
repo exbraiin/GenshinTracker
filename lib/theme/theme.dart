@@ -100,14 +100,14 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   }
 
   Color getRarityColor(int rarity) {
-    return const {
-          1: Color(0xFF828E98),
-          2: Color(0xFF5C956B),
-          3: Color(0xFF51A2B4),
-          4: Color(0xFFB783C8),
-          5: Color(0xFFE2AA52),
-        }[rarity] ??
-        Colors.transparent;
+    return switch (rarity) {
+      1 => const Color(0xFF828E98),
+      2 => const Color(0xFF5C956B),
+      3 => const Color(0xFF51A2B4),
+      4 => const Color(0xFFB783C8),
+      5 => const Color(0xFFE2AA52),
+      _ => Colors.transparent,
+    };
   }
 
   @override

@@ -91,11 +91,11 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
     final color = context.themeColors.getRarityColor(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Container(
-      height: 48,
+      height: 56,
       color: color,
       child: Container(
         margin: const EdgeInsets.all(kSeparator2),
-        padding: const EdgeInsets.all(kSeparator4),
+        padding: const EdgeInsets.all(kSeparator8),
         decoration: BoxDecoration(
           border: Border.all(
             color: color1,
@@ -157,10 +157,10 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
       height: 180,
       width: double.infinity,
       alignment: Alignment.centerRight,
-      decoration: BoxDecoration(
-        color: color1,
+      decoration: BoxDecoration(color: color1),
+      foregroundDecoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: color1, width: 4),
+          bottom: BorderSide(color: color1.withOpacity(0.6), width: 4),
         ),
       ),
       child: Stack(
@@ -232,7 +232,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
             ),
           Positioned.fill(
             child: Padding(
-              padding: const EdgeInsets.all(kSeparator4),
+              padding: const EdgeInsets.all(kSeparator8),
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -327,7 +327,10 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
   Widget _content(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(kSeparator8),
+      padding: const EdgeInsets.symmetric(
+        vertical: kSeparator8,
+        horizontal: kSeparator8 * 2,
+      ),
       decoration: const BoxDecoration(
         color: Color(0xFFEDE5D8),
         border: Border(

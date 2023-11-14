@@ -36,7 +36,8 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 item.atk.toString(),
                 style: TextStyle(
                   color: context.themeColors.almostWhite,
-                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
                 ),
               ),
               if (item.statType != GsAttributeStat.none) ...[
@@ -46,6 +47,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   item.statType.toIntOrPercentage(item.statValue),
                   style: TextStyle(
                     color: context.themeColors.almostWhite,
+                    fontWeight: FontWeight.bold,
                     fontSize: 24,
                   ),
                 ),
