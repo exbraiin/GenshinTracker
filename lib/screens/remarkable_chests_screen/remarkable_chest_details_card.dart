@@ -85,11 +85,6 @@ class RemarkableChestDetailsCard extends StatelessWidget
         label: context.fromLabel(item.type.label),
         description: context.fromLabel(Labels.energyN, item.energy.format()),
       ),
-      if (item.source.isNotEmpty)
-        ItemDetailsCardContent(
-          label: context.fromLabel(Labels.source),
-          description: item.source,
-        ),
     ]);
   }
 }

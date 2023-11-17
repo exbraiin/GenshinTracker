@@ -8,7 +8,6 @@ class InfoRemarkableChest extends IdData<InfoRemarkableChest> {
   final String image;
   final int rarity;
   final int energy;
-  final String source;
   final String version;
   final String category;
   final GsRegion region;
@@ -20,7 +19,6 @@ class InfoRemarkableChest extends IdData<InfoRemarkableChest> {
         image = data.getString('image'),
         rarity = data.getInt('rarity', 2),
         energy = data.getInt('energy'),
-        source = data.getString('source'),
         version = data.getString('version'),
         category = data.getString('category'),
         region = data.getGsEnum('region', GsRegion.values);

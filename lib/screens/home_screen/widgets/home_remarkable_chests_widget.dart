@@ -33,14 +33,14 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
               rows: [
                 ...ic
                     .getItems()
-                    .groupBy((e) => e.source)
+                    .groupBy((e) => e.region)
                     .entries
-                    .sortedBy((e) => e.key)
+                    .sortedBy((e) => e.key.index)
                     .map((entry) {
                   final owned = entry.value.count((e) => sc.exists(e.id));
                   final total = entry.value.length;
                   return [
-                    HomeRow(entry.key),
+                    HomeRow(context.fromLabel(entry.key.label)),
                     HomeRow.missing(context, owned, total),
                     HomeRow(total.format()),
                   ];
