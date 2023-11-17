@@ -1,6 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/domain/enums/gs_enemy_family.dart';
+import 'package:tracker/domain/enums/gs_enemy_type.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -218,6 +220,22 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
       ),
       FilterSection.version((item) => item.version),
+    ],
+  );
+  static final infoEnemies = ScreenFilter<InfoEnemy>(
+    sections: [
+      FilterSection<GsEnemyType, InfoEnemy>(
+        GsEnemyType.values.toSet(),
+        (item) => item.type,
+        (c) => c.fromLabel(Labels.type),
+        (c, i) => c.fromLabel(i.label),
+      ),
+      FilterSection<GsEnemyFamily, InfoEnemy>(
+        GsEnemyFamily.values.toSet(),
+        (item) => item.family,
+        (c) => c.fromLabel(Labels.family),
+        (c, i) => c.fromLabel(i.label),
+      ),
     ],
   );
   static final infoNamecardFilter = ScreenFilter<InfoNamecard>(

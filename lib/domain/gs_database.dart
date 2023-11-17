@@ -40,6 +40,10 @@ class GsDatabase {
     'materials',
     InfoMaterial.fromJsonData,
   );
+  final infoEnemies = JsonInfoDetails<InfoEnemy>(
+    'enemies',
+    InfoEnemy.fromJsonData,
+  );
   final infoRecipes = JsonInfoDetails<InfoRecipe>(
     'recipes',
     InfoRecipe.fromJsonData,
@@ -170,6 +174,7 @@ class GsDatabase {
       infoWeapons.load(info);
       infoWeaponsInfo.load(info);
       infoArtifacts.load(info);
+      infoEnemies.load(info);
       infoMaterials.load(info);
       infoNamecards.load(info);
       infoCharacters.load(info);

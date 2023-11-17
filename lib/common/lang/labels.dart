@@ -573,4 +573,46 @@ class Labels {
 
 	/// Settings
 	static const settings = 'settings';
+
+	/// Family
+	static const family = 'family';
+
+	/// Enemies
+	static const enemies = 'enemies';
+
+	/// Elemental Lifeform
+	static const efElementalLifeform = 'ef_elemental_lifeform';
+
+	/// Hilichurl
+	static const efHilichurl = 'ef_hilichurl';
+
+	/// Abyss
+	static const efAbyss = 'ef_abyss';
+
+	/// Fatui
+	static const efFatui = 'ef_fatui';
+
+	/// Automaton
+	static const efAutomaton = 'ef_automaton';
+
+	/// Human Faction
+	static const efHumanFaction = 'ef_human_faction';
+
+	/// Mystical Beast
+	static const efMysticalBeast = 'ef_mystical_beast';
+
+	/// Weekly Boss
+	static const efWeeklyBoss = 'ef_weekly_boss';
+
+	/// Common
+	static const etCommon = 'et_common';
+
+	/// Elite
+	static const etElite = 'et_elite';
+
+	/// Normal Boss
+	static const etNormalBoss = 'et_normal_boss';
+
+	/// Weekly Boss
+	static const etWeeklyBoss = 'et_weekly_boss';
 }

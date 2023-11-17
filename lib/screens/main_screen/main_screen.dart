@@ -10,6 +10,7 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
+import 'package:tracker/screens/enemies_screen/enemies_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
 import 'package:tracker/screens/main_screen/tracker_router.dart';
@@ -262,6 +263,11 @@ final _menus = [
     label: Labels.remarkableChests,
     icon: menuIconMap,
     initialPage: RemarkableChestsScreen.id,
+  ),
+  Menu(
+    label: Labels.enemies,
+    icon: menuIconEnemies,
+    initialPage: EnemiesScreen.id,
   ),
   Menu(
     label: Labels.materials,

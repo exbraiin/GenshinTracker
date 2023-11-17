@@ -161,10 +161,12 @@ class WishListItem extends StatelessWidget {
       if (idxWish.date != sorted[i].date) break;
       list.add(sorted[i]);
     }
+    /*
     for (var i = index - 1; i >= 0; --i) {
       if (idxWish.date != sorted[i].date) break;
       list.add(sorted[i]);
     }
+    */
     return list;
   }
 }

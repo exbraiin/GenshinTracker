@@ -23,6 +23,7 @@ export 'models/info_character_info.dart';
 export 'models/info_character_outfit.dart';
 export 'models/info_city.dart';
 export 'models/info_details.dart';
+export 'models/info_enemy.dart';
 export 'models/info_material.dart';
 export 'models/info_namecard.dart';
 export 'models/info_recipe.dart';

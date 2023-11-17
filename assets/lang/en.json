@@ -189,5 +189,19 @@
     "ach_hidden": "Hidden",
     "ach_visible": "Visible",
     "featured": "Featured",
-    "settings": "Settings"
+    "settings": "Settings",
+    "family": "Family",
+    "enemies": "Enemies",
+    "ef_elemental_lifeform": "Elemental Lifeform",
+    "ef_hilichurl": "Hilichurl",
+    "ef_abyss": "Abyss",
+    "ef_fatui": "Fatui",
+    "ef_automaton": "Automaton",
+    "ef_human_faction": "Human Faction",
+    "ef_mystical_beast": "Mystical Beast",
+    "ef_weekly_boss": "Weekly Boss",
+    "et_common": "Common",
+    "et_elite": "Elite",
+    "et_normal_boss": "Normal Boss",
+    "et_weekly_boss": "Weekly Boss"
 }
