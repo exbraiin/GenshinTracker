@@ -236,6 +236,7 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.family),
         (c, i) => c.fromLabel(i.label),
       ),
+      FilterSection.version((item) => item.version),
     ],
   );
   static final infoNamecardFilter = ScreenFilter<InfoNamecard>(

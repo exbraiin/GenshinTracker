@@ -10,6 +10,8 @@ class InfoEnemy extends IdData<InfoEnemy> {
   final String image;
   final String version;
   final String fullImage;
+  final String splashImage;
+  final int order;
   final GsEnemyType type;
   final GsEnemyFamily family;
   final List<String> drops;
@@ -29,6 +31,8 @@ class InfoEnemy extends IdData<InfoEnemy> {
         image = data.getString('image'),
         version = data.getString('version'),
         fullImage = data.getString('full_image'),
+        splashImage = data.getString('splash_image'),
+        order = data.getInt('order'),
         type = data.getGsEnum('type', GsEnemyType.values),
         family = data.getGsEnum('family', GsEnemyFamily.values),
         drops = data.getStringList('drops');
@@ -36,6 +40,7 @@ class InfoEnemy extends IdData<InfoEnemy> {
   @override
   List<Comparator<InfoEnemy>> get comparators => [
         (a, b) => a.family.index.compareTo(b.family.index),
+        (a, b) => a.order.compareTo(b.order),
         (a, b) => a.type.index.compareTo(b.type.index),
         (a, b) => a.version.compareTo(b.version),
         (a, b) => a.name.compareTo(b.name),
