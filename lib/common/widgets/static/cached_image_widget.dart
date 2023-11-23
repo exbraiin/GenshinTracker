@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class CachedImageWidget extends StatelessWidget {
-  static String _getScaleUrl(String url, Size size, bool scale) {
+  static String _getScaleUrl(String url, Size size, bool scale, double? ratio) {
     late final w = size.toCacheWidth;
     late final h = size.toCacheHeight;
     if (!scale) return url;
     if (!url.startsWith('https://static.wikia.')) return url;
-    if (w != null) return '$url/revision/latest/scale-to-width-down/$w';
-    if (h != null) return '$url/revision/latest/scale-to-width-down/$h';
+    if (w != null) {
+      final nw = ((ratio ?? 0) > 0 ? w * ratio! : w).toInt();
+      return '$url/revision/latest/scale-to-width-down/$nw';
+    }
+    if (h != null) {
+      final nh = ((ratio ?? 0) > 0 ? h * ratio! : h).toInt();
+      return '$url/revision/latest/scale-to-width-down/$nh';
+    }
     // TODO: Fandom return weird image if scaled to height...
     // if (h != null) return '$url/revision/latest/scale-to-height-down/$h';
     return url;
@@ -20,12 +26,14 @@ class CachedImageWidget extends StatelessWidget {
   final Alignment alignment;
   final bool scaleToSize;
   final bool showPlaceholder;
+  final double? imageAspectRatio;
 
   const CachedImageWidget(
     this.imageUrl, {
     super.key,
     this.scaleToSize = true,
     this.showPlaceholder = true,
+    this.imageAspectRatio,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
   });
@@ -38,7 +46,12 @@ class CachedImageWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, layout) {
         return CachedNetworkImage(
-          imageUrl: _getScaleUrl(imageUrl!, layout.biggest, scaleToSize),
+          imageUrl: _getScaleUrl(
+            imageUrl!,
+            layout.biggest,
+            scaleToSize,
+            imageAspectRatio,
+          ),
           fit: fit,
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
