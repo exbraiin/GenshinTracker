@@ -43,6 +43,7 @@ class GsItemCardButton extends StatelessWidget {
   final String? imageUrlPath;
   final String? imageFilePath;
   final String? imageAssetPath;
+  final double? imageAspectRatio;
   final VoidCallback? onTap;
 
   const GsItemCardButton({
@@ -58,6 +59,7 @@ class GsItemCardButton extends StatelessWidget {
     this.imageUrlPath,
     this.imageFilePath,
     this.imageAssetPath,
+    this.imageAspectRatio,
     this.shadow = false,
     this.disable = false,
     this.selected = false,
@@ -130,6 +132,7 @@ class GsItemCardButton extends StatelessWidget {
                         child: CachedImageWidget(
                           imageUrlPath!,
                           fit: BoxFit.cover,
+                          imageAspectRatio: imageAspectRatio,
                         ),
                       ),
                     if (imageFilePath != null)

@@ -13,6 +13,7 @@ class VersionListItem extends StatelessWidget {
     return GsItemCardButton(
       label: item.id,
       imageUrlPath: item.image,
+      imageAspectRatio: 2,
       banner: GsItemBanner.fromVersion(item.id),
       onTap: () => VersionDetailsCard(item).show(context),
     );
