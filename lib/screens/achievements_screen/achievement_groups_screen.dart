@@ -66,6 +66,7 @@ class AchievementGroupsScreen extends StatelessWidget {
                                   Expanded(
                                     flex: 2,
                                     child: _getGroupsList(
+                                      context,
                                       gList,
                                       notifier,
                                       sNotifier,
@@ -91,6 +92,7 @@ class AchievementGroupsScreen extends StatelessWidget {
   }
 
   Widget _getGroupsList(
+    BuildContext context,
     List<InfoAchievementGroup> list,
     ValueNotifier<InfoAchievementGroup> notifier,
     ValueNotifier<String> sNotifier,
@@ -107,7 +109,9 @@ class AchievementGroupsScreen extends StatelessWidget {
           child: TextField(
             style: const TextStyle(fontSize: 16),
             maxLines: 1,
-            decoration: const InputDecoration.collapsed(hintText: 'Search'),
+            decoration: InputDecoration.collapsed(
+              hintText: context.fromLabel(Labels.hintSearch),
+            ),
             onChanged: (value) => sNotifier.value = value,
           ),
         ),

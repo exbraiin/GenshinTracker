@@ -64,7 +64,7 @@ class HomeLastBannerWidget extends StatelessWidget {
       size: 70,
       image: GsUtils.characters.getImage(entry.key.id),
       rarity: entry.key.rarity,
-      label: '${entry.value.inDays}d',
+      label: context.fromLabel(Labels.shortDay, entry.value.inDays),
       onTap: () => Navigator.of(context)
           .pushNamed(CharacterDetailsScreen.id, arguments: entry.key),
     );

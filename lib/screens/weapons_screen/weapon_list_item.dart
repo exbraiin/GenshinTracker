@@ -28,7 +28,7 @@ class WeaponListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       disable: !owned,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
       child: _getContent(context),
       onTap: () => WeaponDetailsCard(item).show(context),

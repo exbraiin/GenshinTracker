@@ -168,7 +168,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
             value: idx,
             alignment: Alignment.center,
             child: Text(
-              item.label,
+              item.getLabel(context),
               style: TextStyle(color: idx == now ? color : null),
             ),
           );

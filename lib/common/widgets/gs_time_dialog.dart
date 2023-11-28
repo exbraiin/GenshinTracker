@@ -115,9 +115,13 @@ class _GsTimeDialogState extends State<GsTimeDialog>
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: 56,
-                  child: Text('Date: ', style: style),
+                Container(
+                  padding: const EdgeInsets.only(right: kSeparator4),
+                  constraints: const BoxConstraints(minWidth: 56),
+                  child: Text(
+                    context.fromLabel(Labels.dateDialogDate),
+                    style: style,
+                  ),
                 ),
                 _selector(year, 2010, 2031, style),
                 SizedBox(
@@ -136,9 +140,13 @@ class _GsTimeDialogState extends State<GsTimeDialog>
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: 56,
-                  child: Text('Hour: ', style: style),
+                Container(
+                  padding: const EdgeInsets.only(right: kSeparator4),
+                  constraints: const BoxConstraints(minWidth: 56),
+                  child: Text(
+                    context.fromLabel(Labels.dateDialogHour),
+                    style: style,
+                  ),
                 ),
                 _selector(hour, 0, 24, style),
                 SizedBox(

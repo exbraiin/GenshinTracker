@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -76,13 +77,17 @@ class BannerListItem extends StatelessWidget {
                               '(${banner.dateStart.format(showHour: false)}) ',
                         ),
                         TextSpan(
-                          text: '\n   $rolls Pulls - ',
+                          text: '\n   '
+                              '${context.fromLabel(Labels.bannerNRolls, rolls)} - ',
                           style:
                               TextStyle(color: context.themeColors.almostWhite),
                         ),
                         const WidgetSpan(child: PrimogemIcon()),
                         TextSpan(
-                          text: '${(rolls * 160).format()} Primogems',
+                          text: context.fromLabel(
+                            Labels.bannerNPrimogems,
+                            (rolls * GsDomain.primogemsPerWish).format(),
+                          ),
                           style:
                               TextStyle(color: context.themeColors.almostWhite),
                         ),
@@ -94,7 +99,7 @@ class BannerListItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: GsItemCardLabel(
-                      label: _getBannerDuration(),
+                      label: _getBannerDuration(context),
                     ),
                   ),
                 const SizedBox(width: 12),
@@ -130,14 +135,14 @@ class BannerListItem extends StatelessWidget {
     );
   }
 
-  String _getBannerDuration() {
+  String _getBannerDuration(BuildContext context) {
     final now = DateTime.now();
     if (banner.dateStart.isAfter(now)) {
       final diff = banner.dateStart.difference(now);
-      return diff.startOrStartedIn();
+      return diff.startOrStartedIn(context);
     } else {
       final diff = banner.dateEnd.difference(now);
-      return diff.endOrEndedIn();
+      return diff.endOrEndedIn(context);
     }
   }
 }

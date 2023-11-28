@@ -42,7 +42,10 @@ class VersionScreen extends StatelessWidget {
 
   Widget _getListView(List<InfoVersion> list) {
     if (list.isEmpty) return const GsNoResultsState();
+
     return GsGridView.builder(
+      childWidth: 280,
+      childHeight: 160,
       itemCount: list.length,
       itemBuilder: (context, index) {
         final item = list[index];

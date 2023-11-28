@@ -33,7 +33,7 @@ class CharacterListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       disable: charConsTotal == null,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: GsUtils.characters.getImage(item.id),
       child: _child(context, charConsTotal, friend, ascension),
     );

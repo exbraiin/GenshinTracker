@@ -18,7 +18,7 @@ class MaterialListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       onTap: onTap,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
       child: Stack(
         children: [

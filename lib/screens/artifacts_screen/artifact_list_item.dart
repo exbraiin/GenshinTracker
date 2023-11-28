@@ -24,7 +24,7 @@ class ArtifactListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       selected: selected,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
       onTap: onTap,
       child: Stack(

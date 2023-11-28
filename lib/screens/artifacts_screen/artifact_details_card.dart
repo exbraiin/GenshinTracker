@@ -18,7 +18,7 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       image: (ctx, piece) => item.pieces[piece].icon,
       rarity: item.rarity,
       pages: item.pieces.length,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       child: (ctx, piece) => ItemDetailsCardContent.generate(context, [
         if (item.desc1Pc.isNotEmpty)
           ItemDetailsCardContent(

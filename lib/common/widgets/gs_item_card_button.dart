@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/file_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -17,12 +18,18 @@ class GsItemBanner {
     this.location = BannerLocation.topEnd,
   });
 
-  factory GsItemBanner.fromVersion(String version) {
+  factory GsItemBanner.fromVersion(BuildContext context, String version) {
     if (GsUtils.versions.isUpcomingVersion(version)) {
-      return const GsItemBanner(text: 'Upcoming', color: Colors.orange);
+      return GsItemBanner(
+        text: context.fromLabel(Labels.itemUpcoming),
+        color: Colors.orange,
+      );
     }
     if (GsUtils.versions.isCurrentVersion(version)) {
-      return const GsItemBanner(text: 'New', color: Colors.lightBlue);
+      return GsItemBanner(
+        text: context.fromLabel(Labels.itemNew),
+        color: Colors.lightBlue,
+      );
     }
     return const GsItemBanner(text: '');
   }

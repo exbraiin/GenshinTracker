@@ -329,7 +329,7 @@ class ScreenFilters {
           return m.any((e) => i.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
-        (c, i) => i.label,
+        (c, i) => i.getLabel(c),
         key: 'weekdays',
       ),
       FilterSection<GsAttributeStat, InfoWeapon>(
@@ -366,7 +366,7 @@ class ScreenFilters {
           return m.any((e) => i.containsKey(e.id));
         },
         (c) => c.fromLabel(Labels.materials),
-        (c, i) => i.label,
+        (c, i) => i.getLabel(c),
         key: 'weekdays',
       ),
       FilterSection.version((item) => item.version),

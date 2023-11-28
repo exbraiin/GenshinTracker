@@ -37,12 +37,12 @@ class HomeReputationWidget extends StatelessWidget {
                 HomeRow(city.name),
                 HomeRow(
                   '${utils.getCityLevel(city.id)}'
-                  '${nextLvl > 0 ? ' ($nextLvl wk)' : ''}',
+                  '${nextLvl > 0 ? ' (${context.fromLabel(Labels.shortWeek, nextLvl)})' : ''}',
                   color: nColor,
                 ),
                 HomeRow(
                   '${GsUtils.cities.getCityMaxLevel(city.id)}'
-                  '${maxLvl > 0 ? ' ($maxLvl wk)' : ''}',
+                  '${maxLvl > 0 ? ' (${context.fromLabel(Labels.shortWeek, maxLvl)})' : ''}',
                   color: mColor,
                 ),
               ];

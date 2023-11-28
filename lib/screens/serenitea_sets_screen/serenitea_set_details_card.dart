@@ -26,7 +26,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
       name: item.name,
       fgImage: item.image,
       rarity: item.rarity,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       info: Align(
         alignment: Alignment.topLeft,
         child: Row(

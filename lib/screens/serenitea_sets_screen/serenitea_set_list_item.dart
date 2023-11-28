@@ -20,7 +20,7 @@ class SereniteaSetListItem extends StatelessWidget {
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageAspectRatio: 2,
       imageUrlPath: item.image,
       onTap: onTap,
@@ -47,9 +47,11 @@ class SereniteaSetListItem extends StatelessWidget {
                     !(saved?.chars.contains(e.id) ?? false) &&
                     GsUtils.characters.hasCaracter(e.id),
               )
+              .sortedBy((element) => element.rarity)
+              .thenByDescending((element) => element.name)
               .mapIndexed(
                 (i, e) => Positioned(
-                  right: kSeparator2 + i * kSeparator8,
+                  right: kSeparator2 + i * kSeparator8 * 2,
                   bottom: kSeparator2,
                   child: ItemRarityBubble(
                     image: GsUtils.characters.getImage(e.id),

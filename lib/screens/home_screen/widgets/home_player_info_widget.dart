@@ -2,6 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
@@ -31,7 +32,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
             return GsDataBox.info(
               title: Row(
                 children: [
-                  const Text('Player Info'),
+                  Text(context.fromLabel(Labels.cardPlayerInfo)),
                   Expanded(
                     child: GsNumberField(
                       enabled: !busy,
@@ -115,7 +116,9 @@ class HomePlayerInfoWidget extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: '\nAR ${info.level}  |  WL ${info.worldLevel}',
+                        text: '\n'
+                            '${context.fromLabel(Labels.cardPlayerAr, info.level)}  |  '
+                            '${context.fromLabel(Labels.cardPlayerWl, info.worldLevel)}',
                         style: TextStyle(
                           color: context.themeColors.dimWhite,
                         ),
@@ -135,7 +138,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Achievements   ',
+                      text:
+                          '${context.fromLabel(Labels.cardPlayerAchievements)}   ',
                       style: TextStyle(
                         color: context.themeColors.dimWhite,
                       ),
@@ -144,7 +148,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: '\nAbyss    ',
+                          text:
+                              '\n${context.fromLabel(Labels.cardPlayerAbyss)}    ',
                           style: TextStyle(
                             color: context.themeColors.dimWhite,
                           ),

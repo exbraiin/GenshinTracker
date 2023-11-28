@@ -1,21 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:tracker/common/lang/lang.dart';
+
 extension DurationExt on Duration {
-  String toShortTime() {
+  String toShortTime(BuildContext context) {
     final days = inDays.abs();
     final years = days ~/ 365;
-    return years > 0
-        ? '${years}y'
-        : days > 0
-            ? '${days}d'
-            : '${inHours.abs()}h';
+    if (years > 0) return context.fromLabel(Labels.shortYear, years);
+    if (days > 0) return context.fromLabel(Labels.shortDay, days);
+    return context.fromLabel(Labels.shortHour, inHours.abs());
   }
 
-  String endOrEndedIn() {
-    final val = toShortTime();
-    return isNegative ? 'Ended $val ago' : 'Ends in $val';
+  String endOrEndedIn(BuildContext context) {
+    final value = toShortTime(context);
+    final label = isNegative ? Labels.bannerEnded : Labels.bannerEnds;
+    return context.fromLabel(label, value);
   }
 
-  String startOrStartedIn() {
-    final val = toShortTime();
-    return isNegative ? 'Started $val ago' : 'Starts in $val';
+  String startOrStartedIn(BuildContext context) {
+    final value = toShortTime(context);
+    final label = isNegative ? Labels.bannerStarted : Labels.bannerStarts;
+    return context.fromLabel(label, value);
   }
 }

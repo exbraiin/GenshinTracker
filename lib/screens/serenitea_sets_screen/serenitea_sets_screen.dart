@@ -47,6 +47,8 @@ class SereniteaSetsScreen extends StatelessWidget {
   Widget _getListView(List<InfoSereniteaSet> list) {
     if (list.isEmpty) return const GsNoResultsState();
     return GsGridView.builder(
+      childWidth: 280,
+      childHeight: 160,
       itemCount: list.length,
       itemBuilder: (context, index) {
         final item = list[index];

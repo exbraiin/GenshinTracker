@@ -41,9 +41,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.data!) return const SizedBox();
         return Scaffold(
-          appBar: GsAppBar(
-            label: item.name,
-          ),
+          appBar: GsAppBar(label: item.name),
           body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -230,7 +228,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(context.fromLabel(Labels.name), style: stLabel),
                 Text(info.name, style: stStyle),
                 Text(context.fromLabel(Labels.birthday), style: stLabel),
-                Text(info.birthday.toPrettyDate(), style: stStyle),
+                Text(info.birthday.toPrettyDate(context), style: stStyle),
               ].map((e) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -293,7 +291,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       )
                     : Text(context.fromLabel(Labels.wsNone), style: stStyle),
                 Text(context.fromLabel(Labels.releaseDate), style: stLabel),
-                Text(info.releaseDate.toPrettyDate(), style: stStyle),
+                Text(info.releaseDate.toPrettyDate(context), style: stStyle),
               ].map((e) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -483,7 +481,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     TableRow getTableRow(
       String label,
       Map<String, int> mats,
-      Widget Function(MapEntry<InfoMaterial?, int> e) mapper,
+      Widget Function(MapEntry<InfoMaterial, int> e) mapper,
     ) {
       return TableRow(
         children: [
@@ -504,11 +502,12 @@ class CharacterDetailsScreen extends StatelessWidget {
               children: mats.entries
                   .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
                   .where((e) => e.key != null)
-                  .sortedBy((e) => existance(e.key?.id))
-                  .thenBy((e) => e.key!.group.index)
-                  .thenBy((e) => e.key!.subgroup)
-                  .thenBy((e) => e.key!.rarity)
-                  .thenBy((e) => e.key!.name)
+                  .map((e) => MapEntry(e.key!, e.value))
+                  .sortedBy((e) => existance(e.key.id))
+                  .thenBy((e) => e.key.group.index)
+                  .thenBy((e) => e.key.subgroup)
+                  .thenBy((e) => e.key.rarity)
+                  .thenBy((e) => e.key.name)
                   .reversed
                   .map(mapper)
                   .toList(),
@@ -539,9 +538,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             ascMats,
             (e) => ItemRarityBubble.withLabel(
               label: e.value.compact(),
-              rarity: e.key!.rarity,
-              image: e.key!.image,
-              tooltip: e.key!.name,
+              rarity: e.key.rarity,
+              image: e.key.image,
+              tooltip: e.key.name,
             ),
           ),
           getTableRow(
@@ -549,9 +548,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             tltMats,
             (e) => ItemRarityBubble.withLabel(
               label: e.value.compact(),
-              rarity: e.key!.rarity,
-              image: e.key!.image,
-              tooltip: e.key!.name,
+              rarity: e.key.rarity,
+              image: e.key.image,
+              tooltip: e.key.name,
             ),
           ),
           getTableRow(
@@ -559,9 +558,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             allMats,
             (e) => ItemRarityBubble.withLabel(
               label: e.value.compact(),
-              rarity: e.key!.rarity,
-              image: e.key!.image,
-              tooltip: e.key!.name,
+              rarity: e.key.rarity,
+              image: e.key.image,
+              tooltip: e.key.name,
             ),
           ),
         ],

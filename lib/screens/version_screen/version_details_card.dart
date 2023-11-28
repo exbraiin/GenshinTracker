@@ -22,7 +22,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         return ItemDetailsCard.single(
           name: item.name,
           fgImage: item.image,
-          banner: GsItemBanner.fromVersion(item.id),
+          banner: GsItemBanner.fromVersion(context, item.id),
           info: Align(
             alignment: Alignment.topLeft,
             child: Text(item.id),
@@ -79,6 +79,10 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
+    final enemies = GsDatabase.instance.infoEnemies
+        .getItems()
+        .where((element) => element.version == item.id)
+        .sorted();
     final namecards = GsDatabase.instance.infoNamecards
         .getItems()
         .where((element) => element.version == item.id)
@@ -191,7 +195,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 return ItemRarityBubble(
                   asset: spincrystalAsset,
                   rarity: e.rarity,
-                  tooltip: e.name,
+                  tooltip: '${e.number} ${e.name}',
                 );
               }).toList(),
             ),
@@ -221,6 +225,21 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 return ItemRarityBubble(
                   image: e.image,
                   rarity: e.rarity,
+                  tooltip: e.name,
+                );
+              }).toList(),
+            ),
+          ),
+        if (enemies.isNotEmpty)
+          ItemDetailsCardContent(
+            label: context.fromLabel(Labels.enemies),
+            content: Wrap(
+              spacing: kSeparator2,
+              runSpacing: kSeparator2,
+              children: enemies.map((e) {
+                return ItemRarityBubble(
+                  image: e.image,
+                  rarity: e.rarityByType,
                   tooltip: e.name,
                 );
               }).toList(),

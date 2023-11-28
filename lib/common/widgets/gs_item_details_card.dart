@@ -150,6 +150,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
   }
 
   Widget _headerInfo(BuildContext context) {
+    final banner = widget.banner;
     final rarity = widget.rarity.coerceAtLeast(1);
     final color = context.themeColors.getRarityColor(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
@@ -220,13 +221,13 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                 },
               ),
             ),
-          if (widget.banner != null && widget.banner!.text.isNotEmpty)
+          if (banner != null && banner.text.isNotEmpty)
             Positioned.fill(
               child: ClipRect(
                 child: Banner(
-                  color: widget.banner!.color,
-                  message: widget.banner!.text,
-                  location: widget.banner!.location,
+                  color: banner.color,
+                  message: banner.text,
+                  location: banner.location,
                 ),
               ),
             ),

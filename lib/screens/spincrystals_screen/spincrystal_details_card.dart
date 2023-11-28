@@ -24,10 +24,10 @@ class SpincrystalDetailsCard extends StatelessWidget
         final db = GsDatabase.instance.saveSpincrystals;
         final owned = db.getItemOrNull(item.id)?.obtained ?? false;
         return ItemDetailsCard.single(
-          name: 'Radiant Spincrystal ${item.number}',
+          name: context.fromLabel(Labels.radiantSpincrystal, item.number),
           rarity: item.rarity,
           asset: spincrystalAsset,
-          banner: GsItemBanner.fromVersion(item.version),
+          banner: GsItemBanner.fromVersion(context, item.version),
           info: Column(
             children: [
               Align(

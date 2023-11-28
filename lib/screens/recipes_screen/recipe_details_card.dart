@@ -29,7 +29,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           name: item.name,
           rarity: item.rarity,
           image: item.image,
-          banner: GsItemBanner.fromVersion(item.version),
+          banner: GsItemBanner.fromVersion(context, item.version),
           info: Align(
             alignment: Alignment.topLeft,
             child: Column(
@@ -90,8 +90,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                             fontSize: 14,
                           ),
                           Text(
-                            '${context.fromLabel(Labels.proficiency)}'
-                            ' (max: ${item.maxProficiency.format()})',
+                            '${context.fromLabel(Labels.proficiency)} '
+                            '${context.fromLabel(Labels.maxProficiency, item.maxProficiency.format())}',
                             style: const TextStyle(fontSize: 14),
                           ),
                         ],

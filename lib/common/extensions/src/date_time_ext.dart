@@ -1,20 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:tracker/common/lang/lang.dart';
+
 extension DateTimeExt on DateTime {
-  String toPrettyDate() {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return '${months[month - 1]} $day${year != 0 ? ', $year' : ''}';
+  String toPrettyDate(BuildContext context) {
+    final m = context.fromLabel('month_$month');
+    return '$m $day${year != 0 ? ', $year' : ''}';
   }
 
   String format({bool showHour = true}) {

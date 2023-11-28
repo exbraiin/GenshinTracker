@@ -3,24 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 
 class CachedImageWidget extends StatelessWidget {
-  static String _getScaleUrl(String url, Size size, bool scale, double? ratio) {
-    late final w = size.toCacheWidth;
-    late final h = size.toCacheHeight;
-    if (!scale) return url;
-    if (!url.startsWith('https://static.wikia.')) return url;
-    if (w != null) {
-      final nw = ((ratio ?? 0) > 0 ? w * ratio! : w).toInt();
-      return '$url/revision/latest/scale-to-width-down/$nw';
-    }
-    if (h != null) {
-      final nh = ((ratio ?? 0) > 0 ? h * ratio! : h).toInt();
-      return '$url/revision/latest/scale-to-width-down/$nh';
-    }
-    // TODO: Fandom return weird image if scaled to height...
-    // if (h != null) return '$url/revision/latest/scale-to-height-down/$h';
-    return url;
-  }
-
   final BoxFit fit;
   final String? imageUrl;
   final Alignment alignment;
@@ -40,31 +22,34 @@ class CachedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final placeholder = _placeholderImageWidget();
     if (imageUrl == null || imageUrl!.isEmpty) {
-      return showPlaceholder ? _placeholderImageWidget() : const SizedBox();
+      return showPlaceholder ? placeholder : const SizedBox();
     }
     return LayoutBuilder(
       builder: (context, layout) {
         return CachedNetworkImage(
-          imageUrl: _getScaleUrl(
-            imageUrl!,
-            layout.biggest,
-            scaleToSize,
-            imageAspectRatio,
-          ),
+          imageUrl: _getScaleUrl(layout.biggest),
           fit: fit,
           alignment: alignment,
           memCacheWidth: layout.biggest.toCacheWidth,
           memCacheHeight: layout.biggest.toCacheHeight,
-          placeholder: showPlaceholder
-              ? (context, url) => _placeholderImageWidget()
-              : null,
-          errorWidget: showPlaceholder
-              ? (context, url, error) => _placeholderImageWidget()
-              : null,
+          placeholder: showPlaceholder ? (ctx, url) => placeholder : null,
+          errorWidget: showPlaceholder ? (ctx, url, err) => placeholder : null,
         );
       },
     );
+  }
+
+  String _getScaleUrl(Size size) {
+    final url = imageUrl ?? '';
+    if (!scaleToSize) return url;
+    if (!url.startsWith('https://static.wikia.')) return url;
+    final s = size.toCacheScale;
+    if (s == null) return url;
+    final ratio = imageAspectRatio ?? 0;
+    final ns = (ratio > 0 ? s * ratio : s).toInt();
+    return '$url/revision/latest/scale-to-width-down/$ns';
   }
 
   Widget _placeholderImageWidget() {
@@ -76,6 +61,7 @@ class CachedImageWidget extends StatelessWidget {
 }
 
 extension on Size {
+  int? get toCacheScale => toCacheWidth ?? toCacheHeight;
   int? get toCacheWidth => useW ? width.toInt() : null;
   int? get toCacheHeight => useH ? height.toInt() : null;
   bool get useW => width.isFinite && (width >= height || height.isInfinite);

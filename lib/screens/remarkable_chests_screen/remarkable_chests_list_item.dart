@@ -28,7 +28,7 @@ class RemarkableChestListItem extends StatelessWidget {
       rarity: item.rarity,
       disable: !owned,
       onTap: onTap,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
       child: Stack(
         children: [

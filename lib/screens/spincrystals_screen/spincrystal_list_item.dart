@@ -22,7 +22,7 @@ class SpincrystalListItem extends StatelessWidget {
       rarity: item.rarity,
       onTap: onTap,
       disable: !owned,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       imageAssetPath: spincrystalAsset,
       child: Stack(
         children: [

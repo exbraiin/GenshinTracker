@@ -40,7 +40,7 @@ class RecipesListItem extends StatelessWidget {
       rarity: recipe.rarity,
       selected: selected,
       disable: savedRecipe == null && !hasSpecial,
-      banner: GsItemBanner.fromVersion(recipe.version),
+      banner: GsItemBanner.fromVersion(context, recipe.version),
       imageUrlPath: recipe.image,
       onTap: onTap,
       child: Stack(

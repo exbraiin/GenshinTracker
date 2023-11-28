@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/abstraction/info_data.dart';
 
 enum GsWeekday implements GsEnum {
@@ -10,8 +12,9 @@ enum GsWeekday implements GsEnum {
   sunday('Sunday');
 
   @override
-  String get id => label;
+  final String id;
+  const GsWeekday(this.id);
 
-  final String label;
-  const GsWeekday(this.label);
+  String getLabel(BuildContext context) =>
+      context.fromLabel('weekday_${index + 1}');
 }

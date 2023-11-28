@@ -16,7 +16,7 @@ class NamecardListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       imageUrlPath: item.image,
-      banner: GsItemBanner.fromVersion(item.version),
+      banner: GsItemBanner.fromVersion(context, item.version),
       onTap: onTap,
       child: Stack(
         children: [

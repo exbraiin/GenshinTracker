@@ -27,7 +27,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
           name: item.name,
           image: item.image,
           rarity: item.rarity,
-          banner: GsItemBanner.fromVersion(item.version),
+          banner: GsItemBanner.fromVersion(context, item.version),
           info: Column(
             children: [
               Align(

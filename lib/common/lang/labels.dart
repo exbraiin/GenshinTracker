@@ -615,4 +615,130 @@ class Labels {
 
 	/// Weekly Boss
 	static const etWeeklyBoss = 'et_weekly_boss';
+
+	/// Search
+	static const hintSearch = 'hint_search';
+
+	/// (max: {value})
+	static const maxProficiency = 'max_proficiency';
+
+	/// Player Info
+	static const cardPlayerInfo = 'card_player_info';
+
+	/// AR {value}
+	static const cardPlayerAr = 'card_player_ar';
+
+	/// WL {value}
+	static const cardPlayerWl = 'card_player_wl';
+
+	/// Achievements
+	static const cardPlayerAchievements = 'card_player_achievements';
+
+	/// Abyss
+	static const cardPlayerAbyss = 'card_player_abyss';
+
+	/// Radiant Spincrystal {number}
+	static const radiantSpincrystal = 'radiant_spincrystal';
+
+	/// January
+	static const month1 = 'month_1';
+
+	/// February
+	static const month2 = 'month_2';
+
+	/// March
+	static const month3 = 'month_3';
+
+	/// April
+	static const month4 = 'month_4';
+
+	/// May
+	static const month5 = 'month_5';
+
+	/// June
+	static const month6 = 'month_6';
+
+	/// July
+	static const month7 = 'month_7';
+
+	/// August
+	static const month8 = 'month_8';
+
+	/// September
+	static const month9 = 'month_9';
+
+	/// October
+	static const month10 = 'month_10';
+
+	/// November
+	static const month11 = 'month_11';
+
+	/// December
+	static const month12 = 'month_12';
+
+	/// Monday
+	static const weekday1 = 'weekday_1';
+
+	/// Tuesday
+	static const weekday2 = 'weekday_2';
+
+	/// Wednesday
+	static const weekday3 = 'weekday_3';
+
+	/// Thursday
+	static const weekday4 = 'weekday_4';
+
+	/// Friday
+	static const weekday5 = 'weekday_5';
+
+	/// Saturday
+	static const weekday6 = 'weekday_6';
+
+	/// Sunday
+	static const weekday7 = 'weekday_7';
+
+	/// {value}y
+	static const shortYear = 'short_year';
+
+	/// {value}d
+	static const shortDay = 'short_day';
+
+	/// {value}w
+	static const shortWeek = 'short_week';
+
+	/// {value}h
+	static const shortHour = 'short_hour';
+
+	/// Ends in {value}
+	static const bannerEnds = 'banner_ends';
+
+	/// Ended {value} ago
+	static const bannerEnded = 'banner_ended';
+
+	/// Starts in {value}
+	static const bannerStarts = 'banner_starts';
+
+	/// Started {value} ago
+	static const bannerStarted = 'banner_started';
+
+	/// {n} Pulls
+	static const bannerNRolls = 'banner_n_rolls';
+
+	/// {n} Primogems
+	static const bannerNPrimogems = 'banner_n_primogems';
+
+	/// New
+	static const itemNew = 'item_new';
+
+	/// Upcoming
+	static const itemUpcoming = 'item_upcoming';
+
+	/// Date
+	static const dateDialogDate = 'date_dialog_date';
+
+	/// Hour
+	static const dateDialogHour = 'date_dialog_hour';
+
+	/// discard_label
+	static const discard = '_discard';
 }
