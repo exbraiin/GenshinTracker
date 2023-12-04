@@ -18,14 +18,9 @@ class GsDataBox extends StatelessWidget {
   })  : alignment = CrossAxisAlignment.start,
         padding = const EdgeInsets.all(kSeparator8),
         decoration = ((ctx) {
-          final color = bgColor ?? ctx.themeColors.mainColor0;
-          final border = bgColor == null
-              ? Border.all(color: ctx.themeColors.mainColor2)
-              : null;
           return BoxDecoration(
-            color: color,
-            borderRadius: kMainRadius,
-            border: border,
+            color: bgColor ?? ctx.themeColors.mainColor0,
+            borderRadius: kGridRadius,
           );
         });
 

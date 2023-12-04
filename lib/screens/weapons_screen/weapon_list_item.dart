@@ -7,16 +7,19 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showItem;
   final bool showExtra;
+  final bool selected;
   final InfoWeapon item;
+  final VoidCallback? onTap;
 
   const WeaponListItem({
     super.key,
     this.showItem = false,
+    this.selected = false,
+    this.onTap,
     required this.showExtra,
     required this.item,
   });
@@ -28,10 +31,11 @@ class WeaponListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       disable: !owned,
+      selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
+      onTap: onTap,
       child: _getContent(context),
-      onTap: () => WeaponDetailsCard(item).show(context),
     );
   }
 

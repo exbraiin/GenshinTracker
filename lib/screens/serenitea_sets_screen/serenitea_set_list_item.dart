@@ -9,10 +9,16 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
 
 class SereniteaSetListItem extends StatelessWidget {
+  final bool selected;
   final InfoSereniteaSet item;
   final VoidCallback? onTap;
 
-  const SereniteaSetListItem(this.item, {super.key, this.onTap});
+  const SereniteaSetListItem(
+    this.item, {
+    super.key,
+    this.selected = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +26,7 @@ class SereniteaSetListItem extends StatelessWidget {
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
+      selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
       imageAspectRatio: 2,
       imageUrlPath: item.image,

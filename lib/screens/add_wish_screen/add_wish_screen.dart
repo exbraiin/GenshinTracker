@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_time_dialog.dart';
@@ -13,6 +12,7 @@ import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dar
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';
@@ -47,78 +47,26 @@ class _AddWishScreenState extends State<AddWishScreen> {
       filter: ScreenFilters.itemDataFilter,
       builder: (context, filter, button, toggle) {
         if (banner == null) return const SizedBox();
-        return Scaffold(
-          appBar: GsAppBar(
+
+        return InventoryPage(
+          appBar: InventoryAppBar(
+            iconAsset: menuIconWish,
             label: context.fromLabel(Labels.addWishes),
-            leading: const CloseButton(),
             actions: [button],
           ),
-          body: Container(
-            decoration: kMainBgDecoration,
-            child: Row(
-              children: [
-                _getItemsList(context, banner, filter),
-                Container(
-                  width: 220,
-                  color: context.themeColors.mainColor0,
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ValueListenableBuilder<List<ItemData>>(
-                          valueListenable: _wishes,
-                          builder: (context, list, child) {
-                            final roll =
-                                GsUtils.wishes.countBannerWishes(banner.id);
-                            return ListView.separated(
-                              itemCount: list.length,
-                              separatorBuilder: (_, index) =>
-                                  const SizedBox(height: kSeparator2),
-                              itemBuilder: (context, index) {
-                                return AddWishWishListItem(
-                                  item: list[index],
-                                  roll: roll + (list.length - index),
-                                  onRemove: () => _wishes.value =
-                                      (_wishes.value..removeAt(index)).toList(),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ValueListenableBuilder<List<ItemData>>(
-                        valueListenable: _wishes,
-                        builder: (context, list, child) {
-                          return Opacity(
-                            opacity: list.isEmpty ? kDisableOpacity : 1,
-                            child: InkWell(
-                              onTap: list.isEmpty
-                                  ? null
-                                  : () => _saveWishes(banner),
-                              child: Container(
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: context.themeColors.mainColor1,
-                                  borderRadius: kMainRadius,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${context.fromLabel(Labels.addWishes)} (x${list.length})',
-                                    style: context.textTheme.titleSmall!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+          child: Row(
+            children: [
+              Expanded(
+                child: InventoryBox(
+                  child: _getItemsList(context, banner, filter),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: kGridSeparator),
+              InventoryBox(
+                width: 220,
+                child: _getTemporaryList(banner),
+              ),
+            ],
           ),
         );
       },
@@ -157,19 +105,70 @@ class _AddWishScreenState extends State<AddWishScreen> {
         .thenBy((element) => element.name);
     if (filtered.isEmpty) return const GsNoResultsState();
 
-    return Expanded(
-      child: GsGridView.builder(
-        itemCount: filtered.length,
-        itemBuilder: (context, index) => AddWishItemDataListItem(
-          item: filtered[index],
-          isItemFeatured: featured(filtered[index]),
-          onAdd: () {
-            if (_wishes.value.length >= 10) return;
-            _wishes.value =
-                (_wishes.value..insert(0, filtered[index])).toList();
+    return GsGridView.builder(
+      itemCount: filtered.length,
+      itemBuilder: (context, index) => AddWishItemDataListItem(
+        item: filtered[index],
+        isItemFeatured: featured(filtered[index]),
+        onAdd: () {
+          if (_wishes.value.length >= 10) return;
+          _wishes.value = (_wishes.value..insert(0, filtered[index])).toList();
+        },
+      ),
+    );
+  }
+
+  Widget _getTemporaryList(InfoBanner banner) {
+    return Column(
+      children: [
+        Expanded(
+          child: ValueListenableBuilder<List<ItemData>>(
+            valueListenable: _wishes,
+            builder: (context, list, child) {
+              final roll = GsUtils.wishes.countBannerWishes(banner.id);
+              return ListView.separated(
+                itemCount: list.length,
+                separatorBuilder: (_, index) =>
+                    const SizedBox(height: kListSeparator),
+                itemBuilder: (context, index) {
+                  return AddWishWishListItem(
+                    item: list[index],
+                    roll: roll + (list.length - index),
+                    onRemove: () => _wishes.value =
+                        (_wishes.value..removeAt(index)).toList(),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        ValueListenableBuilder<List<ItemData>>(
+          valueListenable: _wishes,
+          builder: (context, list, child) {
+            return Opacity(
+              opacity: list.isEmpty ? kDisableOpacity : 1,
+              child: InkWell(
+                onTap: list.isEmpty ? null : () => _saveWishes(banner),
+                child: Container(
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: context.themeColors.mainColor2,
+                    borderRadius: kGridRadius,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${context.fromLabel(Labels.addWishes)} (x${list.length})',
+                      style: context.textTheme.titleSmall!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            );
           },
         ),
-      ),
+      ],
     );
   }
 }

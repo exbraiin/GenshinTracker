@@ -40,7 +40,7 @@ class GsRarityItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = kMainRadius.copyWith(bottomRight: Radius.circular(size / 4));
+    final radius = kGridRadius.copyWith(bottomRight: Radius.circular(size / 4));
     return ClipRRect(
       borderRadius: radius,
       child: Container(

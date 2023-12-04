@@ -323,7 +323,7 @@ class HomeWishesValues extends StatelessWidget {
       padding: const EdgeInsets.all(kSeparator4 * 2),
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1.withOpacity(0.4),
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
       ),
       child: Center(
         child: Text.rich(

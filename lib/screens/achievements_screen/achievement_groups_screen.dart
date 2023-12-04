@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -14,6 +13,7 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/achievements_screen/achievement_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class AchievementGroupsScreen extends StatelessWidget {
   static const id = 'achievement_groups_screen';
@@ -33,54 +33,51 @@ class AchievementGroupsScreen extends StatelessWidget {
             final gList = data.getItems().toList();
             final total = GsUtils.achievements.countTotal();
             final saved = GsUtils.achievements.countSaved();
-            return Scaffold(
-              appBar: GsAppBar(
-                label:
-                    '${context.fromLabel(Labels.achievements)}  ($saved/$total)',
+
+            final title = context.fromLabel(Labels.achievements);
+            return InventoryPage(
+              appBar: InventoryAppBar(
+                iconAsset: menuIconAchievements,
+                label: '$title  ($saved/$total)',
                 actions: [button],
               ),
-              body: ValueNotifierBuilder<String>(
+              child: ValueNotifierBuilder<String>(
                 value: '',
                 builder: (context, sNotifier, child) {
-                  return Container(
-                    decoration: kMainBgDecoration,
-                    child: gList.isEmpty
-                        ? const GsNoResultsState()
-                        : ValueNotifierBuilder<InfoAchievementGroup>(
-                            value: gList.first,
-                            builder: (context, notifier, child) {
-                              final item = notifier.value;
-                              final data = GsDatabase.instance.infoAchievements;
-                              final aList = filter.match(
-                                data
-                                    .getItems()
-                                    .where((e) => e.group == item.id)
-                                    .where(
-                                      (element) => element.name
-                                          .toLowerCase()
-                                          .contains(sNotifier.value),
-                                    ),
-                              );
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: _getGroupsList(
-                                      context,
-                                      gList,
-                                      notifier,
-                                      sNotifier,
-                                    ),
-                                  ),
-                                  const VerticalDivider(width: 1),
-                                  Expanded(
-                                    flex: 5,
-                                    child: _getAchievementsList(item, aList),
-                                  ),
-                                ],
-                              );
-                            },
+                  if (gList.isEmpty) return const GsNoResultsState();
+                  return ValueNotifierBuilder<InfoAchievementGroup>(
+                    value: gList.first,
+                    builder: (context, notifier, child) {
+                      final item = notifier.value;
+                      final data = GsDatabase.instance.infoAchievements;
+                      final aList = filter.match(
+                        data.getItems().where((e) => e.group == item.id).where(
+                              (element) => element.name
+                                  .toLowerCase()
+                                  .contains(sNotifier.value),
+                            ),
+                      );
+                      return Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: _getGroupsList(
+                              context,
+                              gList,
+                              notifier,
+                              sNotifier,
+                            ),
                           ),
+                          const SizedBox(width: kGridSeparator),
+                          Expanded(
+                            flex: 5,
+                            child: InventoryBox(
+                              child: _getAchievementsList(item, aList),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),
@@ -99,38 +96,41 @@ class AchievementGroupsScreen extends StatelessWidget {
   ) {
     return Column(
       children: [
-        Container(
-          height: 50,
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(
-            vertical: kSeparator4,
-            horizontal: kSeparator8,
-          ),
-          child: TextField(
-            style: const TextStyle(fontSize: 16),
-            maxLines: 1,
-            decoration: InputDecoration.collapsed(
-              hintText: context.fromLabel(Labels.hintSearch),
+        InventoryBox(
+          child: Container(
+            height: 36,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(
+              vertical: kSeparator4,
+              horizontal: kSeparator8,
+            ).copyWith(top: 8),
+            child: TextField(
+              style: const TextStyle(fontSize: 16),
+              maxLines: 1,
+              decoration: InputDecoration.collapsed(
+                hintText: context.fromLabel(Labels.hintSearch),
+              ),
+              onChanged: (value) => sNotifier.value = value,
             ),
-            onChanged: (value) => sNotifier.value = value,
           ),
         ),
-        const Divider(height: 1),
+        const SizedBox(height: kGridSeparator),
         Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(4),
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              final item = list[index];
-              return _buildItem(
-                context,
-                item,
-                notifier.value == item,
-                () => notifier.value = item,
-              );
-            },
-            separatorBuilder: (context, index) =>
-                const SizedBox(height: kSeparator4),
+          child: InventoryBox(
+            child: ListView.separated(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                final item = list[index];
+                return _buildItem(
+                  context,
+                  item,
+                  notifier.value == item,
+                  () => notifier.value = item,
+                );
+              },
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: kGridSeparator),
+            ),
           ),
         ),
       ],
@@ -144,10 +144,10 @@ class AchievementGroupsScreen extends StatelessWidget {
     if (list.isEmpty) return const GsNoResultsState();
     return ListView.separated(
       key: ValueKey(list.length),
-      padding: const EdgeInsets.all(kSeparator6),
       itemCount: list.length,
       itemBuilder: (context, index) => AchievementListItem(list[index]),
-      separatorBuilder: (context, index) => const SizedBox(height: kSeparator6),
+      separatorBuilder: (context, index) =>
+          const SizedBox(height: kListSeparator),
     );
   }
 
@@ -169,9 +169,7 @@ class AchievementGroupsScreen extends StatelessWidget {
       padding:
           const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8 * 2),
       decoration: BoxDecoration(
-        color: selected
-            ? context.themeColors.mainColor2
-            : context.themeColors.mainColor0,
+        color: selected ? context.themeColors.mainColor2 : Colors.transparent,
         image: namecard != null
             ? DecorationImage(
                 fit: BoxFit.cover,
@@ -185,9 +183,14 @@ class AchievementGroupsScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 image: AssetImage(getRarityBgImage(1)),
               ),
+        borderRadius: kGridRadius,
+      ),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: kGridRadius,
         border: Border.all(
-          color: const Color(0xFF626d83),
-          width: 1,
+          color: selected
+              ? context.themeColors.almostWhite.withOpacity(0.4)
+              : Colors.transparent,
         ),
       ),
       child: InkWell(

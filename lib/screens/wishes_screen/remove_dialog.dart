@@ -24,7 +24,7 @@ class RemoveDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: context.themeColors.mainColor0,
           boxShadow: kMainShadow,
-          borderRadius: kMainRadius,
+          borderRadius: kGridRadius,
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -50,7 +50,7 @@ class RemoveDialog extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.red),
-                  borderRadius: kMainRadius,
+                  borderRadius: kGridRadius,
                 ),
                 child: Text(
                   context.fromLabel(Labels.remove).toUpperCase(),

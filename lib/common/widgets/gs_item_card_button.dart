@@ -106,6 +106,7 @@ class GsItemCardButton extends StatelessWidget {
     return Container(
       width: width,
       height: height,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: radius,
@@ -114,69 +115,62 @@ class GsItemCardButton extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: ClipRRect(
-              borderRadius: radius.copyWith(
-                bottomLeft: Radius.zero,
-                bottomRight: const Radius.circular(24),
+            child: Container(
+              width: double.infinity,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: context.themeColors.mainColor0,
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(24),
+                ),
+                image: rarity != null
+                    ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          getRarityBgImage(rarity!),
+                        ),
+                      )
+                    : null,
               ),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: context.themeColors.mainColor0,
-                  image: rarity != null
-                      ? DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            getRarityBgImage(rarity!),
-                          ),
-                        )
-                      : null,
-                ),
-                child: Stack(
-                  children: [
-                    if (imageUrlPath != null)
-                      Positioned.fill(
-                        child: CachedImageWidget(
-                          imageUrlPath!,
-                          fit: BoxFit.cover,
-                          imageAspectRatio: imageAspectRatio,
-                        ),
+              child: Stack(
+                children: [
+                  if (imageUrlPath != null)
+                    Positioned.fill(
+                      child: CachedImageWidget(
+                        imageUrlPath!,
+                        fit: BoxFit.cover,
+                        imageAspectRatio: imageAspectRatio,
                       ),
-                    if (imageFilePath != null)
-                      Positioned.fill(
-                        child: FileImageWidget(
-                          imageFilePath!,
-                          fit: BoxFit.cover,
-                        ),
+                    ),
+                  if (imageFilePath != null)
+                    Positioned.fill(
+                      child: FileImageWidget(
+                        imageFilePath!,
+                        fit: BoxFit.cover,
                       ),
-                    if (imageAssetPath != null && imageAssetPath!.isNotEmpty)
-                      Positioned.fill(
-                        child: Image.asset(
-                          imageAssetPath!,
-                          fit: BoxFit.cover,
-                        ),
+                    ),
+                  if (imageAssetPath != null && imageAssetPath!.isNotEmpty)
+                    Positioned.fill(
+                      child: Image.asset(
+                        imageAssetPath!,
+                        fit: BoxFit.cover,
                       ),
-                    if (banner.text.isNotEmpty)
-                      Positioned.fill(
-                        child: Banner(
-                          color: banner.color,
-                          message: banner.text,
-                          location: banner.location,
-                        ),
+                    ),
+                  if (banner.text.isNotEmpty)
+                    Positioned.fill(
+                      child: Banner(
+                        color: banner.color,
+                        message: banner.text,
+                        location: banner.location,
                       ),
-                    if (child != null) Positioned.fill(child: child!),
-                  ],
-                ),
+                    ),
+                  if (child != null) Positioned.fill(child: child!),
+                ],
               ),
             ),
           ),
           Container(
             constraints: const BoxConstraints(minHeight: 24),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(4),
-              ),
-            ),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
             child: Center(
               child: Column(

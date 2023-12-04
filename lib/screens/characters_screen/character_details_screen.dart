@@ -5,16 +5,15 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
@@ -36,61 +35,61 @@ class CharacterDetailsScreen extends StatelessWidget {
     final color = item.element.color;
     bgColor = Color.lerp(Colors.black, color, 0.2)!.withOpacity(0.5);
 
-    return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
-      builder: (context, snapshot) {
-        if (!snapshot.data!) return const SizedBox();
-        return Scaffold(
-          appBar: GsAppBar(label: item.name),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(item.element.assetBgPath),
-              ),
-            ),
-            child: Stack(
-              children: [
-                if (item.constellationImage.isNotEmpty)
-                  Positioned.fill(
-                    child: CachedImageWidget(
-                      item.constellationImage,
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.center,
-                      scaleToSize: false,
-                      showPlaceholder: false,
-                    ),
-                  ),
-                SingleChildScrollView(
-                  padding: const EdgeInsets.all(kSeparator4),
-                  child: Column(
-                    children: [
-                      _getInfo(context, item, info),
-                      _getAttributes(context, item),
-                      if (info != null) ...[
-                        const SizedBox(height: kSeparator8),
-                        _getAscension(context, item, info),
-                        const SizedBox(height: kSeparator8),
-                        if (info.hasTalents) ...[
-                          _getTalents(context, info),
-                          const SizedBox(height: kSeparator8),
-                        ],
-                        if (info.hasConstellations) ...[
-                          _getConstellations(context, info),
-                          const SizedBox(height: kSeparator8),
-                        ],
-                        _getAllMaterials(context, info),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
+    return InventoryPage(
+      appBar: InventoryAppBar(
+        iconAsset: menuIconCharacters,
+        label: item.name,
+      ),
+      child: InventoryBox(
+        padding: EdgeInsets.zero,
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(item.element.assetBgPath),
             ),
           ),
-        );
-      },
+          child: Stack(
+            children: [
+              if (item.constellationImage.isNotEmpty)
+                Positioned.fill(
+                  child: CachedImageWidget(
+                    item.constellationImage,
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                    scaleToSize: false,
+                    showPlaceholder: false,
+                  ),
+                ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(kSeparator4),
+                child: Column(
+                  children: [
+                    _getInfo(context, item, info),
+                    _getAttributes(context, item),
+                    if (info != null) ...[
+                      const SizedBox(height: kSeparator8),
+                      _getAscension(context, item, info),
+                      const SizedBox(height: kSeparator8),
+                      if (info.hasTalents) ...[
+                        _getTalents(context, info),
+                        const SizedBox(height: kSeparator8),
+                      ],
+                      if (info.hasConstellations) ...[
+                        _getConstellations(context, info),
+                        const SizedBox(height: kSeparator8),
+                      ],
+                      _getAllMaterials(context, info),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

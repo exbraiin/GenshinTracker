@@ -1,21 +1,27 @@
 import 'package:flutter/widgets.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/version_screen/version_details_card.dart';
 
 class VersionListItem extends StatelessWidget {
+  final bool selected;
   final InfoVersion item;
+  final VoidCallback? onTap;
 
-  const VersionListItem(this.item, {super.key});
+  const VersionListItem(
+    this.item, {
+    super.key,
+    this.selected = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GsItemCardButton(
       label: item.id,
       imageUrlPath: item.image,
-      imageAspectRatio: 2,
+      selected: selected,
       banner: GsItemBanner.fromVersion(context, item.id),
-      onTap: () => VersionDetailsCard(item).show(context),
+      onTap: onTap,
     );
   }
 }

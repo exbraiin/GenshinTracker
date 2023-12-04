@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
@@ -9,7 +10,8 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
-import 'package:tracker/theme/theme.dart';
+
+const _bannerHeight = 100.0;
 
 class BannerListItem extends StatelessWidget {
   final int rolls;
@@ -24,7 +26,7 @@ class BannerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 86,
+      height: _bannerHeight,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         border: Border(
@@ -37,8 +39,8 @@ class BannerListItem extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: SizedBox(
-                height: 86,
-                width: 86 * 4,
+                height: _bannerHeight,
+                width: _bannerHeight * 4,
                 child: Opacity(
                   opacity: 0.2,
                   child: ShaderMask(

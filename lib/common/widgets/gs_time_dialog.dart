@@ -73,7 +73,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
         height: 44,
         decoration: BoxDecoration(
           color: context.themeColors.mainColor2,
-          borderRadius: kMainRadius,
+          borderRadius: kGridRadius,
         ),
         child: ListWheelScrollView.useDelegate(
           childDelegate: ListWheelChildLoopingListDelegate(
@@ -176,7 +176,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       border: Border.all(color: context.themeColors.dimWhite),
-                      borderRadius: kMainRadius,
+                      borderRadius: kGridRadius,
                     ),
                     alignment: Alignment.center,
                     child: Text(

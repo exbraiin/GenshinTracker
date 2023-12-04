@@ -20,7 +20,7 @@ class GsCardDialog extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor0,
         boxShadow: kMainShadow,
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
       ),
       padding: const EdgeInsets.all(8),
       child: Column(

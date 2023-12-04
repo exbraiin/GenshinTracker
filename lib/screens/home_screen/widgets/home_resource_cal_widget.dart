@@ -140,7 +140,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1.withOpacity(0.4),
         border: Border.all(color: context.themeColors.mainColor0, width: 0.6),
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
       ),
       child: Text(
         text,
@@ -155,7 +155,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
         border: Border.all(
           color: context.themeColors.dimWhite,
           width: 0.6,

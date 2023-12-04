@@ -198,7 +198,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return Container(
           decoration: url != null
               ? BoxDecoration(
-                  borderRadius: kMainRadius,
+                  borderRadius: kGridRadius,
                   image: DecorationImage(
                     image: NetworkImage(url),
                     fit: BoxFit.cover,

@@ -19,7 +19,6 @@ class AchievementListItem extends StatelessWidget {
     final obtained = db.getItemOrNull(item.id)?.obtained ?? 0;
 
     return GsDataBox.info(
-      bgColor: context.themeColors.mainColor0,
       title: Row(
         children: [
           Text(item.name),

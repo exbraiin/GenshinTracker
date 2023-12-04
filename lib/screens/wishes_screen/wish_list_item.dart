@@ -38,15 +38,13 @@ class WishListItem extends StatelessWidget {
 
     return Container(
       height: 44,
-      margin: EdgeInsets.fromLTRB(
-        kSeparator4,
-        index == 0 ? kSeparator4 : 0,
-        kSeparator4,
-        kSeparator2,
+      margin: EdgeInsets.only(
+        top: index == 0 ? kListSeparator : 0,
+        bottom: kListSeparator,
       ),
       decoration: BoxDecoration(
         color: color.withOpacity(0.75),
-        borderRadius: kMainRadius,
+        borderRadius: kListRadius,
       ),
       child: WishListInfoWidget(
         children: [

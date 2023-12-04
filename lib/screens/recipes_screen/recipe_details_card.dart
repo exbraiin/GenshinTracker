@@ -68,7 +68,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       padding: const EdgeInsets.all(kSeparator4),
                       decoration: BoxDecoration(
                         color: context.themeColors.mainColor2.withOpacity(0.3),
-                        borderRadius: kMainRadius,
+                        borderRadius: kGridRadius,
                         border: Border.all(
                           color:
                               context.themeColors.mainColor1.withOpacity(0.3),

@@ -6,10 +6,16 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class MaterialListItem extends StatelessWidget {
+  final bool selected;
   final InfoMaterial item;
   final VoidCallback? onTap;
 
-  const MaterialListItem(this.item, {super.key, this.onTap});
+  const MaterialListItem(
+    this.item, {
+    super.key,
+    this.onTap,
+    this.selected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +24,7 @@ class MaterialListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       onTap: onTap,
+      selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
       imageUrlPath: item.image,
       child: Stack(

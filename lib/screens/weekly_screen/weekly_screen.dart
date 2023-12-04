@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
-import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class WeeklyScreen extends StatefulWidget {
   static const id = 'weekly_screen';
@@ -36,8 +35,9 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
     final index = DateTime.now().weekday - 1;
     final weekday = GsWeekday.values[_weekday - 1];
 
-    return Scaffold(
-      appBar: GsAppBar(
+    return InventoryPage(
+      appBar: InventoryAppBar(
+        iconAsset: menuIconBook,
         label: context.fromLabel(Labels.weeklyTasks),
         actions: [
           IconButton(
@@ -50,15 +50,12 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
           _getDropdown(context, index),
         ],
       ),
-      body: Container(
-        decoration: kMainBgDecoration,
+      child: InventoryBox(
         child: ListView(
-          padding: const EdgeInsets.all(kSeparator4),
           children: GsUtils.items
               .getItemsByMaterial(weekday)
               .entries
               .map((entry) {
-                final e = entry.key;
                 final characters = entry.value
                     .where(
                       (e) =>
@@ -76,8 +73,14 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                     )
                     .sortedBy((element) => element.rarity)
                     .thenBy((element) => element.name);
-
-                final noContent = characters.isEmpty && weapons.isEmpty;
+                return (
+                  material: entry.key,
+                  weapons: weapons,
+                  characters: characters,
+                );
+              })
+              .where((e) => e.characters.isNotEmpty || e.weapons.isNotEmpty)
+              .map((e) {
                 return GsDataBox.info(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,23 +90,22 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           SizedBox(
                             width: 50,
                             height: 50,
-                            child: CachedImageWidget(e.image),
+                            child: CachedImageWidget(e.material.image),
                           ),
                           const SizedBox(width: kSeparator4),
                           Text(
-                            e.name,
+                            e.material.name,
                             style: context.themeStyles.title20n,
                           ),
                         ],
                       ),
                       Divider(color: context.themeColors.divider),
-                      if (noContent) const GsNoResultsState.small(),
                       Wrap(
                         spacing: kSeparator4,
                         runSpacing: kSeparator4,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
-                        children: characters.map((info) {
+                        children: e.characters.map((info) {
                           final exists =
                               GsUtils.characters.hasCaracter(info.id);
                           return Opacity(
@@ -122,7 +124,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                         runSpacing: kSeparator4,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
-                        children: weapons.map((info) {
+                        children: e.weapons.map((info) {
                           return Opacity(
                             opacity: GsUtils.weapons.hasWeapon(info.id)
                                 ? 1
@@ -142,8 +144,8 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
               })
               .toGrid(
                 crossCount: 2,
-                mainSpacing: kSeparator4,
-                crossSpacing: kSeparator4,
+                mainSpacing: kGridSeparator,
+                crossSpacing: kGridSeparator,
                 crossAxisAlignment: CrossAxisAlignment.start,
               )
               .toList(),
@@ -175,7 +177,7 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
         }).toList(),
         onChanged: (int? i) => setState(() => _weekday = (i ?? 0) + 1),
         alignment: Alignment.center,
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
         elevation: 1,
       ),
     );

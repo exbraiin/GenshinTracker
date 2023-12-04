@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
 import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
@@ -34,10 +34,10 @@ class WishesScreen extends StatelessWidget {
         return ScreenFilterBuilder<SaveWish>(
           filter: ScreenFilters.saveWishFilter,
           builder: (context, filter, button, toggle) {
-            return Scaffold(
-              appBar: GsAppBar(
+            return InventoryPage(
+              appBar: InventoryAppBar(
+                iconAsset: menuIconWish,
                 label: context.fromLabel(Labels.wishes),
-                bottom: _header(context),
                 actions: [
                   Tooltip(
                     message: context.fromLabel(Labels.hideEmptyBanners),
@@ -55,11 +55,20 @@ class WishesScreen extends StatelessWidget {
                   button,
                 ],
               ),
-              body: Container(
-                decoration: kMainBgDecoration,
-                child: CustomScrollView(
-                  slivers: _slivers(banner, wishes, banners, filter),
-                ),
+              child: Column(
+                children: [
+                  InventoryBox(
+                    child: _header(context),
+                  ),
+                  const SizedBox(height: kGridSeparator),
+                  Expanded(
+                    child: InventoryBox(
+                      child: CustomScrollView(
+                        slivers: _slivers(banner, wishes, banners, filter),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -134,49 +143,47 @@ class WishesScreen extends StatelessWidget {
     ).toList();
   }
 
-  PreferredSizeWidget _header(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(44),
-      child: SizedBox(
-        height: 44,
-        child: WishListInfoWidget(
-          children: [
-            Text(
-              context.fromLabel(Labels.time),
-              textAlign: TextAlign.center,
+  Widget _header(BuildContext context) {
+    return Container(
+      height: 32,
+      padding: const EdgeInsets.only(top: 2),
+      child: WishListInfoWidget(
+        children: [
+          Text(
+            context.fromLabel(Labels.time),
+            textAlign: TextAlign.center,
+            style: context.themeStyles.label14n,
+          ),
+          Text(
+            context.fromLabel(Labels.pity),
+            textAlign: TextAlign.center,
+            style: context.themeStyles.label14n,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 60),
+            child: Text(
+              context.fromLabel(Labels.name),
+              textAlign: TextAlign.left,
               style: context.themeStyles.label14n,
             ),
-            Text(
-              context.fromLabel(Labels.pity),
-              textAlign: TextAlign.center,
-              style: context.themeStyles.label14n,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 60),
-              child: Text(
-                context.fromLabel(Labels.name),
-                textAlign: TextAlign.left,
-                style: context.themeStyles.label14n,
-              ),
-            ),
-            const SizedBox(),
-            Text(
-              context.fromLabel(Labels.rarity),
-              textAlign: TextAlign.center,
-              style: context.themeStyles.label14n,
-            ),
-            Text(
-              context.fromLabel(Labels.type),
-              textAlign: TextAlign.center,
-              style: context.themeStyles.label14n,
-            ),
-            Text(
-              context.fromLabel(Labels.roll),
-              textAlign: TextAlign.center,
-              style: context.themeStyles.label14n,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(),
+          Text(
+            context.fromLabel(Labels.rarity),
+            textAlign: TextAlign.center,
+            style: context.themeStyles.label14n,
+          ),
+          Text(
+            context.fromLabel(Labels.type),
+            textAlign: TextAlign.center,
+            style: context.themeStyles.label14n,
+          ),
+          Text(
+            context.fromLabel(Labels.roll),
+            textAlign: TextAlign.center,
+            style: context.themeStyles.label14n,
+          ),
+        ],
       ),
     );
   }

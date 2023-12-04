@@ -44,7 +44,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
       height: 100,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor0,
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
         boxShadow: kMainShadow,
       ),
       child: Row(
@@ -59,7 +59,20 @@ class _ReputationListItemState extends State<ReputationListItem> {
                     children: [
                       SizedBox(
                         width: 36,
-                        child: CachedImageWidget(widget.city.image),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            CachedImageWidget(widget.city.image),
+                            Positioned(
+                              right: -4,
+                              bottom: -4,
+                              child: ItemRarityBubble(
+                                size: 18,
+                                asset: widget.city.element.assetPath,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(width: kSeparator4),
                       Text(
@@ -68,12 +81,6 @@ class _ReputationListItemState extends State<ReputationListItem> {
                             .textTheme
                             .titleLarge!
                             .copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(width: kSeparator4),
-                      const Spacer(),
-                      ItemRarityBubble(
-                        size: 24,
-                        asset: widget.city.element.assetPath,
                       ),
                     ],
                   ),
@@ -126,7 +133,7 @@ class _ReputationListItemState extends State<ReputationListItem> {
             decoration: BoxDecoration(
               color: context.themeColors.mainColor1.withOpacity(0.4),
               borderRadius: BorderRadius.horizontal(
-                right: kMainRadius.topRight,
+                right: kGridRadius.topRight,
               ),
             ),
             child: Center(

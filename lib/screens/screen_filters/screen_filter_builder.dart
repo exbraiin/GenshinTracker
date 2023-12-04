@@ -77,7 +77,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
       padding: const EdgeInsets.all(kSeparator8),
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
-        borderRadius: kMainRadius,
+        borderRadius: kGridRadius,
       ),
       child: Material(
         color: Colors.transparent,

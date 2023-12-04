@@ -44,7 +44,7 @@ class GsConfirmDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       border: Border.all(color: context.themeColors.dimWhite),
-                      borderRadius: kMainRadius,
+                      borderRadius: kGridRadius,
                     ),
                     alignment: Alignment.center,
                     child: Text(
@@ -60,7 +60,7 @@ class GsConfirmDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       border: Border.all(color: context.themeColors.dimWhite),
-                      borderRadius: kMainRadius,
+                      borderRadius: kGridRadius,
                     ),
                     alignment: Alignment.center,
                     child: Text(

@@ -6,10 +6,16 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class SpincrystalListItem extends StatelessWidget {
+  final bool selected;
   final InfoSpincrystal item;
   final VoidCallback? onTap;
 
-  const SpincrystalListItem(this.item, {super.key, this.onTap});
+  const SpincrystalListItem(
+    this.item, {
+    super.key,
+    this.selected = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +28,7 @@ class SpincrystalListItem extends StatelessWidget {
       rarity: item.rarity,
       onTap: onTap,
       disable: !owned,
+      selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
       imageAssetPath: spincrystalAsset,
       child: Stack(

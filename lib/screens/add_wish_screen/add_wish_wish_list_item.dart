@@ -21,7 +21,7 @@ class AddWishWishListItem extends StatelessWidget {
     return Container(
       height: 32,
       decoration: BoxDecoration(
-        borderRadius: kMainRadius,
+        borderRadius: kListRadius,
         color: context.themeColors.getRarityColor(item.rarity),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -40,7 +40,7 @@ class AddWishWishListItem extends StatelessWidget {
             style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
           ),
           Padding(
-            padding: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2).copyWith(left: 4),
             child: GsIconButton(
               icon: Icons.remove,
               onPress: onRemove,

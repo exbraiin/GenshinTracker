@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
@@ -19,6 +18,7 @@ import 'package:tracker/screens/home_screen/widgets/home_resource_cal_widget.dar
 import 'package:tracker/screens/home_screen/widgets/home_serenitea_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_spincrystal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = 'home_screen';
@@ -40,8 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: GsAppBar(
+    return InventoryPage(
+      appBar: InventoryAppBar(
+        iconAsset: imageAppIcon,
         label: context.fromLabel(Labels.home),
         actions: [
           ValueListenableBuilder<bool>(
@@ -58,46 +59,47 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          const SizedBox(width: 8),
         ],
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: ValueListenableBuilder<bool>(
-              valueListenable: _notifier,
-              builder: (context, value, child) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: value ? 0.05 : 1,
-                  child: child,
-                );
-              },
-              child: CachedImageWidget(
-                GsUtils.versions.getCurrentVersion()?.image,
-                fit: BoxFit.cover,
-                scaleToSize: false,
-                showPlaceholder: false,
+      child: InventoryBox(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: ValueListenableBuilder<bool>(
+                valueListenable: _notifier,
+                builder: (context, value, child) {
+                  return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 400),
+                    opacity: value ? 0.05 : 1,
+                    child: child,
+                  );
+                },
+                child: CachedImageWidget(
+                  GsUtils.versions.getCurrentVersion()?.image,
+                  fit: BoxFit.cover,
+                  scaleToSize: false,
+                  showPlaceholder: false,
+                ),
               ),
             ),
-          ),
-          Positioned.fill(
-            child: ValueListenableBuilder<bool>(
-              valueListenable: _notifier,
-              builder: (context, value, child) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: value ? 1 : 0,
-                  child: child,
-                );
-              },
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(kSeparator4),
-                child: _widgets(context),
+            Positioned.fill(
+              child: ValueListenableBuilder<bool>(
+                valueListenable: _notifier,
+                builder: (context, value, child) {
+                  return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 400),
+                    opacity: value ? 1 : 0,
+                    child: child,
+                  );
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: _widgets(context),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -120,10 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeAchievementsWidget(),
               const HomeRemarkableChestsWidget(),
               const HomeSereniteaWidget(),
-            ].separate(const SizedBox(height: kSeparator4)).toList(),
+            ].separate(const SizedBox(height: kGridSeparator)).toList(),
           ),
         ),
-        const SizedBox(width: kSeparator4),
+        const SizedBox(width: kGridSeparator),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -139,10 +141,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeSpincrystalsWidget(),
               const HomeRecipesWidget(),
               const HomeReputationWidget(),
-            ].separate(const SizedBox(height: kSeparator4)).toList(),
+            ].separate(const SizedBox(height: kGridSeparator)).toList(),
           ),
         ),
-        const SizedBox(width: kSeparator4),
+        const SizedBox(width: kGridSeparator),
         Expanded(
           child: Column(
             children: [
@@ -152,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeBirthdaysWidget(),
               const HomeLastBannerWidget(),
               const HomeResourceCalcWidget(),
-            ].separate(const SizedBox(height: kSeparator4)).toList(),
+            ].separate(const SizedBox(height: kGridSeparator)).toList(),
           ),
         ),
       ],

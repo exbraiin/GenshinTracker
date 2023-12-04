@@ -5,12 +5,14 @@ import 'package:tracker/common/widgets/static/sliver_grid_fixed_size_delegate.da
 class GsGridView extends StatelessWidget {
   final double childWidth;
   final double childHeight;
+  final EdgeInsetsGeometry? padding;
   final SliverChildDelegate delegate;
 
   GsGridView({
     super.key,
     this.childWidth = 126,
     this.childHeight = 160,
+    this.padding,
     required List<Widget> children,
   }) : delegate = SliverChildListDelegate(children);
 
@@ -18,6 +20,7 @@ class GsGridView extends StatelessWidget {
     super.key,
     this.childWidth = 126,
     this.childHeight = 160,
+    this.padding,
     required int itemCount,
     required Widget Function(BuildContext context, int index) itemBuilder,
   }) : delegate = SliverChildBuilderDelegate(
@@ -29,13 +32,13 @@ class GsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.custom(
       childrenDelegate: delegate,
-      padding: const EdgeInsets.all(kSeparator4),
+      padding: padding ?? kListPadding,
       scrollDirection: Axis.vertical,
       gridDelegate: SliverGridDelegateWithFixedChildSize(
         childWidth: childWidth,
         childHeight: childHeight,
-        mainAxisSpacing: kSeparator6,
-        crossAxisSpacing: kSeparator6,
+        mainAxisSpacing: kGridSeparator,
+        crossAxisSpacing: kGridSeparator,
         alignment: CrossAxisAlignment.center,
       ),
     );

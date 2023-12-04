@@ -122,26 +122,27 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 32),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white60, width: 2),
-                  borderRadius: BorderRadius.circular(48),
-                ),
-                child: Center(
-                  child: InkWell(
-                    onTap: () => Navigator.of(context).maybePop(),
-                    child: const AspectRatio(
-                      aspectRatio: 1,
-                      child: Icon(
-                        Icons.close_rounded,
-                        color: Colors.white60,
-                        size: 20,
+              if (Navigator.of(context).canPop())
+                Container(
+                  margin: const EdgeInsets.only(left: 32),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white60, width: 2),
+                    borderRadius: BorderRadius.circular(48),
+                  ),
+                  child: Center(
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).maybePop(),
+                      child: const AspectRatio(
+                        aspectRatio: 1,
+                        child: Icon(
+                          Icons.close_rounded,
+                          color: Colors.white60,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -490,25 +491,19 @@ class ItemRarityBubble extends StatelessWidget {
             padding: const EdgeInsets.all(kSeparator2),
             child: child,
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(size),
-            child: Container(
-              decoration: BoxDecoration(
-                color: color,
-                image: rarity.between(1, 5)
-                    ? DecorationImage(
-                        image: AssetImage(getRarityBgImage(rarity)),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-              child: onTap != null
-                  ? InkWell(
-                      onTap: onTap,
-                      child: img,
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(size),
+              image: rarity.between(1, 5)
+                  ? DecorationImage(
+                      image: AssetImage(getRarityBgImage(rarity)),
+                      fit: BoxFit.cover,
                     )
-                  : img,
+                  : null,
             ),
+            child: onTap != null ? InkWell(onTap: onTap, child: img) : img,
           ),
         ),
         if (child != null)

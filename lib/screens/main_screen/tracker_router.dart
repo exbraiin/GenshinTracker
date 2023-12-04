@@ -4,7 +4,7 @@ import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
-import 'package:tracker/screens/enemies_screen/enemies_screen.dart';
+import 'package:tracker/screens/enemies_screen/enemy_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
@@ -34,7 +34,7 @@ class TrackerRouter {
     CharactersScreen.id: () => const CharactersScreen(),
     NamecardScreen.id: () => const NamecardScreen(),
     MaterialsScreen.id: () => const MaterialsScreen(),
-    EnemiesScreen.id: () => const EnemiesScreen(),
+    EnemyScreen.id: () => const EnemyScreen(),
     ReputationScreen.id: () => const ReputationScreen(),
     SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),
     CharacterDetailsScreen.id: CharacterDetailsScreen.new,
@@ -45,15 +45,19 @@ class TrackerRouter {
   };
 
   static Route? onGenerate(RouteSettings settings) {
-    return MaterialPageRoute(
-      builder: (_) =>
-          _routes[settings.name]?.call() ??
-          const Center(
-            child: Text(
-              'No route defined!',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return FadeTransition(
+          opacity: animation.drive(CurveTween(curve: Curves.easeIn)),
+          child: _routes[settings.name]?.call() ??
+              const Center(
+                child: Text(
+                  'No route defined!',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+        );
+      },
       settings: settings,
     );
   }

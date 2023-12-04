@@ -5,16 +5,23 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 class NamecardListItem extends StatelessWidget {
+  final bool selected;
   final InfoNamecard item;
   final VoidCallback? onTap;
 
-  const NamecardListItem(this.item, {super.key, this.onTap});
+  const NamecardListItem(
+    this.item, {
+    super.key,
+    this.selected = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
+      selected: selected,
       imageUrlPath: item.image,
       banner: GsItemBanner.fromVersion(context, item.version),
       onTap: onTap,

@@ -2,13 +2,10 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_app_bar.dart';
-import 'package:tracker/common/widgets/gs_grid_view.dart';
-import 'package:tracker/common/widgets/gs_no_results_state.dart';
-import 'package:tracker/common/widgets/static/value_stream_builder.dart';
-import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/version_screen/version_details_card.dart';
 import 'package:tracker/screens/version_screen/version_list_item.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class VersionScreen extends StatelessWidget {
   static const id = 'version_screen';
@@ -17,40 +14,19 @@ class VersionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
-      builder: (context, snapshot) {
-        if (snapshot.data != true) return const SizedBox();
-
-        final db = GsDatabase.instance;
-        final items = db.infoVersion
-            .getItems()
-            .sortedByDescending((element) => element.releaseDate);
-
-        return Scaffold(
-          appBar: GsAppBar(
-            label: context.fromLabel(Labels.version),
-          ),
-          body: Container(
-            decoration: kMainBgDecoration,
-            child: _getListView(items),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _getListView(List<InfoVersion> list) {
-    if (list.isEmpty) return const GsNoResultsState();
-
-    return GsGridView.builder(
-      childWidth: 280,
-      childHeight: 160,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        final item = list[index];
-        return VersionListItem(item);
-      },
+    return InventoryListPage<InfoVersion>(
+      childSize: const Size(126 * 2 + 6, 160),
+      icon: menuIconBook,
+      title: context.fromLabel(Labels.version),
+      items: (db) => db.infoVersion
+          .getItems()
+          .sortedByDescending((element) => element.releaseDate),
+      itemBuilder: (context, state) => VersionListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) => VersionDetailsCard(item),
     );
   }
 }
