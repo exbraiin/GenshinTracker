@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
-import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class ReputationListItem extends StatefulWidget {
   final InfoCity city;
@@ -57,24 +56,8 @@ class _ReputationListItemState extends State<ReputationListItem> {
                 children: [
                   Row(
                     children: [
-                      SizedBox(
-                        width: 36,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            CachedImageWidget(widget.city.image),
-                            Positioned(
-                              right: -4,
-                              bottom: -4,
-                              child: ItemRarityBubble(
-                                size: 18,
-                                asset: widget.city.element.assetPath,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: kSeparator4),
+                      ItemCircleWidget.city(widget.city),
+                      const SizedBox(width: kGridSeparator),
                       Text(
                         widget.city.name,
                         style: Theme.of(context)

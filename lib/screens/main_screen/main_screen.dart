@@ -86,9 +86,7 @@ class _MainScreenState extends State<MainScreen> {
         decoration: BoxDecoration(
           color: idx == 0
               ? context.themeColors.primary
-              : selected
-                  ? context.themeColors.mainColor2
-                  : context.themeColors.mainColor0,
+              : context.themeColors.mainColor0,
           borderRadius: kGridRadius,
           border: Border.all(
             color: selected

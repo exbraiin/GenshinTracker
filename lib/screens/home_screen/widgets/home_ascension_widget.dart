@@ -4,12 +4,11 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/screens/characters_screen/character_details_screen.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeAscensionWidget extends StatefulWidget {
   const HomeAscensionWidget({super.key});
@@ -63,19 +62,13 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: list
-                        .map<Widget>((e) {
-                          return ItemRarityBubble.withLabel(
-                            size: 70,
-                            rarity: e.rarity,
-                            image: GsUtils.characters.getImage(e.id),
-                            label: '✦${chars.getCharAscension(e.id)}',
-                            onTap: () => Navigator.of(context).pushNamed(
-                              CharacterDetailsScreen.id,
-                              arguments: e,
-                            ),
+                        .map<Widget>((info) {
+                          return ItemGridWidget.character(
+                            info,
+                            label: '✦${chars.getCharAscension(info.id)}',
                           );
                         })
-                        .separate(const SizedBox(width: kSeparator4))
+                        .separate(const SizedBox(width: kGridSeparator))
                         .toList(),
                   ),
                   _getMaterialsList(list),
@@ -144,9 +137,8 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: materials.map((e) {
-                    return ItemRarityBubble.withLabel(
-                      image: e.key!.image,
-                      rarity: e.key!.rarity,
+                    return ItemGridWidget.material(
+                      e.key!,
                       label: e.value.compact(),
                     );
                   }).toList(),

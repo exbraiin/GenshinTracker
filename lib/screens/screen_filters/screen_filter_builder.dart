@@ -195,7 +195,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         gradient: LinearGradient(
           colors: [
             context.themeColors.mainColor0,
-            context.themeColors.mainColor2,
+            context.themeColors.mainColor1,
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,

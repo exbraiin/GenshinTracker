@@ -4,9 +4,8 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/characters_screen/character_details_screen.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeBirthdaysWidget extends StatelessWidget {
   const HomeBirthdaysWidget({super.key});
@@ -31,18 +30,12 @@ class HomeBirthdaysWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: characters
                 .take(items)
-                .map<Widget>((e) {
-                  return ItemRarityBubble.withLabel(
-                    size: 70,
-                    image: GsUtils.characters.getImage(e.id),
-                    rarity: e.rarity,
+                .map<Widget>(
+                  (e) => ItemGridWidget.character(
+                    e,
                     label: e.birthday.toBirthday(),
-                    onTap: () => Navigator.of(context).pushNamed(
-                      CharacterDetailsScreen.id,
-                      arguments: e,
-                    ),
-                  );
-                })
+                  ),
+                )
                 .separate(const SizedBox(width: kSeparator4))
                 .toList(),
           );

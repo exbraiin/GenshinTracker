@@ -144,44 +144,51 @@ class WishesScreen extends StatelessWidget {
   }
 
   Widget _header(BuildContext context) {
-    return Container(
+    final textStyle = context.themeStyles.label14n;
+    final strutStyle = textStyle.toStrut();
+    return SizedBox(
       height: 32,
-      padding: const EdgeInsets.only(top: 2),
       child: WishListInfoWidget(
         children: [
           Text(
             context.fromLabel(Labels.time),
             textAlign: TextAlign.center,
-            style: context.themeStyles.label14n,
+            style: textStyle,
+            strutStyle: strutStyle,
           ),
           Text(
             context.fromLabel(Labels.pity),
             textAlign: TextAlign.center,
-            style: context.themeStyles.label14n,
+            style: textStyle,
+            strutStyle: strutStyle,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 60),
             child: Text(
               context.fromLabel(Labels.name),
               textAlign: TextAlign.left,
-              style: context.themeStyles.label14n,
+              style: textStyle,
+              strutStyle: strutStyle,
             ),
           ),
           const SizedBox(),
           Text(
             context.fromLabel(Labels.rarity),
             textAlign: TextAlign.center,
-            style: context.themeStyles.label14n,
+            style: textStyle,
+            strutStyle: strutStyle,
           ),
           Text(
             context.fromLabel(Labels.type),
             textAlign: TextAlign.center,
-            style: context.themeStyles.label14n,
+            style: textStyle,
+            strutStyle: strutStyle,
           ),
           Text(
             context.fromLabel(Labels.roll),
             textAlign: TextAlign.center,
-            style: context.themeStyles.label14n,
+            style: textStyle,
+            strutStyle: strutStyle,
           ),
         ],
       ),

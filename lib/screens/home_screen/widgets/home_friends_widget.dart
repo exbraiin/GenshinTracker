@@ -4,11 +4,10 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/characters_screen/character_details_screen.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeFriendsWidget extends StatelessWidget {
   const HomeFriendsWidget({super.key});
@@ -43,17 +42,10 @@ class HomeFriendsWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: characters
                     .take(items)
-                    .map<Widget>((e) {
-                      return ItemRarityBubble.withLabel(
-                        size: 70,
-                        key: ValueKey('friend_${e.id}'),
-                        image: GsUtils.characters.getImage(e.id),
-                        rarity: e.rarity,
-                        label: chars.getCharFriendship(e.id).format(),
-                        onTap: () => Navigator.of(context).pushNamed(
-                          CharacterDetailsScreen.id,
-                          arguments: e,
-                        ),
+                    .map<Widget>((info) {
+                      return ItemGridWidget.character(
+                        info,
+                        label: chars.getCharFriendship(info.id).format(),
                       );
                     })
                     .separate(const SizedBox(width: kSeparator4))

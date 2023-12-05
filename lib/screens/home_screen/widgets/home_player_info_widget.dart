@@ -4,7 +4,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -12,7 +11,7 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/remote/enka_service.dart';
-import 'package:tracker/screens/characters_screen/character_details_screen.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
 
 class HomePlayerInfoWidget extends StatelessWidget {
@@ -98,10 +97,10 @@ class HomePlayerInfoWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              ItemRarityBubble(
-                size: 80,
+              ItemGridWidget(
                 rarity: char?.rarity ?? 4,
-                image: GsUtils.characters.getImage(char?.id ?? ''),
+                size: ItemSize.large,
+                urlImage: GsUtils.characters.getImage(char?.id ?? ''),
               ),
               const SizedBox(width: kSeparator8),
               Expanded(
@@ -167,24 +166,15 @@ class HomePlayerInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: kSeparator8),
           Wrap(
-            spacing: kSeparator4,
-            runSpacing: kSeparator4,
+            spacing: kGridSeparator,
+            runSpacing: kGridSeparator,
             alignment: WrapAlignment.center,
             children: info.avatars.entries.map((e) {
               final char = GsDatabase.instance.infoCharacters
                   .getItems()
                   .firstOrNullWhere((c) => c.enkaId == e.key);
-              return ItemRarityBubble.withLabel(
-                label: e.value.format(),
-                rarity: char?.rarity ?? 4,
-                image: GsUtils.characters.getImage(char?.id ?? ''),
-                onTap: char != null
-                    ? () => Navigator.of(context).pushNamed(
-                          CharacterDetailsScreen.id,
-                          arguments: char,
-                        )
-                    : null,
-              );
+              if (char == null) return const SizedBox();
+              return ItemGridWidget.character(char);
             }).toList(),
           ),
         ],

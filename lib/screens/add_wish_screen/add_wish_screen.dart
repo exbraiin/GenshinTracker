@@ -153,7 +153,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                 child: Container(
                   height: 44,
                   decoration: BoxDecoration(
-                    color: context.themeColors.mainColor2,
+                    color: context.themeColors.mainColor0,
                     borderRadius: kGridRadius,
                   ),
                   child: Center(

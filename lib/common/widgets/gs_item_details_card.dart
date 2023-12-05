@@ -240,7 +240,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   Positioned.fill(
                     child: DefaultTextStyle(
                       style: context.textTheme.titleLarge!.copyWith(
-                        color: context.themeColors.dimWhite,
+                        color: context.themeColors.almostWhite,
                         fontSize: 16,
                         shadows: const [
                           BoxShadow(
@@ -403,129 +403,5 @@ class ItemDetailsCardContent {
         style: const TextStyle(fontSize: 16),
       ),
     );
-  }
-}
-
-class ItemRarityBubble extends StatelessWidget {
-  final int rarity;
-  final double size;
-  final String image;
-  final String asset;
-  final String tooltip;
-  final Color? color;
-  final Color? borderColor;
-  final Widget? child;
-  final VoidCallback? onTap;
-
-  const ItemRarityBubble({
-    super.key,
-    this.size = 50,
-    this.rarity = 0,
-    this.asset = '',
-    this.image = '',
-    this.tooltip = '',
-    this.color,
-    this.borderColor,
-    this.child,
-    this.onTap,
-  });
-
-  ItemRarityBubble.withLabel({
-    super.key,
-    this.size = 50,
-    this.rarity = 0,
-    this.asset = '',
-    this.image = '',
-    this.tooltip = '',
-    this.color,
-    this.borderColor,
-    this.onTap,
-    required String label,
-    Color labelColor = Colors.white,
-  }) : child = IgnorePointer(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(size),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                color: Colors.black54,
-                child: Align(
-                  alignment: Alignment.center,
-                  heightFactor: 1,
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: labelColor,
-                      shadows: kMainShadow,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-
-  @override
-  Widget build(BuildContext context) {
-    final img = asset.isNotEmpty
-        ? Image.asset(asset)
-        : image.isNotEmpty
-            ? CachedImageWidget(image)
-            : const SizedBox();
-
-    Widget widget = Stack(
-      children: [
-        MouseHoverBuilder(
-          builder: (context, value, child) => AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: value && onTap != null
-                  ? context.themeColors.almostWhite
-                  : (borderColor ??
-                      context.themeColors.mainColor0.withOpacity(0.6)),
-              borderRadius: BorderRadius.circular(size),
-            ),
-            padding: const EdgeInsets.all(kSeparator2),
-            child: child,
-          ),
-          child: Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(size),
-              image: rarity.between(1, 5)
-                  ? DecorationImage(
-                      image: AssetImage(getRarityBgImage(rarity)),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
-            ),
-            child: onTap != null ? InkWell(onTap: onTap, child: img) : img,
-          ),
-        ),
-        if (child != null)
-          SizedBox(
-            width: size,
-            height: size,
-            child: DefaultTextStyle(
-              style:
-                  context.textTheme.bodySmall?.copyWith(color: Colors.white) ??
-                      const TextStyle(),
-              child: child!,
-            ),
-          ),
-      ],
-    );
-    if (tooltip.isNotEmpty) {
-      widget = Tooltip(
-        message: tooltip,
-        child: widget,
-      );
-    }
-
-    return widget;
   }
 }

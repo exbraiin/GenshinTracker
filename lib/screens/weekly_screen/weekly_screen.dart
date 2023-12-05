@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class WeeklyScreen extends StatefulWidget {
   static const id = 'weekly_screen';
@@ -101,40 +101,26 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                       ),
                       Divider(color: context.themeColors.divider),
                       Wrap(
-                        spacing: kSeparator4,
-                        runSpacing: kSeparator4,
+                        spacing: kGridSeparator,
+                        runSpacing: kGridSeparator,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
                         children: e.characters.map((info) {
-                          final exists =
-                              GsUtils.characters.hasCaracter(info.id);
-                          return Opacity(
-                            opacity: exists ? 1 : kDisableOpacity,
-                            child: ItemRarityBubble(
-                              image: GsUtils.characters.getImage(info.id),
-                              rarity: info.rarity,
-                              tooltip: info.name,
-                              size: 60,
-                            ),
+                          return ItemGridWidget.character(
+                            info.character!,
+                            disabled: !GsUtils.characters.hasCaracter(info.id),
                           );
                         }).toList(),
                       ),
                       Wrap(
-                        spacing: kSeparator4,
-                        runSpacing: kSeparator4,
+                        spacing: kGridSeparator,
+                        runSpacing: kGridSeparator,
                         alignment: WrapAlignment.start,
                         crossAxisAlignment: WrapCrossAlignment.start,
                         children: e.weapons.map((info) {
-                          return Opacity(
-                            opacity: GsUtils.weapons.hasWeapon(info.id)
-                                ? 1
-                                : kDisableOpacity,
-                            child: ItemRarityBubble(
-                              image: info.image,
-                              rarity: info.rarity,
-                              tooltip: info.name,
-                              size: 60,
-                            ),
+                          return ItemGridWidget.weapon(
+                            info.weapon!,
+                            disabled: !GsUtils.weapons.hasWeapon(info.id),
                           );
                         }).toList(),
                       ),

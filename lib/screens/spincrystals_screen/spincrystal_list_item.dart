@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class SpincrystalListItem extends StatelessWidget {
   final bool selected;
@@ -36,22 +36,16 @@ class SpincrystalListItem extends StatelessWidget {
           Positioned(
             top: kSeparator2,
             left: kSeparator2,
-            child: ItemRarityBubble(
-              size: 30,
-              color: context.themeColors.mainColor2,
-              child: Center(
-                child: Text(item.number.toString()),
-              ),
+            child: ItemCircleWidget(
+              size: ItemSize.small,
+              child: Center(child: Text(item.number.toString())),
             ),
           ),
           if (region != null)
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemRarityBubble(
-                color: region.element.color,
-                image: region.image,
-              ),
+              child: ItemCircleWidget.city(region),
             ),
         ],
       ),

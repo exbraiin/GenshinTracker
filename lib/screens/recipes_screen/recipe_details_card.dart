@@ -11,6 +11,7 @@ import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoRecipe item;
@@ -67,12 +68,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       margin: const EdgeInsets.only(top: kSeparator4),
                       padding: const EdgeInsets.all(kSeparator4),
                       decoration: BoxDecoration(
-                        color: context.themeColors.mainColor2.withOpacity(0.3),
+                        color: context.themeColors.mainColor0.withOpacity(0.4),
                         borderRadius: kGridRadius,
-                        border: Border.all(
-                          color:
-                              context.themeColors.mainColor1.withOpacity(0.3),
-                        ),
                       ),
                       child: Column(
                         children: [
@@ -130,28 +127,19 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             children: [
               ...item.ingredients.entries.map((e) {
                 final item = db.infoMaterials.getItemOrNull(e.key);
-                return ItemRarityBubble.withLabel(
-                  image: item?.image ?? '',
-                  rarity: item?.rarity ?? 1,
-                  tooltip: item?.name ?? '',
-                  label: e.value.format(),
-                );
+                if (item == null) return const SizedBox();
+                return ItemGridWidget.material(item, label: e.value.format());
               }),
               if (baseRecipe != null) ...[
-                const Icon(
+                Icon(
                   Icons.add_rounded,
-                  color: Colors.black45,
+                  color: context.themeColors.mainColor1,
                 ),
-                ItemRarityBubble(
-                  image: baseRecipe.image,
-                  rarity: baseRecipe.rarity,
-                  tooltip: baseRecipe.name,
-                ),
+                ItemGridWidget.recipe(baseRecipe, onTap: null),
                 if (char != null)
-                  ItemRarityBubble(
-                    image: GsUtils.characters.getImage(char.id),
-                    rarity: char.rarity,
-                    tooltip: char.name,
+                  ItemGridWidget.character(
+                    char,
+                    onTap: null,
                   ),
               ],
             ],

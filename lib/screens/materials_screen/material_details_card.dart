@@ -7,6 +7,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoMaterial item;
@@ -67,13 +68,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             runSpacing: kSeparator4,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: mats
-                .map(
-                  (e) => ItemRarityBubble(
-                    image: e.image,
-                    rarity: e.rarity,
-                    tooltip: e.name,
-                  ),
-                )
+                .map((e) => ItemGridWidget.material(e, onTap: null))
                 .toList(),
           ),
         ),

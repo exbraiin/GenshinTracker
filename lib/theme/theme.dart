@@ -22,7 +22,6 @@ final theme = ThemeData(
     decoration: BoxDecoration(
       color: _themeColors.mainColor1,
       borderRadius: BorderRadius.circular(1000),
-      border: Border.all(color: _themeColors.mainColor2),
     ),
     textStyle: TextStyle(
       fontSize: 12,
@@ -43,7 +42,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color almostWhite;
   final Color mainColor0;
   final Color mainColor1;
-  final Color mainColor2;
 
   final Color divider;
   final Color badValue;
@@ -60,7 +58,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.almostWhite,
     required this.mainColor0,
     required this.mainColor1,
-    required this.mainColor2,
     required this.divider,
     required this.badValue,
     required this.goodValue,
@@ -74,7 +71,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF0C122E),
         mainColor1 = const Color(0xFF1E2240),
-        mainColor2 = const Color(0xFF2B2F4E),
         divider = Colors.grey.withOpacity(0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
@@ -87,7 +83,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF1E1F22),
         mainColor1 = const Color(0xFF2B2D31),
-        mainColor2 = const Color(0xFF313338),
         divider = Colors.grey.withOpacity(0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
@@ -130,7 +125,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       almostWhite: almostWhite ?? this.almostWhite,
       mainColor0: mainColor0 ?? this.mainColor0,
       mainColor1: mainColor1 ?? this.mainColor1,
-      mainColor2: mainColor2 ?? this.mainColor2,
       divider: divider ?? this.divider,
       badValue: badValue ?? this.badValue,
       goodValue: goodValue ?? this.goodValue,
@@ -155,7 +149,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       almostWhite: clerp((c) => c.almostWhite),
       mainColor0: clerp((c) => c.mainColor0),
       mainColor1: clerp((c) => c.mainColor1),
-      mainColor2: clerp((c) => c.mainColor2),
       divider: clerp((c) => c.divider),
       badValue: clerp((c) => c.badValue),
       goodValue: clerp((c) => c.goodValue),
@@ -269,4 +262,11 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
 extension ThemeExt on BuildContext {
   ThemeColors get themeColors => Theme.of(this).extension<ThemeColors>()!;
   ThemeStyles get themeStyles => Theme.of(this).extension<ThemeStyles>()!;
+}
+
+extension TextStyleExt on TextStyle {
+  StrutStyle toStrut() => StrutStyle(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      );
 }

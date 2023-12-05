@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 typedef _MatsMap = Map<String, int> Function(int l);
 typedef _StatsMap = Map<GsAttributeStat, String? Function(int l)>;
@@ -184,9 +184,9 @@ class AscensionTable extends StatelessWidget {
                                     final db =
                                         GsDatabase.instance.infoMaterials;
                                     final item = db.getItemOrNull(e.key);
-                                    return ItemRarityBubble.withLabel(
-                                      image: item?.image ?? '',
-                                      rarity: item?.rarity ?? 1,
+                                    if (item == null) return const SizedBox();
+                                    return ItemGridWidget.material(
+                                      item,
                                       label: e.value.compact(),
                                     );
                                   })
@@ -207,9 +207,9 @@ class AscensionTable extends StatelessWidget {
                             .map<Widget>((e) {
                               final db = GsDatabase.instance.infoMaterials;
                               final item = db.getItemOrNull(e.key);
-                              return ItemRarityBubble.withLabel(
-                                image: item?.image ?? '',
-                                rarity: item?.rarity ?? 1,
+                              if (item == null) return const SizedBox();
+                              return ItemGridWidget.material(
+                                item,
                                 label: e.value.compact(),
                               );
                             })

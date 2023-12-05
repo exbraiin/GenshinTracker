@@ -76,7 +76,7 @@ class AchievementListItem extends StatelessWidget {
           }).separate(
             Divider(
               height: kSeparator4,
-              color: context.themeColors.mainColor2,
+              color: context.themeColors.divider,
             ),
           ),
         ],

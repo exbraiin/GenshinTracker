@@ -6,14 +6,15 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/cards/gs_rarity_item_card.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final _talents = GlobalKey();
@@ -35,61 +36,67 @@ class CharacterDetailsScreen extends StatelessWidget {
     final color = item.element.color;
     bgColor = Color.lerp(Colors.black, color, 0.2)!.withOpacity(0.5);
 
-    return InventoryPage(
-      appBar: InventoryAppBar(
-        iconAsset: menuIconCharacters,
-        label: item.name,
-      ),
-      child: InventoryBox(
-        padding: EdgeInsets.zero,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(item.element.assetBgPath),
-            ),
+    return ValueStreamBuilder(
+      stream: GsDatabase.instance.loaded,
+      builder: (context, snapshot) {
+        if (snapshot.data != true) return const SizedBox();
+        return InventoryPage(
+          appBar: InventoryAppBar(
+            iconAsset: menuIconCharacters,
+            label: item.name,
           ),
-          child: Stack(
-            children: [
-              if (item.constellationImage.isNotEmpty)
-                Positioned.fill(
-                  child: CachedImageWidget(
-                    item.constellationImage,
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
-                    scaleToSize: false,
-                    showPlaceholder: false,
-                  ),
-                ),
-              SingleChildScrollView(
-                padding: const EdgeInsets.all(kSeparator4),
-                child: Column(
-                  children: [
-                    _getInfo(context, item, info),
-                    _getAttributes(context, item),
-                    if (info != null) ...[
-                      const SizedBox(height: kSeparator8),
-                      _getAscension(context, item, info),
-                      const SizedBox(height: kSeparator8),
-                      if (info.hasTalents) ...[
-                        _getTalents(context, info),
-                        const SizedBox(height: kSeparator8),
-                      ],
-                      if (info.hasConstellations) ...[
-                        _getConstellations(context, info),
-                        const SizedBox(height: kSeparator8),
-                      ],
-                      _getAllMaterials(context, info),
-                    ],
-                  ],
+          child: InventoryBox(
+            padding: EdgeInsets.zero,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(item.element.assetBgPath),
                 ),
               ),
-            ],
+              child: Stack(
+                children: [
+                  if (item.constellationImage.isNotEmpty)
+                    Positioned.fill(
+                      child: CachedImageWidget(
+                        item.constellationImage,
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.center,
+                        scaleToSize: false,
+                        showPlaceholder: false,
+                      ),
+                    ),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(kSeparator4),
+                    child: Column(
+                      children: [
+                        _getInfo(context, item, info),
+                        _getAttributes(context, item),
+                        if (info != null) ...[
+                          const SizedBox(height: kSeparator8),
+                          _getAscension(context, item, info),
+                          const SizedBox(height: kSeparator8),
+                          if (info.hasTalents) ...[
+                            _getTalents(context, info),
+                            const SizedBox(height: kSeparator8),
+                          ],
+                          if (info.hasConstellations) ...[
+                            _getConstellations(context, info),
+                            const SizedBox(height: kSeparator8),
+                          ],
+                          _getAllMaterials(context, info),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -217,7 +224,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           },
           border: TableBorder(
             horizontalInside: BorderSide(
-              color: context.themeColors.dimWhite,
+              color: context.themeColors.divider,
               width: 0.4,
             ),
           ),
@@ -280,10 +287,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 dish != null
                     ? Row(
                         children: [
-                          ItemRarityBubble(
-                            image: dish.image,
-                            rarity: dish.rarity,
-                          ),
+                          ItemGridWidget.recipe(dish),
                           const SizedBox(width: kSeparator8),
                           Text(dish.name, style: stStyle),
                         ],
@@ -306,22 +310,22 @@ class CharacterDetailsScreen extends StatelessWidget {
                     spacing: kSeparator4,
                     runSpacing: kSeparator4,
                     children: [
-                      ItemRarityBubble(
-                        image: info.image,
+                      ItemGridWidget(
+                        urlImage: info.image,
                         rarity: info.rarity,
                         tooltip: info.name,
-                        onTap: () =>
+                        onTap: (ctx) =>
                             GsUtils.characters.setCharOutfit(info.id, ''),
                       ),
                       ...GsDatabase.instance.infoCharactersOutfit
                           .getItems()
                           .where((element) => element.character == info.id)
                           .map((e) {
-                        return ItemRarityBubble(
-                          image: e.image,
+                        return ItemGridWidget(
+                          urlImage: e.image,
                           rarity: e.rarity,
                           tooltip: e.name,
-                          onTap: () =>
+                          onTap: (ctx) =>
                               GsUtils.characters.setCharOutfit(info.id, e.id),
                         );
                       }),
@@ -527,7 +531,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder(
           horizontalInside: BorderSide(
-            color: context.themeColors.dimWhite,
+            color: context.themeColors.divider,
             width: 0.4,
           ),
         ),
@@ -535,32 +539,17 @@ class CharacterDetailsScreen extends StatelessWidget {
           getTableRow(
             context.fromLabel(Labels.ascension),
             ascMats,
-            (e) => ItemRarityBubble.withLabel(
-              label: e.value.compact(),
-              rarity: e.key.rarity,
-              image: e.key.image,
-              tooltip: e.key.name,
-            ),
+            (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
           getTableRow(
             context.fromLabel(Labels.talents),
             tltMats,
-            (e) => ItemRarityBubble.withLabel(
-              label: e.value.compact(),
-              rarity: e.key.rarity,
-              image: e.key.image,
-              tooltip: e.key.name,
-            ),
+            (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
           getTableRow(
             context.fromLabel(Labels.total),
             allMats,
-            (e) => ItemRarityBubble.withLabel(
-              label: e.value.compact(),
-              rarity: e.key.rarity,
-              image: e.key.image,
-              tooltip: e.key.name,
-            ),
+            (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
         ],
       ),

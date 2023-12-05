@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final InfoVersion item;
@@ -102,7 +103,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: characters.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -117,7 +118,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: outfits.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -132,7 +133,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: weapons.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -147,7 +148,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: materials.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -162,7 +163,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: recipes.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -177,7 +178,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: sets.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -192,10 +193,10 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: crystals.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   asset: spincrystalAsset,
                   rarity: e.rarity,
-                  tooltip: '${e.number} ${e.name}',
+                  label: '${e.number} ${e.name}',
                 );
               }).toList(),
             ),
@@ -207,7 +208,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: banners.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   // rarity: e.rarity,
                   tooltip: e.name,
@@ -222,7 +223,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: chests.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
@@ -237,7 +238,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: enemies.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarityByType,
                   tooltip: e.name,
@@ -252,7 +253,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator2,
               runSpacing: kSeparator2,
               children: namecards.map((e) {
-                return ItemRarityBubble(
+                return ItemCircleWidget(
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,

@@ -4,10 +4,10 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 
 const _arrow = '→';
@@ -252,8 +252,8 @@ class HomeWishesValues extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: kSeparator4),
                 child: Wrap(
-                  spacing: kSeparator4,
-                  runSpacing: kSeparator4,
+                  spacing: kGridSeparator,
+                  runSpacing: kGridSeparator,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: summary.wishes5.reversed.map((wish) {
@@ -269,13 +269,31 @@ class HomeWishesValues extends StatelessWidget {
 
                     return Column(
                       children: [
-                        ItemRarityBubble(
-                          rarity: item.rarity,
-                          image: item.image,
-                          tooltip: item.name,
-                          borderColor: state == WishState.won
-                              ? context.themeColors.goodValue
-                              : null,
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            item.character != null
+                                ? ItemGridWidget.character(item.character!)
+                                : item.weapon != null
+                                    ? ItemGridWidget.weapon(item.weapon!)
+                                    : const SizedBox(),
+                            if (state == WishState.won)
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Icon(
+                                  Icons.star_rounded,
+                                  size: 20,
+                                  color: Colors.yellow,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.8),
+                                      offset: const Offset(1, 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
                         ),
                         const SizedBox(height: kSeparator2),
                         Text.rich(

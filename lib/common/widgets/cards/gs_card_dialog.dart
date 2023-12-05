@@ -22,7 +22,7 @@ class GsCardDialog extends StatelessWidget {
         boxShadow: kMainShadow,
         borderRadius: kGridRadius,
       ),
-      padding: const EdgeInsets.all(8),
+      padding: kListPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -31,8 +31,9 @@ class GsCardDialog extends StatelessWidget {
             title.toUpperCase(),
             style: context.themeStyles.title20n,
             textAlign: TextAlign.center,
+            strutStyle: context.themeStyles.title20n.toStrut(),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           if (child != null) child!,
         ],
       ),

@@ -11,6 +11,7 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
 
 class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
@@ -105,17 +106,15 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.materials),
       content: Wrap(
-        spacing: kSeparator4,
-        runSpacing: kSeparator4,
+        spacing: kGridSeparator,
+        runSpacing: kGridSeparator,
         children: mats.entries
             .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
             .where((e) => e.key != null)
             .sortedBy((e) => e.key!)
             .map((e) {
-          return ItemRarityBubble.withLabel(
-            rarity: e.key!.rarity,
-            image: e.key!.image,
-            tooltip: e.key!.name,
+          return ItemGridWidget.material(
+            e.key!,
             label: e.value.compact(),
           );
         }).toList(),

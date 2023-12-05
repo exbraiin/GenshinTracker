@@ -10,6 +10,7 @@ import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class SereniteaSetDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
@@ -81,15 +82,24 @@ class SereniteaSetDetailsCard extends StatelessWidget
                   final marked = saved?.chars.contains(char.id) ?? false;
                   return Opacity(
                     opacity: owns ? 1 : 0.4,
-                    child: ItemRarityBubble(
-                      image: GsUtils.characters.getImage(char.id),
-                      rarity: char.rarity,
-                      onTap: owns
-                          ? () => GsUtils.sereniteaSets
-                              .setSetCharacter(item.id, char.id, owned: !marked)
-                          : null,
-                      child: marked
-                          ? const Align(
+                    child: Stack(
+                      children: [
+                        ItemGridWidget.character(
+                          char,
+                          onTap: owns
+                              ? (ctx, i) =>
+                                  GsUtils.sereniteaSets.setSetCharacter(
+                                    item.id,
+                                    char.id,
+                                    owned: !marked,
+                                  )
+                              : null,
+                        ),
+                        if (marked)
+                          const Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Align(
                               alignment: Alignment.bottomRight,
                               child: CircleWidget(
                                 color: Colors.black,
@@ -102,8 +112,9 @@ class SereniteaSetDetailsCard extends StatelessWidget
                                   size: 16,
                                 ),
                               ),
-                            )
-                          : null,
+                            ),
+                          ),
+                      ],
                     ),
                   );
                 }).toList(),

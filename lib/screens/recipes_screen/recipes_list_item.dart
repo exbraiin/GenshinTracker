@@ -2,9 +2,9 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class RecipesListItem extends StatelessWidget {
   final InfoRecipe recipe;
@@ -50,16 +50,16 @@ class RecipesListItem extends StatelessWidget {
             Positioned(
               top: kSeparator2,
               left: kSeparator2,
-              child: ItemRarityBubble(
-                size: 30,
+              child: ItemCircleWidget(
                 asset: recipe.effect.assetPath,
+                size: ItemSize.small,
               ),
             ),
           if (isSpecial)
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemRarityBubble(
+              child: ItemCircleWidget(
                 image: GsUtils.characters.getImage(char?.id ?? ''),
                 rarity: char?.rarity ?? 1,
               ),

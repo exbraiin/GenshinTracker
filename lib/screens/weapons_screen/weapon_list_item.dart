@@ -4,9 +4,9 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showItem;
@@ -54,16 +54,11 @@ class WeaponListItem extends StatelessWidget {
           Positioned(
             top: kSeparator2,
             left: kSeparator2,
-            child: showExtra && amount > 1
-                ? ItemRarityBubble.withLabel(
-                    size: 30,
-                    asset: item.type.assetPath,
-                    label: amount.compact(),
-                  )
-                : ItemRarityBubble(
-                    size: 30,
-                    asset: item.type.assetPath,
-                  ),
+            child: ItemCircleWidget(
+              size: ItemSize.small,
+              asset: item.type.assetPath,
+              label: showExtra && amount > 1 ? amount.compact() : '',
+            ),
           ),
           if (showExtra)
             Positioned.fill(
@@ -93,11 +88,7 @@ class WeaponListItem extends StatelessWidget {
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemRarityBubble(
-                image: material.image,
-                tooltip: material.name,
-                rarity: material.rarity,
-              ),
+              child: ItemCircleWidget.material(material),
             ),
         ],
       ),

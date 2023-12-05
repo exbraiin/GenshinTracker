@@ -169,7 +169,7 @@ class AchievementGroupsScreen extends StatelessWidget {
       padding:
           const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8 * 2),
       decoration: BoxDecoration(
-        color: selected ? context.themeColors.mainColor2 : Colors.transparent,
+        color: selected ? context.themeColors.mainColor1 : Colors.transparent,
         image: namecard != null
             ? DecorationImage(
                 fit: BoxFit.cover,

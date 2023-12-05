@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class NamecardListItem extends StatelessWidget {
   final bool selected;
@@ -30,9 +30,7 @@ class NamecardListItem extends StatelessWidget {
           Positioned(
             right: kSeparator2,
             bottom: kSeparator2,
-            child: ItemRarityBubble(
-              asset: item.type.asset,
-            ),
+            child: ItemCircleWidget(asset: item.type.asset),
           ),
         ],
       ),
