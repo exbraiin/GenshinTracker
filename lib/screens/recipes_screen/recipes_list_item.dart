@@ -62,6 +62,7 @@ class RecipesListItem extends StatelessWidget {
               child: ItemCircleWidget(
                 image: GsUtils.characters.getImage(char?.id ?? ''),
                 rarity: char?.rarity ?? 1,
+                padding: EdgeInsets.zero,
               ),
             ),
         ],

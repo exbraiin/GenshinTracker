@@ -16,7 +16,6 @@ import 'package:tracker/screens/settings_screen/settings_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
-import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
 class TrackerRouter {
@@ -24,7 +23,6 @@ class TrackerRouter {
 
   static final Map<String, Widget Function()> _routes = {
     HomeScreen.id: () => const HomeScreen(),
-    WeeklyScreen.id: () => const WeeklyScreen(),
     WishesScreen.id: () => const WishesScreen(),
     AddWishScreen.id: () => const AddWishScreen(),
     RecipesScreen.id: () => const RecipesScreen(),

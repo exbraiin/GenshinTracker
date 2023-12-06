@@ -122,13 +122,12 @@ class _Cities {
 
 class _Wishes {
   /// Gets all released banners by [type]
-  List<InfoBanner> geReleasedInfoBannerByType(GsBanner type) {
+  Iterable<InfoBanner> geReleasedInfoBannerByType(GsBanner type) {
     final now = DateTime.now();
     final banners = _db.infoBanners;
     return banners
         .getItems()
-        .where((e) => e.type == type && e.dateStart.isBefore(now))
-        .toList();
+        .where((e) => e.type == type && e.dateStart.isBefore(now));
   }
 
   /// Gets the pity of the given wish in the given wishes list.

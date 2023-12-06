@@ -43,7 +43,7 @@ class HomeLastBannerWidget extends StatelessWidget {
 
   MapEntry<InfoCharacter, Duration> _toMapEntry(
     InfoCharacter chr,
-    List<InfoBanner> releasedBanners,
+    Iterable<InfoBanner> releasedBanners,
   ) {
     final banner = releasedBanners
         .where((bnr) => bnr.feature5.contains(chr.id))

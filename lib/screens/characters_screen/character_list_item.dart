@@ -56,9 +56,8 @@ class CharacterListItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ItemCircleWidget(
-            size: ItemSize.small,
-            asset: item.element.assetPath,
+          ItemCircleWidget.element(
+            item.element,
             label: showExtra && charConsTotal != null
                 ? 'C${charConsTotal.compact()}'
                 : '',

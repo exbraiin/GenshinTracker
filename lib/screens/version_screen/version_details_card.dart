@@ -107,6 +107,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
+                  padding: EdgeInsets.zero,
                 );
               }).toList(),
             ),
@@ -137,6 +138,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
+                  padding: EdgeInsets.zero,
                 );
               }).toList(),
             ),
@@ -242,6 +244,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   image: e.image,
                   rarity: e.rarityByType,
                   tooltip: e.name,
+                  padding: EdgeInsets.zero,
                 );
               }).toList(),
             ),

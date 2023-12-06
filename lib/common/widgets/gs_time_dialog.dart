@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class GsTimeDialog extends StatefulWidget {
@@ -144,24 +145,13 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Spacer(),
-                          InkWell(
-                            onTap: () {
+                          MainButton(
+                            color: context.themeColors.goodValue,
+                            label: context.fromLabel(Labels.ok),
+                            onPress: () {
                               final date = _getDate();
                               Navigator.of(context).maybePop(date);
                             },
-                            child: Container(
-                              width: 100,
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                borderRadius: kGridRadius,
-                                color: context.themeColors.mainColor0,
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                context.fromLabel(Labels.ok),
-                                style: style,
-                              ),
-                            ),
                           ),
                           Expanded(
                             child: SizedBox(

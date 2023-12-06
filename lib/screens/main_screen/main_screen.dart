@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
@@ -24,7 +23,6 @@ import 'package:tracker/screens/settings_screen/settings_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
-import 'package:tracker/screens/weekly_screen/weekly_screen.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
 
@@ -164,28 +162,9 @@ final _menus = [
     initialPage: HomeScreen.id,
   ),
   _Menu(
-    label: Labels.charWishes,
+    label: Labels.wishes,
     icon: menuIconWish,
     initialPage: WishesScreen.id,
-    initialArgument: GsBanner.character,
-  ),
-  _Menu(
-    label: Labels.weaponWishes,
-    icon: menuIconWish,
-    initialPage: WishesScreen.id,
-    initialArgument: GsBanner.weapon,
-  ),
-  _Menu(
-    label: Labels.stndWishes,
-    icon: menuIconWish,
-    initialPage: WishesScreen.id,
-    initialArgument: GsBanner.standard,
-  ),
-  _Menu(
-    label: Labels.noviceWishes,
-    icon: menuIconWish,
-    initialPage: WishesScreen.id,
-    initialArgument: GsBanner.beginner,
   ),
   _Menu(
     label: Labels.achievements,
@@ -226,11 +205,6 @@ final _menus = [
     label: Labels.reputation,
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
-  ),
-  _Menu(
-    label: Labels.weeklyTasks,
-    icon: menuIconBook,
-    initialPage: WeeklyScreen.id,
   ),
   _Menu(
     label: Labels.artifacts,

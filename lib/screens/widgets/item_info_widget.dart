@@ -195,10 +195,12 @@ class ItemCircleWidget extends StatelessWidget {
   final String tooltip;
   final String image;
   final String asset;
+  final EdgeInsetsGeometry padding;
 
   const ItemCircleWidget({
     super.key,
     this.size = ItemSize.medium,
+    this.padding = const EdgeInsets.all(2),
     this.child,
     this.bgColor,
     this.rarity = 0,
@@ -208,41 +210,52 @@ class ItemCircleWidget extends StatelessWidget {
     this.asset = '',
   });
 
-  ItemCircleWidget.material(
+  factory ItemCircleWidget.element(
+    GsElement element, {
+    ItemSize size = ItemSize.small,
+    String label = '',
+  }) {
+    return ItemCircleWidget(
+      size: ItemSize.small,
+      asset: element.assetPath,
+      label: label,
+    );
+  }
+
+  factory ItemCircleWidget.material(
     InfoMaterial info, {
-    super.key,
-    this.size = ItemSize.medium,
-  })  : label = '',
-        asset = '',
-        tooltip = '',
-        rarity = info.rarity,
-        child = null,
-        bgColor = null,
-        image = info.image;
+    ItemSize size = ItemSize.medium,
+  }) {
+    return ItemCircleWidget(
+      size: size,
+      image: info.image,
+      rarity: info.rarity,
+    );
+  }
 
-  ItemCircleWidget.city(
+  factory ItemCircleWidget.city(
     InfoCity city, {
-    super.key,
-    this.size = ItemSize.medium,
-  })  : label = '',
-        child = null,
-        asset = '',
-        tooltip = '',
-        rarity = 1,
-        bgColor = city.element.color,
-        image = city.image;
+    ItemSize size = ItemSize.medium,
+  }) {
+    return ItemCircleWidget(
+      rarity: 1,
+      size: size,
+      image: city.image,
+      bgColor: city.element.color,
+    );
+  }
 
-  ItemCircleWidget.setCategory(
+  factory ItemCircleWidget.setCategory(
     GsSetCategory info, {
-    super.key,
-    this.size = ItemSize.medium,
-  })  : rarity = 1,
-        child = null,
-        label = '',
-        tooltip = '',
-        image = '',
-        bgColor = info.color,
-        asset = info.asset;
+    ItemSize size = ItemSize.medium,
+  }) {
+    return ItemCircleWidget(
+      rarity: 1,
+      size: size,
+      asset: info.asset,
+      bgColor: info.color,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +267,12 @@ class ItemCircleWidget extends StatelessWidget {
 
     child = Stack(
       children: [
-        Positioned.fill(child: child),
+        Positioned.fill(
+          child: Padding(
+            padding: padding,
+            child: child,
+          ),
+        ),
         if (this.child != null)
           Padding(
             padding: const EdgeInsets.all(2),

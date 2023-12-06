@@ -3,6 +3,8 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
+import 'package:tracker/screens/widgets/button.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 
 typedef FilterBuilder<T extends Comparable<T>> = Widget Function(
   BuildContext context,
@@ -74,71 +76,78 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         vertical: size.height / 4,
         horizontal: size.width / 4,
       ),
-      padding: const EdgeInsets.all(kSeparator8),
+      padding: kListPadding,
       decoration: BoxDecoration(
-        color: context.themeColors.mainColor1,
+        color: context.themeColors.mainColor0,
         borderRadius: kGridRadius,
       ),
       child: Material(
         color: Colors.transparent,
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    context.fromLabel(Labels.filter),
-                    style: const TextStyle(color: Colors.white, fontSize: 26),
+            InventoryBox(
+              child: Row(
+                children: [
+                  const SizedBox(width: kGridSeparator),
+                  Expanded(
+                    child: Text(
+                      context.fromLabel(Labels.filter),
+                      style: context.themeStyles.title18n,
+                      strutStyle: context.themeStyles.title18n.toStrut(),
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.restart_alt_rounded,
-                    color: Colors.white,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.restart_alt_rounded,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      widget.filter.reset();
+                      notifier.value = !notifier.value;
+                      Navigator.of(context).maybePop();
+                    },
                   ),
-                  onPressed: () {
-                    widget.filter.reset();
-                    notifier.value = !notifier.value;
-                    Navigator.of(context).maybePop();
+                ],
+              ),
+            ),
+            const SizedBox(height: kGridSeparator),
+            Expanded(
+              child: InventoryBox(
+                padding: const EdgeInsets.all(kGridSeparator * 2),
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: notifier,
+                  builder: (context, value, child) {
+                    final half = widget.filter.sections.length ~/ 2;
+                    return SingleChildScrollView(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: widget.filter.sections
+                                  .take(half)
+                                  .map(_filter)
+                                  .separate(const SizedBox(height: 12))
+                                  .toList(),
+                            ),
+                          ),
+                          const SizedBox(width: kSeparator8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: widget.filter.sections
+                                  .skip(half)
+                                  .map(_filter)
+                                  .separate(const SizedBox(height: 12))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
-              ],
-            ),
-            const Divider(color: Colors.white),
-            Expanded(
-              child: ValueListenableBuilder<bool>(
-                valueListenable: notifier,
-                builder: (context, value, child) {
-                  final half = widget.filter.sections.length ~/ 2;
-                  return SingleChildScrollView(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.filter.sections
-                                .take(half)
-                                .map(_filter)
-                                .separate(const SizedBox(height: 12))
-                                .toList(),
-                          ),
-                        ),
-                        const SizedBox(width: kSeparator8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.filter.sections
-                                .skip(half)
-                                .map(_filter)
-                                .separate(const SizedBox(height: 12))
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
               ),
             ),
           ],
@@ -159,18 +168,15 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: kSeparator8),
+        const SizedBox(height: kGridSeparator * 2),
         Wrap(
-          spacing: kSeparator4,
-          runSpacing: kSeparator4,
+          spacing: kGridSeparator,
+          runSpacing: kGridSeparator,
           children: section.values.map((v) {
-            return _chip(
-              context,
-              section.label(context, v),
-              section.icon(v),
-              section.asset(v),
-              section.enabled.contains(v),
-              () {
+            return MainButton(
+              selected: section.enabled.contains(v),
+              label: section.label(context, v),
+              onPress: () {
                 section.toggle(v);
                 notifier.value = !notifier.value;
               },
@@ -178,72 +184,6 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           }).toList(),
         ),
       ],
-    );
-  }
-
-  Widget _chip(
-    BuildContext context,
-    String label,
-    IconData? eIcon,
-    String? eAsset,
-    bool selected,
-    VoidCallback onTap,
-  ) {
-    return Container(
-      height: 28,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            context.themeColors.mainColor0,
-            context.themeColors.mainColor1,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          width: 2,
-          color: selected
-              ? context.themeColors.primary80
-              : context.themeColors.dimWhite,
-        ),
-      ),
-      padding: const EdgeInsets.all(kSeparator4),
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (eIcon != null)
-              Padding(
-                padding: const EdgeInsets.only(right: kSeparator4),
-                child: Icon(
-                  eIcon,
-                  size: 16,
-                  color: Colors.white,
-                ),
-              ),
-            if (eAsset != null && eAsset.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(right: kSeparator4),
-                child: Image.asset(
-                  eAsset,
-                  width: 20,
-                  height: 20,
-                ),
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kSeparator4),
-              child: Text(
-                label,
-                style: context.themeStyles.label12n.copyWith(
-                  color: selected ? context.themeColors.primary : null,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -9,66 +9,142 @@ import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
 import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 
-class WishesScreen extends StatelessWidget {
+const _bannerType = [
+  GsBanner.character,
+  GsBanner.weapon,
+  GsBanner.standard,
+  GsBanner.beginner,
+];
+
+class WishesScreen extends StatefulWidget {
   static const id = 'wishes_screen';
 
   const WishesScreen({super.key});
+  @override
+  State<WishesScreen> createState() => _WishesScreenScreenState();
+}
+
+class _WishesScreenScreenState extends State<WishesScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(length: _bannerType.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    final banner = args as GsBanner?;
-    return ValueStreamBuilder<bool>(
+    return ValueStreamBuilder(
       stream: GsDatabase.instance.loaded,
       builder: (context, snapshot) {
-        if (snapshot.data != true || banner == null) return const SizedBox();
-
-        final ut = GsUtils.wishes;
-        final wishes = ut.getSaveWishesByBannerType(banner).sortedDescending();
-        final banners = ut.geReleasedInfoBannerByType(banner);
+        if (snapshot.data != true) return const SizedBox();
 
         return ScreenFilterBuilder<SaveWish>(
           filter: ScreenFilters.saveWishFilter,
           builder: (context, filter, button, toggle) {
-            return InventoryPage(
-              appBar: InventoryAppBar(
-                iconAsset: menuIconWish,
-                label: context.fromLabel(Labels.wishes),
-                actions: [
-                  Tooltip(
-                    message: context.fromLabel(Labels.hideEmptyBanners),
-                    child: IconButton(
-                      icon: Icon(
-                        filter.hasExtra('show')
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      onPressed: () => toggle('show'),
+            PreferredSizeWidget appBar = InventoryAppBar(
+              iconAsset: menuIconWish,
+              label: context.fromLabel(Labels.wishes),
+              actions: [
+                Tooltip(
+                  message: context.fromLabel(Labels.hideEmptyBanners),
+                  child: IconButton(
+                    icon: Icon(
+                      filter.hasExtra('show')
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      color: Colors.white.withOpacity(0.5),
                     ),
+                    onPressed: () => toggle('show'),
                   ),
-                  const SizedBox(width: kSeparator2),
-                  button,
-                ],
+                ),
+                const SizedBox(width: kSeparator2),
+                button,
+              ],
+            );
+            appBar = PreferredSize(
+              preferredSize: Size.fromHeight(
+                appBar.preferredSize.height + 34 + kGridSeparator,
               ),
               child: Column(
                 children: [
-                  InventoryBox(
-                    child: _header(context),
-                  ),
+                  appBar,
                   const SizedBox(height: kGridSeparator),
-                  Expanded(
-                    child: InventoryBox(
-                      child: CustomScrollView(
-                        slivers: _slivers(banner, wishes, banners, filter),
+                  _header(context),
+                ],
+              ),
+            );
+
+            final tabs = _bannerType.map((bannerType) {
+              final banner = GsUtils.wishes
+                  .geReleasedInfoBannerByType(bannerType)
+                  .lastOrNull;
+
+              ItemData? getData(String? id) =>
+                  id != null ? GsUtils.items.getItemData(id) : null;
+              final item = switch (bannerType) {
+                GsBanner.character => getData(banner?.feature5.firstOrNull),
+                GsBanner.weapon => getData(banner?.feature5.firstOrNull),
+                GsBanner.standard => getData('keqing'),
+                GsBanner.beginner => getData('noelle'),
+              };
+
+              return ItemGridWidget(
+                rarity: item?.rarity ?? 1,
+                size: ItemSize.medium,
+                urlImage: item?.image ?? '',
+              );
+            });
+
+            return InventoryPage(
+              appBar: PreferredSize(
+                preferredSize: appBar.preferredSize,
+                child: Stack(
+                  children: [
+                    appBar,
+                    Positioned.fill(
+                      child: Center(
+                        child: TabBar(
+                          indicatorSize: TabBarIndicatorSize.label,
+                          controller: _controller,
+                          tabs: tabs.toList(),
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 4),
+                          tabAlignment: TabAlignment.center,
+                          indicatorColor: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              child: InventoryBox(
+                child: TabBarView(
+                  controller: _controller,
+                  children: _bannerType.map((banner) {
+                    final ut = GsUtils.wishes;
+                    final wishes =
+                        ut.getSaveWishesByBannerType(banner).sortedDescending();
+                    final banners =
+                        ut.geReleasedInfoBannerByType(banner).toList();
+                    return CustomScrollView(
+                      slivers: _slivers(banner, wishes, banners, filter),
+                    );
+                  }).toList(),
+                ),
               ),
             );
           },
