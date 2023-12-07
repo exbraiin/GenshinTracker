@@ -189,21 +189,24 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                  ValueListenableBuilder<int>(
-                    valueListenable: _page,
-                    builder: (context, value, child) {
-                      if (widget.asset != null) {
-                        return Image.asset(
-                          widget.asset!.call(context, value),
-                        );
-                      }
-                      if (widget.image != null) {
-                        return CachedImageWidget(
-                          widget.image!.call(context, value),
-                        );
-                      }
-                      return const SizedBox();
-                    },
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ValueListenableBuilder<int>(
+                      valueListenable: _page,
+                      builder: (context, value, child) {
+                        if (widget.asset != null) {
+                          return Image.asset(
+                            widget.asset!.call(context, value),
+                          );
+                        }
+                        if (widget.image != null) {
+                          return CachedImageWidget(
+                            widget.image!.call(context, value),
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
                   ),
                 ],
               ),

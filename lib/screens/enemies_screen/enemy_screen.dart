@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/screens/enemies_screen/enemy_details_card.dart';
 import 'package:tracker/screens/enemies_screen/enemy_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
@@ -18,9 +19,10 @@ class EnemyScreen extends StatelessWidget {
       items: (db) => db.infoEnemies.getItems(),
       itemBuilder: (context, state) => EnemyListItem(
         state.item,
-        // onTap: state.onSelect,
-        // selected: state.selected,
+        onTap: state.onSelect,
+        selected: state.selected,
       ),
+      itemCardBuilder: (context, item) => EnemyDetailsCard(item),
     );
   }
 }
