@@ -24,7 +24,10 @@ class RemarkableChestsScreen extends StatelessWidget {
         selected: state.selected,
         onTap: state.onSelect,
       ),
-      itemCardBuilder: (context, item) => RemarkableChestDetailsCard(item),
+      itemCardBuilder: (context, item) => RemarkableChestDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

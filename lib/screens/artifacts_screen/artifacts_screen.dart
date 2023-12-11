@@ -24,7 +24,10 @@ class ArtifactsScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => ArtifactDetailsCard(item),
+      itemCardBuilder: (context, item) => ArtifactDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

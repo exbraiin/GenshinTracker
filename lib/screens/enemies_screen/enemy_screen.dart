@@ -22,7 +22,10 @@ class EnemyScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => EnemyDetailsCard(item),
+      itemCardBuilder: (context, item) => EnemyDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

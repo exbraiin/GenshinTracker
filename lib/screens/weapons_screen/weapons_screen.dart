@@ -26,7 +26,10 @@ class WeaponsScreen extends StatelessWidget {
         selected: state.selected,
         onTap: state.onSelect,
       ),
-      itemCardBuilder: (context, item) => WeaponDetailsCard(item),
+      itemCardBuilder: (context, item) => WeaponDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
       actions: (extras, toggle) => [
         Tooltip(
           message: context.fromLabel(Labels.showExtraInfo),

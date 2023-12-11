@@ -24,7 +24,10 @@ class NamecardScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => NamecardDetailsCard(item),
+      itemCardBuilder: (context, item) => NamecardDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

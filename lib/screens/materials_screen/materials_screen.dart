@@ -24,7 +24,10 @@ class MaterialsScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => MaterialDetailsCard(item),
+      itemCardBuilder: (context, item) => MaterialDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

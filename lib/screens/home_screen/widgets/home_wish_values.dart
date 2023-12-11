@@ -184,7 +184,7 @@ class HomeWishesValues extends StatelessWidget {
     WishesSummary summary,
   ) {
     final show = banner == GsBanner.character;
-    final pityColor = context.themeColors.getPityColor(summary.last5);
+    final pityColor = context.themeColors.getPityColor(summary.last5, maxPity);
     final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
     return Row(
       children: [

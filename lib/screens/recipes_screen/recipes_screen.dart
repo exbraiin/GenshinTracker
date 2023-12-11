@@ -27,7 +27,10 @@ class RecipesScreen extends StatelessWidget {
         onTap: state.onSelect,
         savedRecipe: saveRecipes.getItemOrNull(state.item.id),
       ),
-      itemCardBuilder: (context, item) => RecipeDetailsCard(item),
+      itemCardBuilder: (context, item) => RecipeDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

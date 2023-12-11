@@ -25,7 +25,10 @@ class SereniteaSetsScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => SereniteaSetDetailsCard(item),
+      itemCardBuilder: (context, item) => SereniteaSetDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }

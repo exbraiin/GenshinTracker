@@ -26,7 +26,10 @@ class VersionScreen extends StatelessWidget {
         onTap: state.onSelect,
         selected: state.selected,
       ),
-      itemCardBuilder: (context, item) => VersionDetailsCard(item),
+      itemCardBuilder: (context, item) => VersionDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
     );
   }
 }
