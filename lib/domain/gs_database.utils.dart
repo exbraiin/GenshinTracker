@@ -39,6 +39,15 @@ class _Items {
         : ItemData.character(_db.infoCharacters.getItem(id));
   }
 
+  /// Gets a weapon or a character by the given [id].
+  ItemData? getItemDataOrNull(String id) {
+    final weapon = _db.infoWeapons.getItemOrNull(id);
+    if (weapon != null) return ItemData.weapon(weapon);
+    final character = _db.infoCharacters.getItemOrNull(id);
+    if (character != null) return ItemData.character(character);
+    return null;
+  }
+
   Map<InfoMaterial, List<ItemData>> getItemsByMaterial(GsWeekday weekday) {
     final getMat = _db.infoMaterials.getItem;
 

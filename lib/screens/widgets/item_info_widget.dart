@@ -20,7 +20,16 @@ void _callWeapon(BuildContext ctx, InfoWeapon info) =>
 void _callCharacter(BuildContext ctx, InfoCharacter info) =>
     Navigator.of(ctx).pushNamed(CharacterDetailsScreen.id, arguments: info);
 
-enum ItemSize { small, medium, large }
+enum ItemSize {
+  small(48, 30),
+  medium(56, 44),
+  large(70, 56);
+
+  final double gridSize;
+  final double circleSize;
+
+  const ItemSize(this.gridSize, this.circleSize);
+}
 
 class ItemGridWidget extends StatelessWidget {
   final int rarity;
@@ -100,7 +109,9 @@ class ItemGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var child = urlImage.isNotEmpty
         ? CachedImageWidget(urlImage)
-        : Image.asset(assetImage);
+        : assetImage.isNotEmpty
+            ? Image.asset(assetImage)
+            : const SizedBox();
 
     if (label.isNotEmpty) {
       child = Stack(
@@ -123,15 +134,9 @@ class ItemGridWidget extends StatelessWidget {
       );
     }
 
-    final size = switch (this.size) {
-      ItemSize.small => 48.0,
-      ItemSize.medium => 56.0,
-      ItemSize.large => 70.0,
-    };
-
     child = Container(
-      width: size,
-      height: size,
+      width: size.gridSize,
+      height: size.gridSize,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
@@ -298,15 +303,9 @@ class ItemCircleWidget extends StatelessWidget {
       ],
     );
 
-    final size = switch (this.size) {
-      ItemSize.small => 30.0,
-      ItemSize.medium => 44.0,
-      ItemSize.large => 56.0,
-    };
-
     child = Container(
-      width: size,
-      height: size,
+      width: size.circleSize,
+      height: size.circleSize,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: bgColor ?? context.themeColors.mainColor0.withOpacity(0.4),

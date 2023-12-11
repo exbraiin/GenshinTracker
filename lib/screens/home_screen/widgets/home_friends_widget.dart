@@ -36,8 +36,9 @@ class HomeFriendsWidget extends StatelessWidget {
           title: Text(context.fromLabel(Labels.friendship)),
           child: LayoutBuilder(
             builder: (context, layout) {
+              final itemSize = ItemSize.small.gridSize + kGridSeparator;
               final width = layout.maxWidth;
-              final items = (width ~/ 74).coerceAtMost(8);
+              final items = (width ~/ itemSize).coerceAtMost(8);
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: characters
@@ -48,7 +49,7 @@ class HomeFriendsWidget extends StatelessWidget {
                         label: chars.getCharFriendship(info.id).format(),
                       );
                     })
-                    .separate(const SizedBox(width: kSeparator4))
+                    .separate(const SizedBox(width: kGridSeparator))
                     .toList(),
               );
             },

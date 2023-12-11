@@ -104,32 +104,34 @@ class HomePlayerInfoWidget extends StatelessWidget {
               ),
               const SizedBox(width: kSeparator8),
               Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: info.nickname,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      info.nickname,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpan(
-                        text: '\n'
-                            '${context.fromLabel(Labels.cardPlayerAr, info.level)}  |  '
-                            '${context.fromLabel(Labels.cardPlayerWl, info.worldLevel)}',
-                        style: TextStyle(
-                          color: context.themeColors.dimWhite,
-                        ),
+                    ),
+                    Text(
+                      '${context.fromLabel(Labels.cardPlayerAr, info.level)}  |  '
+                      '${context.fromLabel(Labels.cardPlayerWl, info.worldLevel)}',
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: context.themeColors.dimWhite,
                       ),
-                      TextSpan(
-                        text: '\n${info.signature}',
-                        style: TextStyle(
-                          color: context.themeColors.dimWhite,
-                        ),
+                    ),
+                    Text(
+                      info.signature,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: context.themeColors.dimWhite,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: kSeparator8),

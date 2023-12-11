@@ -54,8 +54,9 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           title: Text(context.fromLabel(Labels.ascension)),
           child: LayoutBuilder(
             builder: (context, layout) {
+              final itemSize = ItemSize.small.gridSize + kGridSeparator;
               final width = layout.maxWidth;
-              final items = (width ~/ 74).coerceAtMost(8);
+              final items = (width ~/ itemSize).coerceAtMost(8);
               final list = characters.take(items);
               return Column(
                 children: [

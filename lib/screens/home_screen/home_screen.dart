@@ -7,7 +7,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_achievements_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
-import 'package:tracker/screens/home_screen/widgets/home_birthdays_widget.dart';
+import 'package:tracker/screens/home_screen/widgets/home_calendar_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_last_banner_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_player_info_widget.dart';
@@ -149,9 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const HomePlayerInfoWidget(),
+              const HomeCalendarWidget(),
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
-              const HomeBirthdaysWidget(),
               const HomeLastBannerWidget(),
               const HomeResourceCalcWidget(),
             ].separate(const SizedBox(height: kGridSeparator)).toList(),
