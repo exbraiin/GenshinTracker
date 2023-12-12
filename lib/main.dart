@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
 import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/windows_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,17 +14,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scrollBehavior: const MaterialScrollBehavior().copyWith(
-        dragDevices: {PointerDeviceKind.mouse},
-        scrollbars: false,
-        physics: const BouncingScrollPhysics(),
-      ),
-      localizationsDelegates: [
-        Lang.delegate,
+    return Column(
+      children: [
+        Theme(
+          data: theme,
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: WindowBar(title: 'Genshin Tracker'),
+          ),
+        ),
+        Expanded(
+          child: MaterialApp(
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {PointerDeviceKind.mouse},
+              scrollbars: false,
+              physics: const BouncingScrollPhysics(),
+            ),
+            localizationsDelegates: [Lang.delegate],
+            theme: theme,
+            home: const MainScreen(),
+          ),
+        ),
       ],
-      theme: theme,
-      home: const MainScreen(),
     );
   }
 }
