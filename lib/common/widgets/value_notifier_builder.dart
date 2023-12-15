@@ -36,6 +36,12 @@ class _ValueNotifierBuilderState<T> extends State<ValueNotifierBuilder<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant ValueNotifierBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _notifier.value = widget.value;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<T>(
       valueListenable: _notifier,

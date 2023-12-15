@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -64,7 +65,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Container(
-                      width: 180,
+                      width: 200,
                       margin: const EdgeInsets.only(top: kSeparator4),
                       padding: const EdgeInsets.all(kSeparator4),
                       decoration: BoxDecoration(
@@ -74,22 +75,46 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       child: Column(
                         children: [
                           GsNumberField(
-                            onUpdate: (i) {
-                              final amount = i.clamp(0, item.maxProficiency);
-                              GsUtils.recipes
-                                  .update(item.id, proficiency: amount);
-                            },
-                            onDbUpdate: () {
-                              final db = GsDatabase.instance.saveRecipes;
-                              return db.getItemOrNull(item.id)?.proficiency ??
-                                  0;
-                            },
+                            onUpdate: _setProficiency,
+                            onDbUpdate: _getProficiency,
                             fontSize: 14,
                           ),
                           Text(
                             '${context.fromLabel(Labels.proficiency)} '
                             '${context.fromLabel(Labels.maxProficiency, item.maxProficiency.format())}',
                             style: const TextStyle(fontSize: 14),
+                          ),
+                          Theme(
+                            data: ThemeData(
+                              sliderTheme: SliderThemeData(
+                                overlayColor: Colors.yellow,
+                                activeTickMarkColor: Colors.grey,
+                                valueIndicatorColor: Colors.white,
+                                valueIndicatorTextStyle: context
+                                    .themeStyles.label14n
+                                    .copyWith(color: Colors.black),
+                              ),
+                            ),
+                            child: SizedBox(
+                              height: 30,
+                              child: ValueNotifierBuilder<int>(
+                                value: _getProficiency(),
+                                builder: (context, notifier, child) {
+                                  return Slider(
+                                    min: 0,
+                                    max: item.maxProficiency.toDouble(),
+                                    activeColor: Colors.white,
+                                    label: notifier.value.toString(),
+                                    divisions: item.maxProficiency,
+                                    value: notifier.value.toDouble(),
+                                    onChanged: (i) =>
+                                        notifier.value = i.toInt(),
+                                    onChangeEnd: (i) =>
+                                        _setProficiency(i.toInt()),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -102,6 +127,18 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         );
       },
     );
+  }
+
+  int _getProficiency() {
+    final db = GsDatabase.instance.saveRecipes;
+    return db.getItemOrNull(item.id)?.proficiency ?? 0;
+  }
+
+  void _setProficiency(int value) {
+    final amount = value.clamp(0, item.maxProficiency);
+    final current = _getProficiency();
+    if (amount == current) return;
+    GsUtils.recipes.update(item.id, proficiency: amount);
   }
 
   Widget _content(BuildContext context) {
