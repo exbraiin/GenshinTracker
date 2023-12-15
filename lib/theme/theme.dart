@@ -28,6 +28,11 @@ final theme = ThemeData(
       color: _themeColors.almostWhite,
     ),
   ),
+  sliderTheme: SliderThemeData(
+    activeTickMarkColor: Colors.grey,
+    valueIndicatorColor: Colors.white,
+    valueIndicatorTextStyle: _textStyle.label14n.copyWith(color: Colors.black),
+  ),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.white,
     selectionColor: Colors.white.withOpacity(0.2),

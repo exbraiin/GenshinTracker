@@ -84,36 +84,23 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                             '${context.fromLabel(Labels.maxProficiency, item.maxProficiency.format())}',
                             style: const TextStyle(fontSize: 14),
                           ),
-                          Theme(
-                            data: ThemeData(
-                              sliderTheme: SliderThemeData(
-                                overlayColor: Colors.yellow,
-                                activeTickMarkColor: Colors.grey,
-                                valueIndicatorColor: Colors.white,
-                                valueIndicatorTextStyle: context
-                                    .themeStyles.label14n
-                                    .copyWith(color: Colors.black),
-                              ),
-                            ),
-                            child: SizedBox(
-                              height: 30,
-                              child: ValueNotifierBuilder<int>(
-                                value: _getProficiency(),
-                                builder: (context, notifier, child) {
-                                  return Slider(
-                                    min: 0,
-                                    max: item.maxProficiency.toDouble(),
-                                    activeColor: Colors.white,
-                                    label: notifier.value.toString(),
-                                    divisions: item.maxProficiency,
-                                    value: notifier.value.toDouble(),
-                                    onChanged: (i) =>
-                                        notifier.value = i.toInt(),
-                                    onChangeEnd: (i) =>
-                                        _setProficiency(i.toInt()),
-                                  );
-                                },
-                              ),
+                          SizedBox(
+                            height: 30,
+                            child: ValueNotifierBuilder<int>(
+                              value: _getProficiency(),
+                              builder: (context, notifier, child) {
+                                return Slider(
+                                  min: 0,
+                                  max: item.maxProficiency.toDouble(),
+                                  activeColor: Colors.white,
+                                  label: notifier.value.toString(),
+                                  divisions: item.maxProficiency,
+                                  value: notifier.value.toDouble(),
+                                  onChanged: (i) => notifier.value = i.toInt(),
+                                  onChangeEnd: (i) =>
+                                      _setProficiency(i.toInt()),
+                                );
+                              },
                             ),
                           ),
                         ],
