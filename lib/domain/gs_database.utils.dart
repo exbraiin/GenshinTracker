@@ -1,13 +1,25 @@
 import 'package:dartx/dartx_io.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/domain/enums/gs_weekday.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 
 /// {@template db_update}
 /// Updates db collection
 /// {@endtemplate}
-final _db = GsDatabase.instance;
+final _db = Database.instance;
+final _achievements = _db.infoOf<GsAchievement>();
+final _sereniteas = _db.infoOf<GsSereniteaSet>();
+final _banners = _db.infoOf<GsBanner>();
+final _weapons = _db.infoOf<GsWeapon>();
+final _regions = _db.infoOf<GsRegion>();
+final _weaponsInfo = _db.infoOf<GsWeaponInfo>();
+final _characters = _db.infoOf<GsCharacter>();
+final _charactersInfo = _db.infoOf<GsCharacterInfo>();
+final _materials = _db.infoOf<GsMaterial>();
+final _versions = _db.infoOf<GsVersion>();
+final _charactersSkin = _db.infoOf<GsCharacterSkin>();
 
 class GsUtils {
   GsUtils._();
@@ -15,6 +27,7 @@ class GsUtils {
   static final items = _Items();
   static final cities = _Cities();
   static final wishes = _Wishes();
+  static final details = _Details();
   static final recipes = _Recipes();
   static final weapons = _Weapons();
   static final versions = _Versions();
@@ -33,37 +46,36 @@ enum WishState { none, won, lost, guaranteed }
 
 class _Items {
   /// Gets a weapon or a character by the given [id].
-  ItemData getItemData(String id) {
-    return _db.infoWeapons.exists(id)
-        ? ItemData.weapon(_db.infoWeapons.getItem(id))
-        : ItemData.character(_db.infoCharacters.getItem(id));
+  GsWish getItemData(String id) {
+    final weapon = _weapons.getItem(id);
+    return weapon != null
+        ? GsWish.fromWeapon(weapon)
+        : GsWish.fromCharacter(_characters.getItem(id));
   }
 
   /// Gets a weapon or a character by the given [id].
-  ItemData? getItemDataOrNull(String id) {
-    final weapon = _db.infoWeapons.getItemOrNull(id);
-    if (weapon != null) return ItemData.weapon(weapon);
-    final character = _db.infoCharacters.getItemOrNull(id);
-    if (character != null) return ItemData.character(character);
+  GsWish? getItemDataOrNull(String id) {
+    final weapon = _weapons.getItem(id);
+    if (weapon != null) return GsWish.fromWeapon(weapon);
+    final character = _characters.getItem(id);
+    if (character != null) return GsWish.fromCharacter(character);
     return null;
   }
 
-  Map<InfoMaterial, List<ItemData>> getItemsByMaterial(GsWeekday weekday) {
-    final getMat = _db.infoMaterials.getItem;
+  Map<GsMaterial, List<GsWish>> getItemsByMaterial(GeWeekdayType weekday) {
+    final getMat = _materials.getItem;
 
     return [
-      ..._db.infoCharactersInfo
-          .getItems()
-          .map((element) => MapEntry(element.id, element.ascension.matTalent)),
-      ..._db.infoWeaponsInfo
-          .getItems()
+      ..._charactersInfo.items
+          .map((element) => MapEntry(element.id, element.talentMaterial)),
+      ..._weaponsInfo.items
           .map((element) => MapEntry(element.id, element.matWeapon)),
     ]
         .groupBy((element) => element.value)
         .entries
-        .where((element) => getMat(element.key).weekdays.contains(weekday))
+        .where((element) => getMat(element.key)!.weekdays.contains(weekday))
         .toMap(
-          (e) => _db.infoMaterials.getItem(e.key),
+          (e) => _materials.getItem(e.key)!,
           (e) => e.value.map((e) => getItemData(e.key)).toList(),
         );
   }
@@ -72,36 +84,33 @@ class _Items {
 class _Cities {
   /// Gets the city max level
   int getCityMaxLevel(String id) =>
-      _db.infoCities.getItem(id).reputation.length;
+      _regions.getItem(id)?.reputation.length ?? 0;
 
   /// Gets the user saved city current level.
   int getCityLevel(String id) {
-    final cities = GsDatabase.instance.infoCities;
     final sRp = getSavedReputation(id);
-    return cities.getItem(id).reputation.lastIndexWhere((e) => e <= sRp) + 1;
+    final rep = _regions.getItem(id)?.reputation ?? [];
+    return rep.lastIndexWhere((e) => e <= sRp) + 1;
   }
 
   /// Gets the previous level max xp value.
   int getCityPreviousXpValue(String id) {
-    final cities = GsDatabase.instance.infoCities;
     final sRP = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
+    final rep = _regions.getItem(id)?.reputation ?? [];
     return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
   }
 
   /// Gets the current level max xp value.
   int getCityNextXpValue(String id) {
-    final cities = GsDatabase.instance.infoCities;
     final sRP = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
+    final rep = _regions.getItem(id)?.reputation ?? [];
     return rep.firstWhere((e) => e > sRP, orElse: () => -1);
   }
 
   /// Gets the amount of weeks required to reach the next level based on bounties and quests.
   int getCityNextLevelWeeks(String id) {
-    final cities = GsDatabase.instance.infoCities;
     final sRp = getSavedReputation(id);
-    final rep = cities.getItem(id).reputation;
+    final rep = _regions.getItem(id)?.reputation ?? [];
     final idx = rep.lastIndexWhere((e) => e <= sRp);
     final next = idx + 1 < rep.length ? rep[idx + 1] : rep.last;
     final xp = next - sRp;
@@ -110,8 +119,7 @@ class _Cities {
 
   /// Gets the amount of weeks required to reach the max level based on bounties and quests.
   int getCityMaxLevelWeeks(String id) {
-    final cities = GsDatabase.instance.infoCities;
-    final rep = cities.getItem(id).reputation;
+    final rep = _regions.getItem(id)?.reputation ?? [];
     final xp = rep.last - getSavedReputation(id);
     return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
   }
@@ -131,12 +139,10 @@ class _Cities {
 
 class _Wishes {
   /// Gets all released banners by [type]
-  Iterable<InfoBanner> geReleasedInfoBannerByType(GsBanner type) {
+  Iterable<GsBanner> geReleasedInfoBannerByType(GeBannerType type) {
     final now = DateTime.now();
-    final banners = _db.infoBanners;
-    return banners
-        .getItems()
-        .where((e) => e.type == type && e.dateStart.isBefore(now));
+    return _banners.items
+        .where((e) => e.type == type && e.dateStartTime.isBefore(now));
   }
 
   /// Gets the pity of the given wish in the given wishes list.
@@ -159,7 +165,8 @@ class _Wishes {
   bool isNextGaranteed(List<SaveWish> wishes) {
     final last = _getLastWish(wishes);
     if (last == null) return false;
-    final banner = _db.infoBanners.getItem(last.bannerId);
+    final banner = _banners.getItem(last.bannerId);
+    if (banner == null) return false;
     return !banner.feature5.contains(last.itemId);
   }
 
@@ -169,7 +176,7 @@ class _Wishes {
     final rt = item.rarity;
     if (rt != 5 && rt != 4) return WishState.none;
 
-    late final banner = _db.infoBanners.getItem(wish.bannerId);
+    late final banner = _banners.getItem(wish.bannerId)!;
     late final featured = rt == 5 ? banner.feature5 : banner.feature4;
     late final contained = featured.contains(wish.itemId);
 
@@ -177,7 +184,7 @@ class _Wishes {
     final lastWish = _getLastWish(wishes, rt);
     if (lastWish == null) return contained ? WishState.won : WishState.lost;
 
-    final lastBanner = _db.infoBanners.getItem(lastWish.bannerId);
+    final lastBanner = _banners.getItem(lastWish.bannerId)!;
     final lastFeatured = rt == 5 ? lastBanner.feature5 : lastBanner.feature4;
     final lastBannerContains = lastFeatured.contains(lastWish.itemId);
 
@@ -188,25 +195,28 @@ class _Wishes {
   }
 
   /// Gets a list of [ItemData] that can be obtained in banners.
-  Iterable<ItemData> getBannerItemsData(InfoBanner banner) {
-    bool filterWp(InfoWeapon info) {
-      late final isStandard = info.source == GsItemSource.wishesStandard;
+  Iterable<GsWish> getBannerItemsData(GsBanner banner) {
+    bool filterWp(GsWeapon info) {
+      late final isStandard = info.source == GeItemSourceType.wishesStandard;
       late final isFeatured = banner.feature5.contains(info.id);
-      late final isChar = banner.type == GsBanner.character && info.rarity == 5;
-      late final isBegn = banner.type == GsBanner.beginner && info.rarity > 3;
+      late final isChar =
+          banner.type == GeBannerType.character && info.rarity == 5;
+      late final isBegn =
+          banner.type == GeBannerType.beginner && info.rarity > 3;
       return (isStandard || isFeatured) && !isChar && !isBegn;
     }
 
-    bool filterCh(InfoCharacter info) {
-      late final isStandard = info.source == GsItemSource.wishesStandard;
+    bool filterCh(GsCharacter info) {
+      late final isStandard = info.source == GeItemSourceType.wishesStandard;
       late final isFeatured = banner.feature5.contains(info.id);
-      late final isWeap = banner.type == GsBanner.weapon && info.rarity == 5;
+      late final isWeap =
+          banner.type == GeBannerType.weapon && info.rarity == 5;
       return (isStandard || isFeatured) && !isWeap;
     }
 
     return [
-      ..._db.infoWeapons.getItems().where(filterWp).map(ItemData.weapon),
-      ..._db.infoCharacters.getItems().where(filterCh).map(ItemData.character),
+      ..._weapons.items.where(filterWp).map(GsWish.fromWeapon),
+      ..._characters.items.where(filterCh).map(GsWish.fromCharacter),
     ];
   }
 
@@ -215,7 +225,7 @@ class _Wishes {
       _db.saveWishes.getItems().where((e) => e.bannerId == banner).toList();
 
   /// Gets all saved wishes for a banner [type].
-  List<SaveWish> getSaveWishesByBannerType(GsBanner type) {
+  List<SaveWish> getSaveWishesByBannerType(GeBannerType type) {
     final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
     final bannerIds = banners.map((e) => e.id);
     return _db.saveWishes
@@ -244,17 +254,19 @@ class _Wishes {
   ///
   /// {@macro db_update}
   void removeLastWish(String bannerId) {
-    final db = GsDatabase.instance.saveWishes;
-    final list = GsUtils.wishes.getBannerWishes(bannerId);
+    final db = Database.instance.saveWishes;
+    final list = GsUtils.wishes
+        .getBannerWishes(bannerId)
+        .sortedWith(SaveWishComp.comparator);
     if (list.isEmpty) return;
-    db.deleteItem(list.sorted().last.id);
+    db.deleteItem(list.last.id);
   }
 
   /// Updates the given [wish] date.
   ///
   /// {@macro db_update}
   void updateWishDate(SaveWish wish, DateTime date) {
-    final db = GsDatabase.instance.saveWishes;
+    final db = Database.instance.saveWishes;
     if (!db.exists(wish.id)) return;
     final newWish = wish.copyWith(date: date);
     db.insertItem(newWish);
@@ -268,7 +280,7 @@ class _Wishes {
     required DateTime date,
     required String bannerId,
   }) async {
-    final db = GsDatabase.instance.saveWishes;
+    final db = Database.instance.saveWishes;
     final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
     var i = 0;
     for (var id in ids) {
@@ -283,6 +295,12 @@ class _Wishes {
       db.insertItem(wish);
     }
   }
+}
+
+class _Details {
+  final ascHerosWit = const [0, 6, 28, 29, 42, 59, 80, 0];
+  final imgUnknown =
+      'https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Unknown.png';
 }
 
 class _Recipes {
@@ -318,41 +336,40 @@ class _Weapons {
 class _Versions {
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
-    final versions = _db.infoVersion.getItems();
-    final current = versions
-        .sorted()
+    final current = _versions.items
+        .sortedWith(GsVersionComp.comparator)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current?.id == version;
   }
 
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
-    final versions = _db.infoVersion.getItems();
-    final upcoming = versions.sorted().where((e) => e.releaseDate.isAfter(now));
+    final upcoming = _versions.items
+        .sortedWith(GsVersionComp.comparator)
+        .where((e) => e.releaseDate.isAfter(now));
     return upcoming.any((element) => element.id == version);
   }
 
-  InfoVersion? getCurrentVersion() {
+  GsVersion? getCurrentVersion() {
     final now = DateTime.now();
-    final versions = _db.infoVersion.getItems();
-    final current = versions
-        .sorted()
+    final current = _versions.items
+        .sortedWith(GsVersionComp.comparator)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current;
   }
 }
 
 class _Materials {
-  Iterable<InfoMaterial> getGroupMaterials(InfoMaterial material) {
-    return _db.infoMaterials.getItems().where((element) {
+  Iterable<GsMaterial> getGroupMaterials(GsMaterial material) {
+    return _materials.items.where((element) {
       return element.group == material.group &&
           element.region == material.region &&
           element.subgroup == material.subgroup;
     });
   }
 
-  Iterable<InfoMaterial> getGroupMaterialsById(String id) {
-    final material = _db.infoMaterials.getItemOrNull(id);
+  Iterable<GsMaterial> getGroupMaterialsById(String id) {
+    final material = _materials.getItem(id);
     if (material == null) return [];
     return getGroupMaterials(material);
   }
@@ -367,9 +384,7 @@ class _Characters {
 
   /// Whether the character with the given [id] has outfits or not.
   bool hasOutfits(String id) {
-    return _db.infoCharactersOutfit
-        .getItems()
-        .any((element) => element.character == id);
+    return _charactersSkin.items.any((element) => element.character == id);
   }
 
   int getCharFriendship(String id) {
@@ -403,15 +418,15 @@ class _Characters {
 
   String getImage(String id) {
     final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
-    final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.image ?? '';
-    late final charImg = _db.infoCharacters.getItemOrNull(id)?.image ?? '';
+    final url = _charactersSkin.getItem(outfit)?.image ?? '';
+    late final charImg = _characters.getItem(id)?.image ?? '';
     return url.isNotEmpty ? url : charImg;
   }
 
   String getFullImage(String id) {
     final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
-    final url = _db.infoCharactersOutfit.getItemOrNull(outfit)?.fullImage ?? '';
-    late final charImg = _db.infoCharacters.getItemOrNull(id)?.fullImage ?? '';
+    final url = _charactersSkin.getItem(outfit)?.fullImage ?? '';
+    late final charImg = _characters.getItem(id)?.fullImage ?? '';
     return url.isNotEmpty ? url : charImg;
   }
 
@@ -476,14 +491,14 @@ class _Characters {
 }
 
 class _Achievements {
-  int countTotal([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
+  int countTotal([bool Function(GsAchievement)? test]) {
+    var items = _achievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) => e.phases.length).toInt();
   }
 
-  int countTotalRewards([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
+  int countTotalRewards([bool Function(GsAchievement)? test]) {
+    var items = _achievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
   }
@@ -505,20 +520,20 @@ class _Achievements {
   bool isObtainable(String id) {
     final saved = _db.saveAchievements.getItemOrNull(id);
     if (saved == null) return true;
-    final item = _db.infoAchievements.getItemOrNull(id);
+    final item = _achievements.getItem(id);
     return (item?.phases.length ?? 0) > saved.obtained;
   }
 
-  int countSaved([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
+  int countSaved([bool Function(GsAchievement)? test]) {
+    var items = _achievements.items;
     if (test != null) items = items.where(test);
     return items
         .sumBy((e) => _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0)
         .toInt();
   }
 
-  int countSavedRewards([bool Function(InfoAchievement)? test]) {
-    var items = _db.infoAchievements.getItems();
+  int countSavedRewards([bool Function(GsAchievement)? test]) {
+    var items = _achievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) {
       final i = _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0;
@@ -555,7 +570,8 @@ class _PlayerConfigs {
 
 class _SereniteaSets {
   bool isObtainable(String set) {
-    final item = _db.infoSereniteaSets.getItem(set);
+    final item = _sereniteas.getItem(set);
+    if (item == null) return false;
     final saved = _db.saveSereniteaSets.getItemOrNull(set);
     final chars = saved?.chars ?? [];
     bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
@@ -583,8 +599,8 @@ class _WeaponMaterials {
 
   /// Gets all weapon ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
-    final item = _db.infoWeapons.getItemOrNull(id);
-    final info = _db.infoWeaponsInfo.getItemOrNull(id);
+    final item = _weapons.getItem(id);
+    final info = _weaponsInfo.getItem(id);
     if (item == null || info == null) return const {};
 
     return _getMaterials<WeaponAsc>(
@@ -623,34 +639,33 @@ class _CharactersMaterials {
   List<CharacterTal> characterTalents() => CharacterTal.values;
   List<CharacterAsc> characterAscension() => CharacterAsc.values;
 
-  List<MapEntry<InfoMaterial?, int>> getCharNextAscensionMats(String id) {
+  List<MapEntry<GsMaterial?, int>> getCharNextAscensionMats(String id) {
     final max = GsUtils.characters.isCharMaxAscended(id);
     if (max) return const [];
-    final db = GsDatabase.instance.infoMaterials;
     final ascension = GsUtils.characters.getCharAscension(id);
     return getAscensionMaterials(id, ascension + 1)
         .entries
-        .map((e) => MapEntry(db.getItemOrNull(e.key), e.value))
+        .map((e) => MapEntry(_materials.getItem(e.key), e.value))
         .toList();
   }
 
   /// Gets all character ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
-    final info = _db.infoCharactersInfo.getItemOrNull(id);
+    final info = _charactersInfo.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterAsc>(
       CharacterAsc.values,
       {
         'mora': (i) => i.moraAmount,
-        info.ascension.matGem: (i) => i.gemAmount,
-        info.ascension.matBoss: (i) => i.bossAmount,
-        info.ascension.matRegion: (i) => i.regionAmount,
-        info.ascension.matCommon: (i) => i.commonAmount,
+        info.gemMaterial: (i) => i.gemAmount,
+        info.bossMaterial: (i) => i.bossAmount,
+        info.regionMaterial: (i) => i.regionAmount,
+        info.commonMaterial: (i) => i.commonAmount,
       },
       {
-        info.ascension.matGem: (i) => i.gemIndex,
-        info.ascension.matCommon: (i) => i.commonIndex,
+        info.gemMaterial: (i) => i.gemIndex,
+        info.commonMaterial: (i) => i.commonIndex,
       },
       level,
     );
@@ -659,7 +674,7 @@ class _CharactersMaterials {
   /// Gets all character talent materials at level.
   /// * Returns materials for all 3 talents.
   Map<String, int> getTalentMaterials(String id, [int? level]) {
-    final info = _db.infoCharactersInfo.getItemOrNull(id);
+    final info = _charactersInfo.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterTal>(
@@ -667,13 +682,13 @@ class _CharactersMaterials {
       {
         'mora': (i) => i.moraAmount,
         'crown_of_insight': (i) => i.crownAmount,
-        info.ascension.matCommon: (i) => i.commonAmount,
-        info.ascension.matTalent: (i) => i.talentAmount,
-        info.ascension.matWeekly: (i) => i.weeklyAmount,
+        info.commonMaterial: (i) => i.commonAmount,
+        info.talentMaterial: (i) => i.talentAmount,
+        info.weeklyMaterial: (i) => i.weeklyAmount,
       },
       {
-        info.ascension.matCommon: (i) => i.commonIndex,
-        info.ascension.matTalent: (i) => i.talentIndex,
+        info.commonMaterial: (i) => i.commonIndex,
+        info.talentMaterial: (i) => i.talentIndex,
       },
       level,
     ).map((key, value) => MapEntry(key, value * 3));
@@ -861,28 +876,6 @@ Map<String, int> _getMaterials<T>(
 
 // === OLD ===
 
-class ItemData extends IdData<ItemData> {
-  final InfoWeapon? weapon;
-  final InfoCharacter? character;
-
-  @override
-  String get id => weapon?.id ?? character?.id ?? '';
-  String get name => weapon?.name ?? character?.name ?? '';
-  String get image => weapon?.image ?? character?.image ?? '';
-  GsItem get type => weapon != null ? GsItem.weapon : GsItem.character;
-  int get rarity => weapon?.rarity ?? character?.rarity ?? 0;
-
-  ItemData.weapon(this.weapon) : character = null;
-  ItemData.character(this.character) : weapon = null;
-
-  @override
-  List<Comparator<ItemData>> get comparators => [
-        (a, b) => a.rarity.compareTo(b.rarity),
-        (a, b) => a.type.index.compareTo(b.type.index),
-        (a, b) => a.name.compareTo(b.name),
-      ];
-}
-
 class WishesSummary {
   final WishInfo wishesInfo4;
   final WishInfo wishesInfo5;
@@ -923,19 +916,19 @@ class WishesSummary {
       ),
       wishesInfo4Weapon: WishInfo.fromSelector(
         wishes,
-        (item) => item.rarity == 4 && item.type == GsItem.weapon,
+        (item) => item.rarity == 4 && item.isWeapon,
       ),
       wishesInfo4Character: WishInfo.fromSelector(
         wishes,
-        (item) => item.rarity == 4 && item.type == GsItem.character,
+        (item) => item.rarity == 4 && item.isCharacter,
       ),
       wishesInfo5Weapon: WishInfo.fromSelector(
         wishes,
-        (item) => item.rarity == 5 && item.type == GsItem.weapon,
+        (item) => item.rarity == 5 && item.isWeapon,
       ),
       wishesInfo5Character: WishInfo.fromSelector(
         wishes,
-        (item) => item.rarity == 5 && item.type == GsItem.character,
+        (item) => item.rarity == 5 && item.isCharacter,
       ),
     );
   }
@@ -958,7 +951,7 @@ class WishInfo {
 
   factory WishInfo.fromSelector(
     List<SaveWish> wishes,
-    bool Function(ItemData item) selector,
+    bool Function(GsWish item) selector,
   ) {
     final pity = GsUtils.wishes.countPity;
     final getItem = GsUtils.items.getItemData;

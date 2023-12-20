@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -24,7 +25,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
       builder: (context, notifier, child) {
         final busy = notifier.value;
         return ValueStreamBuilder<bool>(
-          stream: GsDatabase.instance.loaded,
+          stream: Database.instance.loaded,
           builder: (context, snapshot) {
             final info = GsUtils.playerConfigs.getPlayerInfo();
             final hasValidId = info?.uid.length == 9;
@@ -87,8 +88,9 @@ class HomePlayerInfoWidget extends StatelessWidget {
   }
 
   Widget _getWidgetContent(BuildContext context, SavePlayerInfo info) {
-    final char = GsDatabase.instance.infoCharacters
-        .getItems()
+    final char = Database.instance
+        .infoOf<GsCharacter>()
+        .items
         .firstOrNullWhere((c) => c.enkaId == info.avatarId);
     final child = DefaultTextStyle(
       style: context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
@@ -172,8 +174,9 @@ class HomePlayerInfoWidget extends StatelessWidget {
             runSpacing: kGridSeparator,
             alignment: WrapAlignment.center,
             children: info.avatars.entries.map((e) {
-              final char = GsDatabase.instance.infoCharacters
-                  .getItems()
+              final char = Database.instance
+                  .infoOf<GsCharacter>()
+                  .items
                   .firstOrNullWhere((c) => c.enkaId == e.key);
               if (char == null) return const SizedBox();
               return ItemGridWidget.character(char);
@@ -209,5 +212,5 @@ class HomePlayerInfoWidget extends StatelessWidget {
 Future<void> _fetchAndInsert(String uid) async {
   final player = await EnkaService.i.getPlayerInfo(uid);
   final item = SavePlayerInfo.fromEnkaInfo(player);
-  GsDatabase.instance.saveUserConfigs.insertItem(item);
+  Database.instance.saveUserConfigs.insertItem(item);
 }

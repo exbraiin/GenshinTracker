@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -7,21 +8,21 @@ import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 class RemarkableChestDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
-  final InfoRemarkableChest item;
+  final GsFurnitureChest item;
 
   const RemarkableChestDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final db = GsDatabase.instance.saveRemarkableChests;
+        final db = Database.instance.saveRemarkableChests;
         final owned = db.getItemOrNull(item.id)?.obtained ?? false;
         return ItemDetailsCard.single(
           name: item.name,
@@ -38,7 +39,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                     Row(
                       children: [
                         Image.asset(
-                          item.type == GsSetCategory.indoor
+                          item.type == GeSereniteaSetType.indoor
                               ? imageIndoorSet
                               : imageOutdoorSet,
                           width: 32,
@@ -51,7 +52,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                     Padding(
                       padding: const EdgeInsets.only(left: kSeparator8),
                       child: Text(
-                        item.category,
+                        context.fromLabel(item.type.label),
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),

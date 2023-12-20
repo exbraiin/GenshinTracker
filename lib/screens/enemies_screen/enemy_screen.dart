@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/enemies_screen/enemy_details_card.dart';
 import 'package:tracker/screens/enemies_screen/enemy_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
@@ -13,10 +13,10 @@ class EnemyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InventoryListPage<InfoEnemy>(
+    return InventoryListPage<GsEnemy>(
       icon: menuIconEnemies,
       title: context.fromLabel(Labels.enemies),
-      items: (db) => db.infoEnemies.getItems(),
+      items: (db) => db.infoOf<GsEnemy>().items,
       itemBuilder: (context, state) => EnemyListItem(
         state.item,
         onTap: state.onSelect,

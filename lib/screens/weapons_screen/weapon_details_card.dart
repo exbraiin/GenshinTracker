@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -8,31 +9,32 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
 
 class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
-  final InfoWeapon item;
+  final GsWeapon item;
 
   WeaponDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final info = GsDatabase.instance.infoWeaponsInfo.getItemOrNull(item.id);
+    final info = Database.instance.infoOf<GsWeaponInfo>().getItem(item.id);
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, nd, child) {
         return ItemDetailsCard.single(
           name: item.name,
           rarity: item.rarity,
-          image: !nd.value ? item.image : item.imageAscension,
+          image: !nd.value ? item.image : item.imageAsc,
           info: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(context.fromLabel(GsAttributeStat.atk.label)),
+              Text(context.fromLabel(Labels.wsAtk)),
               Text(
                 item.atk.toString(),
                 style: TextStyle(
@@ -41,7 +43,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   fontSize: 28,
                 ),
               ),
-              if (item.statType != GsAttributeStat.none) ...[
+              if (item.statType != GeWeaponAscStatType.none) ...[
                 const SizedBox(height: kSeparator4),
                 Text(context.fromLabel(item.statType.label)),
                 Text(
@@ -66,7 +68,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           child: info != null
               ? ItemDetailsCardContent.generate(context, [
                   if (info.effectName.isNotEmpty) _getInfoEffect(context, info),
-                  ItemDetailsCardContent(description: item.description),
+                  ItemDetailsCardContent(description: item.desc),
                   _getInfoAscension(context, info),
                   _getWeaponMats(context, info),
                 ])
@@ -78,7 +80,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   ItemDetailsCardContent _getInfoEffect(
     BuildContext context,
-    InfoWeaponInfo info,
+    GsWeaponInfo info,
   ) {
     return ItemDetailsCardContent(
       label: info.effectName,
@@ -88,7 +90,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   ItemDetailsCardContent _getInfoAscension(
     BuildContext context,
-    InfoWeaponInfo info,
+    GsWeaponInfo info,
   ) {
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.ascension),
@@ -98,9 +100,9 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   ItemDetailsCardContent _getWeaponMats(
     BuildContext context,
-    InfoWeaponInfo info,
+    GsWeaponInfo info,
   ) {
-    final im = GsDatabase.instance.infoMaterials;
+    final im = Database.instance.infoOf<GsMaterial>();
     final iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
     return ItemDetailsCardContent(
@@ -109,9 +111,9 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         spacing: kGridSeparator,
         runSpacing: kGridSeparator,
         children: mats.entries
-            .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
+            .map((e) => MapEntry(im.getItem(e.key), e.value))
             .where((e) => e.key != null)
-            .sortedBy((e) => e.key!)
+            .sortedWith((a, b) => GsMaterialComp.comparator(a.key!, b.key!))
             .map((e) {
           return ItemGridWidget.material(
             e.key!,

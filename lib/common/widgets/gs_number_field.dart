@@ -39,7 +39,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
     super.initState();
     _node = FocusNode()..addListener(_onNodeFocus);
     _controller = TextEditingController(text: '');
-    _sub = GsDatabase.instance.loaded.listen((e) {
+    _sub = Database.instance.loaded.listen((e) {
       if (widget.onDbUpdate == null) return;
       final value = widget.onDbUpdate!.call();
       _controller.text = value != 0 ? value.toString() : '';

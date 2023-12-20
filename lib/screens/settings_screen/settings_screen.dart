@@ -13,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
         return Scaffold(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -6,14 +7,14 @@ import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
-typedef FilterBuilder<T extends Comparable<T>> = Widget Function(
+typedef FilterBuilder<T extends GsModel<T>> = Widget Function(
   BuildContext context,
   ScreenFilter<T> filter,
   Widget button,
   void Function(String extra) toggle,
 );
 
-class ScreenFilterBuilder<T extends Comparable<T>> extends StatelessWidget {
+class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
   final notifier = ValueNotifier(false);
   final ScreenFilter<T> filter;
   final FilterBuilder<T> builder;

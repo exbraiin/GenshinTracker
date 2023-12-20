@@ -1,11 +1,13 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
@@ -15,10 +17,10 @@ import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 
 const _bannerType = [
-  GsBanner.character,
-  GsBanner.weapon,
-  GsBanner.standard,
-  GsBanner.beginner,
+  GeBannerType.character,
+  GeBannerType.weapon,
+  GeBannerType.standard,
+  GeBannerType.beginner,
 ];
 
 class WishesScreen extends StatefulWidget {
@@ -48,7 +50,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
 
@@ -93,13 +95,13 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   .geReleasedInfoBannerByType(bannerType)
                   .lastOrNull;
 
-              ItemData? getData(String? id) =>
+              GsWish? getData(String? id) =>
                   id != null ? GsUtils.items.getItemData(id) : null;
               final item = switch (bannerType) {
-                GsBanner.character => getData(banner?.feature5.firstOrNull),
-                GsBanner.weapon => getData(banner?.feature5.firstOrNull),
-                GsBanner.standard => getData('keqing'),
-                GsBanner.beginner => getData('noelle'),
+                GeBannerType.character => getData(banner?.feature5.firstOrNull),
+                GeBannerType.weapon => getData(banner?.feature5.firstOrNull),
+                GeBannerType.standard => getData('keqing'),
+                GeBannerType.beginner => getData('noelle'),
               };
 
               return ItemGridWidget(
@@ -136,8 +138,9 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   controller: _controller,
                   children: _bannerType.map((banner) {
                     final ut = GsUtils.wishes;
-                    final wishes =
-                        ut.getSaveWishesByBannerType(banner).sortedDescending();
+                    final wishes = ut
+                        .getSaveWishesByBannerType(banner)
+                        .sortedWith((a, b) => SaveWishComp.comparator(b, a));
                     final banners =
                         ut.geReleasedInfoBannerByType(banner).toList();
                     return CustomScrollView(
@@ -169,12 +172,13 @@ class _WishesScreenScreenState extends State<WishesScreen>
   }
 
   List<Widget> _slivers(
-    GsBanner gsBanner,
+    GeBannerType gsBanner,
     List<SaveWish> wishesList,
-    List<InfoBanner> bannersList,
+    List<GsBanner> bannersList,
     ScreenFilter<SaveWish> filter,
   ) {
-    final banners = bannersList.sortedDescending();
+    final banners =
+        bannersList.sortedWith((a, b) => GsBannerComp.comparator(b, a));
     return banners.map(
       (banner) {
         final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
@@ -182,7 +186,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
             .match(bannerWishes)
             // This keeps the sorting by number inside the banner.
             .sortedByDescending((e) => e.number)
-            .thenWith((a, b) => b.compareTo(a));
+            .thenWith((a, b) => SaveWishComp.comparator(b, a));
 
         final hide = !filter.hasExtra('show');
         final showBanner = !hide || filteredWishes.isNotEmpty;
@@ -202,8 +206,8 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 return WishListItem(
                   pity: pity,
                   bannerType: gsBanner,
-                  wishState: gsBanner == GsBanner.character ||
-                          gsBanner == GsBanner.weapon
+                  wishState: gsBanner == GeBannerType.character ||
+                          gsBanner == GeBannerType.weapon
                       ? GsUtils.wishes.getWishState(wishesList, wish)
                       : WishState.none,
                   index: index,

@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveCharacter extends IdSaveData<SaveCharacter> {
+class SaveCharacter extends GsModel<SaveCharacter> {
   @override
   final String id;
   final String outfit;

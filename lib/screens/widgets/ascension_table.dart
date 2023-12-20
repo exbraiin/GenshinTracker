@@ -1,26 +1,30 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 typedef _MatsMap = Map<String, int> Function(int l);
-typedef _StatsMap = Map<GsAttributeStat, String? Function(int l)>;
 
 class AscensionTable extends StatelessWidget {
   final TextStyle? style;
   final bool alwaysShowMats;
   final List<int> _levels;
   final _MatsMap _mats;
-  final _StatsMap _statsBuilder;
+  final List<
+      ({
+        String Function(BuildContext ctx) label,
+        String? Function(BuildContext ctx, int l) value,
+      })> _statsBuilder;
 
   AscensionTable.weapon(
-    InfoWeapon item,
-    InfoWeaponInfo info, {
+    GsWeapon item,
+    GsWeaponInfo info, {
     super.key,
     this.style,
     this.alwaysShowMats = false,
@@ -30,14 +34,22 @@ class AscensionTable extends StatelessWidget {
             .toList(),
         _mats =
             ((l) => GsUtils.weaponMaterials.getAscensionMaterials(item.id, l)),
-        _statsBuilder = {
-          GsAttributeStat.atk: (l) => info.ascAtkValues.elementAtOrNull(l),
-          item.statType: (l) => info.ascStatValues.elementAtOrNull(l),
-        };
+        _statsBuilder = [
+          (
+            label: (ctx) => ctx.fromLabel(Labels.wsAtk),
+            value: (ctx, l) => info.ascAtkValues.split(',').elementAtOrNull(l),
+          ),
+          if (info.ascStatType != GeWeaponAscStatType.none)
+            (
+              label: (ctx) => ctx.fromLabel(item.statType.label),
+              value: (ctx, l) =>
+                  info.ascStatValues.split(',').elementAtOrNull(l),
+            ),
+        ];
 
   AscensionTable.character(
-    InfoCharacter item,
-    InfoCharacterInfo info, {
+    GsCharacter item,
+    GsCharacterInfo info, {
     super.key,
     this.style = const TextStyle(color: Colors.white),
     this.alwaysShowMats = false,
@@ -47,16 +59,24 @@ class AscensionTable extends StatelessWidget {
             .toList(),
         _mats = ((l) =>
             GsUtils.characterMaterials.getAscensionMaterials(item.id, l)),
-        _statsBuilder = {
-          GsAttributeStat.hp: (l) =>
-              info.ascension.ascHpValues.elementAtOrNull(l),
-          GsAttributeStat.atk: (l) =>
-              info.ascension.ascAtkValues.elementAtOrNull(l),
-          GsAttributeStat.def: (l) =>
-              info.ascension.ascDefValues.elementAtOrNull(l),
-          info.ascension.ascStatType: (l) =>
-              info.ascension.ascStatValues.elementAtOrNull(l),
-        };
+        _statsBuilder = [
+          (
+            label: (ctx) => ctx.fromLabel(Labels.wsHp),
+            value: (ctx, l) => info.ascHpValues.split(',').elementAtOrNull(l),
+          ),
+          (
+            label: (ctx) => ctx.fromLabel(Labels.wsAtk),
+            value: (ctx, l) => info.ascAtkValues.split(',').elementAtOrNull(l),
+          ),
+          (
+            label: (ctx) => ctx.fromLabel(Labels.wsDef),
+            value: (ctx, l) => info.ascDefValues.split(',').elementAtOrNull(l),
+          ),
+          (
+            label: (ctx) => ctx.fromLabel(info.ascStatType.label),
+            value: (ctx, l) => info.ascStatValues.split(',').elementAtOrNull(l),
+          ),
+        ];
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +107,6 @@ class AscensionTable extends StatelessWidget {
       );
     }
 
-    final validStats =
-        _statsBuilder.keys.where((e) => e != GsAttributeStat.none);
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, notifier, child) {
@@ -107,14 +125,15 @@ class AscensionTable extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                ...validStats.mapIndexed((i, e) {
-                  final isLast = i == validStats.length - 1 && !alwaysShowMats;
+                ..._statsBuilder.mapIndexed((i, e) {
+                  final isLast =
+                      i == _statsBuilder.length - 1 && !alwaysShowMats;
                   return Expanded(
                     child: Container(
                       decoration: decor(endCol: isLast),
                       padding: const EdgeInsets.all(kSeparator4),
                       child: Text(
-                        context.fromLabel(e.label),
+                        e.label(context),
                         style: header,
                         textAlign: TextAlign.center,
                       ),
@@ -154,9 +173,9 @@ class AscensionTable extends StatelessWidget {
                           textAlign: TextAlign.end,
                         ),
                       ),
-                      ...validStats.mapIndexed((attIdx, att) {
-                        final endCol =
-                            attIdx == validStats.length - 1 && !alwaysShowMats;
+                      ..._statsBuilder.mapIndexed((attIdx, att) {
+                        final endCol = attIdx == _statsBuilder.length - 1 &&
+                            !alwaysShowMats;
                         return Expanded(
                           child: Container(
                             height: alwaysShowMats ? 58 : null,
@@ -164,7 +183,7 @@ class AscensionTable extends StatelessWidget {
                             decoration: decor(endRow: endRow, endCol: endCol),
                             padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                             child: Text(
-                              _statsBuilder[att]?.call(lvlIdx) ?? '-',
+                              att.value.call(context, lvlIdx) ?? '-',
                               style: style,
                               textAlign: TextAlign.center,
                             ),
@@ -182,8 +201,8 @@ class AscensionTable extends StatelessWidget {
                               children: mats.entries
                                   .map<Widget>((e) {
                                     final db =
-                                        GsDatabase.instance.infoMaterials;
-                                    final item = db.getItemOrNull(e.key);
+                                        Database.instance.infoOf<GsMaterial>();
+                                    final item = db.getItem(e.key);
                                     if (item == null) return const SizedBox();
                                     return ItemGridWidget.material(
                                       item,
@@ -205,8 +224,8 @@ class AscensionTable extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: mats.entries
                             .map<Widget>((e) {
-                              final db = GsDatabase.instance.infoMaterials;
-                              final item = db.getItemOrNull(e.key);
+                              final db = Database.instance.infoOf<GsMaterial>();
+                              final item = db.getItem(e.key);
                               if (item == null) return const SizedBox();
                               return ItemGridWidget.material(
                                 item,

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -9,7 +10,6 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/achievements_screen/achievement_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
@@ -22,15 +22,15 @@ class AchievementGroupsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenFilterBuilder<InfoAchievement>(
+    return ScreenFilterBuilder<GsAchievement>(
       filter: ScreenFilters.infoAchievement,
       builder: (context, filter, button, toggle) {
         return ValueStreamBuilder<bool>(
-          stream: GsDatabase.instance.loaded,
+          stream: Database.instance.loaded,
           builder: (context, snapshot) {
             if (snapshot.data != true) return const SizedBox();
-            final data = GsDatabase.instance.infoAchievementGroups;
-            final gList = data.getItems().toList();
+            final data = Database.instance.infoOf<GsAchievementGroup>();
+            final gList = data.items.toList();
             final total = GsUtils.achievements.countTotal();
             final saved = GsUtils.achievements.countSaved();
 
@@ -45,13 +45,13 @@ class AchievementGroupsScreen extends StatelessWidget {
                 value: '',
                 builder: (context, sNotifier, child) {
                   if (gList.isEmpty) return const GsNoResultsState();
-                  return ValueNotifierBuilder<InfoAchievementGroup>(
+                  return ValueNotifierBuilder<GsAchievementGroup>(
                     value: gList.first,
                     builder: (context, notifier, child) {
                       final item = notifier.value;
-                      final data = GsDatabase.instance.infoAchievements;
+                      final data = Database.instance.infoOf<GsAchievement>();
                       final aList = filter.match(
-                        data.getItems().where((e) => e.group == item.id).where(
+                        data.items.where((e) => e.group == item.id).where(
                               (element) => element.name
                                   .toLowerCase()
                                   .contains(sNotifier.value),
@@ -90,8 +90,8 @@ class AchievementGroupsScreen extends StatelessWidget {
 
   Widget _getGroupsList(
     BuildContext context,
-    List<InfoAchievementGroup> list,
-    ValueNotifier<InfoAchievementGroup> notifier,
+    List<GsAchievementGroup> list,
+    ValueNotifier<GsAchievementGroup> notifier,
     ValueNotifier<String> sNotifier,
   ) {
     return Column(
@@ -138,8 +138,8 @@ class AchievementGroupsScreen extends StatelessWidget {
   }
 
   Widget _getAchievementsList(
-    InfoAchievementGroup group,
-    List<InfoAchievement> list,
+    GsAchievementGroup group,
+    List<GsAchievement> list,
   ) {
     if (list.isEmpty) return const GsNoResultsState();
     return ListView.separated(
@@ -153,15 +153,15 @@ class AchievementGroupsScreen extends StatelessWidget {
 
   Widget _buildItem(
     BuildContext context,
-    InfoAchievementGroup item,
+    GsAchievementGroup item,
     bool selected,
     VoidCallback? select,
   ) {
     final saved = GsUtils.achievements.countSaved((e) => e.group == item.id);
     final total = GsUtils.achievements.countTotal((e) => e.group == item.id);
     final percentage = saved / total.coerceAtLeast(1);
-    final namecards = GsDatabase.instance.infoNamecards;
-    final namecard = namecards.getItemOrNull(item.namecard);
+    final namecards = Database.instance.infoOf<GsNamecard>();
+    final namecard = namecards.getItem(item.namecard);
     return AnimatedContainer(
       height: 86,
       duration: const Duration(milliseconds: 400),

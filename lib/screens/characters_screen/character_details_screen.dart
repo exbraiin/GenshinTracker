@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -10,8 +11,9 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -31,13 +33,13 @@ class CharacterDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final item = args! as InfoCharacter;
-    final info = GsDatabase.instance.infoCharactersInfo.getItemOrNull(item.id);
+    final item = args! as GsCharacter;
+    final info = Database.instance.infoOf<GsCharacterInfo>().getItem(item.id);
     final color = item.element.color;
     bgColor = Color.lerp(Colors.black, color, 0.2)!.withOpacity(0.5);
 
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
         return InventoryPage(
@@ -78,11 +80,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                           const SizedBox(height: kSeparator8),
                           _getAscension(context, item, info),
                           const SizedBox(height: kSeparator8),
-                          if (info.hasTalents) ...[
+                          if (info.talents.isNotEmpty) ...[
                             _getTalents(context, info),
                             const SizedBox(height: kSeparator8),
                           ],
-                          if (info.hasConstellations) ...[
+                          if (info.constellations.isNotEmpty) ...[
                             _getConstellations(context, info),
                             const SizedBox(height: kSeparator8),
                           ],
@@ -102,8 +104,8 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getInfo(
     BuildContext context,
-    InfoCharacter info,
-    InfoCharacterInfo? infos,
+    GsCharacter info,
+    GsCharacterInfo? infos,
   ) {
     final ascension = GsUtils.characters.getCharAscension(info.id);
     final friendship = GsUtils.characters.getCharFriendship(info.id);
@@ -205,12 +207,12 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAttributes(BuildContext context, InfoCharacter info) {
+  Widget _getAttributes(BuildContext context, GsCharacter info) {
     final style = context.textTheme.titleSmall!;
     final stLabel = style.copyWith(color: context.themeColors.dimWhite);
     final stStyle = style.copyWith(color: Colors.white);
-    final db = GsDatabase.instance.infoRecipes;
-    final dish = db.getItemOrNull(info.specialDish);
+    final db = Database.instance.infoOf<GsRecipe>();
+    final dish = db.getItem(info.specialDish);
     return GsDataBox.info(
       key: _attributes,
       bgColor: bgColor,
@@ -234,7 +236,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(context.fromLabel(Labels.name), style: stLabel),
                 Text(info.name, style: stStyle),
                 Text(context.fromLabel(Labels.birthday), style: stLabel),
-                Text(info.birthday.toPrettyDate(context), style: stStyle),
+                Text(
+                  (DateTime.tryParse(info.birthday) ?? DateTime(0))
+                      .toPrettyDate(context),
+                  style: stStyle,
+                ),
               ].map((e) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -294,7 +300,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                       )
                     : Text(context.fromLabel(Labels.wsNone), style: stStyle),
                 Text(context.fromLabel(Labels.releaseDate), style: stLabel),
-                Text(info.releaseDate.toPrettyDate(context), style: stStyle),
+                Text(
+                  info.releaseDateTime.toPrettyDate(context),
+                  style: stStyle,
+                ),
               ].map((e) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
@@ -317,8 +326,9 @@ class CharacterDetailsScreen extends StatelessWidget {
                         onTap: (ctx) =>
                             GsUtils.characters.setCharOutfit(info.id, ''),
                       ),
-                      ...GsDatabase.instance.infoCharactersOutfit
-                          .getItems()
+                      ...Database.instance
+                          .infoOf<GsCharacterSkin>()
+                          .items
                           .where((element) => element.character == info.id)
                           .map((e) {
                         return ItemGridWidget(
@@ -348,8 +358,8 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getAscension(
     BuildContext context,
-    InfoCharacter info,
-    InfoCharacterInfo infos,
+    GsCharacter info,
+    GsCharacterInfo infos,
   ) {
     return GsDataBox.info(
       key: _ascension,
@@ -359,7 +369,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getTalents(BuildContext context, InfoCharacterInfo info) {
+  Widget _getTalents(BuildContext context, GsCharacterInfo info) {
     return ValueNotifierBuilder<int>(
       value: 0,
       builder: (context, notifier, child) {
@@ -416,7 +426,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getConstellations(BuildContext context, InfoCharacterInfo info) {
+  Widget _getConstellations(BuildContext context, GsCharacterInfo info) {
     return ValueNotifierBuilder<int>(
       value: 0,
       builder: (context, notifier, child) {
@@ -464,8 +474,8 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getAllMaterials(BuildContext context, InfoCharacterInfo details) {
-    final im = GsDatabase.instance.infoMaterials;
+  Widget _getAllMaterials(BuildContext context, GsCharacterInfo details) {
+    final im = Database.instance.infoOf<GsMaterial>();
     final ic = GsUtils.characterMaterials;
     final tltMats = ic.getTalentMaterials(details.id);
     final ascMats = ic.getAscensionMaterials(details.id);
@@ -484,7 +494,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     TableRow getTableRow(
       String label,
       Map<String, int> mats,
-      Widget Function(MapEntry<InfoMaterial, int> e) mapper,
+      Widget Function(MapEntry<GsMaterial, int> e) mapper,
     ) {
       return TableRow(
         children: [
@@ -503,7 +513,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               runSpacing: kSeparator4,
               textDirection: TextDirection.rtl,
               children: mats.entries
-                  .map((e) => MapEntry(im.getItemOrNull(e.key), e.value))
+                  .map((e) => MapEntry(im.getItem(e.key), e.value))
                   .where((e) => e.key != null)
                   .map((e) => MapEntry(e.key!, e.value))
                   .sortedBy((e) => existance(e.key.id))
@@ -558,16 +568,17 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getTags(
     BuildContext context,
-    InfoCharacter info,
-    InfoCharacterInfo? infos,
+    GsCharacter info,
+    GsCharacterInfo? infos,
   ) {
     return Row(
       children: [
         context.fromLabel(Labels.rarityStar, info.rarity),
         context.fromLabel(info.weapon.label),
-        if (info.region != GsRegion.none) context.fromLabel(info.region.label),
+        if (info.region != GeRegionType.none)
+          context.fromLabel(info.region.label),
         context.fromLabel(info.element.label),
-        if (infos != null) context.fromLabel(infos.ascension.ascStatType.label),
+        if (infos != null) context.fromLabel(infos.ascStatType.label),
       ]
           .map<Widget>((e) => GsItemCardLabel(label: e))
           .separate(const SizedBox(width: kSeparator4))

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
@@ -11,13 +12,13 @@ import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 
 typedef ContextCallback<T> = void Function(BuildContext context, T item);
 
-void _callMaterial(BuildContext ctx, InfoMaterial info) =>
+void _callMaterial(BuildContext ctx, GsMaterial info) =>
     MaterialDetailsCard(info).show(ctx);
-void _callRecipe(BuildContext ctx, InfoRecipe info) =>
+void _callRecipe(BuildContext ctx, GsRecipe info) =>
     RecipeDetailsCard(info).show(ctx);
-void _callWeapon(BuildContext ctx, InfoWeapon info) =>
+void _callWeapon(BuildContext ctx, GsWeapon info) =>
     WeaponDetailsCard(info).show(ctx);
-void _callCharacter(BuildContext ctx, InfoCharacter info) =>
+void _callCharacter(BuildContext ctx, GsCharacter info) =>
     Navigator.of(ctx).pushNamed(CharacterDetailsScreen.id, arguments: info);
 
 enum ItemSize {
@@ -54,12 +55,12 @@ class ItemGridWidget extends StatelessWidget {
   });
 
   ItemGridWidget.material(
-    InfoMaterial info, {
+    GsMaterial info, {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
-    ContextCallback<InfoMaterial>? onTap = _callMaterial,
+    ContextCallback<GsMaterial>? onTap = _callMaterial,
   })  : rarity = info.rarity,
         tooltip = info.name,
         urlImage = info.image,
@@ -67,12 +68,12 @@ class ItemGridWidget extends StatelessWidget {
         onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.recipe(
-    InfoRecipe info, {
+    GsRecipe info, {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
-    ContextCallback<InfoRecipe>? onTap = _callRecipe,
+    ContextCallback<GsRecipe>? onTap = _callRecipe,
   })  : rarity = info.rarity,
         tooltip = info.name,
         urlImage = info.image,
@@ -80,12 +81,12 @@ class ItemGridWidget extends StatelessWidget {
         onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.weapon(
-    InfoWeapon info, {
+    GsWeapon info, {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
-    ContextCallback<InfoWeapon>? onTap = _callWeapon,
+    ContextCallback<GsWeapon>? onTap = _callWeapon,
   })  : rarity = info.rarity,
         tooltip = info.name,
         urlImage = info.image,
@@ -93,12 +94,12 @@ class ItemGridWidget extends StatelessWidget {
         onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.character(
-    InfoCharacter info, {
+    GsCharacter info, {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
-    ContextCallback<InfoCharacter>? onTap = _callCharacter,
+    ContextCallback<GsCharacter>? onTap = _callCharacter,
   })  : rarity = info.rarity,
         tooltip = info.name,
         urlImage = GsUtils.characters.getImage(info.id),
@@ -216,7 +217,7 @@ class ItemCircleWidget extends StatelessWidget {
   });
 
   factory ItemCircleWidget.element(
-    GsElement element, {
+    GeElementType element, {
     ItemSize size = ItemSize.small,
     String label = '',
   }) {
@@ -228,7 +229,7 @@ class ItemCircleWidget extends StatelessWidget {
   }
 
   factory ItemCircleWidget.material(
-    InfoMaterial info, {
+    GsMaterial info, {
     ItemSize size = ItemSize.medium,
   }) {
     return ItemCircleWidget(
@@ -239,7 +240,7 @@ class ItemCircleWidget extends StatelessWidget {
   }
 
   factory ItemCircleWidget.city(
-    InfoCity city, {
+    GsRegion city, {
     ItemSize size = ItemSize.medium,
   }) {
     return ItemCircleWidget(
@@ -251,7 +252,7 @@ class ItemCircleWidget extends StatelessWidget {
   }
 
   factory ItemCircleWidget.setCategory(
-    GsSetCategory info, {
+    GeSereniteaSetType info, {
     ItemSize size = ItemSize.medium,
   }) {
     return ItemCircleWidget(

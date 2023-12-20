@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 
@@ -15,7 +16,7 @@ class HomeAchievementsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         final info = GsUtils.achievements;
         final itotal = info.countTotalRewards();
@@ -49,7 +50,7 @@ class HomeAchievementsWidget extends StatelessWidget {
                 HomeRow.header(context.fromLabel(Labels.total)),
               ],
               rows: [
-                ...GsAchievementType.values.map((e) {
+                ...GeAchievementType.values.map((e) {
                   final saved = info.countSaved((a) => a.type == e);
                   final total = info.countTotal((a) => a.type == e);
                   return [

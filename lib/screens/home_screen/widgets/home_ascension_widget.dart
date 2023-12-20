@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -7,7 +8,7 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeAscensionWidget extends StatefulWidget {
@@ -29,10 +30,11 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final characters = GsDatabase.instance.infoCharacters
-            .getItems()
+        final characters = Database.instance
+            .infoOf<GsCharacter>()
+            .items
             .where(
               (e) =>
                   GsUtils.characters.hasCaracter(e.id) &&
@@ -82,11 +84,11 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
     );
   }
 
-  Widget _getMaterialsList(Iterable<InfoCharacter> characters) {
+  Widget _getMaterialsList(Iterable<GsCharacter> characters) {
     if (characters.isEmpty) return const SizedBox();
 
-    MapEntry<InfoMaterial?, int> combine(
-      List<MapEntry<InfoMaterial?, int>> list,
+    MapEntry<GsMaterial?, int> combine(
+      List<MapEntry<GsMaterial?, int>> list,
     ) {
       final valid = list.where((e) => e.key != null);
       final first = valid.firstOrNull;
@@ -102,7 +104,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         .values
         .map(combine)
         .where((e) => e.key != null)
-        .sortedBy((e) => e.key!);
+        .sortedWith((a, b) => GsMaterialComp.comparator(a.key!, b.key!));
 
     return ValueListenableBuilder<bool>(
       valueListenable: _notifier,

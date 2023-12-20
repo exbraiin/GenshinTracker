@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 import 'package:tracker/screens/weapons_screen/weapon_list_item.dart';
@@ -14,11 +14,11 @@ class WeaponsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InventoryListPage<InfoWeapon>(
+    return InventoryListPage<GsWeapon>(
       icon: menuIconWeapons,
       title: context.fromLabel(Labels.weapons),
       filter: ScreenFilters.infoWeaponFilter,
-      items: (db) => db.infoWeapons.getItems(),
+      items: (db) => db.infoOf<GsWeapon>().items,
       itemBuilder: (context, state) => WeaponListItem(
         showItem: !state.filter!.isSectionEmpty('weekdays'),
         showExtra: state.filter!.hasExtra('info'),

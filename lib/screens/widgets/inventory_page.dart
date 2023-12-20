@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
@@ -10,19 +11,19 @@ import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 typedef ItemBuilder = Widget Function(BuildContext context, IndexState state);
 typedef IndexState = ({int index, bool selected, VoidCallback onSelect});
-typedef ItemState<T extends Comparable<T>> = ({
+typedef ItemState<T extends GsModel<T>> = ({
   T item,
   bool selected,
   VoidCallback onSelect,
   ScreenFilter<T>? filter,
 });
 
-class InventoryListPage<T extends Comparable<T>> extends StatelessWidget {
+class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final String icon;
   final String title;
   final Size childSize;
   final ScreenFilter<T>? filter;
-  final Iterable<T> Function(GsDatabase db) items;
+  final Iterable<T> Function(Database db) items;
   final List<Widget> Function(
     Set<String> extras,
     void Function(String label) toggle,
@@ -45,10 +46,10 @@ class InventoryListPage<T extends Comparable<T>> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        final items = this.items(GsDatabase.instance);
+        final items = this.items(Database.instance);
 
         if (filter == null) {
           final sorted = items.toList();

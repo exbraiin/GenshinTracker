@@ -141,10 +141,10 @@ packages:
     dependency: "direct main"
     description:
       name: dartx
-      sha256: "4bc881203319f1d88dc6bf011a98e247b92424d1cb3f846b4a4d998412915776"
+      sha256: "8b25435617027257d43e6508b5fe061012880ddfdaa75a71d607c3de2a13d244"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "1.2.0"
   equatable:
     dependency: transitive
     description:
@@ -219,6 +219,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  gsdatabase:
+    dependency: "direct main"
+    description:
+      path: "../gsdatabase"
+      relative: true
+    source: path
+    version: "1.0.0"
   http:
     dependency: transitive
     description:
@@ -537,5 +544,5 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
-  dart: ">=3.1.0-185.0.dev <4.0.0"
+  dart: ">=3.1.4 <4.0.0"
   flutter: ">=3.10.0"

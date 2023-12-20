@@ -1,18 +1,19 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showItem;
   final bool showExtra;
   final bool selected;
-  final InfoWeapon item;
+  final GsWeapon item;
   final VoidCallback? onTap;
 
   const WeaponListItem({
@@ -44,7 +45,7 @@ class WeaponListItem extends StatelessWidget {
     late final material = GsUtils.weaponMaterials
         .getAscensionMaterials(item.id)
         .entries
-        .map((e) => GsDatabase.instance.infoMaterials.getItemOrNull(e.key))
+        .map((e) => Database.instance.infoOf<GsMaterial>().getItem(e.key))
         .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);
 
     return Padding(
@@ -67,9 +68,9 @@ class WeaponListItem extends StatelessWidget {
                 children: [
                   GsItemCardLabel(
                     label: '${item.atk}',
-                    asset: GsAttributeStat.atk.assetPath,
+                    asset: atkIcon,
                   ),
-                  if (item.statType != GsAttributeStat.none)
+                  if (item.statType != GeWeaponAscStatType.none)
                     Padding(
                       padding: const EdgeInsets.only(top: kSeparator2),
                       child: Tooltip(

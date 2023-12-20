@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveRecipe extends IdSaveData<SaveRecipe> {
+class SaveRecipe extends GsModel<SaveRecipe> {
   @override
   final String id;
   final int proficiency;

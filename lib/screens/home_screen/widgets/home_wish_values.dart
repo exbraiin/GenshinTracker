@@ -1,33 +1,26 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 
 const _arrow = '→';
-const _bannerTitleLabel = {
-  GsBanner.character: Labels.charWishes,
-  GsBanner.beginner: Labels.noviceWishes,
-  GsBanner.weapon: Labels.weaponWishes,
-  GsBanner.standard: Labels.stndWishes,
-};
 
 class HomeWishesValues extends StatelessWidget {
-  final int maxPity;
-  final String title;
-  final GsBanner banner;
+  final GeBannerType banner;
 
   const HomeWishesValues({
     super.key,
-    required this.title,
     required this.banner,
-    this.maxPity = 90,
   });
 
   @override
@@ -36,13 +29,24 @@ class HomeWishesValues extends StatelessWidget {
     final style = st.copyWith(color: context.themeColors.almostWhite);
 
     final sw = GsUtils.wishes;
-    final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
+    final wishes = sw
+        .getSaveWishesByBannerType(banner)
+        .sortedWith((a, b) => SaveWishComp.comparator(b, a));
+
     final summary = WishesSummary.fromList(wishes);
+
+    final maxPity = banner == GeBannerType.weapon ? 80 : 90;
+    final title = switch (banner) {
+      GeBannerType.weapon => Labels.weaponWishes,
+      GeBannerType.standard => Labels.stndWishes,
+      GeBannerType.beginner => Labels.noviceWishes,
+      GeBannerType.character => Labels.charWishes,
+    };
 
     return GsDataBox.info(
       title: Row(
         children: [
-          Expanded(child: Text(context.fromLabel(_bannerTitleLabel[banner]!))),
+          Expanded(child: Text(context.fromLabel(title))),
           Text(
             (wishes.length * GsDomain.primogemsPerWish).format(),
             style: const TextStyle(
@@ -56,7 +60,7 @@ class HomeWishesValues extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _summary(context, wishes, summary),
+          _summary(context, wishes, summary, maxPity),
           const SizedBox(height: kSeparator8),
           Row(
             children: [
@@ -98,7 +102,7 @@ class HomeWishesValues extends StatelessWidget {
             context.fromLabel(Labels.rarityStar, 5),
             context.themeColors.getRarityColor(5),
           ),
-          if (banner == GsBanner.standard) ...[
+          if (banner == GeBannerType.standard) ...[
             Divider(
               color: context.themeColors.divider,
               thickness: 1,
@@ -122,7 +126,8 @@ class HomeWishesValues extends StatelessWidget {
               context.themeColors.getRarityColor(5),
             ),
           ],
-          if (banner == GsBanner.character || banner == GsBanner.weapon) ...[
+          if (banner == GeBannerType.character ||
+              banner == GeBannerType.weapon) ...[
             Divider(
               color: context.themeColors.divider,
               thickness: 1,
@@ -172,6 +177,7 @@ class HomeWishesValues extends StatelessWidget {
             style: style,
             summary: summary,
             wishes: wishes,
+            maxPity: maxPity,
           ),
         ],
       ),
@@ -182,8 +188,9 @@ class HomeWishesValues extends StatelessWidget {
     BuildContext context,
     List<SaveWish> wishes,
     WishesSummary summary,
+    int maxPity,
   ) {
-    final show = banner == GsBanner.character;
+    final show = banner == GeBannerType.character;
     final pityColor = context.themeColors.getPityColor(summary.last5, maxPity);
     final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
     return Row(
@@ -221,6 +228,7 @@ class HomeWishesValues extends StatelessWidget {
     required TextStyle style,
     required WishesSummary summary,
     required List<SaveWish> wishes,
+    required int maxPity,
   }) {
     if (summary.wishesInfo5.total == 0) return const SizedBox();
     var expanded = false;
@@ -259,8 +267,8 @@ class HomeWishesValues extends StatelessWidget {
                   children: summary.wishes5.reversed.map((wish) {
                     final item = GsUtils.items.getItemData(wish.itemId);
                     final pity = GsUtils.wishes.countPity(wishes, wish);
-                    final showState = banner == GsBanner.character ||
-                        banner == GsBanner.weapon;
+                    final showState = banner == GeBannerType.character ||
+                        banner == GeBannerType.weapon;
                     final state = showState
                         ? GsUtils.wishes.getWishState(wishes, wish)
                         : WishState.none;

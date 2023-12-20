@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -14,7 +14,7 @@ class CharactersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InventoryListPage<InfoCharacter>(
+    return InventoryListPage<GsCharacter>(
       icon: menuIconCharacters,
       title: context.fromLabel(Labels.characters),
       actions: (extras, toggle) => [
@@ -32,7 +32,7 @@ class CharactersScreen extends StatelessWidget {
         ),
       ],
       filter: ScreenFilters.infoCharacterFilter,
-      items: (db) => db.infoCharacters.getItems(),
+      items: (db) => db.infoOf<GsCharacter>().items,
       itemBuilder: (context, state) => CharacterListItem(
         state.item,
         showItem: !state.filter!.isSectionEmpty('weekdays'),
@@ -42,7 +42,7 @@ class CharactersScreen extends StatelessWidget {
     );
   }
 
-  void _onCharacterTap(BuildContext context, InfoCharacter character) {
+  void _onCharacterTap(BuildContext context, GsCharacter character) {
     Navigator.of(context).pushNamed(
       CharacterDetailsScreen.id,
       arguments: character,

@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 class VersionListItem extends StatelessWidget {
   final bool selected;
-  final InfoVersion item;
+  final GsVersion item;
   final VoidCallback? onTap;
 
   const VersionListItem(

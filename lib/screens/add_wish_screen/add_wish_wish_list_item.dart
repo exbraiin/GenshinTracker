@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/domain/gs_database.utils.dart';
 
 class AddWishWishListItem extends StatelessWidget {
   final int roll;
-  final ItemData item;
+  final GsWish item;
   final VoidCallback? onRemove;
 
   const AddWishWishListItem({

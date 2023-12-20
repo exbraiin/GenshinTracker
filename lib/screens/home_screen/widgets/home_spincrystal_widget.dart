@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
@@ -13,10 +14,10 @@ class HomeSpincrystalsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final db = GsDatabase.instance;
-        final spins = db.infoSpincrystal.getItems();
+        final db = Database.instance;
+        final spins = db.infoOf<GsSpincrystal>().items;
         final sv = db.saveSpincrystals
             .getItems()
             .where((e) => e.obtained)

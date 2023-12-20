@@ -1,11 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
 class HomeRecipesWidget extends StatelessWidget {
@@ -14,13 +14,14 @@ class HomeRecipesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final all = GsDatabase.instance.infoRecipes
-            .getItems()
+        final all = Database.instance
+            .infoOf<GsRecipe>()
+            .items
             .where((e) => e.baseRecipe.isEmpty)
-            .where((e) => e.type == GsRecipeType.permanent);
-        final saved = GsDatabase.instance.saveRecipes.getItems();
+            .where((e) => e.type == GeRecipeType.permanent);
+        final saved = Database.instance.saveRecipes.getItems();
         final groups = all.groupBy((e) => e.rarity);
 
         int owned([int? rarity]) {
@@ -30,7 +31,7 @@ class HomeRecipesWidget extends StatelessWidget {
 
         int master([int? rarity]) {
           final values = groups[rarity] ?? groups.values.expand((e) => e);
-          bool compare(InfoRecipe i) => saved
+          bool compare(GsRecipe i) => saved
               .any((t) => t.id == i.id && t.proficiency == i.maxProficiency);
           return values.count(compare);
         }

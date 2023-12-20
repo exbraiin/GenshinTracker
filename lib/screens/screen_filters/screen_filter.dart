@@ -1,9 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/enums/gs_enemy_family.dart';
-import 'package:tracker/domain/enums/gs_enemy_type.dart';
-import 'package:tracker/domain/enums/gs_weekday.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
@@ -48,8 +47,9 @@ class FilterSection<T, I> {
   static FilterSection<String, I> version<I>(String Function(I item) match) {
     String toMajorVersion(String version) => '${version.split('.').first}.x';
     return FilterSection(
-      GsDatabase.instance.infoVersion
-          .getItems()
+      Database.instance
+          .infoOf<GsVersion>()
+          .items
           .map((e) => toMajorVersion(e.id))
           .toSet(),
       (item) => toMajorVersion(match(item)),
@@ -70,20 +70,22 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<GsRegion, I> region<I>(
-    GsRegion Function(I item) match,
+  static FilterSection<GeRegionType, I> region<I>(
+    GeRegionType Function(I item) match,
   ) {
     return FilterSection(
-      GsRegion.values.toSet(),
+      GeRegionType.values.toSet(),
       match,
       (c) => c.fromLabel(Labels.region),
       (c, i) => c.fromLabel(i.label),
     );
   }
 
-  static FilterSection<GsWeapon, I> weapon<I>(GsWeapon Function(I item) match) {
+  static FilterSection<GeWeaponType, I> weapon<I>(
+    GeWeaponType Function(I item) match,
+  ) {
     return FilterSection(
-      GsWeapon.values.toSet(),
+      GeWeaponType.values.toSet(),
       match,
       (c) => c.fromLabel(Labels.weapon),
       (c, e) => c.fromLabel(e.label),
@@ -91,11 +93,11 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<GsElement, I> element<I>(
-    GsElement Function(I item) match,
+  static FilterSection<GeElementType, I> element<I>(
+    GeElementType Function(I item) match,
   ) {
     return FilterSection(
-      GsElement.values.toSet(),
+      GeElementType.values.toSet(),
       match,
       (c) => c.fromLabel(Labels.element),
       (c, i) => c.fromLabel(i.label),
@@ -103,12 +105,12 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<GsItem, I> item<I>(GsItem Function(I item) match) {
+  static FilterSection<bool, I> item<I>(bool Function(I item) match) {
     return FilterSection(
-      GsItem.values.toSet(),
+      {true, false},
       match,
       (c) => c.fromLabel(Labels.type),
-      (c, i) => c.fromLabel(i.label),
+      (c, i) => c.fromLabel(i ? Labels.weapon : Labels.character),
     );
   }
 
@@ -121,11 +123,11 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<GsSetCategory, I> setCategory<I>(
-    GsSetCategory Function(I item) match,
+  static FilterSection<GeSereniteaSetType, I> setCategory<I>(
+    GeSereniteaSetType Function(I item) match,
   ) {
     return FilterSection(
-      GsSetCategory.values.toSet(),
+      GeSereniteaSetType.values.toSet(),
       match,
       (c) => c.fromLabel(Labels.category),
       (c, i) => c.fromLabel(i.label),
@@ -144,7 +146,7 @@ class FilterSection<T, I> {
   void toggle(T v) => enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
 }
 
-class ScreenFilter<I extends Comparable<I>> {
+class ScreenFilter<I extends GsModel<I>> {
   final Set<String> extras;
   final List<FilterSection<dynamic, I>> sections;
 
@@ -154,7 +156,7 @@ class ScreenFilter<I extends Comparable<I>> {
   }) : extras = extras ?? {};
 
   List<I> match(Iterable<I> items) {
-    return items.where((e) => sections.every((s) => s._filter(e))).sorted();
+    return items.where((e) => sections.every((s) => s._filter(e))).toList();
   }
 
   void reset() {
@@ -180,40 +182,40 @@ class ScreenFilter<I extends Comparable<I>> {
 }
 
 class ScreenFilters {
-  static final _db = GsDatabase.instance;
+  static final _db = Database.instance;
 
   static final _weekdays =
-      GsWeekday.values.exceptElement(GsWeekday.sunday).toSet();
+      GeWeekdayType.values.exceptElement(GeWeekdayType.sunday).toSet();
   static final _getItem = GsUtils.items.getItemData;
 
-  static final itemDataFilter = ScreenFilter<ItemData>(
+  static final itemDataFilter = ScreenFilter<GsWish>(
     sections: [
-      FilterSection.item((item) => item.type),
+      FilterSection.item((item) => item.isWeapon),
       FilterSection.rarity((item) => item.rarity, 3),
     ],
   );
   static final saveWishFilter = ScreenFilter<SaveWish>(
     sections: [
-      FilterSection.item((item) => _getItem(item.itemId).type),
+      FilterSection.item((item) => _getItem(item.itemId).isWeapon),
       FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
     ],
     extras: {'show'},
   );
-  static final infoAchievement = ScreenFilter<InfoAchievement>(
+  static final infoAchievement = ScreenFilter<GsAchievement>(
     sections: [
-      FilterSection<bool, InfoAchievement>(
+      FilterSection<bool, GsAchievement>(
         {true, false},
         (item) => item.hidden,
         (c) => c.fromLabel(Labels.achHidden),
         (c, e) => c.fromLabel(e ? Labels.achHidden : Labels.achVisible),
       ),
-      FilterSection<GsAchievementType, InfoAchievement>(
-        GsAchievementType.values.toSet(),
+      FilterSection<GeAchievementType, GsAchievement>(
+        GeAchievementType.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
         (c, e) => c.fromLabel(e.label),
       ),
-      FilterSection<bool, InfoAchievement>(
+      FilterSection<bool, GsAchievement>(
         {true, false},
         (item) => GsUtils.achievements.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
@@ -222,16 +224,16 @@ class ScreenFilters {
       FilterSection.version((item) => item.version),
     ],
   );
-  static final infoEnemies = ScreenFilter<InfoEnemy>(
+  static final infoEnemies = ScreenFilter<GsEnemy>(
     sections: [
-      FilterSection<GsEnemyType, InfoEnemy>(
-        GsEnemyType.values.toSet(),
+      FilterSection<GeEnemyType, GsEnemy>(
+        GeEnemyType.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
         (c, i) => c.fromLabel(i.label),
       ),
-      FilterSection<GsEnemyFamily, InfoEnemy>(
-        GsEnemyFamily.values.toSet(),
+      FilterSection<GeEnemyFamilyType, GsEnemy>(
+        GeEnemyFamilyType.values.toSet(),
         (item) => item.family,
         (c) => c.fromLabel(Labels.family),
         (c, i) => c.fromLabel(i.label),
@@ -239,10 +241,10 @@ class ScreenFilters {
       FilterSection.version((item) => item.version),
     ],
   );
-  static final infoNamecardFilter = ScreenFilter<InfoNamecard>(
+  static final infoNamecardFilter = ScreenFilter<GsNamecard>(
     sections: [
-      FilterSection<GsNamecardType, InfoNamecard>(
-        GsNamecardType.values.toSet(),
+      FilterSection<GeNamecardType, GsNamecard>(
+        GeNamecardType.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
         (c, e) => c.fromLabel(e.label),
@@ -250,11 +252,11 @@ class ScreenFilters {
       FilterSection.version((item) => item.version),
     ],
   );
-  static final infoRecipeFilter = ScreenFilter<InfoRecipe>(
+  static final infoRecipeFilter = ScreenFilter<GsRecipe>(
     sections: [
       FilterSection.rarity((item) => item.rarity),
-      FilterSection<GsRecipeBuff, InfoRecipe>(
-        GsRecipeBuff.values.toSet(),
+      FilterSection<GeRecipeEffectType, GsRecipe>(
+        GeRecipeEffectType.values.toSet(),
         (item) => item.effect,
         (c) => c.fromLabel(Labels.status),
         (c, i) => c.fromLabel(i.label),
@@ -264,8 +266,9 @@ class ScreenFilters {
       FilterSection.owned(
         (item) {
           if (item.baseRecipe.isNotEmpty) {
-            final id = _db.infoCharacters
-                .getItems()
+            final id = _db
+                .infoOf<GsCharacter>()
+                .items
                 .firstOrNullWhere((e) => e.specialDish == item.id)
                 ?.id;
             return GsUtils.characters.hasCaracter(id ?? '');
@@ -273,7 +276,7 @@ class ScreenFilters {
           return _db.saveRecipes.exists(item.id);
         },
       ),
-      FilterSection<bool, InfoRecipe>(
+      FilterSection<bool, GsRecipe>(
         {true, false},
         (item) =>
             _db.saveRecipes.getItemOrNull(item.id)?.proficiency ==
@@ -282,48 +285,39 @@ class ScreenFilters {
         (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
         filter: (i) => _db.saveRecipes.exists(i.id),
       ),
-      FilterSection<bool, InfoRecipe>(
+      FilterSection<bool, GsRecipe>(
         {true, false},
         (item) => item.baseRecipe.isNotEmpty,
         (c) => c.fromLabel(Labels.specialDish),
         (c, e) => c.fromLabel(e ? Labels.specialDish : Labels.wsNone),
       ),
-      FilterSection<GsRecipeType, InfoRecipe>(
-        GsRecipeType.values.toSet(),
+      FilterSection<GeRecipeType, GsRecipe>(
+        GeRecipeType.values.toSet(),
         (item) => item.type,
         (c) => c.fromLabel(Labels.type),
         (c, i) => c.fromLabel(i.label),
       ),
     ],
   );
-  static final infoRemarkableChestFilter = ScreenFilter<InfoRemarkableChest>(
+  static final infoRemarkableChestFilter = ScreenFilter<GsFurnitureChest>(
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
       FilterSection.region((item) => item.region),
       FilterSection.setCategory((item) => item.type),
-      FilterSection<String, InfoRemarkableChest>(
-        GsDatabase.instance.infoRemarkableChests
-            .getItems()
-            .map((e) => e.category)
-            .toSet(),
-        (item) => item.category,
-        (c) => c.fromLabel(Labels.type),
-        (c, i) => i.capitalize(),
-      ),
       FilterSection.owned((item) => _db.saveRemarkableChests.exists(item.id)),
     ],
   );
-  static final infoWeaponFilter = ScreenFilter<InfoWeapon>(
+  static final infoWeaponFilter = ScreenFilter<GsWeapon>(
     sections: [
       FilterSection.weapon((item) => item.type),
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
       FilterSection.owned((item) => GsUtils.wishes.hasItem(item.id)),
-      FilterSection<GsWeekday, InfoWeapon>.raw(
+      FilterSection<GeWeekdayType, GsWeapon>.raw(
         _weekdays,
         (item, enabled) {
-          final t = _db.infoMaterials.getItems();
+          final t = _db.infoOf<GsMaterial>().items;
           final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
           final i = GsUtils.weaponMaterials.getAscensionMaterials(item.id);
           return m.any((e) => i.containsKey(e.id));
@@ -332,35 +326,35 @@ class ScreenFilters {
         (c, i) => i.getLabel(c),
         key: 'weekdays',
       ),
-      FilterSection<GsAttributeStat, InfoWeapon>(
-        GsAttributeStat.weaponStats,
+      FilterSection<GeWeaponAscStatType, GsWeapon>(
+        GeWeaponAscStatType.values.toSet(),
         (item) => item.statType,
         (c) => c.fromLabel(Labels.ndStat),
         (c, i) => c.fromLabel(i.label),
         asset: (e) => e.assetPath,
       ),
-      FilterSection<GsItemSource, InfoWeapon>(
-        GsDatabase.instance.infoWeapons.getItems().map((e) => e.source).toSet(),
+      FilterSection<GeItemSourceType, GsWeapon>(
+        Database.instance.infoOf<GsWeapon>().items.map((e) => e.source).toSet(),
         (item) => item.source,
         (c) => c.fromLabel(Labels.source),
         (c, i) => i.name.capitalize(),
       ),
     ],
   );
-  static final infoArtifactFilter = ScreenFilter<InfoArtifact>(
+  static final infoArtifactFilter = ScreenFilter<GsArtifact>(
     sections: [
       FilterSection.rarity((item) => item.rarity, 3),
       FilterSection.version((item) => item.version),
     ],
   );
-  static final infoCharacterFilter = ScreenFilter<InfoCharacter>(
+  static final infoCharacterFilter = ScreenFilter<GsCharacter>(
     sections: [
       FilterSection.element((item) => item.element),
       FilterSection.weapon((item) => item.weapon),
-      FilterSection<GsWeekday, InfoCharacter>.raw(
+      FilterSection<GeWeekdayType, GsCharacter>.raw(
         _weekdays,
         (item, enabled) {
-          final t = _db.infoMaterials.getItems();
+          final t = _db.infoOf<GsMaterial>().items;
           final m = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
           final i = GsUtils.characterMaterials.getTalentMaterials(item.id);
           return m.any((e) => i.containsKey(e.id));
@@ -371,19 +365,16 @@ class ScreenFilters {
       ),
       FilterSection.version((item) => item.version),
       FilterSection.region((item) => item.region),
-      FilterSection<GsAttributeStat, InfoCharacter>(
-        GsAttributeStat.characterStats,
+      FilterSection<GeCharacterAscStatType, GsCharacter>(
+        GeCharacterAscStatType.values.toSet(),
         (item) =>
-            _db.infoCharactersInfo
-                .getItemOrNull(item.id)
-                ?.ascension
-                .ascStatType ??
-            GsAttributeStat.none,
+            _db.infoOf<GsCharacterInfo>().getItem(item.id)?.ascStatType ??
+            GeCharacterAscStatType.values.first,
         (c) => 'Special Stat',
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,
       ),
-      FilterSection<bool, InfoCharacter>(
+      FilterSection<bool, GsCharacter>(
         {true, false},
         (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
         (c) => c.fromLabel(Labels.friendship),
@@ -391,7 +382,7 @@ class ScreenFilters {
         filter: (i) => GsUtils.characters.hasCaracter(i.id),
       ),
       FilterSection.owned((item) => GsUtils.characters.hasCaracter(item.id)),
-      FilterSection<bool, InfoCharacter>(
+      FilterSection<bool, GsCharacter>(
         {true, false},
         (item) => GsUtils.characters.isCharMaxAscended(item.id),
         (c) => c.fromLabel(Labels.ascension),
@@ -401,11 +392,11 @@ class ScreenFilters {
       FilterSection.rarity((item) => item.rarity, 4),
     ],
   );
-  static final infoSereniteaSetFilter = ScreenFilter<InfoSereniteaSet>(
+  static final infoSereniteaSetFilter = ScreenFilter<GsSereniteaSet>(
     sections: [
       FilterSection.version((item) => item.version),
       FilterSection.setCategory((item) => item.category),
-      FilterSection<bool, InfoSereniteaSet>(
+      FilterSection<bool, GsSereniteaSet>(
         {true, false},
         (item) => GsUtils.sereniteaSets.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
@@ -413,7 +404,7 @@ class ScreenFilters {
       ),
     ],
   );
-  static final infoSpincrystalFilter = ScreenFilter<InfoSpincrystal>(
+  static final infoSpincrystalFilter = ScreenFilter<GsSpincrystal>(
     sections: [
       FilterSection.owned((item) => _db.saveSpincrystals.exists(item.id)),
       FilterSection.version((item) => item.version),
@@ -425,7 +416,7 @@ class ScreenFilters {
       ),
     ],
   );
-  static final infoMaterialFilter = ScreenFilter<InfoMaterial>(
+  static final infoMaterialFilter = ScreenFilter<GsMaterial>(
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
@@ -435,8 +426,8 @@ class ScreenFilters {
         (c) => c.fromLabel(Labels.ingredients),
         (c, i) => c.fromLabel(Labels.buttonYes),
       ),
-      FilterSection<GsMaterialGroup, InfoMaterial>(
-        GsMaterialGroup.values.toSet(),
+      FilterSection<GeMaterialType, GsMaterial>(
+        GeMaterialType.values.toSet(),
         (item) => item.group,
         (c) => c.fromLabel(Labels.category),
         (c, i) => c.fromLabel(i.label),

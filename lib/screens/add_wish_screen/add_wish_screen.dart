@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -7,7 +8,6 @@ import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -24,7 +24,7 @@ class AddWishScreen extends StatefulWidget {
 }
 
 class _AddWishScreenState extends State<AddWishScreen> {
-  late final ValueNotifier<List<ItemData>> _wishes;
+  late final ValueNotifier<List<GsWish>> _wishes;
 
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _AddWishScreenState extends State<AddWishScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
-    final banner = args as InfoBanner?;
+    final banner = args as GsBanner?;
 
-    return ScreenFilterBuilder<ItemData>(
+    return ScreenFilterBuilder<GsWish>(
       filter: ScreenFilters.itemDataFilter,
       builder: (context, filter, button, toggle) {
         if (banner == null) return const SizedBox();
@@ -73,7 +73,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
     );
   }
 
-  void _saveWishes(InfoBanner banner) async {
+  void _saveWishes(GsBanner banner) async {
     final date = await GsTimeDialog.show(context);
     if (date == null) return;
 
@@ -90,17 +90,17 @@ class _AddWishScreenState extends State<AddWishScreen> {
 
   Widget _getItemsList(
     BuildContext context,
-    InfoBanner banner,
-    ScreenFilter<ItemData> filter,
+    GsBanner banner,
+    ScreenFilter<GsWish> filter,
   ) {
-    bool featured(ItemData itemData) =>
+    bool featured(GsWish itemData) =>
         banner.feature4.contains(itemData.id) ||
         banner.feature5.contains(itemData.id);
 
     final filtered = filter
         .match(GsUtils.wishes.getBannerItemsData(banner))
         .sortedBy((element) => element.rarity)
-        .thenBy((element) => element.type.index)
+        .thenBy((element) => element.isCharacter ? 0 : 1)
         .thenBy((element) => featured(element) ? 0 : 1)
         .thenBy((element) => element.name);
     if (filtered.isEmpty) return const GsNoResultsState();
@@ -118,11 +118,11 @@ class _AddWishScreenState extends State<AddWishScreen> {
     );
   }
 
-  Widget _getTemporaryList(InfoBanner banner) {
+  Widget _getTemporaryList(GsBanner banner) {
     return Column(
       children: [
         Expanded(
-          child: ValueListenableBuilder<List<ItemData>>(
+          child: ValueListenableBuilder<List<GsWish>>(
             valueListenable: _wishes,
             builder: (context, list, child) {
               final roll = GsUtils.wishes.countBannerWishes(banner.id);
@@ -143,7 +143,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        ValueListenableBuilder<List<ItemData>>(
+        ValueListenableBuilder<List<GsWish>>(
           valueListenable: _wishes,
           builder: (context, list, child) {
             return Opacity(

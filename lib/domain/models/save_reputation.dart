@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveReputation extends IdSaveData<SaveReputation> {
+class SaveReputation extends GsModel<SaveReputation> {
   @override
   final String id;
   final int reputation;

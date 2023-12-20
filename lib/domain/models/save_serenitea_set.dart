@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveSereniteaSet extends IdSaveData<SaveSereniteaSet> {
+class SaveSereniteaSet extends GsModel<SaveSereniteaSet> {
   @override
   final String id;
   final List<String> chars;

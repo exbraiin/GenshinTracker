@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -8,13 +9,13 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class SereniteaSetDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
-  final InfoSereniteaSet item;
+  final GsSereniteaSet item;
 
   const SereniteaSetDetailsCard(
     this.item, {
@@ -26,14 +27,14 @@ class SereniteaSetDetailsCard extends StatelessWidget
     return ItemDetailsCard.single(
       name: item.name,
       fgImage: item.image,
-      rarity: item.rarity,
+      rarity: 4,
       banner: GsItemBanner.fromVersion(context, item.version),
       info: Align(
         alignment: Alignment.topLeft,
         child: Row(
           children: [
             Image.asset(
-              item.category == GsSetCategory.indoor
+              item.category == GeSereniteaSetType.indoor
                   ? imageIndoorSet
                   : imageOutdoorSet,
               width: 32,
@@ -49,7 +50,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
   }
 
   Widget _content(BuildContext context) {
-    final ic = GsDatabase.instance.infoCharacters;
+    final ic = Database.instance.infoOf<GsCharacter>();
 
     return ItemDetailsCardContent.generate(context, [
       if (item.energy > 0)
@@ -61,16 +62,16 @@ class SereniteaSetDetailsCard extends StatelessWidget
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.characters),
           content: ValueStreamBuilder<bool>(
-            stream: GsDatabase.instance.loaded,
+            stream: Database.instance.loaded,
             builder: (context, snapshot) {
               final saved =
-                  GsDatabase.instance.saveSereniteaSets.getItemOrNull(item.id);
+                  Database.instance.saveSereniteaSets.getItemOrNull(item.id);
               return Wrap(
                 spacing: kSeparator4,
                 runSpacing: kSeparator4,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: item.chars
-                    .map(ic.getItemOrNull)
+                    .map(ic.getItem)
                     .whereNotNull()
                     .sortedBy(
                       (e) => GsUtils.characters.hasCaracter(e.id) ? 0 : 1,

@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveAchievement extends IdSaveData<SaveAchievement> {
+class SaveAchievement extends GsModel<SaveAchievement> {
   @override
   final String id;
   final int obtained;

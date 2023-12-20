@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -14,11 +14,11 @@ class MaterialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InventoryListPage<InfoMaterial>(
+    return InventoryListPage<GsMaterial>(
       icon: menuIconMaterials,
       filter: ScreenFilters.infoMaterialFilter,
       title: context.fromLabel(Labels.materials),
-      items: (db) => db.infoMaterials.getItems(),
+      items: (db) => db.infoOf<GsMaterial>().items,
       itemBuilder: (context, state) => MaterialListItem(
         state.item,
         onTap: state.onSelect,

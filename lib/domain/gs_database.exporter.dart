@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:dartx/dartx.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/theme/theme.dart';
 
 abstract class GsDatabaseExporter {
   static Future<void> export() async {
     final excel = Excel.createExcel();
 
-    writeWishes(excel, 'Character Event', GsBanner.character);
-    writeWishes(excel, 'Weapon Event', GsBanner.weapon);
-    writeWishes(excel, 'Standard', GsBanner.standard);
-    writeWishes(excel, 'Beginners\' Wish', GsBanner.beginner);
+    writeWishes(excel, 'Character Event', GeBannerType.character);
+    writeWishes(excel, 'Weapon Event', GeBannerType.weapon);
+    writeWishes(excel, 'Standard', GeBannerType.standard);
+    writeWishes(excel, 'Beginners\' Wish', GeBannerType.beginner);
 
     writeBanners(excel, 'Banner List');
 
@@ -30,9 +30,9 @@ abstract class GsDatabaseExporter {
     if (kDebugMode) print('\x1b[31mComplete!');
   }
 
-  static void writeWishes(Excel excel, String sheetName, GsBanner bannerType) {
-    final db = GsDatabase.instance;
-    final list = GsUtils.wishes.getSaveWishesByBannerType(bannerType);
+  static void writeWishes(Excel excel, String sheetName, GeBannerType type) {
+    final db = Database.instance;
+    final list = GsUtils.wishes.getSaveWishesByBannerType(type);
     final sheet = excel[sheetName];
 
     final rows = <_Row>[];
@@ -41,11 +41,12 @@ abstract class GsDatabaseExporter {
     for (var i = 0; i < wishes.length; ++i) {
       final wish = wishes[i];
       final item = GsUtils.items.getItemData(wish.itemId);
-      final banner = db.infoBanners.getItem(wish.bannerId);
+      final banner = db.infoOf<GsBanner>().getItem(wish.bannerId);
       final pity = GsUtils.wishes.countPity(wishes, wish);
 
+      if (banner == null) continue;
       final row = _Row(
-        type: item.type.name.capitalize(),
+        type: item.isWeapon ? 'Weapon' : 'Character',
         name: item.name,
         date: wish.date.format(),
         rarity: item.rarity,
@@ -108,9 +109,10 @@ abstract class GsDatabaseExporter {
   }
 
   static void writeBanners(Excel excel, String sheetName) {
-    final db = GsDatabase.instance;
-    final list = db.infoBanners
-        .getItems()
+    final db = Database.instance;
+    final list = db
+        .infoOf<GsBanner>()
+        .items
         .sortedBy((e) => _bannerType(e.type))
         .thenBy((e) => e.dateStart);
     final sheet = excel[sheetName];
@@ -118,8 +120,8 @@ abstract class GsDatabaseExporter {
     for (var banner in list) {
       sheet.appendRow([
         banner.name,
-        banner.dateStart.format(showHour: false),
-        banner.dateEnd.format(showHour: false),
+        DateTime.tryParse(banner.dateStart)?.format(showHour: false),
+        DateTime.tryParse(banner.dateEnd)?.format(showHour: false),
       ]);
     }
   }
@@ -165,12 +167,12 @@ class _Row {
   }
 }
 
-int _bannerType(GsBanner banner) {
+int _bannerType(GeBannerType banner) {
   return [
-    GsBanner.beginner,
-    GsBanner.standard,
-    GsBanner.character,
-    GsBanner.weapon,
+    GeBannerType.beginner,
+    GeBannerType.standard,
+    GeBannerType.character,
+    GeBannerType.weapon,
   ].indexOf(banner);
 }
 

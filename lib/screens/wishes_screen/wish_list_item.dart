@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -17,7 +18,7 @@ class WishListItem extends StatelessWidget {
   final int index;
   final SaveWish wish;
   final WishState wishState;
-  final GsBanner bannerType;
+  final GeBannerType bannerType;
   final ListType type;
 
   const WishListItem({
@@ -113,7 +114,10 @@ class WishListItem extends StatelessWidget {
                 )
               : const SizedBox(),
           Text(item.rarity.toString(), style: style),
-          Text(context.fromLabel(item.type.label), style: style),
+          Text(
+            context.fromLabel(item.isWeapon ? Labels.weapon : Labels.character),
+            style: style,
+          ),
           Text(wish.number.toString(), style: style),
         ],
       ),

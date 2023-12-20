@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveSpincrystal extends IdSaveData<SaveSpincrystal> {
+class SaveSpincrystal extends GsModel<SaveSpincrystal> {
   @override
   final String id;
   final bool obtained;

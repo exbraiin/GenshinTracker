@@ -1,12 +1,13 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/domain/enums/gs_banner.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
@@ -60,14 +61,17 @@ class HomeCalendarWidget extends StatelessWidget {
 
     final src = now.firstDayOfMonth
         .subtract(const Duration(days: DateTime.daysPerWeek));
-    final banners = GsDatabase.instance.infoBanners
-        .getItems()
-        .where((e) => e.type == GsBanner.character && e.dateStart.isAfter(src));
-    final characters = GsDatabase.instance.infoCharacters
-        .getItems()
-        .where((e) => e.birthday.copyWith(year: now.year).isAfter(src));
-    final versions = GsDatabase.instance.infoVersion
-        .getItems()
+    final banners = Database.instance.infoOf<GsBanner>().items.where(
+          (e) =>
+              e.type == GeBannerType.character && e.dateStartTime.isAfter(src),
+        );
+    final characters = Database.instance
+        .infoOf<GsCharacter>()
+        .items
+        .where((e) => e.birthdayTime.copyWith(year: now.year).isAfter(src));
+    final versions = Database.instance
+        .infoOf<GsVersion>()
+        .items
         .where((e) => e.releaseDate.isAfter(src));
 
     yield* Iterable<Widget>.generate(
@@ -81,13 +85,14 @@ class HomeCalendarWidget extends StatelessWidget {
             final date = DateTime(now.year, now.month, idx + 1);
 
             late final bannerItems = banners
-                .where((e) => e.dateStart.isAtSameDayAs(date))
+                .where((e) => e.dateStartTime.isAtSameDayAs(date))
                 .expand((e) => e.feature5)
                 .map(GsUtils.items.getItemDataOrNull)
                 .whereNotNull();
 
             late final birthdayItems = characters.where(
-              (e) => e.birthday.copyWith(year: date.year).isAtSameDayAs(date),
+              (e) =>
+                  e.birthdayTime.copyWith(year: date.year).isAtSameDayAs(date),
             );
 
             late final versionItem = versions

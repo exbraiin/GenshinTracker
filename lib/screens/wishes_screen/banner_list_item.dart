@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -7,6 +8,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
@@ -15,7 +17,7 @@ const _bannerHeight = 100.0;
 
 class BannerListItem extends StatelessWidget {
   final int rolls;
-  final InfoBanner banner;
+  final GsBanner banner;
 
   const BannerListItem({
     super.key,
@@ -76,7 +78,7 @@ class BannerListItem extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${banner.name} '
-                              '(${banner.dateStart.format(showHour: false)}) ',
+                              '(${banner.dateStartTime.format(showHour: false)}) ',
                         ),
                         TextSpan(
                           text: '\n   '
@@ -97,7 +99,8 @@ class BannerListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                if ([GsBanner.weapon, GsBanner.character].contains(banner.type))
+                if ([GeBannerType.weapon, GeBannerType.character]
+                    .contains(banner.type))
                   Align(
                     alignment: Alignment.bottomRight,
                     child: GsItemCardLabel(
@@ -139,11 +142,11 @@ class BannerListItem extends StatelessWidget {
 
   String _getBannerDuration(BuildContext context) {
     final now = DateTime.now();
-    if (banner.dateStart.isAfter(now)) {
-      final diff = banner.dateStart.difference(now);
+    if (banner.dateStartTime.isAfter(now)) {
+      final diff = banner.dateStartTime.difference(now);
       return diff.startOrStartedIn(context);
     } else {
-      final diff = banner.dateEnd.difference(now);
+      final diff = banner.dateEndTime.difference(now);
       return diff.endOrEndedIn(context);
     }
   }

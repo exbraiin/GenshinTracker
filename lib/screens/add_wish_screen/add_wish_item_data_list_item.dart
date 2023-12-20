@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/domain/gs_database.utils.dart';
 
 class AddWishItemDataListItem extends StatelessWidget {
-  final ItemData item;
+  final GsWish item;
   final bool isItemFeatured;
   final VoidCallback onAdd;
 

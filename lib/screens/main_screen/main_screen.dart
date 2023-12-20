@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
             bottom: 0,
             child: StreamBuilder<bool>(
               initialData: false,
-              stream: GsDatabase.instance.saving.distinct(),
+              stream: Database.instance.saving.distinct(),
               builder: (context, snapshot) => Toast(show: snapshot.data!),
             ),
           ),
@@ -129,7 +129,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _pageWidget() {
     return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (!snapshot.data!) {
           return const Center(

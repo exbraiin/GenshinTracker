@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class SpincrystalListItem extends StatelessWidget {
   final bool selected;
-  final InfoSpincrystal item;
+  final GsSpincrystal item;
   final VoidCallback? onTap;
 
   const SpincrystalListItem(
@@ -19,13 +19,13 @@ class SpincrystalListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final table = GsDatabase.instance.saveSpincrystals;
+    final table = Database.instance.saveSpincrystals;
     final save = table.getItemOrNull(item.id);
     final owned = save?.obtained ?? false;
-    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region.id);
+    final region = Database.instance.infoOf<GsRegion>().getItem(item.region);
     return GsItemCardButton(
       label: item.name,
-      rarity: item.rarity,
+      rarity: 4,
       onTap: onTap,
       disable: !owned,
       selected: selected,

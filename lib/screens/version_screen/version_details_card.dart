@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
@@ -7,18 +8,18 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
-  final InfoVersion item;
+  final GsVersion item;
 
   const VersionDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         return ItemDetailsCard.single(
           name: item.name,
@@ -35,57 +36,67 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   Widget _content(BuildContext context) {
-    final characters = GsDatabase.instance.infoCharacters
-        .getItems()
+    final characters = Database.instance
+        .infoOf<GsCharacter>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final outfits = GsDatabase.instance.infoCharactersOutfit
-        .getItems()
+    final outfits = Database.instance
+        .infoOf<GsCharacterSkin>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final weapons = GsDatabase.instance.infoWeapons
-        .getItems()
+    final weapons = Database.instance
+        .infoOf<GsWeapon>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final materials = GsDatabase.instance.infoMaterials
-        .getItems()
+    final materials = Database.instance
+        .infoOf<GsMaterial>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final recipes = GsDatabase.instance.infoRecipes
-        .getItems()
+    final recipes = Database.instance
+        .infoOf<GsRecipe>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final sets = GsDatabase.instance.infoSereniteaSets
-        .getItems()
+    final sets = Database.instance
+        .infoOf<GsSereniteaSet>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final crystals = GsDatabase.instance.infoSpincrystal
-        .getItems()
+    final crystals = Database.instance
+        .infoOf<GsSpincrystal>()
+        .items
         .where((element) => element.version == item.id)
-        .sortedByDescending((element) => element.rarity)
-        .thenBy((element) => element.name);
-    final banners = GsDatabase.instance.infoBanners
-        .getItems()
+        .sortedBy((element) => element.name);
+    final banners = Database.instance
+        .infoOf<GsBanner>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.type.index)
         .thenBy((element) => element.name);
-    final chests = GsDatabase.instance.infoRemarkableChests
-        .getItems()
+    final chests = Database.instance
+        .infoOf<GsFurnitureChest>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final enemies = GsDatabase.instance.infoEnemies
-        .getItems()
+    final enemies = Database.instance
+        .infoOf<GsEnemy>()
+        .items
         .where((element) => element.version == item.id)
-        .sorted();
-    final namecards = GsDatabase.instance.infoNamecards
-        .getItems()
+        .sortedBy((element) => element.name);
+    final namecards = Database.instance
+        .infoOf<GsNamecard>()
+        .items
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
@@ -197,7 +208,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               children: crystals.map((e) {
                 return ItemCircleWidget(
                   asset: spincrystalAsset,
-                  rarity: e.rarity,
+                  rarity: 4,
                   label: '${e.number} ${e.name}',
                 );
               }).toList(),

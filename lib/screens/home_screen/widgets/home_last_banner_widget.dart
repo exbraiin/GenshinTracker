@@ -1,11 +1,12 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeLastBannerWidget extends StatelessWidget {
@@ -13,11 +14,12 @@ class HomeLastBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const type = GsBanner.character;
-    const source = GsItemSource.wishesCharacterBanner;
+    const type = GeBannerType.character;
+    const source = GeItemSourceType.wishesCharacterBanner;
     final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
-    final characters = GsDatabase.instance.infoCharacters
-        .getItems()
+    final characters = Database.instance
+        .infoOf<GsCharacter>()
+        .items
         .where((chr) => chr.rarity == 5 && chr.source == source)
         .map((chr) => _toMapEntry(chr, banners))
         .where((e) => e.value.inDays > 0)
@@ -42,9 +44,9 @@ class HomeLastBannerWidget extends StatelessWidget {
     );
   }
 
-  MapEntry<InfoCharacter, Duration> _toMapEntry(
-    InfoCharacter chr,
-    Iterable<InfoBanner> releasedBanners,
+  MapEntry<GsCharacter, Duration> _toMapEntry(
+    GsCharacter chr,
+    Iterable<GsBanner> releasedBanners,
   ) {
     final banner = releasedBanners
         .where((bnr) => bnr.feature5.contains(chr.id))
@@ -52,13 +54,13 @@ class HomeLastBannerWidget extends StatelessWidget {
         .lastOrNull;
     final duration = banner == null
         ? Duration.zero
-        : DateTime.now().difference(banner.dateStart);
+        : DateTime.now().difference(banner.dateStartTime);
     return MapEntry(chr, duration);
   }
 
   Widget _getCardItem(
     BuildContext context,
-    MapEntry<InfoCharacter, Duration> entry,
+    MapEntry<GsCharacter, Duration> entry,
   ) {
     return ItemGridWidget.character(
       entry.key,

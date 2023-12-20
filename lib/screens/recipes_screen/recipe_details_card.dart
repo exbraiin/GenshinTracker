@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -10,12 +11,12 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
-  final InfoRecipe item;
+  final GsRecipe item;
 
   const RecipeDetailsCard(this.item, {super.key});
 
@@ -23,10 +24,10 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   Widget build(BuildContext context) {
     final isSpecial = item.baseRecipe.isNotEmpty;
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final owned = GsDatabase.instance.saveRecipes.exists(item.id);
-        final saved = GsDatabase.instance.saveRecipes.getItemOrNull(item.id);
+        final owned = Database.instance.saveRecipes.exists(item.id);
+        final saved = Database.instance.saveRecipes.getItemOrNull(item.id);
         return ItemDetailsCard.single(
           name: item.name,
           rarity: item.rarity,
@@ -117,7 +118,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   int _getProficiency() {
-    final db = GsDatabase.instance.saveRecipes;
+    final db = Database.instance.saveRecipes;
     return db.getItemOrNull(item.id)?.proficiency ?? 0;
   }
 
@@ -129,10 +130,11 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   Widget _content(BuildContext context) {
-    final db = GsDatabase.instance;
-    late final baseRecipe = db.infoRecipes.getItemOrNull(item.baseRecipe);
-    late final char = db.infoCharacters
-        .getItems()
+    final db = Database.instance;
+    late final baseRecipe = db.infoOf<GsRecipe>().getItem(item.baseRecipe);
+    late final char = db
+        .infoOf<GsCharacter>()
+        .items
         .firstOrNullWhere((e) => e.specialDish == item.id);
 
     return ItemDetailsCardContent.generate(context, [
@@ -140,7 +142,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         label: context.fromLabel(item.effect.label),
         description: item.effectDesc,
       ),
-      ItemDetailsCardContent(description: item.description),
+      ItemDetailsCardContent(description: item.desc),
       if (item.ingredients.isNotEmpty)
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.ingredients),
@@ -149,10 +151,10 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             runSpacing: kSeparator4,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              ...item.ingredients.entries.map((e) {
-                final item = db.infoMaterials.getItemOrNull(e.key);
+              ...item.ingredients.map((e) {
+                final item = db.infoOf<GsMaterial>().getItem(e.id);
                 if (item == null) return const SizedBox();
-                return ItemGridWidget.material(item, label: e.value.format());
+                return ItemGridWidget.material(item, label: e.amount.format());
               }),
               if (baseRecipe != null) ...[
                 Icon(

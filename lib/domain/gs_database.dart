@@ -1,93 +1,20 @@
 import 'package:flutter/foundation.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tracker/domain/gs_database.json.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
 export 'package:tracker/domain/gs_database.utils.dart';
 
-class GsDatabase {
-  static final instance = GsDatabase._();
+class Database {
+  static final instance = Database._();
   static const prefix = kDebugMode ? 'D:/Software/Tracker_Genshin/' : '';
   static const dataPath = '${prefix}data/db/data.json';
   static const savePath = 'data/db/save.json';
 
   bool _dataLoaded = false;
-  final infoDetails = JsonInfoSingle(
-    'details',
-    InfoDetails.fromJsonData,
-  );
-  final infoAchievementGroups = JsonInfoDetails<InfoAchievementGroup>(
-    'achievement_categories',
-    InfoAchievementGroup.fromJsonData,
-  );
-  final infoAchievements = JsonInfoDetails(
-    'achievements',
-    InfoAchievement.fromJsonData,
-  );
-  final infoCities = JsonInfoDetails<InfoCity>(
-    'cities',
-    InfoCity.fromJsonData,
-  );
-  final infoBanners = JsonInfoDetails<InfoBanner>(
-    'banners',
-    InfoBanner.fromJsonData,
-  );
-  final infoArtifacts = JsonInfoDetails<InfoArtifact>(
-    'artifacts',
-    InfoArtifact.fromJsonData,
-  );
-  final infoMaterials = JsonInfoDetails<InfoMaterial>(
-    'materials',
-    InfoMaterial.fromJsonData,
-  );
-  final infoEnemies = JsonInfoDetails<InfoEnemy>(
-    'enemies',
-    InfoEnemy.fromJsonData,
-  );
-  final infoRecipes = JsonInfoDetails<InfoRecipe>(
-    'recipes',
-    InfoRecipe.fromJsonData,
-  );
-  final infoRemarkableChests = JsonInfoDetails(
-    'remarkable_chests',
-    InfoRemarkableChest.fromJsonData,
-  );
-  final infoWeapons = JsonInfoDetails<InfoWeapon>(
-    'weapons',
-    InfoWeapon.fromJsonData,
-  );
-  final infoWeaponsInfo = JsonInfoDetails<InfoWeaponInfo>(
-    'weapons_info',
-    InfoWeaponInfo.fromJsonData,
-  );
-  final infoNamecards = JsonInfoDetails(
-    'namecards',
-    InfoNamecard.fromJsonData,
-  );
-  final infoCharacters = JsonInfoDetails<InfoCharacter>(
-    'characters',
-    InfoCharacter.fromJsonData,
-  );
-  final infoCharactersInfo = JsonInfoDetails(
-    'characters_info',
-    InfoCharacterInfo.fromJsonData,
-  );
-  final infoCharactersOutfit = JsonInfoDetails(
-    'characters_outfits',
-    InfoCharacterOutfit.fromJsonData,
-  );
-  final infoSpincrystal = JsonInfoDetails<InfoSpincrystal>(
-    'spincrystals',
-    InfoSpincrystal.fromJsonData,
-  );
-  final infoSereniteaSets = JsonInfoDetails<InfoSereniteaSet>(
-    'serenitea_sets',
-    InfoSereniteaSet.fromJsonData,
-  );
-  final infoVersion = JsonInfoDetails<InfoVersion>(
-    'versions',
-    InfoVersion.fromJsonData,
-  );
+  final _dbInfo = GsDatabase.info(loadJson: dataPath);
+  Items<T> infoOf<T extends GsModel<T>>() => _dbInfo.of<T>();
 
   bool _saveLoaded = false;
   final saveAchievements = JsonSaveDetails<SaveAchievement>(
@@ -142,7 +69,7 @@ class GsDatabase {
   ValueStream<bool> get loaded => _loaded;
   ValueStream<bool> get saving => _saving;
 
-  GsDatabase._() {
+  Database._() {
     _load();
     _saving
         .where((event) => event)
@@ -163,27 +90,8 @@ class GsDatabase {
   Future<void> _loadData() async {
     if (_dataLoaded) return;
     _dataLoaded = true;
-    await JsonInfoDetails.loadInfo().then((info) {
-      infoAchievementGroups.load(info);
-      infoAchievements.load(info);
-      infoCities.load(info);
-      infoBanners.load(info);
-      infoDetails.load(info);
-      infoRecipes.load(info);
-      infoRemarkableChests.load(info);
-      infoWeapons.load(info);
-      infoWeaponsInfo.load(info);
-      infoArtifacts.load(info);
-      infoEnemies.load(info);
-      infoMaterials.load(info);
-      infoNamecards.load(info);
-      infoCharacters.load(info);
-      infoCharactersInfo.load(info);
-      infoCharactersOutfit.load(info);
-      infoSpincrystal.load(info);
-      infoSereniteaSets.load(info);
-      infoVersion.load(info);
-    });
+    await _dbInfo.load();
+    _dbInfo.didUpdate.listen((event) => print('\x1b[31mDB Updated!'));
   }
 
   Future<void> _loadSave() async {
@@ -218,8 +126,8 @@ class GsDatabase {
   }
 
   static Future<void> _notify() async {
-    GsDatabase.instance._loaded.add(true);
-    GsDatabase.instance._saving.add(true);
+    Database.instance._loaded.add(true);
+    Database.instance._saving.add(true);
   }
 
   void dispose() {

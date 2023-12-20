@@ -1,14 +1,14 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class SereniteaSetListItem extends StatelessWidget {
   final bool selected;
-  final InfoSereniteaSet item;
+  final GsSereniteaSet item;
   final VoidCallback? onTap;
 
   const SereniteaSetListItem(
@@ -20,10 +20,10 @@ class SereniteaSetListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final saved = GsDatabase.instance.saveSereniteaSets.getItemOrNull(item.id);
+    final saved = Database.instance.saveSereniteaSets.getItemOrNull(item.id);
     return GsItemCardButton(
       label: item.name,
-      rarity: item.rarity,
+      rarity: 4,
       selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
       imageAspectRatio: 2,
@@ -40,7 +40,7 @@ class SereniteaSetListItem extends StatelessWidget {
             ),
           ),
           ...item.chars
-              .map(GsDatabase.instance.infoCharacters.getItemOrNull)
+              .map(Database.instance.infoOf<GsCharacter>().getItem)
               .whereNotNull()
               .where(
                 (e) =>

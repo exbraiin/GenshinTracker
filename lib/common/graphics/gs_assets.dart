@@ -30,6 +30,8 @@ const imageXp = 'assets/image/icons/Companion_xp.png';
 const spincrystalAsset = 'assets/image/illustrations/spincrystal.png';
 const fischlEmote = 'assets/image/illustrations/fischl.webp';
 
+const atkIcon = 'assets/image/weapon_stat/atk.png';
+
 const kMainBgDecoration = BoxDecoration();
 
 String getRarityBgImage(int rarity) =>

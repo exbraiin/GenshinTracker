@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
@@ -7,25 +8,24 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 class SpincrystalDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
-  final InfoSpincrystal item;
+  final GsSpincrystal item;
 
   const SpincrystalDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final region = GsDatabase.instance.infoCities.getItemOrNull(item.region.id);
+    final region = Database.instance.infoOf<GsRegion>().getItem(item.region);
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final db = GsDatabase.instance.saveSpincrystals;
+        final db = Database.instance.saveSpincrystals;
         final owned = db.getItemOrNull(item.id)?.obtained ?? false;
         return ItemDetailsCard.single(
           name: context.fromLabel(Labels.radiantSpincrystal, item.number),
-          rarity: item.rarity,
+          rarity: 4,
           asset: spincrystalAsset,
           banner: GsItemBanner.fromVersion(context, item.version),
           info: Column(
@@ -50,10 +50,6 @@ class SpincrystalDetailsCard extends StatelessWidget
             ],
           ),
           child: ItemDetailsCardContent.generate(context, [
-            if (item.desc.isNotEmpty)
-              ItemDetailsCardContent(
-                description: item.desc,
-              ),
             if (region != null)
               ItemDetailsCardContent(
                 label: context.fromLabel(Labels.region),
@@ -61,7 +57,7 @@ class SpincrystalDetailsCard extends StatelessWidget
               ),
             ItemDetailsCardContent(
               label: context.fromLabel(Labels.source),
-              description: context.fromLabel(item.source.label),
+              description: context.fromLabel(item.source),
             ),
           ]),
         );

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/enums/gs_banner.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.utils.dart';
 
 class GsWishStateIcon extends StatelessWidget {
   final Color color;
   final int rarity;
-  final GsBanner banner;
+  final GeBannerType banner;
   final EdgeInsets padding;
   final WishState wishState;
 
@@ -14,7 +15,7 @@ class GsWishStateIcon extends StatelessWidget {
     this.wishState, {
     super.key,
     this.rarity = 1,
-    this.banner = GsBanner.character,
+    this.banner = GeBannerType.character,
     this.color = Colors.white,
     this.padding = const EdgeInsets.only(left: 2),
   });

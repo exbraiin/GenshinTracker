@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -13,9 +14,9 @@ class HomeReputationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     late final badColor = context.themeColors.badValue;
     return ValueStreamBuilder<bool>(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final db = GsDatabase.instance;
+        final db = Database.instance;
         return GsDataBox.info(
           title: Text(context.fromLabel(Labels.reputation)),
           child: HomeTable(
@@ -24,8 +25,9 @@ class HomeReputationWidget extends StatelessWidget {
               HomeRow.header(context.fromLabel(Labels.current)),
               HomeRow.header(context.fromLabel(Labels.max)),
             ],
-            rows: db.infoCities
-                .getItems()
+            rows: db
+                .infoOf<GsRegion>()
+                .items
                 .where((e) => GsUtils.cities.getCityMaxLevel(e.id) > 1)
                 .map((city) {
               final utils = GsUtils.cities;

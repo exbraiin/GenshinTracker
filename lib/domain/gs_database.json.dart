@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 typedef ItemFromMap<T> = T Function(JsonData data);
 
@@ -47,25 +47,11 @@ class JsonData {
   DateTime getDate(String key, [DateTime? df]) =>
       DateTime.tryParse(getDataOrDefault(key, '')) ?? df ?? DateTime(0);
 
-  E getGsEnum<E extends GsEnum>(String key, List<E> values, [E? df]) {
-    final id = getString(key);
-    return values.firstWhere(
-      (e) => e.id == id,
-      orElse: () => df ?? values.first,
-    );
-  }
-
-  List<E> getGsEnumList<E extends GsEnum>(String key, List<E> values) =>
-      getStringList(key)
-          .map((e) => values.firstOrNullWhere((t) => t.id == e))
-          .whereNotNull()
-          .toList();
-
   Map<K, V> getMap<K, V>(String key) =>
       getDataOrDefault<Map<String, dynamic>>(key, {}).cast<K, V>();
 }
 
-class JsonInfoDetails<T extends IdData<T>> {
+class JsonInfoDetails<T extends GsModel<T>> {
   final String name;
   final ItemFromMap<T> create;
   final _map = <String, T>{};
@@ -73,7 +59,7 @@ class JsonInfoDetails<T extends IdData<T>> {
   JsonInfoDetails(this.name, this.create);
 
   static Future<Map<String, dynamic>> loadInfo() {
-    return File(GsDatabase.dataPath)
+    return File(Database.dataPath)
         .readAsString()
         .then((value) => jsonDecode(value) as Map<String, dynamic>);
   }
@@ -90,14 +76,14 @@ class JsonInfoDetails<T extends IdData<T>> {
   Iterable<T> getItems() => _map.values;
 }
 
-class JsonSaveDetails<T extends IdSaveData<T>> extends JsonInfoDetails<T> {
+class JsonSaveDetails<T extends GsModel<T>> extends JsonInfoDetails<T> {
   final VoidCallback? _onUpdate;
 
   JsonSaveDetails(String name, ItemFromMap<T> create, this._onUpdate)
       : super(name, create);
 
   static Future<Map<String, dynamic>> loadInfo() async {
-    final file = File(GsDatabase.savePath);
+    final file = File(Database.savePath);
     if (!await file.exists()) return {};
     return file
         .readAsString()
@@ -109,7 +95,7 @@ class JsonSaveDetails<T extends IdSaveData<T>> extends JsonInfoDetails<T> {
       (e) => e.name,
       (e) => e.getItems().toMap((e) => e.id, (e) => e.toMap()..remove('id')),
     );
-    await File(GsDatabase.savePath).writeAsString(jsonEncode(map));
+    await File(Database.savePath).writeAsString(jsonEncode(map));
   }
 
   void insertItem(T item) {
@@ -121,18 +107,5 @@ class JsonSaveDetails<T extends IdSaveData<T>> extends JsonInfoDetails<T> {
     final item = _map.remove(id);
     if (item == null) return;
     _onUpdate?.call();
-  }
-}
-
-class JsonInfoSingle<T extends IdData<T>> {
-  final String name;
-  final ItemFromMap<T> create;
-  late T data;
-
-  JsonInfoSingle(this.name, this.create);
-
-  Future<void> load(Map<String, dynamic> data) async {
-    final map = data[name] as Map<String, dynamic>? ?? {};
-    this.data = create(JsonData(map));
   }
 }

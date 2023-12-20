@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_achievements_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_ascension_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_calendar_widget.dart';
@@ -111,14 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: Column(
             children: <Widget>[
-              HomeWishesValues(
-                title: context.fromLabel(Labels.charWishes),
-                banner: GsBanner.character,
-              ),
-              HomeWishesValues(
-                title: context.fromLabel(Labels.noviceWishes),
-                banner: GsBanner.beginner,
-              ),
+              const HomeWishesValues(banner: GeBannerType.character),
+              const HomeWishesValues(banner: GeBannerType.beginner),
               const HomeAchievementsWidget(),
               const HomeRemarkableChestsWidget(),
               const HomeSereniteaWidget(),
@@ -129,15 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: Column(
             children: <Widget>[
-              HomeWishesValues(
-                title: context.fromLabel(Labels.weaponWishes),
-                banner: GsBanner.weapon,
-                maxPity: 80,
-              ),
-              HomeWishesValues(
-                title: context.fromLabel(Labels.stndWishes),
-                banner: GsBanner.standard,
-              ),
+              const HomeWishesValues(banner: GeBannerType.weapon),
+              const HomeWishesValues(banner: GeBannerType.standard),
               const HomeSpincrystalsWidget(),
               const HomeRecipesWidget(),
               const HomeReputationWidget(),

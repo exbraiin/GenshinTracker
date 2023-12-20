@@ -1,9 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 
@@ -12,14 +14,14 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ic = GsDatabase.instance.infoRemarkableChests;
-    final sc = GsDatabase.instance.saveRemarkableChests;
+    final ic = Database.instance.infoOf<GsFurnitureChest>();
+    final sc = Database.instance.saveRemarkableChests;
 
-    final totalOwned = ic.getItems().count((e) => sc.exists(e.id));
-    final totalTotal = ic.getItems().length;
+    final totalOwned = ic.items.count((e) => sc.exists(e.id));
+    final totalTotal = ic.items.length;
 
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         return GsDataBox.info(
           title: Text(context.fromLabel(Labels.remarkableChests)),
@@ -31,8 +33,7 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
                 HomeRow.header(context.fromLabel(Labels.total)),
               ],
               rows: [
-                ...ic
-                    .getItems()
+                ...ic.items
                     .groupBy((e) => e.region)
                     .entries
                     .sortedBy((e) => e.key.index)

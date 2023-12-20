@@ -1,10 +1,12 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
@@ -16,13 +18,13 @@ class HomeSereniteaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const primogems = GsDomain.primogemsPerCharSet;
-    final sets = GsDatabase.instance.infoSereniteaSets.getItems();
-    final ss = GsDatabase.instance.saveSereniteaSets;
+    final sets = Database.instance.infoOf<GsSereniteaSet>().items;
+    final ss = Database.instance.saveSereniteaSets;
     final hasChar = GsUtils.characters.hasCaracter;
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final ic = GsDatabase.instance.infoCharacters;
+        final ic = Database.instance.infoOf<GsCharacter>();
         final totalTotal = sets.expand((e) => e.chars).count(ic.exists);
         final totalObtain = sets.expand((e) => e.chars.where(hasChar)).length;
         final totalOwned = sets.expand((e) {
@@ -57,7 +59,7 @@ class HomeSereniteaWidget extends StatelessWidget {
                 HomeRow.header(context.fromLabel(Labels.total)),
               ],
               rows: [
-                ...GsSetCategory.values.map((e) {
+                ...GeSereniteaSetType.values.map((e) {
                   final cat = sets.where((s) => s.category == e);
                   final total = cat.expand((e) => e.chars).where(ic.exists);
 

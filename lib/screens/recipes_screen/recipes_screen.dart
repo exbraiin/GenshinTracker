@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
 import 'package:tracker/screens/recipes_screen/recipes_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
@@ -15,12 +15,12 @@ class RecipesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final saveRecipes = GsDatabase.instance.saveRecipes;
-    return InventoryListPage<InfoRecipe>(
+    final saveRecipes = Database.instance.saveRecipes;
+    return InventoryListPage<GsRecipe>(
       icon: menuIconRecipes,
       title: context.fromLabel(Labels.recipes),
       filter: ScreenFilters.infoRecipeFilter,
-      items: (db) => db.infoRecipes.getItems(),
+      items: (db) => db.infoOf<GsRecipe>().items,
       itemBuilder: (context, state) => RecipesListItem(
         recipe: state.item,
         selected: state.selected,

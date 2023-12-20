@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveWish extends IdSaveData<SaveWish> {
+class SaveWish extends GsModel<SaveWish> {
   @override
   final String id;
   final int number;
@@ -51,14 +52,6 @@ class SaveWish extends IdSaveData<SaveWish> {
         'item': itemId,
         'banner': bannerId,
       };
-
-  @override
-  List<Comparator<SaveWish>> get comparators => [
-        (a, b) => a.date.compareTo(b.date),
-        (a, b) => a.number.compareTo(b.number),
-        (a, b) => a.bannerId.compareTo(b.bannerId),
-        (a, b) => a.bannerDate.compareTo(b.bannerDate),
-      ];
 }
 
 DateTime _getBannerDate(String bannerId) {

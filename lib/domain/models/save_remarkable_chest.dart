@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-class SaveRemarkableChest extends IdSaveData<SaveRemarkableChest> {
+class SaveRemarkableChest extends GsModel<SaveRemarkableChest> {
   @override
   final String id;
   final bool obtained;

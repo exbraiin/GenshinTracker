@@ -1,7 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
-import 'package:tracker/domain/gs_domain.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/theme/theme.dart';
 
 class TextParserWidget extends StatelessWidget {
@@ -37,13 +38,13 @@ class TextParserWidget extends StatelessWidget {
       '<u>': () => underline.add(TextDecoration.underline),
       '</u>': underline.pop,
       '<color=skill>': () => colorQueue.add(context.themeColors.primary),
-      '<color=geo>': () => colorQueue.add(GsElement.geo.color),
-      '<color=pyro>': () => colorQueue.add(GsElement.pyro.color),
-      '<color=cryo>': () => colorQueue.add(GsElement.cryo.color),
-      '<color=hydro>': () => colorQueue.add(GsElement.hydro.color),
-      '<color=anemo>': () => colorQueue.add(GsElement.anemo.color),
-      '<color=dendro>': () => colorQueue.add(GsElement.dendro.color),
-      '<color=electro>': () => colorQueue.add(GsElement.electro.color),
+      '<color=geo>': () => colorQueue.add(GeElementType.geo.color),
+      '<color=pyro>': () => colorQueue.add(GeElementType.pyro.color),
+      '<color=cryo>': () => colorQueue.add(GeElementType.cryo.color),
+      '<color=hydro>': () => colorQueue.add(GeElementType.hydro.color),
+      '<color=anemo>': () => colorQueue.add(GeElementType.anemo.color),
+      '<color=dendro>': () => colorQueue.add(GeElementType.dendro.color),
+      '<color=electro>': () => colorQueue.add(GeElementType.electro.color),
       '</color>': colorQueue.pop,
     };
     for (var p = 0;;) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystal_details_card.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystal_list_item.dart';
@@ -14,11 +14,11 @@ class SpincrystalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InventoryListPage<InfoSpincrystal>(
+    return InventoryListPage<GsSpincrystal>(
       icon: menuIconInventory,
       title: context.fromLabel(Labels.spincrystals),
       filter: ScreenFilters.infoSpincrystalFilter,
-      items: (db) => db.infoSpincrystal.getItems(),
+      items: (db) => db.infoOf<GsSpincrystal>().items,
       itemBuilder: (context, state) {
         return SpincrystalListItem(
           state.item,

@@ -1,5 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -15,12 +16,13 @@ class HomeFriendsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
-      stream: GsDatabase.instance.loaded,
+      stream: Database.instance.loaded,
       builder: (context, snapshot) {
         final chars = GsUtils.characters;
-        final db = GsDatabase.instance;
-        final characters = db.infoCharacters
-            .getItems()
+        final db = Database.instance;
+        final characters = db
+            .infoOf<GsCharacter>()
+            .items
             .where((c) => chars.hasCaracter(c.id))
             .where((c) => chars.getCharFriendship(c.id) != 10)
             .sortedByDescending((e) => chars.getCharFriendship(e.id));

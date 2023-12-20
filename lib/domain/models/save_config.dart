@@ -1,6 +1,7 @@
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/gs_domain.dart';
 
-abstract class SaveConfig extends IdSaveData<SaveConfig> {
+abstract class SaveConfig extends GsModel<SaveConfig> {
   static const kPlayerInfo = 'player_info';
 
   static SaveConfig fromJsonData(JsonData m) {
