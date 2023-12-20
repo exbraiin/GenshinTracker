@@ -224,5 +224,5 @@ Future<void> _fetchAndInsert(String uid) async {
     towerChamber: player.towerChamber,
     avatars: player.avatars,
   );
-  Database.instance.saveOf<GiPlayerInfo>().setItem(item.id, item);
+  Database.instance.saveOf<GiPlayerInfo>().setItem(item);
 }

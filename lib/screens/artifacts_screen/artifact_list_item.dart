@@ -19,7 +19,7 @@ class ArtifactListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final region = Database.instance.infoOf<GsRegion>().getItem(item.region);
+    final region = Database.instance.infoOf<GsRegion>().getItem(item.region.id);
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,

@@ -141,7 +141,7 @@ class _Cities {
   /// {@macro db_update}
   void updateReputation(String id, int reputation) {
     final item = GiReputation(id: id, reputation: reputation);
-    _svReputation.setItem(id, item);
+    _svReputation.setItem(item);
   }
 }
 
@@ -266,7 +266,7 @@ class _Wishes {
         .getBannerWishes(bannerId)
         .sortedWith(GiWishComp.comparator);
     if (list.isEmpty) return;
-    _svWish.setItem(list.last.id, null);
+    _svWish.removeItem(list.last.id);
   }
 
   /// Updates the given [wish] date.
@@ -275,7 +275,7 @@ class _Wishes {
   void updateWishDate(GiWish wish, DateTime date) {
     if (!_svWish.exists(wish.id)) return;
     final newWish = wish.copyWith(date: date);
-    _svWish.setItem(newWish.id, newWish);
+    _svWish.setItem(newWish);
   }
 
   /// Adds the items with the given [ids] to the given [bannerId].
@@ -298,7 +298,7 @@ class _Wishes {
         number: number,
         bannerId: bannerId,
       );
-      db.setItem(wish.id, wish);
+      db.setItem(wish);
     }
   }
 }
@@ -324,13 +324,13 @@ class _Recipes {
     if (own != null) {
       final contains = _svRecipe.exists(id);
       if (own && !contains) {
-        _svRecipe.setItem(id, GiRecipe(id: id, proficiency: 0));
+        _svRecipe.setItem(GiRecipe(id: id, proficiency: 0));
       } else if (!own && contains) {
-        _svRecipe.setItem(id, null);
+        _svRecipe.removeItem(id);
       }
     }
     if (proficiency != null) {
-      _svRecipe.setItem(id, GiRecipe(id: id, proficiency: proficiency));
+      _svRecipe.setItem(GiRecipe(id: id, proficiency: proficiency));
     }
   }
 }
@@ -447,7 +447,7 @@ class _Characters {
   void setCharOutfit(String id, String outfit) {
     final char = _svCharacter.getItem(id);
     final item = (char ?? _fallChar(id)).copyWith(outfit: outfit);
-    if (item.outfit != char?.outfit) _svCharacter.setItem(id, item);
+    if (item.outfit != char?.outfit) _svCharacter.setItem(item);
   }
 
   /// Sets the character friendship
@@ -458,7 +458,7 @@ class _Characters {
     final friend = friendship.clamp(1, 10);
     final item = (char ?? _fallChar(id)).copyWith(friendship: friend);
     if (item.friendship != char?.friendship) {
-      _svCharacter.setItem(id, item);
+      _svCharacter.setItem(item);
     }
   }
 
@@ -471,7 +471,7 @@ class _Characters {
     var cOwned = char?.owned ?? 0;
     cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
     final item = (char ?? _fallChar(id)).copyWith(owned: cOwned);
-    _svCharacter.setItem(id, item);
+    _svCharacter.setItem(item);
   }
 
   /// Increases the character friendship
@@ -482,7 +482,7 @@ class _Characters {
     var cFriendship = char?.friendship ?? 1;
     cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
     final item = (char ?? _fallChar(id)).copyWith(friendship: cFriendship);
-    _svCharacter.setItem(id, item);
+    _svCharacter.setItem(item);
   }
 
   /// Increases the character ascension
@@ -493,7 +493,7 @@ class _Characters {
     var cAscension = char?.ascension ?? 0;
     cAscension = (cAscension + 1) % 7;
     final item = (char ?? _fallChar(id)).copyWith(ascension: cAscension);
-    _svCharacter.setItem(id, item);
+    _svCharacter.setItem(item);
   }
 }
 
@@ -518,9 +518,9 @@ class _Achievements {
     if (saved >= obtained) obtained -= 1;
     if (obtained > 0) {
       final item = GiAchievement(id: id, obtained: obtained);
-      _svAchievement.setItem(id, item);
+      _svAchievement.setItem(item);
     } else {
-      _svAchievement.setItem(id, null);
+      _svAchievement.removeItem(id);
     }
   }
 
@@ -557,9 +557,9 @@ class _Spincrystals {
     final id = number.toString();
     if (obtained) {
       final spin = GiSpincrystal(id: id, obtained: obtained);
-      _svSpincrystal.setItem(id, spin);
+      _svSpincrystal.setItem(spin);
     } else {
-      _svSpincrystal.setItem(id, null);
+      _svSpincrystal.removeItem(id);
     }
   }
 }
@@ -571,7 +571,7 @@ class _PlayerConfigs {
   }
 
   void deletePlayerInfo() {
-    _svPlayerInfo.setItem(kPlayerInfo, null);
+    _svPlayerInfo.removeItem(kPlayerInfo);
   }
 }
 
@@ -597,7 +597,7 @@ class _SereniteaSets {
     } else if (!owned && hasCharacter) {
       sv.chars.remove(char);
     }
-    _svSereniteaSet.setItem(set, sv);
+    _svSereniteaSet.setItem(sv);
   }
 }
 
@@ -635,9 +635,9 @@ class _RemarkableChests {
   void update(String id, {required bool obtained}) {
     if (obtained) {
       final item = GiFurnitureChest(id: id, obtained: obtained);
-      _svFurnitureChest.setItem(id, item);
+      _svFurnitureChest.setItem(item);
     } else {
-      _svFurnitureChest.setItem(id, null);
+      _svFurnitureChest.removeItem(id);
     }
   }
 }

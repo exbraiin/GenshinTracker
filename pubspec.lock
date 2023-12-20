@@ -222,7 +222,7 @@ packages:
   gsdatabase:
     dependency: "direct main"
     description:
-      path: "../gsdatabase"
+      path: "../GenshinTrackerEditor/packages/gsdatabase"
       relative: true
     source: path
     version: "1.0.0"

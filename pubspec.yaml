@@ -35,7 +35,7 @@ dependencies:
   flutter_lints: ^2.0.1
   bitsdojo_window: ^0.1.5
   gsdatabase:
-    path: ../gsdatabase
+    path: ../GenshinTrackerEditor/packages/gsdatabase
 
 dev_dependencies:
   flutter_test:

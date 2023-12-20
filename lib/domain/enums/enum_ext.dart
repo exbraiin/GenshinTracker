@@ -5,6 +5,9 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 
+const _wp = 'assets/image/weapon_stat';
+const _ep = 'assets/image/element';
+
 extension GsBannerTypeExt on GeBannerType {
   String getWonLabel(int rarity) {
     return this == GeBannerType.weapon && rarity == 5
@@ -84,9 +87,6 @@ extension GeElementTypeExt on GeElementType {
   String get assetPath => 'assets/image/element/$id.png';
   String get assetBgPath => 'assets/image/backgrounds/$id.gif';
 }
-
-const _wp = 'assets/image/weapon_stat';
-const _ep = 'assets/image/element';
 
 extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
   String get label => switch (this) {

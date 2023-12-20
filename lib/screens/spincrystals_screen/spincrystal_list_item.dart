@@ -22,7 +22,7 @@ class SpincrystalListItem extends StatelessWidget {
     final table = Database.instance.saveOf<GiSpincrystal>();
     final save = table.getItem(item.id);
     final owned = save?.obtained ?? false;
-    final region = Database.instance.infoOf<GsRegion>().getItem(item.region);
+    final region = Database.instance.infoOf<GsRegion>().getItem(item.region.id);
     return GsItemCardButton(
       label: item.name,
       rarity: 4,
