@@ -20,7 +20,7 @@ class RemarkableChestListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = Database.instance;
-    final owned = db.saveRemarkableChests.exists(item.id);
+    final owned = db.saveOf<GiFurnitureChest>().exists(item.id);
     final region = db.infoOf<GsRegion>().getItem(item.region.id);
 
     return GsItemCardButton(

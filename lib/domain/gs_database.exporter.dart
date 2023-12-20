@@ -120,8 +120,8 @@ abstract class GsDatabaseExporter {
     for (var banner in list) {
       sheet.appendRow([
         banner.name,
-        DateTime.tryParse(banner.dateStart)?.format(showHour: false),
-        DateTime.tryParse(banner.dateEnd)?.format(showHour: false),
+        banner.dateStart.format(showHour: false),
+        banner.dateEnd.format(showHour: false),
       ]);
     }
   }

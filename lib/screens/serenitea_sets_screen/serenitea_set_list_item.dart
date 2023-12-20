@@ -20,7 +20,7 @@ class SereniteaSetListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final saved = Database.instance.saveSereniteaSets.getItemOrNull(item.id);
+    final saved = Database.instance.saveOf<GiSereniteaSet>().getItem(item.id);
     return GsItemCardButton(
       label: item.name,
       rarity: 4,

@@ -22,8 +22,8 @@ class RemarkableChestDetailsCard extends StatelessWidget
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final db = Database.instance.saveRemarkableChests;
-        final owned = db.getItemOrNull(item.id)?.obtained ?? false;
+        final db = Database.instance.saveOf<GiFurnitureChest>();
+        final owned = db.getItem(item.id)?.obtained ?? false;
         return ItemDetailsCard.single(
           name: item.name,
           image: item.image,

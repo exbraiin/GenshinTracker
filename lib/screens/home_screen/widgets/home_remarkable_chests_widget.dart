@@ -15,7 +15,7 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ic = Database.instance.infoOf<GsFurnitureChest>();
-    final sc = Database.instance.saveRemarkableChests;
+    final sc = Database.instance.saveOf<GiFurnitureChest>();
 
     final totalOwned = ic.items.count((e) => sc.exists(e.id));
     final totalTotal = ic.items.length;

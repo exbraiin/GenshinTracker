@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 const _apiBaseUrl = 'https://enka.network';
 const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
@@ -84,28 +83,27 @@ class EnkaPlayerInfo {
   });
 
   factory EnkaPlayerInfo._fromMap(Map<String, dynamic> json) {
-    final m = JsonData(json);
-    final info = JsonData(m.getDataOrDefault('playerInfo', const {}));
-    final avtInfo = JsonData(info.getDataOrDefault('profilePicture', const {}));
-    final avtId = avtInfo.getInt('avatarId').toString();
-    final avatars = info
-        .getDataOrDefault('showAvatarInfoList', const [])
-        .cast<Map<String, dynamic>>()
-        .map(JsonData.new);
+    // final m = JsonData(json);
+    final info = (json['playerInfo'] as Map? ?? {}).cast<String, dynamic>();
+    final avtInfo =
+        (json['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
+    final avtId = (avtInfo['avatarId'] as int? ?? 0).toString();
+    final avatars = (info['showAvatarInfoList'] as List? ?? [])
+        .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
-      uid: m.getString('uid'),
+      uid: json['uid'] as String? ?? '',
       avatarId: avtId,
-      nickname: info.getString('nickname'),
-      signature: info.getString('signature'),
-      level: info.getInt('level'),
-      worldLevel: info.getInt('worldLevel'),
-      namecardId: info.getInt('nameCardId'),
-      achievements: info.getInt('finishAchievementNum'),
-      towerFloor: info.getInt('towerFloorIndex'),
-      towerChamber: info.getInt('towerLevelIndex'),
+      nickname: json['nickname'] as String? ?? '',
+      signature: json['signature'] as String? ?? '',
+      level: info['level'] as int? ?? 0,
+      worldLevel: info['worldLevel'] as int? ?? 0,
+      namecardId: info['nameCardId'] as int? ?? 0,
+      achievements: info['finishAchievementNum'] as int? ?? 0,
+      towerFloor: info['towerFloorIndex'] as int? ?? 0,
+      towerChamber: info['towerLevelIndex'] as int? ?? 0,
       avatars: avatars.toMap(
-        (e) => e.getInt('avatarId').toString(),
-        (e) => e.getInt('level'),
+        (e) => (e['avatarId'] as int? ?? 0).toString(),
+        (e) => e['level'] as int? ?? 0,
       ),
     );
   }

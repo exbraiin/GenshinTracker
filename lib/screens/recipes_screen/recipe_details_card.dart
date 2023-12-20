@@ -26,8 +26,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final owned = Database.instance.saveRecipes.exists(item.id);
-        final saved = Database.instance.saveRecipes.getItemOrNull(item.id);
+        final owned = Database.instance.saveOf<GiRecipe>().exists(item.id);
+        final saved = Database.instance.saveOf<GiRecipe>().getItem(item.id);
         return ItemDetailsCard.single(
           name: item.name,
           rarity: item.rarity,
@@ -118,8 +118,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   int _getProficiency() {
-    final db = Database.instance.saveRecipes;
-    return db.getItemOrNull(item.id)?.proficiency ?? 0;
+    final db = Database.instance.saveOf<GiRecipe>();
+    return db.getItem(item.id)?.proficiency ?? 0;
   }
 
   void _setProficiency(int value) {

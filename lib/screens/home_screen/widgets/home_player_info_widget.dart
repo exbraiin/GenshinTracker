@@ -10,7 +10,6 @@ import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/remote/enka_service.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
@@ -87,7 +86,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
     );
   }
 
-  Widget _getWidgetContent(BuildContext context, SavePlayerInfo info) {
+  Widget _getWidgetContent(BuildContext context, GiPlayerInfo info) {
     final char = Database.instance
         .infoOf<GsCharacter>()
         .items
@@ -211,6 +210,19 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
 Future<void> _fetchAndInsert(String uid) async {
   final player = await EnkaService.i.getPlayerInfo(uid);
-  final item = SavePlayerInfo.fromEnkaInfo(player);
-  Database.instance.saveUserConfigs.insertItem(item);
+  final item = GiPlayerInfo(
+    id: GsUtils.playerConfigs.kPlayerInfo,
+    uid: uid,
+    avatarId: player.avatarId,
+    nickname: player.nickname,
+    signature: player.signature,
+    level: player.level,
+    worldLevel: player.worldLevel,
+    namecardId: player.namecardId,
+    achievements: player.achievements,
+    towerFloor: player.towerFloor,
+    towerChamber: player.towerChamber,
+    avatars: player.avatars,
+  );
+  Database.instance.saveOf<GiPlayerInfo>().setItem(item.id, item);
 }

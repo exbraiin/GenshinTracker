@@ -15,7 +15,7 @@ class RecipesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final saveRecipes = Database.instance.saveRecipes;
+    final saveRecipes = Database.instance.saveOf<GiRecipe>();
     return InventoryListPage<GsRecipe>(
       icon: menuIconRecipes,
       title: context.fromLabel(Labels.recipes),
@@ -25,7 +25,7 @@ class RecipesScreen extends StatelessWidget {
         recipe: state.item,
         selected: state.selected,
         onTap: state.onSelect,
-        savedRecipe: saveRecipes.getItemOrNull(state.item.id),
+        savedRecipe: saveRecipes.getItem(state.item.id),
       ),
       itemCardBuilder: (context, item) => RecipeDetailsCard(
         item,

@@ -16,8 +16,8 @@ class AchievementListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = Database.instance.saveAchievements;
-    final obtained = db.getItemOrNull(item.id)?.obtained ?? 0;
+    final db = Database.instance.saveOf<GiAchievement>();
+    final obtained = db.getItem(item.id)?.obtained ?? 0;
 
     return GsDataBox.info(
       title: Row(

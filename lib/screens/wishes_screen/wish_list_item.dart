@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 
 enum ListType { none, top, middle, bottom }
@@ -16,7 +15,7 @@ enum ListType { none, top, middle, bottom }
 class WishListItem extends StatelessWidget {
   final int pity;
   final int index;
-  final SaveWish wish;
+  final GiWish wish;
   final WishState wishState;
   final GeBannerType bannerType;
   final ListType type;
@@ -153,8 +152,8 @@ class WishListItem extends StatelessWidget {
     }
   }
 
-  List<SaveWish> _getWishesAround(SaveWish wish) {
-    final list = <SaveWish>[wish];
+  List<GiWish> _getWishesAround(GiWish wish) {
+    final list = <GiWish>[wish];
     final sorted = GsUtils.wishes.getBannerWishes(wish.bannerId);
     final index = sorted.indexWhere((e) => e.id == wish.id);
     if (index == -1) return list;

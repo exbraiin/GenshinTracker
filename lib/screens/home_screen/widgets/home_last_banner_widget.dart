@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeLastBannerWidget extends StatelessWidget {
@@ -54,7 +53,7 @@ class HomeLastBannerWidget extends StatelessWidget {
         .lastOrNull;
     final duration = banner == null
         ? Duration.zero
-        : DateTime.now().difference(banner.dateStartTime);
+        : DateTime.now().difference(banner.dateStart);
     return MapEntry(chr, duration);
   }
 

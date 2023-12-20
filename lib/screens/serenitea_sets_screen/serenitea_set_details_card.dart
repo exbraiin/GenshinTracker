@@ -65,7 +65,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
             stream: Database.instance.loaded,
             builder: (context, snapshot) {
               final saved =
-                  Database.instance.saveSereniteaSets.getItemOrNull(item.id);
+                  Database.instance.saveOf<GiSereniteaSet>().getItem(item.id);
               return Wrap(
                 spacing: kSeparator4,
                 runSpacing: kSeparator4,

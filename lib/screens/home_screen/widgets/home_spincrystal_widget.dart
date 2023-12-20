@@ -18,8 +18,9 @@ class HomeSpincrystalsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final db = Database.instance;
         final spins = db.infoOf<GsSpincrystal>().items;
-        final sv = db.saveSpincrystals
-            .getItems()
+        final sv = db
+            .saveOf<GiSpincrystal>()
+            .items
             .where((e) => e.obtained)
             .map((e) => e.id);
 

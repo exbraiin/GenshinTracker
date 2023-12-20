@@ -1,19 +1,4 @@
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/domain/gs_domain.dart';
-
-extension on String? {
-  DateTime get asDateTime => DateTime.tryParse(this ?? '') ?? DateTime(0);
-}
-
-extension GsBannerExt on GsBanner {
-  DateTime get dateEndTime => dateEnd.asDateTime;
-  DateTime get dateStartTime => dateStart.asDateTime;
-}
-
-extension GsCharacterExt on GsCharacter {
-  DateTime get birthdayTime => birthday.asDateTime;
-  DateTime get releaseDateTime => releaseDate.asDateTime;
-}
 
 extension GsEnemyExt on GsEnemy {
   int get rarityByType => switch (type) {
@@ -38,7 +23,7 @@ abstract class GsMaterialComp {
 
 abstract class GsBannerComp {
   static final comparator = _comparator<GsBanner>([
-    (a, b) => a.dateStartTime.compareTo(b.dateStartTime),
+    (a, b) => a.dateStart.compareTo(b.dateStart),
   ]);
 }
 
@@ -48,8 +33,8 @@ abstract class GsVersionComp {
   ]);
 }
 
-abstract class SaveWishComp {
-  static final comparator = _comparator<SaveWish>([
+abstract class GiWishComp {
+  static final comparator = _comparator<GiWish>([
     (a, b) => a.date.compareTo(b.date),
     (a, b) => a.number.compareTo(b.number),
     (a, b) => a.bannerId.compareTo(b.bannerId),

@@ -19,8 +19,8 @@ class SpincrystalListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final table = Database.instance.saveSpincrystals;
-    final save = table.getItemOrNull(item.id);
+    final table = Database.instance.saveOf<GiSpincrystal>();
+    final save = table.getItem(item.id);
     final owned = save?.obtained ?? false;
     final region = Database.instance.infoOf<GsRegion>().getItem(item.region);
     return GsItemCardButton(

@@ -5,13 +5,12 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class RecipesListItem extends StatelessWidget {
   final GsRecipe recipe;
   final bool selected;
-  final SaveRecipe? savedRecipe;
+  final GiRecipe? savedRecipe;
   final VoidCallback? onTap;
 
   const RecipesListItem({

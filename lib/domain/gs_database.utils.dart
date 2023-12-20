@@ -2,24 +2,32 @@ import 'package:dartx/dartx_io.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/domain/models/model_ext.dart';
 
 /// {@template db_update}
 /// Updates db collection
 /// {@endtemplate}
 final _db = Database.instance;
-final _achievements = _db.infoOf<GsAchievement>();
-final _sereniteas = _db.infoOf<GsSereniteaSet>();
-final _banners = _db.infoOf<GsBanner>();
-final _weapons = _db.infoOf<GsWeapon>();
-final _regions = _db.infoOf<GsRegion>();
-final _weaponsInfo = _db.infoOf<GsWeaponInfo>();
-final _characters = _db.infoOf<GsCharacter>();
-final _charactersInfo = _db.infoOf<GsCharacterInfo>();
-final _materials = _db.infoOf<GsMaterial>();
-final _versions = _db.infoOf<GsVersion>();
-final _charactersSkin = _db.infoOf<GsCharacterSkin>();
+final _ifAchievements = _db.infoOf<GsAchievement>();
+final _ifSereniteas = _db.infoOf<GsSereniteaSet>();
+final _ifBanners = _db.infoOf<GsBanner>();
+final _idWeapons = _db.infoOf<GsWeapon>();
+final _ifRegions = _db.infoOf<GsRegion>();
+final _ifWeaponsInfo = _db.infoOf<GsWeaponInfo>();
+final _ifCharacters = _db.infoOf<GsCharacter>();
+final _ifCharactersInfo = _db.infoOf<GsCharacterInfo>();
+final _ifMaterials = _db.infoOf<GsMaterial>();
+final _ifVersions = _db.infoOf<GsVersion>();
+final _ifCharactersSkin = _db.infoOf<GsCharacterSkin>();
+final _svAchievement = _db.saveOf<GiAchievement>();
+final _svWish = _db.saveOf<GiWish>();
+final _svRecipe = _db.saveOf<GiRecipe>();
+final _svFurnitureChest = _db.saveOf<GiFurnitureChest>();
+final _svCharacter = _db.saveOf<GiCharacter>();
+final _svReputation = _db.saveOf<GiReputation>();
+final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
+final _svSpincrystal = _db.saveOf<GiSpincrystal>();
+final _svPlayerInfo = _db.saveOf<GiPlayerInfo>();
 
 class GsUtils {
   GsUtils._();
@@ -47,35 +55,35 @@ enum WishState { none, won, lost, guaranteed }
 class _Items {
   /// Gets a weapon or a character by the given [id].
   GsWish getItemData(String id) {
-    final weapon = _weapons.getItem(id);
+    final weapon = _idWeapons.getItem(id);
     return weapon != null
         ? GsWish.fromWeapon(weapon)
-        : GsWish.fromCharacter(_characters.getItem(id));
+        : GsWish.fromCharacter(_ifCharacters.getItem(id));
   }
 
   /// Gets a weapon or a character by the given [id].
   GsWish? getItemDataOrNull(String id) {
-    final weapon = _weapons.getItem(id);
+    final weapon = _idWeapons.getItem(id);
     if (weapon != null) return GsWish.fromWeapon(weapon);
-    final character = _characters.getItem(id);
+    final character = _ifCharacters.getItem(id);
     if (character != null) return GsWish.fromCharacter(character);
     return null;
   }
 
   Map<GsMaterial, List<GsWish>> getItemsByMaterial(GeWeekdayType weekday) {
-    final getMat = _materials.getItem;
+    final getMat = _ifMaterials.getItem;
 
     return [
-      ..._charactersInfo.items
+      ..._ifCharactersInfo.items
           .map((element) => MapEntry(element.id, element.talentMaterial)),
-      ..._weaponsInfo.items
+      ..._ifWeaponsInfo.items
           .map((element) => MapEntry(element.id, element.matWeapon)),
     ]
         .groupBy((element) => element.value)
         .entries
         .where((element) => getMat(element.key)!.weekdays.contains(weekday))
         .toMap(
-          (e) => _materials.getItem(e.key)!,
+          (e) => _ifMaterials.getItem(e.key)!,
           (e) => e.value.map((e) => getItemData(e.key)).toList(),
         );
   }
@@ -84,56 +92,56 @@ class _Items {
 class _Cities {
   /// Gets the city max level
   int getCityMaxLevel(String id) =>
-      _regions.getItem(id)?.reputation.length ?? 0;
+      _ifRegions.getItem(id)?.reputation.length ?? 0;
 
   /// Gets the user saved city current level.
   int getCityLevel(String id) {
     final sRp = getSavedReputation(id);
-    final rep = _regions.getItem(id)?.reputation ?? [];
+    final rep = _ifRegions.getItem(id)?.reputation ?? [];
     return rep.lastIndexWhere((e) => e <= sRp) + 1;
   }
 
   /// Gets the previous level max xp value.
   int getCityPreviousXpValue(String id) {
     final sRP = getSavedReputation(id);
-    final rep = _regions.getItem(id)?.reputation ?? [];
+    final rep = _ifRegions.getItem(id)?.reputation ?? [];
     return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
   }
 
   /// Gets the current level max xp value.
   int getCityNextXpValue(String id) {
     final sRP = getSavedReputation(id);
-    final rep = _regions.getItem(id)?.reputation ?? [];
+    final rep = _ifRegions.getItem(id)?.reputation ?? [];
     return rep.firstWhere((e) => e > sRP, orElse: () => -1);
   }
 
   /// Gets the amount of weeks required to reach the next level based on bounties and quests.
   int getCityNextLevelWeeks(String id) {
     final sRp = getSavedReputation(id);
-    final rep = _regions.getItem(id)?.reputation ?? [];
+    final rep = _ifRegions.getItem(id)?.reputation ?? [];
     final idx = rep.lastIndexWhere((e) => e <= sRp);
     final next = idx + 1 < rep.length ? rep[idx + 1] : rep.last;
     final xp = next - sRp;
-    return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
+    return (xp / GsUtils.details.cityXpPerWeek).ceil().coerceAtLeast(0);
   }
 
   /// Gets the amount of weeks required to reach the max level based on bounties and quests.
   int getCityMaxLevelWeeks(String id) {
-    final rep = _regions.getItem(id)?.reputation ?? [];
+    final rep = _ifRegions.getItem(id)?.reputation ?? [];
     final xp = rep.last - getSavedReputation(id);
-    return (xp / GsDomain.cityXpPerWeek).ceil().coerceAtLeast(0);
+    return (xp / GsUtils.details.cityXpPerWeek).ceil().coerceAtLeast(0);
   }
 
   /// Gets the user saved reputation xp
   int getSavedReputation(String id) =>
-      _db.saveReputations.getItemOrNull(id)?.reputation ?? 0;
+      _svReputation.getItem(id)?.reputation ?? 0;
 
   /// Sets the user saved reputation xp
   ///
   /// {@macro db_update}
   void updateReputation(String id, int reputation) {
-    _db.saveReputations
-        .insertItem(SaveReputation(id: id, reputation: reputation));
+    final item = GiReputation(id: id, reputation: reputation);
+    _svReputation.setItem(id, item);
   }
 }
 
@@ -141,12 +149,12 @@ class _Wishes {
   /// Gets all released banners by [type]
   Iterable<GsBanner> geReleasedInfoBannerByType(GeBannerType type) {
     final now = DateTime.now();
-    return _banners.items
-        .where((e) => e.type == type && e.dateStartTime.isBefore(now));
+    return _ifBanners.items
+        .where((e) => e.type == type && e.dateStart.isBefore(now));
   }
 
   /// Gets the pity of the given wish in the given wishes list.
-  int countPity(List<SaveWish> wishes, SaveWish wish) {
+  int countPity(List<GiWish> wishes, GiWish wish) {
     final item = GsUtils.items.getItemData(wish.itemId);
     final rarity = item.rarity;
     if (rarity < 4) return 1;
@@ -156,27 +164,27 @@ class _Wishes {
     return last != -1 ? (last + 1).coerceAtLeast(1) : list.length + 1;
   }
 
-  SaveWish? _getLastWish(Iterable<SaveWish> wishes, [int rarity = 5]) {
+  GiWish? _getLastWish(Iterable<GiWish> wishes, [int rarity = 5]) {
     final getItem = GsUtils.items.getItemData;
     return wishes.firstOrNullWhere((e) => getItem(e.itemId).rarity == rarity);
   }
 
   /// Checks if the next wish is a guaranteed one in the given wishes list.
-  bool isNextGaranteed(List<SaveWish> wishes) {
+  bool isNextGaranteed(List<GiWish> wishes) {
     final last = _getLastWish(wishes);
     if (last == null) return false;
-    final banner = _banners.getItem(last.bannerId);
+    final banner = _ifBanners.getItem(last.bannerId);
     if (banner == null) return false;
     return !banner.feature5.contains(last.itemId);
   }
 
   /// Gets the wish state.
-  WishState getWishState(List<SaveWish> wishes, SaveWish wish) {
+  WishState getWishState(List<GiWish> wishes, GiWish wish) {
     final item = GsUtils.items.getItemData(wish.itemId);
     final rt = item.rarity;
     if (rt != 5 && rt != 4) return WishState.none;
 
-    late final banner = _banners.getItem(wish.bannerId)!;
+    late final banner = _ifBanners.getItem(wish.bannerId)!;
     late final featured = rt == 5 ? banner.feature5 : banner.feature4;
     late final contained = featured.contains(wish.itemId);
 
@@ -184,7 +192,7 @@ class _Wishes {
     final lastWish = _getLastWish(wishes, rt);
     if (lastWish == null) return contained ? WishState.won : WishState.lost;
 
-    final lastBanner = _banners.getItem(lastWish.bannerId)!;
+    final lastBanner = _ifBanners.getItem(lastWish.bannerId)!;
     final lastFeatured = rt == 5 ? lastBanner.feature5 : lastBanner.feature4;
     final lastBannerContains = lastFeatured.contains(lastWish.itemId);
 
@@ -215,61 +223,59 @@ class _Wishes {
     }
 
     return [
-      ..._weapons.items.where(filterWp).map(GsWish.fromWeapon),
-      ..._characters.items.where(filterCh).map(GsWish.fromCharacter),
+      ..._idWeapons.items.where(filterWp).map(GsWish.fromWeapon),
+      ..._ifCharacters.items.where(filterCh).map(GsWish.fromCharacter),
     ];
   }
 
   /// Gets all wishes for the given [banner].
-  List<SaveWish> getBannerWishes(String banner) =>
-      _db.saveWishes.getItems().where((e) => e.bannerId == banner).toList();
+  List<GiWish> getBannerWishes(String banner) =>
+      _svWish.items.where((e) => e.bannerId == banner).toList();
 
   /// Gets all saved wishes for a banner [type].
-  List<SaveWish> getSaveWishesByBannerType(GeBannerType type) {
+  List<GiWish> getSaveWishesByBannerType(GeBannerType type) {
     final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
     final bannerIds = banners.map((e) => e.id);
-    return _db.saveWishes
-        .getItems()
+    return _db
+        .saveOf<GiWish>()
+        .items
         .where((e) => bannerIds.contains(e.bannerId))
         .toList();
   }
 
   /// Whether the [banner] has wishes.
   bool bannerHasWishes(String banner) =>
-      _db.saveWishes.getItems().any((e) => e.bannerId == banner);
+      _svWish.items.any((e) => e.bannerId == banner);
 
   /// Counts the [banner] wishes.
   int countBannerWishes(String banner) =>
-      _db.saveWishes.getItems().count((e) => e.bannerId == banner);
+      _svWish.items.count((e) => e.bannerId == banner);
 
   /// Counts the obtained amount of [itemId].
   int countItem(String itemId) =>
-      _db.saveWishes.getItems().count((e) => e.itemId == itemId);
+      _svWish.items.count((e) => e.itemId == itemId);
 
   /// Whether the [itemId] was obtained.
-  bool hasItem(String itemId) =>
-      _db.saveWishes.getItems().any((e) => e.itemId == itemId);
+  bool hasItem(String itemId) => _svWish.items.any((e) => e.itemId == itemId);
 
   /// Removes the [bannerId] last wish
   ///
   /// {@macro db_update}
   void removeLastWish(String bannerId) {
-    final db = Database.instance.saveWishes;
     final list = GsUtils.wishes
         .getBannerWishes(bannerId)
-        .sortedWith(SaveWishComp.comparator);
+        .sortedWith(GiWishComp.comparator);
     if (list.isEmpty) return;
-    db.deleteItem(list.last.id);
+    _svWish.setItem(list.last.id, null);
   }
 
   /// Updates the given [wish] date.
   ///
   /// {@macro db_update}
-  void updateWishDate(SaveWish wish, DateTime date) {
-    final db = Database.instance.saveWishes;
-    if (!db.exists(wish.id)) return;
+  void updateWishDate(GiWish wish, DateTime date) {
+    if (!_svWish.exists(wish.id)) return;
     final newWish = wish.copyWith(date: date);
-    db.insertItem(newWish);
+    _svWish.setItem(newWish.id, newWish);
   }
 
   /// Adds the items with the given [ids] to the given [bannerId].
@@ -280,24 +286,27 @@ class _Wishes {
     required DateTime date,
     required String bannerId,
   }) async {
-    final db = Database.instance.saveWishes;
+    final db = Database.instance.saveOf<GiWish>();
     final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
     var i = 0;
     for (var id in ids) {
       final number = lastRoll + 1 + i++;
-      final wish = SaveWish(
+      final wish = GiWish(
         id: '${bannerId}_$number',
         date: date,
         itemId: id,
         number: number,
         bannerId: bannerId,
       );
-      db.insertItem(wish);
+      db.setItem(wish.id, wish);
     }
   }
 }
 
 class _Details {
+  final cityXpPerWeek = 420;
+  final primogemsPerWish = 160;
+  final primogemsPerCharSet = 20;
   final ascHerosWit = const [0, 6, 28, 29, 42, 59, 80, 0];
   final imgUnknown =
       'https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Unknown.png';
@@ -313,30 +322,29 @@ class _Recipes {
     int? proficiency,
   }) {
     if (own != null) {
-      final contains = _db.saveRecipes.exists(id);
+      final contains = _svRecipe.exists(id);
       if (own && !contains) {
-        _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: 0));
+        _svRecipe.setItem(id, GiRecipe(id: id, proficiency: 0));
       } else if (!own && contains) {
-        _db.saveRecipes.deleteItem(id);
+        _svRecipe.setItem(id, null);
       }
     }
-
     if (proficiency != null) {
-      _db.saveRecipes.insertItem(SaveRecipe(id: id, proficiency: proficiency));
+      _svRecipe.setItem(id, GiRecipe(id: id, proficiency: proficiency));
     }
   }
 }
 
 class _Weapons {
   bool hasWeapon(String id) {
-    return _db.saveWishes.getItems().any((e) => e.itemId == id);
+    return _svWish.items.any((e) => e.itemId == id);
   }
 }
 
 class _Versions {
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
-    final current = _versions.items
+    final current = _ifVersions.items
         .sortedWith(GsVersionComp.comparator)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current?.id == version;
@@ -344,7 +352,7 @@ class _Versions {
 
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
-    final upcoming = _versions.items
+    final upcoming = _ifVersions.items
         .sortedWith(GsVersionComp.comparator)
         .where((e) => e.releaseDate.isAfter(now));
     return upcoming.any((element) => element.id == version);
@@ -352,7 +360,7 @@ class _Versions {
 
   GsVersion? getCurrentVersion() {
     final now = DateTime.now();
-    final current = _versions.items
+    final current = _ifVersions.items
         .sortedWith(GsVersionComp.comparator)
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current;
@@ -361,7 +369,7 @@ class _Versions {
 
 class _Materials {
   Iterable<GsMaterial> getGroupMaterials(GsMaterial material) {
-    return _materials.items.where((element) {
+    return _ifMaterials.items.where((element) {
       return element.group == material.group &&
           element.region == material.region &&
           element.subgroup == material.subgroup;
@@ -369,32 +377,35 @@ class _Materials {
   }
 
   Iterable<GsMaterial> getGroupMaterialsById(String id) {
-    final material = _materials.getItem(id);
+    final material = _ifMaterials.getItem(id);
     if (material == null) return [];
     return getGroupMaterials(material);
   }
 }
 
 class _Characters {
+  static GiCharacter _fallChar(String id) =>
+      GiCharacter(id: id, owned: 0, outfit: '', ascension: 0, friendship: 1);
+
   /// Whether the user has this character or not.
   bool hasCaracter(String id) {
-    final owned = _db.saveCharacters.getItemOrNull(id)?.owned ?? 0;
-    return owned > 0 || _db.saveWishes.getItems().any((e) => e.itemId == id);
+    final owned = _svCharacter.getItem(id)?.owned ?? 0;
+    return owned > 0 || _svWish.items.any((e) => e.itemId == id);
   }
 
   /// Whether the character with the given [id] has outfits or not.
   bool hasOutfits(String id) {
-    return _charactersSkin.items.any((element) => element.character == id);
+    return _ifCharactersSkin.items.any((element) => element.character == id);
   }
 
   int getCharFriendship(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     return char?.friendship.coerceAtLeast(1) ?? 1;
   }
 
   /// Gets the character ascension level.
   int getCharAscension(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     return char?.ascension ?? 0;
   }
 
@@ -410,23 +421,23 @@ class _Characters {
 
   /// Gets the character total constellations amount or null.
   int? getTotalCharConstellations(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     final total = GsUtils.wishes.countItem(id);
     final sum = total + (char?.owned ?? 0);
     return sum > 0 ? (sum - 1) : null;
   }
 
   String getImage(String id) {
-    final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
-    final url = _charactersSkin.getItem(outfit)?.image ?? '';
-    late final charImg = _characters.getItem(id)?.image ?? '';
+    final outfit = _svCharacter.getItem(id)?.outfit ?? '';
+    final url = _ifCharactersSkin.getItem(outfit)?.image ?? '';
+    late final charImg = _ifCharacters.getItem(id)?.image ?? '';
     return url.isNotEmpty ? url : charImg;
   }
 
   String getFullImage(String id) {
-    final outfit = _db.saveCharacters.getItemOrNull(id)?.outfit ?? '';
-    final url = _charactersSkin.getItem(outfit)?.fullImage ?? '';
-    late final charImg = _characters.getItem(id)?.fullImage ?? '';
+    final outfit = _svCharacter.getItem(id)?.outfit ?? '';
+    final url = _ifCharactersSkin.getItem(outfit)?.fullImage ?? '';
+    late final charImg = _ifCharacters.getItem(id)?.fullImage ?? '';
     return url.isNotEmpty ? url : charImg;
   }
 
@@ -434,20 +445,20 @@ class _Characters {
   ///
   /// {@macro db_update}
   void setCharOutfit(String id, String outfit) {
-    final char = _db.saveCharacters.getItemOrNull(id);
-    final item = (char ?? SaveCharacter(id: id)).copyWith(outfit: outfit);
-    if (item.outfit != char?.outfit) _db.saveCharacters.insertItem(item);
+    final char = _svCharacter.getItem(id);
+    final item = (char ?? _fallChar(id)).copyWith(outfit: outfit);
+    if (item.outfit != char?.outfit) _svCharacter.setItem(id, item);
   }
 
   /// Sets the character friendship
   ///
   /// {@macro db_update}
   void setCharFriendship(String id, int friendship) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     final friend = friendship.clamp(1, 10);
-    final item = (char ?? SaveCharacter(id: id)).copyWith(friendship: friend);
+    final item = (char ?? _fallChar(id)).copyWith(friendship: friend);
     if (item.friendship != char?.friendship) {
-      _db.saveCharacters.insertItem(item);
+      _svCharacter.setItem(id, item);
     }
   }
 
@@ -455,50 +466,46 @@ class _Characters {
   ///
   /// {@macro db_update}
   void increaseOwnedCharacter(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     final wishes = GsUtils.wishes.countItem(id);
-
     var cOwned = char?.owned ?? 0;
     cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
-    final item = (char ?? SaveCharacter(id: id)).copyWith(owned: cOwned);
-    _db.saveCharacters.insertItem(item);
+    final item = (char ?? _fallChar(id)).copyWith(owned: cOwned);
+    _svCharacter.setItem(id, item);
   }
 
   /// Increases the character friendship
   ///
   /// {@macro db_update}
   void increaseFriendshipCharacter(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     var cFriendship = char?.friendship ?? 1;
     cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
-
-    final item =
-        (char ?? SaveCharacter(id: id)).copyWith(friendship: cFriendship);
-    _db.saveCharacters.insertItem(item);
+    final item = (char ?? _fallChar(id)).copyWith(friendship: cFriendship);
+    _svCharacter.setItem(id, item);
   }
 
   /// Increases the character ascension
   ///
   /// {@macro db_update}
   void increaseAscension(String id) {
-    final char = _db.saveCharacters.getItemOrNull(id);
+    final char = _svCharacter.getItem(id);
     var cAscension = char?.ascension ?? 0;
     cAscension = (cAscension + 1) % 7;
-    final item =
-        (char ?? SaveCharacter(id: id)).copyWith(ascension: cAscension);
-    _db.saveCharacters.insertItem(item);
+    final item = (char ?? _fallChar(id)).copyWith(ascension: cAscension);
+    _svCharacter.setItem(id, item);
   }
 }
 
 class _Achievements {
   int countTotal([bool Function(GsAchievement)? test]) {
-    var items = _achievements.items;
+    var items = _ifAchievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) => e.phases.length).toInt();
   }
 
   int countTotalRewards([bool Function(GsAchievement)? test]) {
-    var items = _achievements.items;
+    var items = _ifAchievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) => e.phases.sumBy((e) => e.reward)).toInt();
   }
@@ -507,36 +514,36 @@ class _Achievements {
   ///
   /// {@macro db_update}
   void update(String id, {required int obtained}) {
-    final saved = _db.saveAchievements.getItemOrNull(id)?.obtained ?? 0;
+    final saved = _svAchievement.getItem(id)?.obtained ?? 0;
     if (saved >= obtained) obtained -= 1;
     if (obtained > 0) {
-      final item = SaveAchievement(id: id, obtained: obtained);
-      _db.saveAchievements.insertItem(item);
+      final item = GiAchievement(id: id, obtained: obtained);
+      _svAchievement.setItem(id, item);
     } else {
-      _db.saveAchievements.deleteItem(id);
+      _svAchievement.setItem(id, null);
     }
   }
 
   bool isObtainable(String id) {
-    final saved = _db.saveAchievements.getItemOrNull(id);
+    final saved = _svAchievement.getItem(id);
     if (saved == null) return true;
-    final item = _achievements.getItem(id);
+    final item = _ifAchievements.getItem(id);
     return (item?.phases.length ?? 0) > saved.obtained;
   }
 
   int countSaved([bool Function(GsAchievement)? test]) {
-    var items = _achievements.items;
+    var items = _ifAchievements.items;
     if (test != null) items = items.where(test);
     return items
-        .sumBy((e) => _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0)
+        .sumBy((e) => _svAchievement.getItem(e.id)?.obtained ?? 0)
         .toInt();
   }
 
   int countSavedRewards([bool Function(GsAchievement)? test]) {
-    var items = _achievements.items;
+    var items = _ifAchievements.items;
     if (test != null) items = items.where(test);
     return items.sumBy((e) {
-      final i = _db.saveAchievements.getItemOrNull(e.id)?.obtained ?? 0;
+      final i = _svAchievement.getItem(e.id)?.obtained ?? 0;
       return e.phases.take(i).sumBy((element) => element.reward);
     }).toInt();
   }
@@ -549,30 +556,30 @@ class _Spincrystals {
   void update(int number, {required bool obtained}) {
     final id = number.toString();
     if (obtained) {
-      final spin = SaveSpincrystal(id: id, obtained: obtained);
-      _db.saveSpincrystals.insertItem(spin);
+      final spin = GiSpincrystal(id: id, obtained: obtained);
+      _svSpincrystal.setItem(id, spin);
     } else {
-      _db.saveSpincrystals.deleteItem(id);
+      _svSpincrystal.setItem(id, null);
     }
   }
 }
 
 class _PlayerConfigs {
-  SavePlayerInfo? getPlayerInfo() {
-    return _db.saveUserConfigs.getItemOrNull(SaveConfig.kPlayerInfo)
-        as SavePlayerInfo?;
+  final kPlayerInfo = 'player_info';
+  GiPlayerInfo? getPlayerInfo() {
+    return _svPlayerInfo.getItem(kPlayerInfo);
   }
 
   void deletePlayerInfo() {
-    _db.saveUserConfigs.deleteItem(SaveConfig.kPlayerInfo);
+    _svPlayerInfo.setItem(kPlayerInfo, null);
   }
 }
 
 class _SereniteaSets {
   bool isObtainable(String set) {
-    final item = _sereniteas.getItem(set);
+    final item = _ifSereniteas.getItem(set);
     if (item == null) return false;
-    final saved = _db.saveSereniteaSets.getItemOrNull(set);
+    final saved = _svSereniteaSet.getItem(set);
     final chars = saved?.chars ?? [];
     bool hasChar(String id) => GsUtils.characters.hasCaracter(id);
     return item.chars.any((c) => !chars.contains(c) && hasChar(c));
@@ -582,15 +589,15 @@ class _SereniteaSets {
   ///
   /// {@macro db_update}
   void setSetCharacter(String set, String char, {required bool owned}) {
-    final sv = _db.saveSereniteaSets.getItemOrNull(set) ??
-        SaveSereniteaSet(id: set, chars: []);
+    late final item = GiSereniteaSet(id: set, chars: []);
+    final sv = _svSereniteaSet.getItem(set) ?? item;
     final hasCharacter = sv.chars.contains(char);
     if (owned && !hasCharacter) {
       sv.chars.add(char);
     } else if (!owned && hasCharacter) {
       sv.chars.remove(char);
     }
-    _db.saveSereniteaSets.insertItem(sv);
+    _svSereniteaSet.setItem(set, sv);
   }
 }
 
@@ -599,8 +606,8 @@ class _WeaponMaterials {
 
   /// Gets all weapon ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
-    final item = _weapons.getItem(id);
-    final info = _weaponsInfo.getItem(id);
+    final item = _idWeapons.getItem(id);
+    final info = _ifWeaponsInfo.getItem(id);
     if (item == null || info == null) return const {};
 
     return _getMaterials<WeaponAsc>(
@@ -627,10 +634,10 @@ class _RemarkableChests {
   /// {@macro db_update}
   void update(String id, {required bool obtained}) {
     if (obtained) {
-      _db.saveRemarkableChests
-          .insertItem(SaveRemarkableChest(id: id, obtained: obtained));
+      final item = GiFurnitureChest(id: id, obtained: obtained);
+      _svFurnitureChest.setItem(id, item);
     } else {
-      _db.saveRemarkableChests.deleteItem(id);
+      _svFurnitureChest.setItem(id, null);
     }
   }
 }
@@ -645,13 +652,13 @@ class _CharactersMaterials {
     final ascension = GsUtils.characters.getCharAscension(id);
     return getAscensionMaterials(id, ascension + 1)
         .entries
-        .map((e) => MapEntry(_materials.getItem(e.key), e.value))
+        .map((e) => MapEntry(_ifMaterials.getItem(e.key), e.value))
         .toList();
   }
 
   /// Gets all character ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
-    final info = _charactersInfo.getItem(id);
+    final info = _ifCharactersInfo.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterAsc>(
@@ -674,7 +681,7 @@ class _CharactersMaterials {
   /// Gets all character talent materials at level.
   /// * Returns materials for all 3 talents.
   Map<String, int> getTalentMaterials(String id, [int? level]) {
-    final info = _charactersInfo.getItem(id);
+    final info = _ifCharactersInfo.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterTal>(
@@ -892,8 +899,8 @@ class WishesSummary {
   double get average5 => wishesInfo5.average;
   double get percentage4 => wishesInfo4.percentage;
   double get percentage5 => wishesInfo5.percentage;
-  List<SaveWish> get wishes4 => wishesInfo4.wishes;
-  List<SaveWish> get wishes5 => wishesInfo5.wishes;
+  List<GiWish> get wishes4 => wishesInfo4.wishes;
+  List<GiWish> get wishes5 => wishesInfo5.wishes;
 
   WishesSummary({
     required this.wishesInfo4,
@@ -904,7 +911,7 @@ class WishesSummary {
     required this.wishesInfo5Character,
   });
 
-  factory WishesSummary.fromList(List<SaveWish> wishes) {
+  factory WishesSummary.fromList(List<GiWish> wishes) {
     return WishesSummary(
       wishesInfo4: WishInfo.fromSelector(
         wishes,
@@ -939,7 +946,7 @@ class WishInfo {
   final int total;
   final double average;
   final double percentage;
-  final List<SaveWish> wishes;
+  final List<GiWish> wishes;
 
   WishInfo({
     required this.last,
@@ -950,7 +957,7 @@ class WishInfo {
   });
 
   factory WishInfo.fromSelector(
-    List<SaveWish> wishes,
+    List<GiWish> wishes,
     bool Function(GsWish item) selector,
   ) {
     final pity = GsUtils.wishes.countPity;

@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
@@ -54,7 +53,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
 
-        return ScreenFilterBuilder<SaveWish>(
+        return ScreenFilterBuilder<GiWish>(
           filter: ScreenFilters.saveWishFilter,
           builder: (context, filter, button, toggle) {
             PreferredSizeWidget appBar = InventoryAppBar(
@@ -140,7 +139,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                     final ut = GsUtils.wishes;
                     final wishes = ut
                         .getSaveWishesByBannerType(banner)
-                        .sortedWith((a, b) => SaveWishComp.comparator(b, a));
+                        .sortedWith((a, b) => GiWishComp.comparator(b, a));
                     final banners =
                         ut.geReleasedInfoBannerByType(banner).toList();
                     return CustomScrollView(
@@ -156,7 +155,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
     );
   }
 
-  ListType _getListType(List<SaveWish> wishes, int index) {
+  ListType _getListType(List<GiWish> wishes, int index) {
     late final cWish = wishes.elementAtOrNull(index);
     late final pWish = wishes.elementAtOrNull(index - 1);
     late final nWish = wishes.elementAtOrNull(index + 1);
@@ -173,9 +172,9 @@ class _WishesScreenScreenState extends State<WishesScreen>
 
   List<Widget> _slivers(
     GeBannerType gsBanner,
-    List<SaveWish> wishesList,
+    List<GiWish> wishesList,
     List<GsBanner> bannersList,
-    ScreenFilter<SaveWish> filter,
+    ScreenFilter<GiWish> filter,
   ) {
     final banners =
         bannersList.sortedWith((a, b) => GsBannerComp.comparator(b, a));
@@ -186,7 +185,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
             .match(bannerWishes)
             // This keeps the sorting by number inside the banner.
             .sortedByDescending((e) => e.number)
-            .thenWith((a, b) => SaveWishComp.comparator(b, a));
+            .thenWith((a, b) => GiWishComp.comparator(b, a));
 
         final hide = !filter.hasExtra('show');
         final showBanner = !hide || filteredWishes.isNotEmpty;

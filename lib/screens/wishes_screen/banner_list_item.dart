@@ -7,8 +7,6 @@ import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
@@ -78,7 +76,7 @@ class BannerListItem extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${banner.name} '
-                              '(${banner.dateStartTime.format(showHour: false)}) ',
+                              '(${banner.dateStart.format(showHour: false)}) ',
                         ),
                         TextSpan(
                           text: '\n   '
@@ -90,7 +88,7 @@ class BannerListItem extends StatelessWidget {
                         TextSpan(
                           text: context.fromLabel(
                             Labels.bannerNPrimogems,
-                            (rolls * GsDomain.primogemsPerWish).format(),
+                            (rolls * GsUtils.details.primogemsPerWish).format(),
                           ),
                           style:
                               TextStyle(color: context.themeColors.almostWhite),
@@ -142,11 +140,11 @@ class BannerListItem extends StatelessWidget {
 
   String _getBannerDuration(BuildContext context) {
     final now = DateTime.now();
-    if (banner.dateStartTime.isAfter(now)) {
-      final diff = banner.dateStartTime.difference(now);
+    if (banner.dateStart.isAfter(now)) {
+      final diff = banner.dateStart.difference(now);
       return diff.startOrStartedIn(context);
     } else {
-      final diff = banner.dateEndTime.difference(now);
+      final diff = banner.dateEnd.difference(now);
       return diff.endOrEndedIn(context);
     }
   }

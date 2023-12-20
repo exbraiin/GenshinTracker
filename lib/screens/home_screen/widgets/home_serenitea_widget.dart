@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/screens/home_screen/widgets/home_table.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 
@@ -17,9 +16,9 @@ class HomeSereniteaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primogems = GsDomain.primogemsPerCharSet;
+    final primogems = GsUtils.details.primogemsPerCharSet;
     final sets = Database.instance.infoOf<GsSereniteaSet>().items;
-    final ss = Database.instance.saveSereniteaSets;
+    final ss = Database.instance.saveOf<GiSereniteaSet>();
     final hasChar = GsUtils.characters.hasCaracter;
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
@@ -28,7 +27,7 @@ class HomeSereniteaWidget extends StatelessWidget {
         final totalTotal = sets.expand((e) => e.chars).count(ic.exists);
         final totalObtain = sets.expand((e) => e.chars.where(hasChar)).length;
         final totalOwned = sets.expand((e) {
-          final saved = ss.getItemOrNull(e.id);
+          final saved = ss.getItem(e.id);
           return e.chars.where((c) => saved?.chars.contains(c) ?? false);
         }).length;
 
@@ -67,7 +66,7 @@ class HomeSereniteaWidget extends StatelessWidget {
                   final obtainable = total.where(hasChar);
 
                   final owned = cat.expand((e) {
-                    final saved = ss.getItemOrNull(e.id);
+                    final saved = ss.getItem(e.id);
                     return e.chars
                         .where((c) => saved?.chars.contains(c) ?? false);
                   });

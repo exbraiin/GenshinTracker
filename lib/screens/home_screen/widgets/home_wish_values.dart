@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
@@ -31,7 +30,7 @@ class HomeWishesValues extends StatelessWidget {
     final sw = GsUtils.wishes;
     final wishes = sw
         .getSaveWishesByBannerType(banner)
-        .sortedWith((a, b) => SaveWishComp.comparator(b, a));
+        .sortedWith((a, b) => GiWishComp.comparator(b, a));
 
     final summary = WishesSummary.fromList(wishes);
 
@@ -48,7 +47,7 @@ class HomeWishesValues extends StatelessWidget {
         children: [
           Expanded(child: Text(context.fromLabel(title))),
           Text(
-            (wishes.length * GsDomain.primogemsPerWish).format(),
+            (wishes.length * GsUtils.details.primogemsPerWish).format(),
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -186,7 +185,7 @@ class HomeWishesValues extends StatelessWidget {
 
   Row _summary(
     BuildContext context,
-    List<SaveWish> wishes,
+    List<GiWish> wishes,
     WishesSummary summary,
     int maxPity,
   ) {
@@ -227,7 +226,7 @@ class HomeWishesValues extends StatelessWidget {
   Widget _getWishesList({
     required TextStyle style,
     required WishesSummary summary,
-    required List<SaveWish> wishes,
+    required List<GiWish> wishes,
     required int maxPity,
   }) {
     if (summary.wishesInfo5.total == 0) return const SizedBox();
@@ -460,11 +459,12 @@ class HomeWishesValues extends StatelessWidget {
         .map((e) => MapEntry(e, GsUtils.wishes.getWishState(info.wishes, e)))
         .where((e) => e.value == WishState.won || e.value == WishState.lost);
     final won = total.count((e) => e.value == WishState.won);
+    final percent = won / total.length.coerceAtLeast(1) * 100;
     return _getInfo(
       context,
       label,
       color,
-      [won, won / total.length * 100, null],
+      [won, percent, null],
     );
   }
 }

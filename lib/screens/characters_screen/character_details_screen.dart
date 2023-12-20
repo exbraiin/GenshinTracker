@@ -13,7 +13,6 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -237,8 +236,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 Text(info.name, style: stStyle),
                 Text(context.fromLabel(Labels.birthday), style: stLabel),
                 Text(
-                  (DateTime.tryParse(info.birthday) ?? DateTime(0))
-                      .toPrettyDate(context),
+                  info.birthday.toPrettyDate(context),
                   style: stStyle,
                 ),
               ].map((e) {
@@ -301,7 +299,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                     : Text(context.fromLabel(Labels.wsNone), style: stStyle),
                 Text(context.fromLabel(Labels.releaseDate), style: stLabel),
                 Text(
-                  info.releaseDateTime.toPrettyDate(context),
+                  info.releaseDate.toPrettyDate(context),
                   style: stStyle,
                 ),
               ].map((e) {

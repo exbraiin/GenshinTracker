@@ -21,7 +21,7 @@ class HomeRecipesWidget extends StatelessWidget {
             .items
             .where((e) => e.baseRecipe.isEmpty)
             .where((e) => e.type == GeRecipeType.permanent);
-        final saved = Database.instance.saveRecipes.getItems();
+        final saved = Database.instance.saveOf<GiRecipe>().items;
         final groups = all.groupBy((e) => e.rarity);
 
         int owned([int? rarity]) {

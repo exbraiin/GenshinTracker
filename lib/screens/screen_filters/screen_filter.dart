@@ -4,7 +4,6 @@ import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/gs_domain.dart';
 
 class FilterSection<T, I> {
   final String? key;
@@ -194,7 +193,7 @@ class ScreenFilters {
       FilterSection.rarity((item) => item.rarity, 3),
     ],
   );
-  static final saveWishFilter = ScreenFilter<SaveWish>(
+  static final saveWishFilter = ScreenFilter<GiWish>(
     sections: [
       FilterSection.item((item) => _getItem(item.itemId).isWeapon),
       FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
@@ -273,17 +272,17 @@ class ScreenFilters {
                 ?.id;
             return GsUtils.characters.hasCaracter(id ?? '');
           }
-          return _db.saveRecipes.exists(item.id);
+          return _db.saveOf<GiRecipe>().exists(item.id);
         },
       ),
       FilterSection<bool, GsRecipe>(
         {true, false},
         (item) =>
-            _db.saveRecipes.getItemOrNull(item.id)?.proficiency ==
+            _db.saveOf<GiRecipe>().getItem(item.id)?.proficiency ==
             item.maxProficiency,
         (c) => c.fromLabel(Labels.proficiency),
         (c, e) => c.fromLabel(e ? Labels.master : Labels.ongoing),
-        filter: (i) => _db.saveRecipes.exists(i.id),
+        filter: (i) => _db.saveOf<GiRecipe>().exists(i.id),
       ),
       FilterSection<bool, GsRecipe>(
         {true, false},
@@ -305,7 +304,9 @@ class ScreenFilters {
       FilterSection.version((item) => item.version),
       FilterSection.region((item) => item.region),
       FilterSection.setCategory((item) => item.type),
-      FilterSection.owned((item) => _db.saveRemarkableChests.exists(item.id)),
+      FilterSection.owned(
+        (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
+      ),
     ],
   );
   static final infoWeaponFilter = ScreenFilter<GsWeapon>(
@@ -406,7 +407,9 @@ class ScreenFilters {
   );
   static final infoSpincrystalFilter = ScreenFilter<GsSpincrystal>(
     sections: [
-      FilterSection.owned((item) => _db.saveSpincrystals.exists(item.id)),
+      FilterSection.owned(
+        (item) => _db.saveOf<GiSpincrystal>().exists(item.id),
+      ),
       FilterSection.version((item) => item.version),
       FilterSection(
         {true, false},
