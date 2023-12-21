@@ -86,15 +86,15 @@ class EnkaPlayerInfo {
     // final m = JsonData(json);
     final info = (json['playerInfo'] as Map? ?? {}).cast<String, dynamic>();
     final avtInfo =
-        (json['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
+        (info['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
     final avtId = (avtInfo['avatarId'] as int? ?? 0).toString();
     final avatars = (info['showAvatarInfoList'] as List? ?? [])
         .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
       uid: json['uid'] as String? ?? '',
       avatarId: avtId,
-      nickname: json['nickname'] as String? ?? '',
-      signature: json['signature'] as String? ?? '',
+      nickname: info['nickname'] as String? ?? '',
+      signature: info['signature'] as String? ?? '',
       level: info['level'] as int? ?? 0,
       worldLevel: info['worldLevel'] as int? ?? 0,
       namecardId: info['nameCardId'] as int? ?? 0,

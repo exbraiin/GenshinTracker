@@ -147,15 +147,18 @@ class FilterSection<T, I> {
 
 class ScreenFilter<I extends GsModel<I>> {
   final Set<String> extras;
+  final Iterable<I> Function(Iterable<I> list)? sorter;
   final List<FilterSection<dynamic, I>> sections;
 
   ScreenFilter({
     this.sections = const [],
+    this.sorter,
     Set<String>? extras,
   }) : extras = extras ?? {};
 
-  List<I> match(Iterable<I> items) {
-    return items.where((e) => sections.every((s) => s._filter(e))).toList();
+  Iterable<I> match(Iterable<I> items) {
+    final list = items.where((e) => sections.every((s) => s._filter(e)));
+    return sorter?.call(list) ?? list;
   }
 
   void reset() {
@@ -224,6 +227,10 @@ class ScreenFilters {
     ],
   );
   static final infoEnemies = ScreenFilter<GsEnemy>(
+    sorter: (list) => list
+        .sortedBy((element) => element.family.index)
+        .thenBy((element) => element.order)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection<GeEnemyType, GsEnemy>(
         GeEnemyType.values.toSet(),
@@ -241,6 +248,9 @@ class ScreenFilters {
     ],
   );
   static final infoNamecardFilter = ScreenFilter<GsNamecard>(
+    sorter: (list) => list
+        .sortedBy((element) => element.type.index)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection<GeNamecardType, GsNamecard>(
         GeNamecardType.values.toSet(),
@@ -252,6 +262,10 @@ class ScreenFilters {
     ],
   );
   static final infoRecipeFilter = ScreenFilter<GsRecipe>(
+    sorter: (list) => list
+        .sortedByDescending((element) => element.rarity)
+        .thenByDescending((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection<GeRecipeEffectType, GsRecipe>(
@@ -299,6 +313,11 @@ class ScreenFilters {
     ],
   );
   static final infoRemarkableChestFilter = ScreenFilter<GsFurnitureChest>(
+    sorter: (list) => list
+        .sortedBy((element) => element.region.index)
+        .thenByDescending((element) => element.rarity)
+        .thenByDescending((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),
@@ -310,6 +329,10 @@ class ScreenFilters {
     ],
   );
   static final infoWeaponFilter = ScreenFilter<GsWeapon>(
+    sorter: (list) => list
+        .sortedByDescending((element) => element.rarity)
+        .thenByDescending((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.weapon((item) => item.type),
       FilterSection.rarity((item) => item.rarity),
@@ -343,12 +366,21 @@ class ScreenFilters {
     ],
   );
   static final infoArtifactFilter = ScreenFilter<GsArtifact>(
+    sorter: (list) => list
+        .sortedByDescending((element) => element.rarity)
+        .thenBy((element) => element.region.index)
+        .thenBy((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.rarity((item) => item.rarity, 3),
       FilterSection.version((item) => item.version),
     ],
   );
   static final infoCharacterFilter = ScreenFilter<GsCharacter>(
+    sorter: (list) => list
+        .sortedByDescending((element) => element.rarity)
+        .thenByDescending((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.element((item) => item.element),
       FilterSection.weapon((item) => item.weapon),
@@ -394,6 +426,10 @@ class ScreenFilters {
     ],
   );
   static final infoSereniteaSetFilter = ScreenFilter<GsSereniteaSet>(
+    sorter: (list) => list
+        .sortedBy((element) => element.category.index)
+        .thenBy((element) => element.version)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.version((item) => item.version),
       FilterSection.setCategory((item) => item.category),
@@ -406,6 +442,7 @@ class ScreenFilters {
     ],
   );
   static final infoSpincrystalFilter = ScreenFilter<GsSpincrystal>(
+    sorter: (list) => list.sortedBy((element) => element.number),
     sections: [
       FilterSection.owned(
         (item) => _db.saveOf<GiSpincrystal>().exists(item.id),
@@ -420,6 +457,11 @@ class ScreenFilters {
     ],
   );
   static final infoMaterialFilter = ScreenFilter<GsMaterial>(
+    sorter: (list) => list
+        .sortedBy((element) => element.group.index)
+        .thenBy((element) => element.subgroup)
+        .thenBy((element) => element.rarity)
+        .thenBy((element) => element.name),
     sections: [
       FilterSection.rarity((item) => item.rarity),
       FilterSection.version((item) => item.version),

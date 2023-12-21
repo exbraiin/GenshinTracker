@@ -296,3 +296,15 @@ extension GeEnemyTypeExt on GeEnemyType {
         GeEnemyType.weeklyBoss => Labels.etWeeklyBoss,
       };
 }
+
+extension GeCharTalentTypeExt on GeCharTalentType {
+  String get label => switch (this) {
+        GeCharTalentType.normalAttack => Labels.charTalNa,
+        GeCharTalentType.elementalSkill => Labels.charTalEs,
+        GeCharTalentType.elementalBurst => Labels.charTalEb,
+        GeCharTalentType.alternateSprint => Labels.charTalAs,
+        GeCharTalentType.ascension1stPassive => Labels.charTal1a,
+        GeCharTalentType.ascension4thPassive => Labels.charTal4a,
+        GeCharTalentType.utilityPassive => Labels.charTalUp,
+      };
+}

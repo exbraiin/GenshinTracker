@@ -57,7 +57,7 @@ class SpincrystalDetailsCard extends StatelessWidget
               ),
             ItemDetailsCardContent(
               label: context.fromLabel(Labels.source),
-              description: context.fromLabel(item.source),
+              description: item.source,
             ),
           ]),
         );

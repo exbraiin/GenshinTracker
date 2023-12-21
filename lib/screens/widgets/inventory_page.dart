@@ -79,7 +79,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
         return ScreenFilterBuilder<T>(
           filter: filter!,
           builder: (context, filter, button, toggle) {
-            final sorted = filter.match(items);
+            final sorted = filter.match(items).toList();
             final extras = filter.extras.toSet();
             final other = actions?.call(extras, toggle) ?? const [];
             return _InventoryGridPage.builder(

@@ -50,13 +50,15 @@ class AchievementGroupsScreen extends StatelessWidget {
                     builder: (context, notifier, child) {
                       final item = notifier.value;
                       final data = Database.instance.infoOf<GsAchievement>();
-                      final aList = filter.match(
-                        data.items.where((e) => e.group == item.id).where(
-                              (element) => element.name
-                                  .toLowerCase()
-                                  .contains(sNotifier.value),
-                            ),
-                      );
+                      final aList = filter
+                          .match(
+                            data.items.where((e) => e.group == item.id).where(
+                                  (element) => element.name
+                                      .toLowerCase()
+                                      .contains(sNotifier.value),
+                                ),
+                          )
+                          .toList();
                       return Row(
                         children: [
                           Expanded(

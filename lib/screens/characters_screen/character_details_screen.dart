@@ -401,12 +401,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                 children: [
                   Text(
                     selected.name,
-                    style: context.textTheme.titleMedium!
+                    style: context.themeStyles.title20n
                         .copyWith(color: context.themeColors.primary),
                   ),
                   const SizedBox(width: kSeparator8),
                   Text(
-                    '(${selected.type})',
+                    '(${context.fromLabel(selected.type.label)})',
                     style: context.themeStyles.label12i,
                   ),
                 ],
@@ -456,7 +456,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             children: [
               Text(
                 selected.name,
-                style: context.textTheme.titleMedium!
+                style: context.themeStyles.title20n
                     .copyWith(color: context.themeColors.primary),
               ),
               const SizedBox(height: kSeparator8),

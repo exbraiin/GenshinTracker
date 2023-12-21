@@ -245,5 +245,12 @@
     "item_upcoming": "Upcoming",
     "date_dialog_date": "Date",
     "date_dialog_hour": "Hour",
+    "char_tal_na": "Normal Attack",
+    "char_tal_es": "Elemental Skill",
+    "char_tal_eb": "Elemental Burst",
+    "char_tal_as": "Alternate Sprint",
+    "char_tal_1a": "1st Ascension Passive",
+    "char_tal_4a": "4th Ascension Passive",
+    "char_tal_up": "Utility Passive",
     "_discard": "discard_label"
 }

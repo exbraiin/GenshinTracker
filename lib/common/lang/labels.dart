@@ -739,6 +739,27 @@ class Labels {
 	/// Hour
 	static const dateDialogHour = 'date_dialog_hour';
 
+	/// Normal Attack
+	static const charTalNa = 'char_tal_na';
+
+	/// Elemental Skill
+	static const charTalEs = 'char_tal_es';
+
+	/// Elemental Burst
+	static const charTalEb = 'char_tal_eb';
+
+	/// Alternate Sprint
+	static const charTalAs = 'char_tal_as';
+
+	/// 1st Ascension Passive
+	static const charTal1a = 'char_tal_1a';
+
+	/// 4th Ascension Passive
+	static const charTal4a = 'char_tal_4a';
+
+	/// Utility Passive
+	static const charTalUp = 'char_tal_up';
+
 	/// discard_label
 	static const discard = '_discard';
 }
