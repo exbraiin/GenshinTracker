@@ -123,6 +123,30 @@ class SereniteaSetDetailsCard extends StatelessWidget
             },
           ),
         ),
+      if (item.furnishing.isNotEmpty)
+        ItemDetailsCardContent(
+          label: context.fromLabel(Labels.matFurnishing),
+          content: ValueStreamBuilder<bool>(
+            stream: Database.instance.loaded,
+            builder: (context, snapshot) {
+              final db = Database.instance.infoOf<GsFurnishing>();
+              return Wrap(
+                spacing: kSeparator4,
+                runSpacing: kSeparator4,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: item.furnishing.map((e) {
+                  final item = db.getItem(e.id);
+                  return ItemGridWidget(
+                    label: e.amount.compact(),
+                    urlImage: item?.image ?? '',
+                    rarity: item?.rarity ?? 1,
+                    tooltip: item?.name ?? '',
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ),
     ]);
   }
 }

@@ -5,6 +5,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -60,6 +61,13 @@ class HomeWishesValues extends StatelessWidget {
       child: Column(
         children: [
           _summary(context, wishes, summary, maxPity),
+          const SizedBox(height: kSeparator8),
+          _getCharGraph(
+            context: context,
+            summary: summary,
+            wishes: wishes,
+            maxPity: maxPity,
+          ),
           const SizedBox(height: kSeparator8),
           Row(
             children: [
@@ -220,6 +228,92 @@ class HomeWishesValues extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getCharGraph({
+    required BuildContext context,
+    required WishesSummary summary,
+    required List<GiWish> wishes,
+    required int maxPity,
+  }) {
+    if (summary.wishes5.isEmpty) return const SizedBox();
+    final map = <int, int>{};
+    for (final wish in summary.wishes5) {
+      final pity = GsUtils.wishes.countPity(wishes, wish);
+      if (pity > maxPity) continue;
+      map[pity] = (map[pity] ?? 0) + 1;
+    }
+
+    final max = map.values.max() ?? 0;
+    return Container(
+      height: 40,
+      margin: const EdgeInsets.all(kSeparator4),
+      child: LayoutBuilder(
+        builder: (context, layout) {
+          final width = layout.maxWidth / maxPity;
+          final height = layout.maxHeight / max;
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: Divider(
+                  color: context.themeColors.mainColor1,
+                ),
+              ),
+              Row(
+                children: List<Widget>.generate(maxPity, (index) {
+                  final pity = index + 1;
+                  final amount = map[pity] ?? 0;
+                  final color = context.themeColors.getPityColor(pity, maxPity);
+                  late final radius = (width - 2) / 2;
+                  return Stack(
+                    children: [
+                      SizedBox(width: width),
+                      if (amount > 0)
+                        Center(
+                          child: Tooltip(
+                            preferBelow: false,
+                            message: 'Pity: ${index + 1}\nTotal: $amount',
+                            child: MouseHoverBuilder(
+                              builder: (context, value, child) {
+                                return AnimatedContainer(
+                                  width: width - 2,
+                                  height: amount * height,
+                                  decoration: BoxDecoration(
+                                    color: value ? Colors.white : color,
+                                    borderRadius: BorderRadius.circular(width),
+                                  ),
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 1),
+                                  duration: const Duration(milliseconds: 400),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      if (pity % 10 == 0 && pity != maxPity)
+                        Center(
+                          child: Container(
+                            width: width - 2,
+                            margin: const EdgeInsets.symmetric(horizontal: 1),
+                            child: Container(
+                              width: radius,
+                              height: radius,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
