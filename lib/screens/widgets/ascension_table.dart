@@ -38,7 +38,7 @@ class AscensionTable extends StatelessWidget {
             label: (ctx) => ctx.fromLabel(Labels.wsAtk),
             value: (ctx, l) => item.ascAtkValues.split(',').elementAtOrNull(l),
           ),
-          if (item.ascStatType != GeWeaponAscStatType.none)
+          if (item.statType != GeWeaponAscStatType.none)
             (
               label: (ctx) => ctx.fromLabel(item.statType.label),
               value: (ctx, l) =>
