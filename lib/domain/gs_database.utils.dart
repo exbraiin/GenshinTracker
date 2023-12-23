@@ -13,12 +13,11 @@ final _ifSereniteas = _db.infoOf<GsSereniteaSet>();
 final _ifBanners = _db.infoOf<GsBanner>();
 final _idWeapons = _db.infoOf<GsWeapon>();
 final _ifRegions = _db.infoOf<GsRegion>();
-final _ifWeaponsInfo = _db.infoOf<GsWeaponInfo>();
 final _ifCharacters = _db.infoOf<GsCharacter>();
-final _ifCharactersInfo = _db.infoOf<GsCharacterInfo>();
 final _ifMaterials = _db.infoOf<GsMaterial>();
 final _ifVersions = _db.infoOf<GsVersion>();
 final _ifCharactersSkin = _db.infoOf<GsCharacterSkin>();
+final _ifWeapons = _db.infoOf<GsWeapon>();
 final _svAchievement = _db.saveOf<GiAchievement>();
 final _svWish = _db.saveOf<GiWish>();
 final _svRecipe = _db.saveOf<GiRecipe>();
@@ -74,9 +73,9 @@ class _Items {
     final getMat = _ifMaterials.getItem;
 
     return [
-      ..._ifCharactersInfo.items
+      ..._ifCharacters.items
           .map((element) => MapEntry(element.id, element.talentMaterial)),
-      ..._ifWeaponsInfo.items
+      ..._ifWeapons.items
           .map((element) => MapEntry(element.id, element.matWeapon)),
     ]
         .groupBy((element) => element.value)
@@ -607,7 +606,7 @@ class _WeaponMaterials {
   /// Gets all weapon ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
     final item = _idWeapons.getItem(id);
-    final info = _ifWeaponsInfo.getItem(id);
+    final info = _ifWeapons.getItem(id);
     if (item == null || info == null) return const {};
 
     return _getMaterials<WeaponAsc>(
@@ -658,7 +657,7 @@ class _CharactersMaterials {
 
   /// Gets all character ascension materials at level.
   Map<String, int> getAscensionMaterials(String id, [int? level]) {
-    final info = _ifCharactersInfo.getItem(id);
+    final info = _ifCharacters.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterAsc>(
@@ -681,7 +680,7 @@ class _CharactersMaterials {
   /// Gets all character talent materials at level.
   /// * Returns materials for all 3 talents.
   Map<String, int> getTalentMaterials(String id, [int? level]) {
-    final info = _ifCharactersInfo.getItem(id);
+    final info = _ifCharacters.getItem(id);
     if (info == null) return const {};
 
     return _getMaterials<CharacterTal>(

@@ -400,9 +400,7 @@ class ScreenFilters {
       FilterSection.region((item) => item.region),
       FilterSection<GeCharacterAscStatType, GsCharacter>(
         GeCharacterAscStatType.values.toSet(),
-        (item) =>
-            _db.infoOf<GsCharacterInfo>().getItem(item.id)?.ascStatType ??
-            GeCharacterAscStatType.values.first,
+        (item) => item.ascStatType,
         (c) => 'Special Stat',
         (c, i) => c.fromLabel(i.label),
         asset: (i) => i.assetPath,

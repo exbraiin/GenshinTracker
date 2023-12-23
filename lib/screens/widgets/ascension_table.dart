@@ -23,8 +23,7 @@ class AscensionTable extends StatelessWidget {
       })> _statsBuilder;
 
   AscensionTable.weapon(
-    GsWeapon item,
-    GsWeaponInfo info, {
+    GsWeapon item, {
     super.key,
     this.style,
     this.alwaysShowMats = false,
@@ -37,19 +36,18 @@ class AscensionTable extends StatelessWidget {
         _statsBuilder = [
           (
             label: (ctx) => ctx.fromLabel(Labels.wsAtk),
-            value: (ctx, l) => info.ascAtkValues.split(',').elementAtOrNull(l),
+            value: (ctx, l) => item.ascAtkValues.split(',').elementAtOrNull(l),
           ),
-          if (info.ascStatType != GeWeaponAscStatType.none)
+          if (item.ascStatType != GeWeaponAscStatType.none)
             (
               label: (ctx) => ctx.fromLabel(item.statType.label),
               value: (ctx, l) =>
-                  info.ascStatValues.split(',').elementAtOrNull(l),
+                  item.ascStatValues.split(',').elementAtOrNull(l),
             ),
         ];
 
   AscensionTable.character(
-    GsCharacter item,
-    GsCharacterInfo info, {
+    GsCharacter item, {
     super.key,
     this.style = const TextStyle(color: Colors.white),
     this.alwaysShowMats = false,
@@ -62,19 +60,19 @@ class AscensionTable extends StatelessWidget {
         _statsBuilder = [
           (
             label: (ctx) => ctx.fromLabel(Labels.wsHp),
-            value: (ctx, l) => info.ascHpValues.split(',').elementAtOrNull(l),
+            value: (ctx, l) => item.ascHpValues.split(',').elementAtOrNull(l),
           ),
           (
             label: (ctx) => ctx.fromLabel(Labels.wsAtk),
-            value: (ctx, l) => info.ascAtkValues.split(',').elementAtOrNull(l),
+            value: (ctx, l) => item.ascAtkValues.split(',').elementAtOrNull(l),
           ),
           (
             label: (ctx) => ctx.fromLabel(Labels.wsDef),
-            value: (ctx, l) => info.ascDefValues.split(',').elementAtOrNull(l),
+            value: (ctx, l) => item.ascDefValues.split(',').elementAtOrNull(l),
           ),
           (
-            label: (ctx) => ctx.fromLabel(info.ascStatType.label),
-            value: (ctx, l) => info.ascStatValues.split(',').elementAtOrNull(l),
+            label: (ctx) => ctx.fromLabel(item.ascStatType.label),
+            value: (ctx, l) => item.ascStatValues.split(',').elementAtOrNull(l),
           ),
         ];
 

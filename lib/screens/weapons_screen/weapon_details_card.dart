@@ -23,7 +23,6 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   @override
   Widget build(BuildContext context) {
-    final info = Database.instance.infoOf<GsWeaponInfo>().getItem(item.id);
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, nd, child) {
@@ -65,14 +64,12 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               ),
             ],
           ),
-          child: info != null
-              ? ItemDetailsCardContent.generate(context, [
-                  if (info.effectName.isNotEmpty) _getInfoEffect(context, info),
-                  ItemDetailsCardContent(description: item.desc),
-                  _getInfoAscension(context, info),
-                  _getWeaponMats(context, info),
-                ])
-              : null,
+          child: ItemDetailsCardContent.generate(context, [
+            if (item.effectName.isNotEmpty) _getInfoEffect(context, item),
+            ItemDetailsCardContent(description: item.desc),
+            _getInfoAscension(context, item),
+            _getWeaponMats(context, item),
+          ]),
         );
       },
     );
@@ -80,7 +77,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   ItemDetailsCardContent _getInfoEffect(
     BuildContext context,
-    GsWeaponInfo info,
+    GsWeapon info,
   ) {
     return ItemDetailsCardContent(
       label: info.effectName,
@@ -90,17 +87,17 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   ItemDetailsCardContent _getInfoAscension(
     BuildContext context,
-    GsWeaponInfo info,
+    GsWeapon info,
   ) {
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.ascension),
-      content: AscensionTable.weapon(item, info),
+      content: AscensionTable.weapon(item),
     );
   }
 
   ItemDetailsCardContent _getWeaponMats(
     BuildContext context,
-    GsWeaponInfo info,
+    GsWeapon info,
   ) {
     final im = Database.instance.infoOf<GsMaterial>();
     final iw = GsUtils.weaponMaterials;
