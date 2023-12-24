@@ -99,10 +99,8 @@ class _AddWishScreenState extends State<AddWishScreen> {
 
     final filtered = filter
         .match(GsUtils.wishes.getBannerItemsData(banner))
-        .sortedBy((element) => element.rarity)
-        .thenBy((element) => element.isCharacter ? 0 : 1)
-        .thenBy((element) => featured(element) ? 0 : 1)
-        .thenBy((element) => element.name);
+        .map((e) => e.copyWith(featured: featured(e)))
+        .sorted();
     if (filtered.isEmpty) return const GsNoResultsState();
 
     return GsGridView.builder(

@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeAscensionWidget extends StatefulWidget {
@@ -104,7 +103,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         .values
         .map(combine)
         .where((e) => e.key != null)
-        .sortedWith((a, b) => GsMaterialComp.comparator(a.key!, b.key!));
+        .sortedWith((a, b) => a.key!.compareTo(b.key!));
 
     return ValueListenableBuilder<bool>(
       valueListenable: _notifier,

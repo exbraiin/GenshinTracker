@@ -25,64 +25,68 @@ class AchievementGroupsScreen extends StatelessWidget {
     return ScreenFilterBuilder<GsAchievement>(
       filter: ScreenFilters.infoAchievement,
       builder: (context, filter, button, toggle) {
-        return ValueStreamBuilder<bool>(
-          stream: Database.instance.loaded,
-          builder: (context, snapshot) {
-            if (snapshot.data != true) return const SizedBox();
-            final data = Database.instance.infoOf<GsAchievementGroup>();
-            final gList = data.items.toList();
-            final total = GsUtils.achievements.countTotal();
-            final saved = GsUtils.achievements.countSaved();
+        return ValueNotifierBuilder(
+          value: '',
+          builder: (context, sNotifier, child) {
+            return ValueStreamBuilder<bool>(
+              stream: Database.instance.loaded,
+              builder: (context, snapshot) {
+                if (snapshot.data != true) return const SizedBox();
+                final data = Database.instance.infoOf<GsAchievementGroup>();
+                final gList = data.items.toList();
+                final total = GsUtils.achievements.countTotal();
+                final saved = GsUtils.achievements.countSaved();
 
-            final title = context.fromLabel(Labels.achievements);
-            return InventoryPage(
-              appBar: InventoryAppBar(
-                iconAsset: menuIconAchievements,
-                label: '$title  ($saved/$total)',
-                actions: [button],
-              ),
-              child: ValueNotifierBuilder<String>(
-                value: '',
-                builder: (context, sNotifier, child) {
-                  if (gList.isEmpty) return const GsNoResultsState();
-                  return ValueNotifierBuilder<GsAchievementGroup>(
-                    value: gList.first,
-                    builder: (context, notifier, child) {
-                      final item = notifier.value;
-                      final data = Database.instance.infoOf<GsAchievement>();
-                      final aList = filter
-                          .match(
-                            data.items.where((e) => e.group == item.id).where(
-                                  (element) => element.name
-                                      .toLowerCase()
-                                      .contains(sNotifier.value),
+                final title = context.fromLabel(Labels.achievements);
+                return InventoryPage(
+                  appBar: InventoryAppBar(
+                    iconAsset: menuIconAchievements,
+                    label: '$title  ($saved/$total)',
+                    actions: [button],
+                  ),
+                  child: gList.isEmpty
+                      ? const GsNoResultsState()
+                      : ValueNotifierBuilder<GsAchievementGroup>(
+                          value: gList.first,
+                          builder: (context, notifier, child) {
+                            final item = notifier.value;
+                            final data =
+                                Database.instance.infoOf<GsAchievement>();
+                            final aList = filter
+                                .match(
+                                  data.items
+                                      .where((e) => e.group == item.id)
+                                      .where(
+                                        (element) => element.name
+                                            .toLowerCase()
+                                            .contains(sNotifier.value),
+                                      ),
+                                )
+                                .sorted();
+                            return Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: _getGroupsList(
+                                    context,
+                                    gList,
+                                    notifier,
+                                    sNotifier,
+                                  ),
                                 ),
-                          )
-                          .toList();
-                      return Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: _getGroupsList(
-                              context,
-                              gList,
-                              notifier,
-                              sNotifier,
-                            ),
-                          ),
-                          const SizedBox(width: kGridSeparator),
-                          Expanded(
-                            flex: 5,
-                            child: InventoryBox(
-                              child: _getAchievementsList(item, aList),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
+                                const SizedBox(width: kGridSeparator),
+                                Expanded(
+                                  flex: 5,
+                                  child: InventoryBox(
+                                    child: _getAchievementsList(item, aList),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                );
+              },
             );
           },
         );

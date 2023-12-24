@@ -9,7 +9,6 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 
@@ -29,9 +28,7 @@ class HomeWishesValues extends StatelessWidget {
     final style = st.copyWith(color: context.themeColors.almostWhite);
 
     final sw = GsUtils.wishes;
-    final wishes = sw
-        .getSaveWishesByBannerType(banner)
-        .sortedWith((a, b) => GiWishComp.comparator(b, a));
+    final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
 
     final summary = WishesSummary.fromList(wishes);
 

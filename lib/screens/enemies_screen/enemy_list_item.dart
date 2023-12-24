@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 
 class EnemyListItem extends StatelessWidget {
   final bool selected;

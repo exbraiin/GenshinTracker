@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -18,10 +19,17 @@ typedef ItemState<T extends GsModel<T>> = ({
   ScreenFilter<T>? filter,
 });
 
+enum SortOrder {
+  none,
+  ascending,
+  descending,
+}
+
 class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final String icon;
   final String title;
   final Size childSize;
+  final SortOrder sortOrder;
   final ScreenFilter<T>? filter;
   final Iterable<T> Function(Database db) items;
   final List<Widget> Function(
@@ -35,6 +43,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     super.key,
     this.filter,
     this.actions,
+    this.sortOrder = SortOrder.ascending,
     this.childSize = const Size(126, 160),
     this.itemCardBuilder,
     required this.icon,
@@ -49,10 +58,14 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
-        final items = this.items(Database.instance);
+        final db = Database.instance;
+        final items = switch (sortOrder) {
+          SortOrder.none => this.items(db).toList(),
+          SortOrder.ascending => this.items(db).sorted(),
+          SortOrder.descending => this.items(db).sortedDescending(),
+        };
 
         if (filter == null) {
-          final sorted = items.toList();
           return _InventoryGridPage.builder(
             childWidth: childSize.width,
             childHeight: childSize.height,
@@ -60,18 +73,18 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
               label: title,
               iconAsset: icon,
             ),
-            itemCount: sorted.length,
+            itemCount: items.length,
             itemBuilder: (context, state) => itemBuilder(
               context,
               (
-                item: sorted[state.index],
+                item: items[state.index],
                 selected: state.selected,
                 onSelect: state.onSelect,
                 filter: null,
               ),
             ),
             itemCardBuilder: itemCardBuilder != null
-                ? (context, index) => itemCardBuilder!(context, sorted[index])
+                ? (context, index) => itemCardBuilder!(context, items[index])
                 : null,
           );
         }

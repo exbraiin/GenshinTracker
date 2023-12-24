@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
@@ -137,9 +136,8 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   controller: _controller,
                   children: _bannerType.map((banner) {
                     final ut = GsUtils.wishes;
-                    final wishes = ut
-                        .getSaveWishesByBannerType(banner)
-                        .sortedWith((a, b) => GiWishComp.comparator(b, a));
+                    final wishes =
+                        ut.getSaveWishesByBannerType(banner).sortedDescending();
                     final banners =
                         ut.geReleasedInfoBannerByType(banner).toList();
                     return CustomScrollView(
@@ -176,8 +174,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
     List<GsBanner> bannersList,
     ScreenFilter<GiWish> filter,
   ) {
-    final banners =
-        bannersList.sortedWith((a, b) => GsBannerComp.comparator(b, a));
+    final banners = bannersList.sortedDescending();
     return banners.map(
       (banner) {
         final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
@@ -185,7 +182,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
             .match(bannerWishes)
             // This keeps the sorting by number inside the banner.
             .sortedByDescending((e) => e.number)
-            .thenWith((a, b) => GiWishComp.comparator(b, a));
+            .thenWith((a, b) => b.compareTo(a));
 
         final hide = !filter.hasExtra('show');
         final showBanner = !hide || filteredWishes.isNotEmpty;

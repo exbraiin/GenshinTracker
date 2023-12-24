@@ -2,7 +2,6 @@ import 'package:dartx/dartx_io.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 
 /// {@template db_update}
 /// Updates db collection
@@ -261,9 +260,7 @@ class _Wishes {
   ///
   /// {@macro db_update}
   void removeLastWish(String bannerId) {
-    final list = GsUtils.wishes
-        .getBannerWishes(bannerId)
-        .sortedWith(GiWishComp.comparator);
+    final list = GsUtils.wishes.getBannerWishes(bannerId).sorted();
     if (list.isEmpty) return;
     _svWish.removeItem(list.last.id);
   }
@@ -344,7 +341,7 @@ class _Versions {
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
     final current = _ifVersions.items
-        .sortedWith(GsVersionComp.comparator)
+        .sorted()
         .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
     return current?.id == version;
   }
@@ -352,16 +349,16 @@ class _Versions {
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
     final upcoming = _ifVersions.items
-        .sortedWith(GsVersionComp.comparator)
-        .where((e) => e.releaseDate.isAfter(now));
+        .sorted()
+        .where((version) => version.releaseDate.isAfter(now));
     return upcoming.any((element) => element.id == version);
   }
 
   GsVersion? getCurrentVersion() {
     final now = DateTime.now();
     final current = _ifVersions.items
-        .sortedWith(GsVersionComp.comparator)
-        .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
+        .sorted()
+        .lastOrNullWhere((version) => !version.releaseDate.isAfter(now));
     return current;
   }
 }

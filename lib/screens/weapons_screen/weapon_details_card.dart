@@ -11,7 +11,6 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/models/model_ext.dart';
 import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
@@ -110,7 +109,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         children: mats.entries
             .map((e) => MapEntry(im.getItem(e.key), e.value))
             .where((e) => e.key != null)
-            .sortedWith((a, b) => GsMaterialComp.comparator(a.key!, b.key!))
+            .sortedWith((a, b) => a.key!.compareTo(b.key!))
             .map((e) {
           return ItemGridWidget.material(
             e.key!,
