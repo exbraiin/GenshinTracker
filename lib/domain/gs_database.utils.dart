@@ -284,18 +284,17 @@ class _Wishes {
   }) async {
     final db = Database.instance.saveOf<GiWish>();
     final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
-    var i = 0;
-    for (var id in ids) {
-      final number = lastRoll + 1 + i++;
-      final wish = GiWish(
+    final wishes = ids.mapIndexed((i, id) {
+      final number = lastRoll + i;
+      return GiWish(
         id: '${bannerId}_$number',
-        date: date,
-        itemId: id,
         number: number,
+        itemId: id,
         bannerId: bannerId,
+        date: date,
       );
-      db.setItem(wish);
-    }
+    });
+    wishes.forEach(db.setItem);
   }
 }
 
