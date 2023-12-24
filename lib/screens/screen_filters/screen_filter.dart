@@ -457,6 +457,7 @@ class ScreenFilters {
   static final infoMaterialFilter = ScreenFilter<GsMaterial>(
     sorter: (list) => list
         .sortedBy((element) => element.group.index)
+        .thenBy((element) => element.region.index)
         .thenBy((element) => element.subgroup)
         .thenBy((element) => element.rarity)
         .thenBy((element) => element.name),
