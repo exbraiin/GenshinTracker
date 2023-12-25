@@ -879,56 +879,45 @@ Map<String, int> _getMaterials<T>(
 // === OLD ===
 
 class WishesSummary {
-  final WishInfo wishesInfo4;
-  final WishInfo wishesInfo5;
-  final WishInfo wishesInfo4Weapon;
-  final WishInfo wishesInfo4Character;
-  final WishInfo wishesInfo5Weapon;
-  final WishInfo wishesInfo5Character;
-
-  int get last4 => wishesInfo4.last;
-  int get last5 => wishesInfo5.last;
-  int get total4 => wishesInfo4.total;
-  int get total5 => wishesInfo5.total;
-  double get average4 => wishesInfo4.average;
-  double get average5 => wishesInfo5.average;
-  double get percentage4 => wishesInfo4.percentage;
-  double get percentage5 => wishesInfo5.percentage;
-  List<GiWish> get wishes4 => wishesInfo4.wishes;
-  List<GiWish> get wishes5 => wishesInfo5.wishes;
+  final WishInfo info4;
+  final WishInfo info5;
+  final WishInfo info4Weapon;
+  final WishInfo info4Character;
+  final WishInfo info5Weapon;
+  final WishInfo info5Character;
 
   WishesSummary({
-    required this.wishesInfo4,
-    required this.wishesInfo5,
-    required this.wishesInfo4Weapon,
-    required this.wishesInfo4Character,
-    required this.wishesInfo5Weapon,
-    required this.wishesInfo5Character,
+    required this.info4,
+    required this.info5,
+    required this.info4Weapon,
+    required this.info4Character,
+    required this.info5Weapon,
+    required this.info5Character,
   });
 
   factory WishesSummary.fromList(List<GiWish> wishes) {
     return WishesSummary(
-      wishesInfo4: WishInfo.fromSelector(
+      info4: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 4,
       ),
-      wishesInfo5: WishInfo.fromSelector(
+      info5: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 5,
       ),
-      wishesInfo4Weapon: WishInfo.fromSelector(
+      info4Weapon: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 4 && item.isWeapon,
       ),
-      wishesInfo4Character: WishInfo.fromSelector(
+      info4Character: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 4 && item.isCharacter,
       ),
-      wishesInfo5Weapon: WishInfo.fromSelector(
+      info5Weapon: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 5 && item.isWeapon,
       ),
-      wishesInfo5Character: WishInfo.fromSelector(
+      info5Character: WishInfo.fromSelector(
         wishes,
         (item) => item.rarity == 5 && item.isCharacter,
       ),

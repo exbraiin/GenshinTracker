@@ -102,7 +102,7 @@ class HomeWishesValues extends StatelessWidget {
           ),
           _getPullInfo(
             context,
-            summary.wishesInfo5,
+            summary.info5,
             context.fromLabel(Labels.rarityStar, 5),
             context.themeColors.getRarityColor(5),
           ),
@@ -114,7 +114,7 @@ class HomeWishesValues extends StatelessWidget {
             ),
             _getPullInfo(
               context,
-              summary.wishesInfo5Character,
+              summary.info5Character,
               '   $_arrow ${context.fromLabel(Labels.character)}',
               context.themeColors.getRarityColor(5),
             ),
@@ -125,7 +125,7 @@ class HomeWishesValues extends StatelessWidget {
             ),
             _getPullInfo(
               context,
-              summary.wishesInfo5Weapon,
+              summary.info5Weapon,
               '   $_arrow ${context.fromLabel(Labels.weapon)}',
               context.themeColors.getRarityColor(5),
             ),
@@ -139,7 +139,7 @@ class HomeWishesValues extends StatelessWidget {
             ),
             _getWonInfo(
               context,
-              summary.wishesInfo5,
+              summary.info5,
               '   $_arrow ${context.fromLabel(banner.getWonLabel(5))}',
               context.themeColors.getRarityColor(5),
             ),
@@ -151,7 +151,7 @@ class HomeWishesValues extends StatelessWidget {
           ),
           _getPullInfo(
             context,
-            summary.wishesInfo4,
+            summary.info4,
             context.fromLabel(Labels.rarityStar, 4),
             context.themeColors.getRarityColor(4),
           ),
@@ -162,7 +162,7 @@ class HomeWishesValues extends StatelessWidget {
           ),
           _getPullInfo(
             context,
-            summary.wishesInfo4Character,
+            summary.info4Character,
             '   $_arrow ${context.fromLabel(Labels.character)}',
             context.themeColors.getRarityColor(4),
           ),
@@ -173,7 +173,7 @@ class HomeWishesValues extends StatelessWidget {
           ),
           _getPullInfo(
             context,
-            summary.wishesInfo4Weapon,
+            summary.info4Weapon,
             '   $_arrow ${context.fromLabel(Labels.weapon)}',
             context.themeColors.getRarityColor(4),
           ),
@@ -194,8 +194,9 @@ class HomeWishesValues extends StatelessWidget {
     WishesSummary summary,
     int maxPity,
   ) {
+    final last = summary.info5.last;
     final show = banner == GeBannerType.character;
-    final pityColor = context.themeColors.getPityColor(summary.last5, maxPity);
+    final pityColor = context.themeColors.getPityColor(last, maxPity);
     final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
     return Row(
       children: [
@@ -210,7 +211,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: _summaryContainer(
             context,
-            summary.last5.format(),
+            summary.info5.last.format(),
             context.fromLabel(Labels.l5sPity),
             valueColor: pityColor,
             wasGuaranteed: guaranteed,
@@ -219,7 +220,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: _summaryContainer(
             context,
-            summary.last4.format(),
+            summary.info4.last.format(),
             context.fromLabel(Labels.l4sPity),
             valueColor: context.themeColors.getRarityColor(4),
           ),
@@ -234,9 +235,9 @@ class HomeWishesValues extends StatelessWidget {
     required List<GiWish> wishes,
     required int maxPity,
   }) {
-    if (summary.wishes5.isEmpty) return const SizedBox();
+    if (summary.info5.wishes.isEmpty) return const SizedBox();
     final map = <int, int>{};
-    for (final wish in summary.wishes5) {
+    for (final wish in summary.info5.wishes) {
       final pity = GsUtils.wishes.countPity(wishes, wish);
       if (pity > maxPity) continue;
       map[pity] = (map[pity] ?? 0) + 1;
@@ -320,7 +321,7 @@ class HomeWishesValues extends StatelessWidget {
     required List<GiWish> wishes,
     required int maxPity,
   }) {
-    if (summary.wishesInfo5.total == 0) return const SizedBox();
+    if (summary.info5.total == 0) return const SizedBox();
     var expanded = false;
     return StatefulBuilder(
       builder: (context, setState) {
@@ -354,7 +355,7 @@ class HomeWishesValues extends StatelessWidget {
                   runSpacing: kGridSeparator,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
-                  children: summary.wishes5.reversed.map((wish) {
+                  children: summary.info5.wishes.reversed.map((wish) {
                     final item = GsUtils.items.getItemData(wish.itemId);
                     final pity = GsUtils.wishes.countPity(wishes, wish);
                     final showState = banner == GeBannerType.character ||
