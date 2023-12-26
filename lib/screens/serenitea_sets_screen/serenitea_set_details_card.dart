@@ -136,11 +136,23 @@ class SereniteaSetDetailsCard extends StatelessWidget
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: item.furnishing.map((e) {
                   final item = db.getItem(e.id);
+                  if (item == null) return const ItemGridWidget();
+
+                  final utils = GsUtils.sereniteaSets;
+                  final owned = utils.getFurnishingAmount(item.id);
+                  final hasFurnishing = owned > 0;
+
                   return ItemGridWidget(
-                    label: e.amount.compact(),
-                    urlImage: item?.image ?? '',
-                    rarity: item?.rarity ?? 1,
-                    tooltip: item?.name ?? '',
+                    label: hasFurnishing
+                        ? '${owned.compact()}/${e.amount.compact()}'
+                        : e.amount.compact(),
+                    urlImage: item.image,
+                    rarity: item.rarity,
+                    tooltip: item.name,
+                    onRemove: hasFurnishing
+                        ? (ctx) => utils.decreaseFurnishingAmount(item.id)
+                        : null,
+                    onTap: (ctx) => utils.increaseFurnishingAmount(item.id),
                   );
                 }).toList(),
               );

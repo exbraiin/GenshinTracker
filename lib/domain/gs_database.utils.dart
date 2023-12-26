@@ -24,6 +24,7 @@ final _svFurnitureChest = _db.saveOf<GiFurnitureChest>();
 final _svCharacter = _db.saveOf<GiCharacter>();
 final _svReputation = _db.saveOf<GiReputation>();
 final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
+final _svFurnishing = _db.saveOf<GiFurnishing>();
 final _svSpincrystal = _db.saveOf<GiSpincrystal>();
 final _svPlayerInfo = _db.saveOf<GiPlayerInfo>();
 
@@ -580,6 +581,25 @@ class _SereniteaSets {
     return item.chars.any((c) => !chars.contains(c) && hasChar(c));
   }
 
+  int getFurnishingAmount(String id) {
+    return _svFurnishing.getItem(id)?.amount ?? 0;
+  }
+
+  void increaseFurnishingAmount(String id) {
+    _svFurnishing.editItem(id, (item) {
+      final amount = (item.amount + 1).coerceAtMost(999);
+      return item.copyWith(amount: amount);
+    });
+  }
+
+  void decreaseFurnishingAmount(String id) {
+    _svFurnishing.editItem(id, (item) {
+      final amount = (item.amount - 1).coerceAtLeast(0);
+      if (amount == 0) return null;
+      return item.copyWith(amount: amount);
+    });
+  }
+
   /// Sets the serenitea character as obtained or not.
   ///
   /// {@macro db_update}
@@ -593,6 +613,13 @@ class _SereniteaSets {
       sv.chars.remove(char);
     }
     _svSereniteaSet.setItem(sv);
+  }
+
+  bool isCraftable(String id) {
+    final item = _ifSereniteas.getItem(id);
+    if (item == null) return false;
+    int getAmount(String id) => _svFurnishing.getItem(id)?.amount ?? 0;
+    return item.furnishing.all((e) => getAmount(e.id) >= e.amount);
   }
 }
 

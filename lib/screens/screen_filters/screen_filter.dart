@@ -397,6 +397,12 @@ class ScreenFilters {
       FilterSection.setCategory((item) => item.category),
       FilterSection<bool, GsSereniteaSet>(
         {true, false},
+        (item) => GsUtils.sereniteaSets.isCraftable(item.id),
+        (c) => c.fromLabel(Labels.craftable),
+        (c, i) => c.fromLabel(i ? Labels.buttonYes : Labels.buttonNo),
+      ),
+      FilterSection<bool, GsSereniteaSet>(
+        {true, false},
         (item) => GsUtils.sereniteaSets.isObtainable(item.id),
         (c) => c.fromLabel(Labels.status),
         (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),

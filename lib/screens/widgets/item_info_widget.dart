@@ -22,7 +22,7 @@ void _callCharacter(BuildContext ctx, GsCharacter info) =>
     Navigator.of(ctx).pushNamed(CharacterDetailsScreen.id, arguments: info);
 
 enum ItemSize {
-  small(48, 30),
+  small(50, 30),
   medium(56, 44),
   large(70, 56);
 
@@ -41,6 +41,7 @@ class ItemGridWidget extends StatelessWidget {
   final String urlImage;
   final String assetImage;
   final void Function(BuildContext ctx)? onTap;
+  final void Function(BuildContext ctx)? onRemove;
 
   const ItemGridWidget({
     super.key,
@@ -52,6 +53,7 @@ class ItemGridWidget extends StatelessWidget {
     this.assetImage = '',
     this.disabled = false,
     this.onTap,
+    this.onRemove,
   });
 
   ItemGridWidget.material(
@@ -60,6 +62,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onRemove,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
   })  : rarity = info.rarity,
         tooltip = info.name,
@@ -73,6 +76,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onRemove,
     ContextCallback<GsRecipe>? onTap = _callRecipe,
   })  : rarity = info.rarity,
         tooltip = info.name,
@@ -86,6 +90,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onRemove,
     ContextCallback<GsWeapon>? onTap = _callWeapon,
   })  : rarity = info.rarity,
         tooltip = info.name,
@@ -99,6 +104,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onRemove,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
   })  : rarity = info.rarity,
         tooltip = info.name,
@@ -120,8 +126,11 @@ class ItemGridWidget extends StatelessWidget {
           Positioned.fill(child: child),
           Positioned.fill(
             top: null,
+            left: -1,
+            right: -1,
+            bottom: -1,
             child: Container(
-              color: context.themeColors.mainColor1.withOpacity(0.6),
+              color: context.themeColors.mainColor1.withOpacity(0.8),
               alignment: Alignment.center,
               child: Text(
                 label,
@@ -178,6 +187,48 @@ class ItemGridWidget extends StatelessWidget {
           onTap: () => onTap!(context),
           child: child,
         ),
+      );
+    }
+
+    if (onRemove != null) {
+      final btnColor = context.themeColors.setIndoor;
+      child = Stack(
+        children: [
+          child,
+          MouseHoverBuilder(
+            builder: (context, value, child) {
+              return InkWell(
+                onTap: () => onRemove!(context),
+                child: AnimatedContainer(
+                  width: 20,
+                  height: 20,
+                  duration: const Duration(milliseconds: 400),
+                  decoration: BoxDecoration(
+                    color: value ? Colors.white : btnColor,
+                    borderRadius: kGridRadius.copyWith(
+                      topRight: Radius.zero,
+                      bottomLeft: Radius.zero,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 2,
+                        offset: Offset(1, 1),
+                        color: Colors.black26,
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.remove_rounded,
+                      size: 16,
+                      color: value ? btnColor : Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       );
     }
 

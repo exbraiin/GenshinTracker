@@ -14,7 +14,6 @@ import 'package:tracker/screens/home_screen/widgets/home_player_info_widget.dart
 import 'package:tracker/screens/home_screen/widgets/home_recipes_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_remarkable_chests_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_reputation_widget.dart';
-import 'package:tracker/screens/home_screen/widgets/home_resource_cal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_serenitea_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_spincrystal_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
@@ -127,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeWishesValues(banner: GeBannerType.standard),
               const HomeSpincrystalsWidget(),
               const HomeRecipesWidget(),
-              const HomeReputationWidget(),
             ].separate(const SizedBox(height: kGridSeparator)).toList(),
           ),
         ),
@@ -140,7 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
               const HomeLastBannerWidget(),
-              const HomeResourceCalcWidget(),
+              const HomeReputationWidget(),
+              // const HomeResourceCalcWidget(),
             ].separate(const SizedBox(height: kGridSeparator)).toList(),
           ),
         ),
