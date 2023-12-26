@@ -48,13 +48,18 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .distinctBy((element) => element.rarity);
 
     return ItemDetailsCardContent.generate(context, [
-      if (item.desc.isNotEmpty) ItemDetailsCardContent(description: item.desc),
+      if (item.desc.isNotEmpty)
+        ItemDetailsCardContent(
+          description: item.desc,
+          useMarkdown: true,
+        ),
       if (item.weekdays.isNotEmpty)
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.weeklyTasks),
           description: item.weekdays
-              .map((e) => '\u2022 ${e.getLabel(context)}')
-              .join('\n'),
+              .sortedBy((element) => element.index)
+              .map((element) => element.getLabel(context))
+              .join(', '),
         ),
       if (mats.length > 1 && item.group != GeMaterialType.none)
         ItemDetailsCardContent(

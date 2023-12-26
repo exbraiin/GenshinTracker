@@ -35,8 +35,18 @@ extension GeWeaponTypeExt on GeWeaponType {
 }
 
 extension GeWeekdayTypeExt on GeWeekdayType {
-  String getLabel(BuildContext context) =>
-      context.fromLabel('weekday_${index + 1}');
+  String getLabel(BuildContext context) {
+    final label = switch (this) {
+      GeWeekdayType.sunday => Labels.weekday7,
+      GeWeekdayType.monday => Labels.weekday1,
+      GeWeekdayType.tuesday => Labels.weekday2,
+      GeWeekdayType.wednesday => Labels.weekday3,
+      GeWeekdayType.thursday => Labels.weekday4,
+      GeWeekdayType.friday => Labels.weekday5,
+      GeWeekdayType.saturday => Labels.weekday6,
+    };
+    return context.fromLabel(label);
+  }
 }
 
 extension GeAchievementTypeExt on GeAchievementType {

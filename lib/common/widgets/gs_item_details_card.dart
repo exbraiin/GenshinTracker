@@ -4,6 +4,7 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/text_style_parser.dart';
 
 typedef Action<R> = R Function(BuildContext context, int page);
 
@@ -354,9 +355,15 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
 class ItemDetailsCardContent {
   final String? label;
   final Widget? content;
+  final bool useMarkdown;
   final String? description;
 
-  ItemDetailsCardContent({this.label, this.content, this.description});
+  ItemDetailsCardContent({
+    this.label,
+    this.content,
+    this.description,
+    this.useMarkdown = false,
+  });
 
   static Widget generate(
     BuildContext context,
@@ -365,18 +372,24 @@ class ItemDetailsCardContent {
     final texts = <InlineSpan>[];
 
     final labelStyle = TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       color: context.themeColors.primary80,
       fontWeight: FontWeight.bold,
     );
 
+    final style = TextStyle(fontSize: 14, color: Colors.grey[600]);
     for (var item in items) {
       if (item.label != null) {
         if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
         texts.add(TextSpan(text: '${item.label}\n', style: labelStyle));
 
         if (item.description != null) {
-          texts.add(TextSpan(text: '${item.description}'));
+          if (item.useMarkdown) {
+            final parser = TextParserWidget(item.description!, style: style);
+            texts.addAll(parser.getChildren(context));
+          } else {
+            texts.add(TextSpan(text: item.description, style: style));
+          }
         }
         if (item.content != null) {
           texts.add(
@@ -390,8 +403,13 @@ class ItemDetailsCardContent {
         }
       } else if (item.description != null) {
         if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-        final style = TextStyle(fontSize: 14, color: Colors.grey[600]);
-        texts.add(TextSpan(text: item.description, style: style));
+
+        if (item.useMarkdown) {
+          final parser = TextParserWidget(item.description!, style: style);
+          texts.addAll(parser.getChildren(context));
+        } else {
+          texts.add(TextSpan(text: item.description, style: style));
+        }
       }
     }
 
@@ -399,7 +417,7 @@ class ItemDetailsCardContent {
       style: TextStyle(
         fontSize: 16,
         color: Colors.black.withOpacity(0.75),
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
       ),
       child: Text.rich(
         TextSpan(children: texts),
