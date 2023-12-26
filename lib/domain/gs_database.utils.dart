@@ -286,7 +286,7 @@ class _Wishes {
     final db = Database.instance.saveOf<GiWish>();
     final lastRoll = GsUtils.wishes.countBannerWishes(bannerId);
     final wishes = ids.mapIndexed((i, id) {
-      final number = lastRoll + i;
+      final number = lastRoll + i + 1;
       return GiWish(
         id: '${bannerId}_$number',
         number: number,
