@@ -61,7 +61,8 @@ class _Items {
   }
 
   /// Gets a weapon or a character by the given [id].
-  GsWish? getItemDataOrNull(String id) {
+  GsWish? getItemDataOrNull(String? id) {
+    if (id == null) return null;
     final weapon = _idWeapons.getItem(id);
     if (weapon != null) return GsWish.fromWeapon(weapon);
     final character = _ifCharacters.getItem(id);
@@ -304,6 +305,8 @@ class _Details {
   final primogemsPerWish = 160;
   final primogemsPerCharSet = 20;
   final ascHerosWit = const [0, 6, 28, 29, 42, 59, 80, 0];
+  final standardChar = 'keqing';
+  final beginnerChar = 'noelle';
   final imgUnknown =
       'https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Unknown.png';
 }

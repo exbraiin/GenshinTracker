@@ -94,18 +94,22 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   .lastOrNull;
 
               GsWish? getData(String? id) =>
-                  id != null ? GsUtils.items.getItemData(id) : null;
+                  GsUtils.items.getItemDataOrNull(id);
+
               final item = switch (bannerType) {
                 GeBannerType.character => getData(banner?.feature5.firstOrNull),
                 GeBannerType.weapon => getData(banner?.feature5.firstOrNull),
-                GeBannerType.standard => getData('keqing'),
-                GeBannerType.beginner => getData('noelle'),
+                GeBannerType.standard => getData(GsUtils.details.standardChar),
+                GeBannerType.beginner => getData(GsUtils.details.beginnerChar),
               };
 
-              return ItemGridWidget(
-                rarity: item?.rarity ?? 1,
-                size: ItemSize.medium,
-                urlImage: item?.image ?? '',
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: ItemGridWidget(
+                  rarity: item?.rarity ?? 1,
+                  size: ItemSize.medium,
+                  urlImage: item?.image ?? '',
+                ),
               );
             });
 
@@ -125,6 +129,14 @@ class _WishesScreenScreenState extends State<WishesScreen>
                               const EdgeInsets.symmetric(horizontal: 4),
                           tabAlignment: TabAlignment.center,
                           indicatorColor: Colors.white,
+                          indicator: UnderlineTabIndicator(
+                            insets: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                              width: 3,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -49,6 +49,8 @@ class HomeFriendsWidget extends StatelessWidget {
                       return ItemGridWidget.character(
                         info,
                         label: chars.getCharFriendship(info.id).format(),
+                        onAdd: (ctx) => GsUtils.characters
+                            .increaseFriendshipCharacter(info.id),
                       );
                     })
                     .separate(const SizedBox(width: kGridSeparator))

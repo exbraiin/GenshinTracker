@@ -41,6 +41,7 @@ class ItemGridWidget extends StatelessWidget {
   final String urlImage;
   final String assetImage;
   final void Function(BuildContext ctx)? onTap;
+  final void Function(BuildContext ctx)? onAdd;
   final void Function(BuildContext ctx)? onRemove;
 
   const ItemGridWidget({
@@ -53,6 +54,7 @@ class ItemGridWidget extends StatelessWidget {
     this.assetImage = '',
     this.disabled = false,
     this.onTap,
+    this.onAdd,
     this.onRemove,
   });
 
@@ -62,6 +64,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onAdd,
     this.onRemove,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
   })  : rarity = info.rarity,
@@ -76,6 +79,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onAdd,
     this.onRemove,
     ContextCallback<GsRecipe>? onTap = _callRecipe,
   })  : rarity = info.rarity,
@@ -90,6 +94,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onAdd,
     this.onRemove,
     ContextCallback<GsWeapon>? onTap = _callWeapon,
   })  : rarity = info.rarity,
@@ -104,6 +109,7 @@ class ItemGridWidget extends StatelessWidget {
     this.size = ItemSize.small,
     this.label = '',
     this.disabled = false,
+    this.onAdd,
     this.onRemove,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
   })  : rarity = info.rarity,
@@ -190,47 +196,35 @@ class ItemGridWidget extends StatelessWidget {
       );
     }
 
-    if (onRemove != null) {
-      final btnColor = context.themeColors.setIndoor;
-      child = Stack(
-        children: [
-          child,
-          MouseHoverBuilder(
-            builder: (context, value, child) {
-              return InkWell(
-                onTap: () => onRemove!(context),
-                child: AnimatedContainer(
-                  width: 20,
-                  height: 20,
-                  duration: const Duration(milliseconds: 400),
-                  decoration: BoxDecoration(
-                    color: value ? Colors.white : btnColor,
-                    borderRadius: kGridRadius.copyWith(
-                      topRight: Radius.zero,
-                      bottomLeft: Radius.zero,
-                    ),
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 2,
-                        offset: Offset(1, 1),
-                        color: Colors.black26,
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.remove_rounded,
-                      size: 16,
-                      color: value ? btnColor : Colors.white,
-                    ),
-                  ),
-                ),
-              );
-            },
+    child = Stack(
+      children: [
+        child,
+        if (onAdd != null)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: _button(
+              onTap: () => onAdd!(context),
+              icon: Icons.add_rounded,
+              color: Colors.green,
+              iconColor: Colors.white,
+              isTopLeft: false,
+            ),
           ),
-        ],
-      );
-    }
+        if (onRemove != null)
+          Positioned(
+            top: 0,
+            left: 0,
+            child: _button(
+              onTap: () => onRemove!(context),
+              icon: Icons.remove_rounded,
+              color: context.themeColors.setIndoor,
+              iconColor: Colors.white,
+              isTopLeft: true,
+            ),
+          ),
+      ],
+    );
 
     if (disabled) {
       child = Opacity(
@@ -240,6 +234,50 @@ class ItemGridWidget extends StatelessWidget {
     }
 
     return child;
+  }
+
+  Widget _button({
+    required Color color,
+    required Color iconColor,
+    required IconData icon,
+    required VoidCallback onTap,
+    required bool isTopLeft,
+  }) {
+    return MouseHoverBuilder(
+      builder: (context, value, child) {
+        return InkWell(
+          onTap: onTap,
+          child: AnimatedContainer(
+            width: 20,
+            height: 20,
+            duration: const Duration(milliseconds: 400),
+            decoration: BoxDecoration(
+              color: value ? iconColor : color,
+              borderRadius: kGridRadius.copyWith(
+                topLeft: !isTopLeft ? Radius.zero : null,
+                topRight: isTopLeft ? Radius.zero : null,
+                bottomLeft: isTopLeft ? Radius.zero : null,
+                bottomRight: !isTopLeft ? Radius.zero : null,
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 2,
+                  offset: Offset(1, 1),
+                  color: Colors.black26,
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                size: 16,
+                color: value ? color : iconColor,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 

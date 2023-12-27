@@ -68,6 +68,8 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                           return ItemGridWidget.character(
                             info,
                             label: '✦${chars.getCharAscension(info.id)}',
+                            onAdd: (ctx) =>
+                                GsUtils.characters.increaseAscension(info.id),
                           );
                         })
                         .separate(const SizedBox(width: kGridSeparator))

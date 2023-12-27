@@ -178,7 +178,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                   .items
                   .firstOrNullWhere((c) => c.enkaId == e.key);
               if (char == null) return const SizedBox();
-              return ItemGridWidget.character(char);
+              return ItemGridWidget.character(char, size: ItemSize.small);
             }).toList(),
           ),
         ],

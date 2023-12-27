@@ -19,13 +19,26 @@ final theme = ThemeData(
     background: _themeColors.mainColor1,
   ),
   tooltipTheme: TooltipThemeData(
+    preferBelow: false,
+    enableFeedback: false,
+    excludeFromSemantics: true,
+    margin: const EdgeInsets.all(8),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     decoration: BoxDecoration(
-      color: _themeColors.mainColor1,
-      borderRadius: BorderRadius.circular(1000),
-    ),
-    textStyle: TextStyle(
-      fontSize: 12,
       color: _themeColors.almostWhite,
+      borderRadius: BorderRadius.circular(1000),
+      boxShadow: const [
+        BoxShadow(
+          color: Colors.black,
+          offset: Offset(0, 2),
+          blurRadius: 6,
+        )
+      ],
+    ),
+    textStyle: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
     ),
   ),
   sliderTheme: SliderThemeData(
