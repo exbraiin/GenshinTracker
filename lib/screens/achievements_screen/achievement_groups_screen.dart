@@ -11,7 +11,6 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
@@ -23,7 +22,6 @@ class AchievementGroupsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenFilterBuilder<GsAchievement>(
-      filter: ScreenFilters.infoAchievement,
       builder: (context, filter, button, toggle) {
         return ValueNotifierBuilder(
           value: '',

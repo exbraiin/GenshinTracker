@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/namecard_screen/namecard_details_card.dart';
 import 'package:tracker/screens/namecard_screen/namecard_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class NamecardScreen extends StatelessWidget {
@@ -17,7 +16,6 @@ class NamecardScreen extends StatelessWidget {
     return InventoryListPage<GsNamecard>(
       icon: menuIconArchive,
       title: context.fromLabel(Labels.namecards),
-      filter: ScreenFilters.infoNamecardFilter,
       items: (db) => db.infoOf<GsNamecard>().items,
       itemBuilder: (context, state) => NamecardListItem(
         state.item,

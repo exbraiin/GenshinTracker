@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class CharactersScreen extends StatelessWidget {
@@ -17,12 +16,12 @@ class CharactersScreen extends StatelessWidget {
     return InventoryListPage<GsCharacter>(
       icon: menuIconCharacters,
       title: context.fromLabel(Labels.characters),
-      actions: (extras, toggle) => [
+      actions: (hasExtra, toggle) => [
         Tooltip(
           message: context.fromLabel(Labels.showExtraInfo),
           child: IconButton(
             icon: Icon(
-              extras.contains('info')
+              hasExtra('info')
                   ? Icons.visibility_rounded
                   : Icons.visibility_off_rounded,
               color: Colors.white.withOpacity(0.5),
@@ -31,7 +30,6 @@ class CharactersScreen extends StatelessWidget {
           ),
         ),
       ],
-      filter: ScreenFilters.infoCharacterFilter,
       items: (db) => db.infoOf<GsCharacter>().items,
       itemBuilder: (context, state) => CharacterListItem(
         state.item,

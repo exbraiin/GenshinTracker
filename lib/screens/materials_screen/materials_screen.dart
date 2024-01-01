@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class MaterialsScreen extends StatelessWidget {
@@ -16,7 +15,6 @@ class MaterialsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsMaterial>(
       icon: menuIconMaterials,
-      filter: ScreenFilters.infoMaterialFilter,
       title: context.fromLabel(Labels.materials),
       items: (db) => db.infoOf<GsMaterial>().items,
       itemBuilder: (context, state) => MaterialListItem(

@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_details_card.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class ArtifactsScreen extends StatelessWidget {
@@ -17,7 +16,6 @@ class ArtifactsScreen extends StatelessWidget {
     return InventoryListPage<GsArtifact>(
       icon: menuIconArtifacts,
       title: context.fromLabel(Labels.artifacts),
-      filter: ScreenFilters.infoArtifactFilter,
       items: (db) => db.infoOf<GsArtifact>().items,
       itemBuilder: (context, state) => ArtifactListItem(
         state.item,

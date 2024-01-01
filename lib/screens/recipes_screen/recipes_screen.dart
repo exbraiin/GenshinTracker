@@ -5,7 +5,6 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
 import 'package:tracker/screens/recipes_screen/recipes_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class RecipesScreen extends StatelessWidget {
@@ -19,7 +18,6 @@ class RecipesScreen extends StatelessWidget {
     return InventoryListPage<GsRecipe>(
       icon: menuIconRecipes,
       title: context.fromLabel(Labels.recipes),
-      filter: ScreenFilters.infoRecipeFilter,
       items: (db) => db.infoOf<GsRecipe>().items,
       itemBuilder: (context, state) => RecipesListItem(
         recipe: state.item,

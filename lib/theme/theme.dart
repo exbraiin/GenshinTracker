@@ -32,7 +32,7 @@ final theme = ThemeData(
           color: Colors.black,
           offset: Offset(0, 2),
           blurRadius: 6,
-        )
+        ),
       ],
     ),
     textStyle: const TextStyle(

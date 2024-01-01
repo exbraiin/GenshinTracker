@@ -7,7 +7,6 @@ import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 
 typedef ItemBuilder = Widget Function(BuildContext context, IndexState state);
@@ -30,10 +29,9 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final String title;
   final Size childSize;
   final SortOrder sortOrder;
-  final ScreenFilter<T>? filter;
   final Iterable<T> Function(Database db) items;
   final List<Widget> Function(
-    Set<String> extras,
+    bool Function(String) hasExtra,
     void Function(String label) toggle,
   )? actions;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
@@ -41,7 +39,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
 
   const InventoryListPage({
     super.key,
-    this.filter,
     this.actions,
     this.sortOrder = SortOrder.ascending,
     this.childSize = const Size(126, 160),
@@ -65,6 +62,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
           SortOrder.descending => this.items(db).sortedDescending(),
         };
 
+        final filter = ScreenFilters.of<T>();
         if (filter == null) {
           return _InventoryGridPage.builder(
             childWidth: childSize.width,
@@ -90,11 +88,10 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
         }
 
         return ScreenFilterBuilder<T>(
-          filter: filter!,
           builder: (context, filter, button, toggle) {
             final sorted = filter.match(items).toList();
-            final extras = filter.extras.toSet();
-            final other = actions?.call(extras, toggle) ?? const [];
+            final hasExtra = filter.hasExtra;
+            final other = actions?.call(hasExtra, toggle) ?? const [];
             return _InventoryGridPage.builder(
               childWidth: childSize.width,
               childHeight: childSize.height,

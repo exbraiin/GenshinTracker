@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_assets.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chest_details_card.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class RemarkableChestsScreen extends StatelessWidget {
@@ -17,7 +16,6 @@ class RemarkableChestsScreen extends StatelessWidget {
     return InventoryListPage<GsFurnitureChest>(
       icon: menuIconRecipes,
       title: context.fromLabel(Labels.remarkableChests),
-      filter: ScreenFilters.infoRemarkableChestFilter,
       items: (db) => db.infoOf<GsFurnitureChest>().items,
       itemBuilder: (context, state) => RemarkableChestListItem(
         state.item,

@@ -10,7 +10,6 @@ import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
@@ -44,7 +43,6 @@ class _AddWishScreenState extends State<AddWishScreen> {
     final banner = args as GsBanner?;
 
     return ScreenFilterBuilder<GsWish>(
-      filter: ScreenFilters.itemDataFilter,
       builder: (context, filter, button, toggle) {
         if (banner == null) return const SizedBox();
 

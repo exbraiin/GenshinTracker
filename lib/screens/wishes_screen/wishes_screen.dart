@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/screen_filters/screen_filter.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -53,7 +52,6 @@ class _WishesScreenScreenState extends State<WishesScreen>
         if (snapshot.data != true) return const SizedBox();
 
         return ScreenFilterBuilder<GiWish>(
-          filter: ScreenFilters.saveWishFilter,
           builder: (context, filter, button, toggle) {
             PreferredSizeWidget appBar = InventoryAppBar(
               iconAsset: menuIconWish,
@@ -63,12 +61,12 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   message: context.fromLabel(Labels.hideEmptyBanners),
                   child: IconButton(
                     icon: Icon(
-                      filter.hasExtra('show')
-                          ? Icons.visibility_rounded
-                          : Icons.visibility_off_rounded,
+                      filter.hasExtra('hide_banners')
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
                       color: Colors.white.withOpacity(0.5),
                     ),
-                    onPressed: () => toggle('show'),
+                    onPressed: () => toggle('hide_banners'),
                   ),
                 ),
                 const SizedBox(width: kSeparator2),
@@ -196,7 +194,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
             .sortedByDescending((e) => e.number)
             .thenWith((a, b) => b.compareTo(a));
 
-        final hide = !filter.hasExtra('show');
+        final hide = filter.hasExtra('hide_banners');
         final showBanner = !hide || filteredWishes.isNotEmpty;
         return SliverStickyHeader(
           header: showBanner
@@ -214,8 +212,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 return WishListItem(
                   pity: pity,
                   bannerType: gsBanner,
-                  wishState: gsBanner == GeBannerType.character ||
-                          gsBanner == GeBannerType.weapon
+                  wishState: !gsBanner.isPermanent
                       ? GsUtils.wishes.getWishState(wishesList, wish)
                       : WishState.none,
                   index: index,
