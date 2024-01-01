@@ -10,13 +10,6 @@ import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
-typedef _BannerInfo = ({
-  List<GsBanner> banners,
-  GsCharacter? character,
-  Color color,
-  int type,
-});
-
 class HomeCalendarWidget extends StatelessWidget {
   const HomeCalendarWidget({super.key});
 
@@ -77,46 +70,6 @@ class HomeCalendarWidget extends StatelessWidget {
         .items
         .where((e) => e.releaseDate.isAfter(src));
 
-    /// 0 - None, 1 - Start, 2 - Middle, 3 - End
-    Iterable<_BannerInfo> getBannersInfo(DateTime date) {
-      return Database.instance
-          .infoOf<GsBanner>()
-          .items
-          .where((e) => e.type == GeBannerType.character)
-          .where((e) => date.between(e.dateStart, e.dateEnd))
-          .groupBy((e) => e.dateStart)
-          .entries
-          .map((entry) {
-        final banners = entry.value;
-        final e = banners.first;
-        final char = Database.instance
-            .infoOf<GsCharacter>()
-            .getItem(e.feature5.firstOrNull ?? '');
-
-        GsCharacter? getChar(GsBanner e) => Database.instance
-            .infoOf<GsCharacter>()
-            .getItem(e.feature5.firstOrNull ?? '');
-
-        _BannerInfo info(int type) => (
-              banners: banners,
-              character: char,
-              color: banners.fold(
-                Colors.white,
-                (p, e) => Color.lerp(
-                  p,
-                  getChar(e)?.element.color ?? Colors.white,
-                  0.5,
-                )!,
-              ),
-              type: type,
-            );
-
-        if (date.isAtSameDayAs(e.dateStart)) return info(1);
-        if (date.isAtSameDayAs(e.dateEnd)) return info(3);
-        return info(2);
-      });
-    }
-
     yield* Iterable<Widget>.generate(
       weeks,
       (w) => Row(
@@ -134,9 +87,17 @@ class HomeCalendarWidget extends StatelessWidget {
             late final versionItem = versions
                 .firstOrNullWhere((e) => e.releaseDate.isAtSameDayAs(date));
 
-            final banners = getBannersInfo(date);
             final showVersion = versionItem != null;
             final showBirthday = birthdayItems.isNotEmpty;
+
+            final bannersInfo = Database.instance
+                .infoOf<GsBanner>()
+                .items
+                .where((e) => e.type == GeBannerType.character)
+                .where((e) => date.between(e.dateStart, e.dateEnd))
+                .groupBy((e) => e.dateStart)
+                .values
+                .map((list) => _BannerInfo.from(list, date));
 
             final message = showBirthday
                 ? birthdayItems.map((e) => e.name).join(' | ')
@@ -218,26 +179,23 @@ class HomeCalendarWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ...getBannersInfo(date).map((info) {
+                      ...bannersInfo.map((i) {
                         return Positioned.fill(
                           top: null,
-                          left: info.type == 1 ? itemSize / 2 + 4 : 0,
-                          right: info.type == 3 ? itemSize / 2 + 4 : 0,
+                          left: i.src ? itemSize / 2 + 4 : 0,
+                          right: i.end ? itemSize / 2 + 4 : 0,
                           child: Tooltip(
-                            message: banners
-                                .where((e) => e.type == info.type)
-                                .expand((e) => e.banners.map((e) => e.name))
-                                .join(' | '),
+                            message: i.message,
                             child: Container(
                               height: 4,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: info.color,
+                                color: i.color,
                                 borderRadius: BorderRadius.horizontal(
-                                  left: info.type == 1
+                                  left: i.src
                                       ? const Radius.circular(8)
                                       : Radius.zero,
-                                  right: info.type == 3
+                                  right: i.end
                                       ? const Radius.circular(8)
                                       : Radius.zero,
                                 ),
@@ -291,5 +249,33 @@ class _RectClipperBuilder extends CustomClipper<Rect> {
   @override
   bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
     return false;
+  }
+}
+
+class _BannerInfo {
+  final bool src, end;
+  final Color color;
+  final Iterable<GsBanner> banners;
+
+  String get message => banners.map((e) => e.name).join(' | ');
+
+  _BannerInfo(this.banners, this.color, {this.src = false, this.end = false});
+
+  factory _BannerInfo.from(Iterable<GsBanner> banners, DateTime date) {
+    final banner = banners.first;
+    final db = Database.instance.infoOf<GsCharacter>();
+    final color = banners
+        .map((e) => db.getItem(e.feature5.firstOrNull ?? ''))
+        .whereNotNull()
+        .map((e) => e.element.color)
+        .fold(Colors.white, (p, e) => Color.lerp(p, e, 0.5)!);
+
+    final isSrc = date.isAtSameDayAs(banner.dateStart);
+    if (isSrc) return _BannerInfo(banners, color, src: true);
+
+    final isEnd = date.isAtSameDayAs(banner.dateEnd);
+    if (isEnd) return _BannerInfo(banners, color, end: true);
+
+    return _BannerInfo(banners, color);
   }
 }

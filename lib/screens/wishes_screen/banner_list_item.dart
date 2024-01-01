@@ -139,13 +139,17 @@ class BannerListItem extends StatelessWidget {
   }
 
   String _getBannerDuration(BuildContext context) {
+    final endMs = banner.dateEnd.millisecondsSinceEpoch;
+    final srcMs = banner.dateStart.millisecondsSinceEpoch;
+    final dur = Duration(milliseconds: endMs - srcMs);
+
     final now = DateTime.now();
     if (banner.dateStart.isAfter(now)) {
       final diff = banner.dateStart.difference(now);
-      return diff.startOrStartedIn(context);
+      return '${dur.toShortTime(context)} | ${diff.startOrStartedIn(context)}';
     } else {
       final diff = banner.dateEnd.difference(now);
-      return diff.endOrEndedIn(context);
+      return '${dur.toShortTime(context)} | ${diff.endOrEndedIn(context)}';
     }
   }
 }
