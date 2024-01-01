@@ -6,8 +6,16 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+
+typedef _BannerInfo = ({
+  List<GsBanner> banners,
+  GsCharacter? character,
+  Color color,
+  int type,
+});
 
 class HomeCalendarWidget extends StatelessWidget {
   const HomeCalendarWidget({super.key});
@@ -60,9 +68,6 @@ class HomeCalendarWidget extends StatelessWidget {
 
     final src = now.firstDayOfMonth
         .subtract(const Duration(days: DateTime.daysPerWeek));
-    final banners = Database.instance.infoOf<GsBanner>().items.where(
-          (e) => e.type == GeBannerType.character && e.dateStart.isAfter(src),
-        );
     final characters = Database.instance
         .infoOf<GsCharacter>()
         .items
@@ -71,6 +76,46 @@ class HomeCalendarWidget extends StatelessWidget {
         .infoOf<GsVersion>()
         .items
         .where((e) => e.releaseDate.isAfter(src));
+
+    /// 0 - None, 1 - Start, 2 - Middle, 3 - End
+    Iterable<_BannerInfo> getBannersInfo(DateTime date) {
+      return Database.instance
+          .infoOf<GsBanner>()
+          .items
+          .where((e) => e.type == GeBannerType.character)
+          .where((e) => date.between(e.dateStart, e.dateEnd))
+          .groupBy((e) => e.dateStart)
+          .entries
+          .map((entry) {
+        final banners = entry.value;
+        final e = banners.first;
+        final char = Database.instance
+            .infoOf<GsCharacter>()
+            .getItem(e.feature5.firstOrNull ?? '');
+
+        GsCharacter? getChar(GsBanner e) => Database.instance
+            .infoOf<GsCharacter>()
+            .getItem(e.feature5.firstOrNull ?? '');
+
+        _BannerInfo info(int type) => (
+              banners: banners,
+              character: char,
+              color: banners.fold(
+                Colors.white,
+                (p, e) => Color.lerp(
+                  p,
+                  getChar(e)?.element.color ?? Colors.white,
+                  0.5,
+                )!,
+              ),
+              type: type,
+            );
+
+        if (date.isAtSameDayAs(e.dateStart)) return info(1);
+        if (date.isAtSameDayAs(e.dateEnd)) return info(3);
+        return info(2);
+      });
+    }
 
     yield* Iterable<Widget>.generate(
       weeks,
@@ -82,12 +127,6 @@ class HomeCalendarWidget extends StatelessWidget {
             final idx = w * DateTime.daysPerWeek + d - weekday + 1;
             final date = DateTime(now.year, now.month, idx + 1);
 
-            late final bannerItems = banners
-                .where((e) => e.dateStart.isAtSameDayAs(date))
-                .expand((e) => e.feature5)
-                .map(GsUtils.items.getItemDataOrNull)
-                .whereNotNull();
-
             late final birthdayItems = characters.where(
               (e) => e.birthday.copyWith(year: date.year).isAtSameDayAs(date),
             );
@@ -95,15 +134,13 @@ class HomeCalendarWidget extends StatelessWidget {
             late final versionItem = versions
                 .firstOrNullWhere((e) => e.releaseDate.isAtSameDayAs(date));
 
+            final banners = getBannersInfo(date);
             final showVersion = versionItem != null;
-            final showBanner = bannerItems.isNotEmpty;
-            final showBirthday = !showBanner && birthdayItems.isNotEmpty;
+            final showBirthday = birthdayItems.isNotEmpty;
 
-            final message = showBanner
-                ? bannerItems.map((e) => e.name).join(' | ')
-                : showBirthday
-                    ? birthdayItems.map((e) => e.name).join(' | ')
-                    : '';
+            final message = showBirthday
+                ? birthdayItems.map((e) => e.name).join(' | ')
+                : '';
 
             return Opacity(
               opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
@@ -128,31 +165,6 @@ class HomeCalendarWidget extends StatelessWidget {
                   message: message,
                   child: Stack(
                     children: [
-                      if (showBanner)
-                        ...bannerItems.mapIndexed((i, e) {
-                          return Positioned.fill(
-                            child: ClipRect(
-                              clipper: _RectClipperBuilder(
-                                (size) => Rect.fromLTWH(
-                                  i * size.width / bannerItems.length,
-                                  0,
-                                  size.width / bannerItems.length,
-                                  size.height,
-                                ),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image:
-                                        AssetImage(getRarityBgImage(e.rarity)),
-                                  ),
-                                ),
-                                child: CachedImageWidget(e.image),
-                              ),
-                            ),
-                          );
-                        }),
                       if (showBirthday)
                         ...birthdayItems.mapIndexed((i, e) {
                           return Positioned.fill(
@@ -182,11 +194,7 @@ class HomeCalendarWidget extends StatelessWidget {
                         right: 2,
                         bottom: 2,
                         child: Icon(
-                          showBanner
-                              ? Icons.star_rounded
-                              : showBirthday
-                                  ? Icons.cake_rounded
-                                  : null,
+                          showBirthday ? Icons.cake_rounded : null,
                           size: 20,
                           color: context.themeColors.almostWhite,
                           shadows: const [
@@ -210,6 +218,34 @@ class HomeCalendarWidget extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ...getBannersInfo(date).map((info) {
+                        return Positioned.fill(
+                          top: null,
+                          left: info.type == 1 ? itemSize / 2 + 4 : 0,
+                          right: info.type == 3 ? itemSize / 2 + 4 : 0,
+                          child: Tooltip(
+                            message: banners
+                                .where((e) => e.type == info.type)
+                                .expand((e) => e.banners.map((e) => e.name))
+                                .join(' | '),
+                            child: Container(
+                              height: 4,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: info.color,
+                                borderRadius: BorderRadius.horizontal(
+                                  left: info.type == 1
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                  right: info.type == 3
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                       Container(
                         width: 20,
                         height: 20,
