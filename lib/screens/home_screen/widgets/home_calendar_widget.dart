@@ -99,6 +99,11 @@ class HomeCalendarWidget extends StatelessWidget {
                 .values
                 .map((list) => _BannerInfo.from(list, date));
 
+            final battlepassInfo = Database.instance
+                .infoOf<GsBattlepass>()
+                .items
+                .where((e) => date.between(e.dateStart, e.dateEnd));
+
             final message = showBirthday
                 ? birthdayItems.map((e) => e.name).join(' | ')
                 : '';
@@ -151,6 +156,60 @@ class HomeCalendarWidget extends StatelessWidget {
                             ),
                           );
                         }),
+                      ...battlepassInfo.map((i) {
+                        final src = i.dateStart.isAtSameDayAs(date);
+                        final end = i.dateEnd.isAtSameDayAs(date);
+                        final msg = i.name;
+                        return Positioned.fill(
+                          top: null,
+                          left: src ? itemSize / 2 + 4 : 0,
+                          right: end ? itemSize / 2 + 4 : 0,
+                          bottom: 4,
+                          child: Tooltip(
+                            message: msg,
+                            child: Container(
+                              height: 4,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.cyan,
+                                borderRadius: BorderRadius.horizontal(
+                                  left: src
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                  right: end
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                      ...bannersInfo.map((i) {
+                        return Positioned.fill(
+                          top: null,
+                          left: i.src ? itemSize / 2 + 4 : 0,
+                          right: i.end ? itemSize / 2 + 4 : 0,
+                          child: Tooltip(
+                            message: i.message,
+                            child: Container(
+                              height: 4,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: i.color,
+                                borderRadius: BorderRadius.horizontal(
+                                  left: i.src
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                  right: i.end
+                                      ? const Radius.circular(8)
+                                      : Radius.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                       Positioned(
                         right: 2,
                         bottom: 2,
@@ -179,31 +238,6 @@ class HomeCalendarWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ...bannersInfo.map((i) {
-                        return Positioned.fill(
-                          top: null,
-                          left: i.src ? itemSize / 2 + 4 : 0,
-                          right: i.end ? itemSize / 2 + 4 : 0,
-                          child: Tooltip(
-                            message: i.message,
-                            child: Container(
-                              height: 4,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: i.color,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: i.src
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
-                                  right: i.end
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
                       Container(
                         width: 20,
                         height: 20,
