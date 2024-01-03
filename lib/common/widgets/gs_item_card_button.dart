@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/common/widgets/static/file_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
@@ -48,7 +47,6 @@ class GsItemCardButton extends StatelessWidget {
   final Widget? subChild;
   final Widget? child;
   final String? imageUrlPath;
-  final String? imageFilePath;
   final String? imageAssetPath;
   final double? imageAspectRatio;
   final VoidCallback? onTap;
@@ -64,7 +62,6 @@ class GsItemCardButton extends StatelessWidget {
     this.subChild,
     this.maxLines = 1,
     this.imageUrlPath,
-    this.imageFilePath,
     this.imageAssetPath,
     this.imageAspectRatio,
     this.shadow = false,
@@ -140,13 +137,6 @@ class GsItemCardButton extends StatelessWidget {
                         imageUrlPath!,
                         fit: BoxFit.cover,
                         imageAspectRatio: imageAspectRatio,
-                      ),
-                    ),
-                  if (imageFilePath != null)
-                    Positioned.fill(
-                      child: FileImageWidget(
-                        imageFilePath!,
-                        fit: BoxFit.cover,
                       ),
                     ),
                   if (imageAssetPath != null && imageAssetPath!.isNotEmpty)

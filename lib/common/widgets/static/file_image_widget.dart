@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FileImageWidget extends StatelessWidget {
   final String path;
@@ -46,10 +47,10 @@ class FileImageSafe extends FileImage {
   final int? cacheHeight;
 
   const FileImageSafe(
-    File file, {
+    super.file, {
     this.cacheWidth,
     this.cacheHeight,
-  }) : super(file);
+  });
 
   factory FileImageSafe.path(
     String path, {
@@ -63,7 +64,7 @@ class FileImageSafe extends FileImage {
       );
 
   @override
-  ImageStreamCompleter load(FileImage key, DecoderCallback decode) {
+  ImageStreamCompleter loadBuffer(FileImage key, DecoderBufferCallback decode) {
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key, decode),
       scale: key.scale,
@@ -74,15 +75,19 @@ class FileImageSafe extends FileImage {
     );
   }
 
-  Future<ui.Codec> _loadAsync(FileImage key, DecoderCallback decode) async {
+  Future<ui.Codec> _loadAsync(
+    FileImage key,
+    DecoderBufferCallback decode,
+  ) async {
     assert(key == this);
 
     if (!await file.exists()) {
       const empty = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs'
           '4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAANSURBVBhXY2'
           'BgYGAAAAAFAAGKM+MAAAAAAElFTkSuQmCC';
+      final buffer = await ImmutableBuffer.fromUint8List(base64Decode(empty));
       return decode(
-        base64Decode(empty),
+        buffer,
         cacheWidth: cacheWidth,
         cacheHeight: cacheHeight,
       );
@@ -96,7 +101,8 @@ class FileImageSafe extends FileImage {
       throw StateError('$file is empty and cannot be loaded as an image.');
     }
 
-    return decode(bytes);
+    final buffer = await ImmutableBuffer.fromUint8List(bytes);
+    return decode(buffer);
   }
 }
 

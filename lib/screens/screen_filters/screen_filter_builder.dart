@@ -226,15 +226,15 @@ class ScreenFilters {
 
   static ScreenFilter<T>? of<T extends GsModel<T>>() {
     return switch (T) {
-      GsWish => ScreenFilter<GsWish>([
+      const (GsWish) => ScreenFilter<GsWish>([
           FilterSection.item((item) => item.isWeapon),
           FilterSection.rarity((item) => item.rarity, 3),
         ]),
-      GiWish => ScreenFilter<GiWish>([
+      const (GiWish) => ScreenFilter<GiWish>([
           FilterSection.item((item) => _getItem(item.itemId).isWeapon),
           FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
         ]),
-      GsAchievement => ScreenFilter<GsAchievement>([
+      const (GsAchievement) => ScreenFilter<GsAchievement>([
           FilterSection<bool, GsAchievement>(
             {true, false},
             (item) => item.hidden,
@@ -255,7 +255,7 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
         ]),
-      GsEnemy => ScreenFilter<GsEnemy>([
+      const (GsEnemy) => ScreenFilter<GsEnemy>([
           FilterSection<GeEnemyType, GsEnemy>(
             GeEnemyType.values.toSet(),
             (item) => item.type,
@@ -270,7 +270,7 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
         ]),
-      GsNamecard => ScreenFilter<GsNamecard>([
+      const (GsNamecard) => ScreenFilter<GsNamecard>([
           FilterSection<GeNamecardType, GsNamecard>(
             GeNamecardType.values.toSet(),
             (item) => item.type,
@@ -279,7 +279,7 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
         ]),
-      GsRecipe => ScreenFilter<GsRecipe>([
+      const (GsRecipe) => ScreenFilter<GsRecipe>([
           FilterSection.rarity((item) => item.rarity),
           FilterSection<GeRecipeEffectType, GsRecipe>(
             GeRecipeEffectType.values.toSet(),
@@ -324,7 +324,7 @@ class ScreenFilters {
             (c, i) => c.fromLabel(i.label),
           ),
         ]),
-      GsFurnitureChest => ScreenFilter<GsFurnitureChest>([
+      const (GsFurnitureChest) => ScreenFilter<GsFurnitureChest>([
           FilterSection.rarity((item) => item.rarity),
           FilterSection.version((item) => item.version),
           FilterSection.region((item) => item.region),
@@ -333,7 +333,7 @@ class ScreenFilters {
             (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
           ),
         ]),
-      GsWeapon => ScreenFilter<GsWeapon>([
+      const (GsWeapon) => ScreenFilter<GsWeapon>([
           FilterSection.weapon((item) => item.type),
           FilterSection.rarity((item) => item.rarity),
           FilterSection.version((item) => item.version),
@@ -369,11 +369,11 @@ class ScreenFilters {
             (c, i) => i.name.capitalize(),
           ),
         ]),
-      GsArtifact => ScreenFilter<GsArtifact>([
+      const (GsArtifact) => ScreenFilter<GsArtifact>([
           FilterSection.rarity((item) => item.rarity, 3),
           FilterSection.version((item) => item.version),
         ]),
-      GsCharacter => ScreenFilter<GsCharacter>([
+      const (GsCharacter) => ScreenFilter<GsCharacter>([
           FilterSection.element((item) => item.element),
           FilterSection.weapon((item) => item.weapon),
           FilterSection<GeWeekdayType, GsCharacter>.raw(
@@ -415,7 +415,7 @@ class ScreenFilters {
           ),
           FilterSection.rarity((item) => item.rarity, 4),
         ]),
-      GsSereniteaSet => ScreenFilter<GsSereniteaSet>([
+      const (GsSereniteaSet) => ScreenFilter<GsSereniteaSet>([
           FilterSection.version((item) => item.version),
           FilterSection.setCategory((item) => item.category),
           FilterSection<bool, GsSereniteaSet>(
@@ -431,7 +431,7 @@ class ScreenFilters {
             (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
           ),
         ]),
-      GsSpincrystal => ScreenFilter<GsSpincrystal>([
+      const (GsSpincrystal) => ScreenFilter<GsSpincrystal>([
           FilterSection.owned(
             (item) => _db.saveOf<GiSpincrystal>().exists(item.id),
           ),
@@ -443,7 +443,7 @@ class ScreenFilters {
             (c, i) => c.fromLabel(i ? Labels.chubby : Labels.world),
           ),
         ]),
-      GsMaterial => ScreenFilter<GsMaterial>([
+      const (GsMaterial) => ScreenFilter<GsMaterial>([
           FilterSection.rarity((item) => item.rarity),
           FilterSection.version((item) => item.version),
           FilterSection(

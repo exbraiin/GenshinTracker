@@ -30,9 +30,9 @@ dependencies:
   rxdart: ^0.27.2
   flutter_sticky_header: ^0.6.0
   dartx: ^1.2.0
-  excel: ^2.0.0-null-safety-3
+  excel: ^4.0.2
   cached_network_image: ^3.2.1
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   bitsdojo_window: ^0.1.5
   gsdatabase:
     path: ../GenshinTrackerEditor/packages/gsdatabase

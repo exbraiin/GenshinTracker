@@ -57,16 +57,11 @@ abstract class GsDatabaseExporter {
       rows.add(row);
     }
 
-    sheet.appendRow([
-      'Type',
-      'Name',
-      'Time',
-      '⭐',
-      'Pity',
-      '#Roll',
-      'Group',
-      'Banner',
-    ]);
+    sheet.appendRow(
+      ['Type', 'Name', 'Time', '⭐', 'Pity', '#Roll', 'Group', 'Banner']
+          .map(TextCellValue.new)
+          .toList(),
+    );
     sheet.applyStyleToRow(
       sheet.maxRows - 1,
       CellStyle(
@@ -116,12 +111,12 @@ abstract class GsDatabaseExporter {
         .sortedBy((e) => _bannerType(e.type))
         .thenBy((e) => e.dateStart);
     final sheet = excel[sheetName];
-    sheet.appendRow(['Name', 'Start', 'End']);
+    sheet.appendRow(['Name', 'Start', 'End'].map(TextCellValue.new).toList());
     for (var banner in list) {
       sheet.appendRow([
-        banner.name,
-        banner.dateStart.format(showHour: false),
-        banner.dateEnd.format(showHour: false),
+        TextCellValue(banner.name),
+        TextCellValue(banner.dateStart.format(showHour: false)),
+        TextCellValue(banner.dateEnd.format(showHour: false)),
       ]);
     }
   }
@@ -130,9 +125,11 @@ abstract class GsDatabaseExporter {
     final sheet = excel[sheetName];
 
     sheet.merge(CellIndex.indexByString('A1'), CellIndex.indexByString('B1'));
-    sheet.appendRow(['Paimon.moe Wish History Export']);
-    sheet.appendRow(['Version', 3]);
-    sheet.appendRow(['Export Date', DateTime.now().format()]);
+    sheet.appendRow([const TextCellValue('Paimon.moe Wish History Export')]);
+    sheet.appendRow([const TextCellValue('Version'), const IntCellValue(3)]);
+    sheet.appendRow(
+      ['Export Date', DateTime.now().format()].map(TextCellValue.new).toList(),
+    );
   }
 }
 
@@ -157,11 +154,20 @@ class _Row {
 
   void addToSheet(Sheet sheet, int group, CellStyle style) {
     final rows = sheet.maxRows;
-    final data = [type, name, date, rarity, pity, roll, group, banner];
+    final data = [
+      TextCellValue(type),
+      TextCellValue(name),
+      TextCellValue(date),
+      IntCellValue(rarity),
+      IntCellValue(pity),
+      IntCellValue(roll),
+      IntCellValue(group),
+      TextCellValue(banner),
+    ];
     final cStyle = style.copyWith(horizontalAlignVal: HorizontalAlign.Center);
     for (var i = 0; i < data.length; ++i) {
       final idx = CellIndex.indexByColumnRow(columnIndex: i, rowIndex: rows);
-      final stl = data[i] is int ? cStyle : style;
+      final stl = data[i] is IntCellValue ? cStyle : style;
       sheet.updateCell(idx, data[i], cellStyle: stl);
     }
   }
