@@ -165,8 +165,10 @@ class HomeCalendarWidget extends StatelessWidget {
                           left: src ? itemSize / 2 + 4 : 0,
                           right: end ? itemSize / 2 + 4 : 0,
                           bottom: 4,
-                          child: Tooltip(
+                          child: _ImagesTooltip(
+                            images: [i.image],
                             message: msg,
+                            size: const Size(150, 54),
                             child: Container(
                               height: 4,
                               width: double.infinity,
@@ -190,7 +192,8 @@ class HomeCalendarWidget extends StatelessWidget {
                           top: null,
                           left: i.src ? itemSize / 2 + 4 : 0,
                           right: i.end ? itemSize / 2 + 4 : 0,
-                          child: Tooltip(
+                          child: _ImagesTooltip(
+                            images: i.banners.map((e) => e.image),
                             message: i.message,
                             child: Container(
                               height: 4,
@@ -286,12 +289,28 @@ class _RectClipperBuilder extends CustomClipper<Rect> {
   }
 }
 
+class _PathClipperBuilder extends CustomClipper<Path> {
+  final Path Function(Size size) clipper;
+
+  _PathClipperBuilder(this.clipper);
+
+  @override
+  Path getClip(Size size) {
+    return clipper(size);
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
 class _BannerInfo {
   final bool src, end;
   final Color color;
   final Iterable<GsBanner> banners;
 
-  String get message => banners.map((e) => e.name).join(' | ');
+  String get message => banners.map((e) => e.name).join('\n');
 
   _BannerInfo(this.banners, this.color, {this.src = false, this.end = false});
 
@@ -311,5 +330,99 @@ class _BannerInfo {
     if (isEnd) return _BannerInfo(banners, color, end: true);
 
     return _BannerInfo(banners, color);
+  }
+}
+
+class _ImagesTooltip extends StatelessWidget {
+  final Size size;
+  final Widget child;
+  final String? message;
+  final Iterable<String> images;
+
+  const _ImagesTooltip({
+    this.message,
+    this.size = const Size(150, 85),
+    required this.images,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final image0 = images.elementAtOrNull(0);
+    final image1 = images.elementAtOrNull(1);
+    return Tooltip(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: context.themeColors.almostWhite,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(255, 62, 59, 59),
+            offset: Offset(0, 2),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      richMessage: WidgetSpan(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: Stack(
+            children: [
+              if (image0 != null && image1 == null)
+                Positioned.fill(
+                  bottom: null,
+                  child: CachedImageWidget(image0, fit: BoxFit.fitWidth),
+                ),
+              if (image0 != null && image1 != null) ...[
+                Positioned.fill(
+                  child: ClipPath(
+                    clipper: _PathClipperBuilder(
+                      (size) => Path()
+                        ..moveTo(0, 0)
+                        ..lineTo(size.width, 0)
+                        ..lineTo(0, size.height)
+                        ..lineTo(0, 0),
+                    ),
+                    child: CachedImageWidget(image0, fit: BoxFit.cover),
+                  ),
+                ),
+                Positioned.fill(
+                  child: ClipPath(
+                    clipper: _PathClipperBuilder(
+                      (size) => Path()
+                        ..moveTo(size.width, 0)
+                        ..lineTo(size.width, size.height)
+                        ..lineTo(0, size.height)
+                        ..lineTo(size.width, 0),
+                    ),
+                    child: CachedImageWidget(image1, fit: BoxFit.cover),
+                  ),
+                ),
+              ],
+              if (message != null)
+                Positioned.fill(
+                  top: null,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 2),
+                    color: Colors.white54,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        message!,
+                        style: TooltipTheme.of(context).textStyle,
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+      child: child,
+    );
   }
 }
