@@ -70,7 +70,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
         color: Colors.transparent,
         child: Container(
           padding: kListPadding,
-          constraints: const BoxConstraints(maxHeight: 200, maxWidth: 300),
+          constraints: const BoxConstraints(maxHeight: 210, maxWidth: 300),
           decoration: BoxDecoration(
             color: context.themeColors.mainColor0,
             borderRadius: kGridRadius,
@@ -140,7 +140,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                           _selector(second, 0, 60, style),
                         ],
                       ),
-                      const SizedBox(height: kGridSeparator * 2),
+                      const SizedBox(height: kGridSeparator),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -437,7 +437,7 @@ class HomeWishesValues extends StatelessWidget {
     return Container(
       height: 56,
       margin: const EdgeInsets.all(kSeparator2),
-      padding: const EdgeInsets.all(kSeparator4 * 2),
+      padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1.withOpacity(0.4),
         borderRadius: kGridRadius,
@@ -453,14 +453,14 @@ class HomeWishesValues extends StatelessWidget {
                     child: Icon(
                       Icons.arrow_circle_up_rounded,
                       color: valueColor,
-                      size: 20,
+                      size: 18,
                     ),
                   ),
                 ),
               TextSpan(
                 text: value,
                 style: context.textTheme.titleSmall!.copyWith(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: valueColor ?? context.themeColors.dimWhite,
                   fontWeight: FontWeight.bold,
                 ),
