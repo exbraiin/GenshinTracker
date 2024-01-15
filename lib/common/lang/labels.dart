@@ -760,6 +760,18 @@ class Labels {
 	/// Utility Passive
 	static const charTalUp = 'char_tal_up';
 
+	/// Duration
+	static const duration = 'duration';
+
+	/// Login
+	static const eventLogin = 'event_login';
+
+	/// Event
+	static const eventNormal = 'event_normal';
+
+	/// Flagship
+	static const eventFlagship = 'event_flagship';
+
 	/// discard_label
 	static const discard = '_discard';
 }

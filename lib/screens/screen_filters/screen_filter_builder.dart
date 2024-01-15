@@ -270,6 +270,15 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
         ]),
+      const (GsEvent) => ScreenFilter<GsEvent>([
+          FilterSection.version((item) => item.version),
+          FilterSection<GeEventType, GsEvent>(
+            GeEventType.values.toSet(),
+            (item) => item.type,
+            (c) => c.fromLabel(Labels.type),
+            (c, i) => c.fromLabel(i.label),
+          ),
+        ]),
       const (GsNamecard) => ScreenFilter<GsNamecard>([
           FilterSection<GeNamecardType, GsNamecard>(
             GeNamecardType.values.toSet(),

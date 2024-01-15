@@ -10,6 +10,7 @@ import 'package:tracker/screens/achievements_screen/achievement_groups_screen.da
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/enemies_screen/enemy_screen.dart';
+import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
 import 'package:tracker/screens/main_screen/tracker_router.dart';
@@ -228,6 +229,11 @@ final _menus = [
     label: Labels.materials,
     icon: menuIconMaterials,
     initialPage: MaterialsScreen.id,
+  ),
+  _Menu(
+    label: Labels.recipeEvent,
+    icon: menuIconEvent,
+    initialPage: EventScreen.id,
   ),
   _Menu(
     label: Labels.version,

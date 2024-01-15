@@ -152,6 +152,14 @@ extension GeEnemyFamilyTypeExt on GeEnemyFamilyType {
       };
 }
 
+extension GeEventTypeExt on GeEventType {
+  String get label => switch (this) {
+        GeEventType.event => Labels.eventNormal,
+        GeEventType.login => Labels.eventLogin,
+        GeEventType.flagship => Labels.eventFlagship,
+      };
+}
+
 extension GeRecipeTypeExt on GeRecipeType {
   String get label => switch (this) {
         GeRecipeType.event => Labels.recipeEvent,

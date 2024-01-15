@@ -19,3 +19,16 @@ extension DateTimeExt on DateTime {
     return '$m/$d';
   }
 }
+
+abstract class DateTimeUtils {
+  static String format(BuildContext context, DateTime from, DateTime to) {
+    String formatDate(DateTime date, {bool showYear = false}) {
+      final m = context.fromLabel('month_${date.month}');
+      final f = '${date.day.toString().padLeft(2, '0')} ${m.substring(0, 3)}';
+      return '$f${showYear ? ' ${date.year.toString().padLeft(4, '0')}' : ''}';
+    }
+
+    final showYear = from.year != to.year;
+    return '${formatDate(from, showYear: showYear)} - ${formatDate(to, showYear: true)}';
+  }
+}

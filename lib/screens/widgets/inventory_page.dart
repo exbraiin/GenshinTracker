@@ -34,6 +34,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     bool Function(String) hasExtra,
     void Function(String label) toggle,
   )? actions;
+  final Widget? itemCardFooter;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
   final Widget Function(BuildContext context, ItemState<T> state) itemBuilder;
 
@@ -42,6 +43,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     this.actions,
     this.sortOrder = SortOrder.ascending,
     this.childSize = const Size(126, 160),
+    this.itemCardFooter,
     this.itemCardBuilder,
     required this.icon,
     required this.title,
@@ -63,60 +65,43 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
         };
 
         final filter = ScreenFilters.of<T>();
-        if (filter == null) {
-          return _InventoryGridPage.builder(
-            childWidth: childSize.width,
-            childHeight: childSize.height,
-            appBar: InventoryAppBar(
-              label: title,
-              iconAsset: icon,
-            ),
-            itemCount: items.length,
-            itemBuilder: (context, state) => itemBuilder(
-              context,
-              (
-                item: items[state.index],
-                selected: state.selected,
-                onSelect: state.onSelect,
-                filter: null,
-              ),
-            ),
-            itemCardBuilder: itemCardBuilder != null
-                ? (context, index) => itemCardBuilder!(context, items[index])
-                : null,
-          );
-        }
+        if (filter == null) return _list(items, [], null);
 
         return ScreenFilterBuilder<T>(
           builder: (context, filter, button, toggle) {
             final sorted = filter.match(items).toList();
             final hasExtra = filter.hasExtra;
             final other = actions?.call(hasExtra, toggle) ?? const [];
-            return _InventoryGridPage.builder(
-              childWidth: childSize.width,
-              childHeight: childSize.height,
-              appBar: InventoryAppBar(
-                label: title,
-                iconAsset: icon,
-                actions: [...other, button].separate(const SizedBox(width: 2)),
-              ),
-              itemCount: sorted.length,
-              itemBuilder: (context, state) => itemBuilder(
-                context,
-                (
-                  item: sorted[state.index],
-                  selected: state.selected,
-                  onSelect: state.onSelect,
-                  filter: filter,
-                ),
-              ),
-              itemCardBuilder: itemCardBuilder != null
-                  ? (context, index) => itemCardBuilder!(context, sorted[index])
-                  : null,
-            );
+            return _list(sorted, [...other, button], filter);
           },
         );
       },
+    );
+  }
+
+  Widget _list(List<T> list, List<Widget> buttons, ScreenFilter<T>? filter) {
+    return _InventoryGridPage.builder(
+      childWidth: childSize.width,
+      childHeight: childSize.height,
+      appBar: InventoryAppBar(
+        label: title,
+        iconAsset: icon,
+        actions: buttons.separate(const SizedBox(width: 2)),
+      ),
+      itemCount: list.length,
+      itemCardFooter: itemCardFooter,
+      itemBuilder: (context, state) => itemBuilder(
+        context,
+        (
+          item: list[state.index],
+          selected: state.selected,
+          onSelect: state.onSelect,
+          filter: filter,
+        ),
+      ),
+      itemCardBuilder: itemCardBuilder != null
+          ? (context, index) => itemCardBuilder!(context, list[index])
+          : null,
     );
   }
 }
@@ -163,6 +148,7 @@ class _InventoryGridPage extends StatefulWidget {
   final int itemCount;
   final PreferredSizeWidget? appBar;
   final ItemBuilder itemBuilder;
+  final Widget? itemCardFooter;
   final IndexedWidgetBuilder? itemCardBuilder;
 
   const _InventoryGridPage.builder({
@@ -170,6 +156,7 @@ class _InventoryGridPage extends StatefulWidget {
     this.childWidth = 126,
     this.childHeight = 160,
     this.itemCardBuilder,
+    this.itemCardFooter,
     required this.itemCount,
     required this.itemBuilder,
   });
@@ -216,16 +203,31 @@ class _InventoryGridPageState extends State<_InventoryGridPage> {
             ),
           ),
           if (widget.itemCardBuilder != null)
-            InventoryBox(
-              width: 400,
-              height: double.infinity,
-              margin: const EdgeInsets.only(left: kGridSeparator),
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: widget.itemCount > 0
-                    ? widget.itemCardBuilder!(context, _selectedIndex)
-                    : null,
-              ),
+            Column(
+              children: [
+                Expanded(
+                  child: InventoryBox(
+                    width: 400,
+                    height: double.infinity,
+                    margin: const EdgeInsets.only(left: kGridSeparator),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: widget.itemCount > 0
+                          ? widget.itemCardBuilder!(context, _selectedIndex)
+                          : null,
+                    ),
+                  ),
+                ),
+                if (widget.itemCardFooter != null)
+                  InventoryBox(
+                    width: 400,
+                    margin: const EdgeInsets.only(
+                      top: kGridSeparator,
+                      left: kGridSeparator,
+                    ),
+                    child: widget.itemCardFooter!,
+                  ),
+              ],
             ),
         ],
       ),

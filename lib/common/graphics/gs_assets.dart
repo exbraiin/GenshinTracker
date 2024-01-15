@@ -22,6 +22,7 @@ const menuIconAchievements = 'assets/image/icons/menu_icon_achievements.webp';
 const menuIconFeedback = 'assets/image/icons/menu_icon_feedback.webp';
 const menuIconMap = 'assets/image/icons/menu_icon_map.webp';
 const menuIconEnemies = 'assets/image/icons/menu_icon_enemies.webp';
+const menuIconEvent = 'assets/image/icons/menu_icon_event.webp';
 const iconMissing = 'assets/image/icons/missing_icon.png';
 
 const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
