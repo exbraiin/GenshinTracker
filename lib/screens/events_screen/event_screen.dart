@@ -20,6 +20,7 @@ class EventScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsEvent>(
       icon: menuIconEvent,
+      sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
       title: context.fromLabel(Labels.recipeEvent),
       items: (db) => db.infoOf<GsEvent>().items,
@@ -44,10 +45,10 @@ class EventsScrollView extends StatelessWidget {
         .infoOf<GsEvent>()
         .items
         .where(
-          (e) => now.between(
-            e.dateStart,
-            e.dateEnd.subtract(const Duration(days: 1)),
-          ),
+          (e) =>
+              now.difference(e.dateStart).inDays.abs() < 5 ||
+              now.difference(e.dateEnd).inDays.abs() < 5 ||
+              now.between(e.dateStart, e.dateEnd),
         )
         .sorted();
 
@@ -59,7 +60,8 @@ class EventsScrollView extends StatelessWidget {
     for (final event in events) {
       var added = false;
       for (final row in rows) {
-        if (row.last.dateEnd.isBefore(event.dateStart)) {
+        if (row.last.dateEnd.isBefore(event.dateStart) ||
+            row.last.dateEnd.isAtSameDayAs(event.dateStart)) {
           row.add(event);
           added = true;
           break;
@@ -93,8 +95,8 @@ class EventsScrollView extends StatelessWidget {
                     final days = e.dateStart.difference(e.dateEnd).inDays.abs();
                     return Container(
                       height: daySize,
-                      width: days * daySize,
-                      margin: EdgeInsets.only(left: daySize * offset),
+                      width: days * daySize - 8,
+                      margin: EdgeInsets.only(left: daySize * offset + 4),
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                         color: context.themeColors.getRarityColor(
@@ -146,6 +148,7 @@ class EventsScrollView extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       e.name,
+                                      maxLines: 2,
                                       style: context.themeStyles.label14n
                                           .copyWith(shadows: kMainShadow),
                                     ),
