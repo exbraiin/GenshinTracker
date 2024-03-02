@@ -17,7 +17,12 @@ class HomeCalendarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GsDataBox.info(
       title: const Text('Calendar'),
-      child: Center(child: Column(children: _getItems(context).toList())),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(children: _getItems(context).toList()),
+        ),
+      ),
     );
   }
 

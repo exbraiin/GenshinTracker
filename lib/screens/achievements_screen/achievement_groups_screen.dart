@@ -2,36 +2,57 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
-import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
-class AchievementGroupsScreen extends StatelessWidget {
+class AchievementGroupsScreen extends StatefulWidget {
   static const id = 'achievement_groups_screen';
 
   const AchievementGroupsScreen({super.key});
 
   @override
+  State<AchievementGroupsScreen> createState() =>
+      _AchievementGroupsScreenState();
+}
+
+class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
+  late final ValueNotifier<String> queryNotifier;
+  late final ValueNotifier<GsAchievementGroup?> groupNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    queryNotifier = ValueNotifier('');
+    groupNotifier = ValueNotifier(null);
+  }
+
+  @override
+  void dispose() {
+    queryNotifier.dispose();
+    groupNotifier.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenFilterBuilder<GsAchievement>(
       builder: (context, filter, button, toggle) {
-        return ValueNotifierBuilder(
-          value: '',
-          builder: (context, sNotifier, child) {
+        return ValueListenableBuilder(
+          valueListenable: queryNotifier,
+          builder: (context, query, child) {
             return ValueStreamBuilder<bool>(
               stream: Database.instance.loaded,
               builder: (context, snapshot) {
                 if (snapshot.data != true) return const SizedBox();
                 final data = Database.instance.infoOf<GsAchievementGroup>();
-                final gList = data.items.toList();
+                final groups = data.items.toList();
                 final total = GsUtils.achievements.countTotal();
                 final saved = GsUtils.achievements.countSaved();
 
@@ -42,47 +63,9 @@ class AchievementGroupsScreen extends StatelessWidget {
                     label: '$title  ($saved/$total)',
                     actions: [button],
                   ),
-                  child: gList.isEmpty
+                  child: groups.isEmpty
                       ? const GsNoResultsState()
-                      : ValueNotifierBuilder<GsAchievementGroup>(
-                          value: gList.first,
-                          builder: (context, notifier, child) {
-                            final item = notifier.value;
-                            final data =
-                                Database.instance.infoOf<GsAchievement>();
-                            final aList = filter
-                                .match(
-                                  data.items
-                                      .where((e) => e.group == item.id)
-                                      .where(
-                                        (element) => element.name
-                                            .toLowerCase()
-                                            .contains(sNotifier.value),
-                                      ),
-                                )
-                                .sorted();
-                            return Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: _getGroupsList(
-                                    context,
-                                    gList,
-                                    notifier,
-                                    sNotifier,
-                                  ),
-                                ),
-                                const SizedBox(width: kGridSeparator),
-                                Expanded(
-                                  flex: 5,
-                                  child: InventoryBox(
-                                    child: _getAchievementsList(item, aList),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
+                      : _getAchievementsBody(filter, groups, query),
                 );
               },
             );
@@ -92,12 +75,43 @@ class AchievementGroupsScreen extends StatelessWidget {
     );
   }
 
-  Widget _getGroupsList(
-    BuildContext context,
-    List<GsAchievementGroup> list,
-    ValueNotifier<GsAchievementGroup> notifier,
-    ValueNotifier<String> sNotifier,
+  Widget _getAchievementsBody(
+    ScreenFilter<GsAchievement> filter,
+    List<GsAchievementGroup> groups,
+    String query,
   ) {
+    groupNotifier.value ??= groups.first;
+    return ValueListenableBuilder(
+      valueListenable: groupNotifier,
+      builder: (context, item, child) {
+        final data = Database.instance.infoOf<GsAchievement>();
+        final aList = filter
+            .match(
+              data.items.where((e) => e.group == item!.id).where(
+                    (element) => element.name.toLowerCase().contains(query),
+                  ),
+            )
+            .sorted();
+        return Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: _getGroupsList(groups),
+            ),
+            const SizedBox(width: kGridSeparator),
+            Expanded(
+              flex: 5,
+              child: InventoryBox(
+                child: _getAchievementsList(item!, aList),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getGroupsList(List<GsAchievementGroup> list) {
     return Column(
       children: [
         InventoryBox(
@@ -114,7 +128,7 @@ class AchievementGroupsScreen extends StatelessWidget {
               decoration: InputDecoration.collapsed(
                 hintText: context.fromLabel(Labels.hintSearch),
               ),
-              onChanged: (value) => sNotifier.value = value,
+              onChanged: (value) => queryNotifier.value = value,
             ),
           ),
         ),
@@ -128,8 +142,8 @@ class AchievementGroupsScreen extends StatelessWidget {
                 return _buildItem(
                   context,
                   item,
-                  notifier.value == item,
-                  () => notifier.value = item,
+                  groupNotifier.value == item,
+                  () => groupNotifier.value = item,
                 );
               },
               separatorBuilder: (context, index) =>
@@ -211,14 +225,16 @@ class AchievementGroupsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item.name,
-                    style: context.textTheme.titleMedium,
+                  Expanded(
+                    child: Text(
+                      item.name,
+                      style: context.themeStyles.label14n,
+                    ),
                   ),
                   const SizedBox(height: kSeparator6),
                   Text(
                     '${(percentage * 100).toInt()}% ($saved/$total)',
-                    style: context.textTheme.titleMedium?.copyWith(
+                    style: context.themeStyles.label12n.copyWith(
                       fontStyle: FontStyle.italic,
                       color: context.themeColors.dimWhite,
                     ),

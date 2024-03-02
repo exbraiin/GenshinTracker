@@ -224,8 +224,10 @@ class ScreenFilters {
       GeWeekdayType.values.exceptElement(GeWeekdayType.sunday).toSet();
   static final _getItem = GsUtils.items.getItemData;
 
+  static final _filters = <Type, ScreenFilter?>{};
+
   static ScreenFilter<T>? of<T extends GsModel<T>>() {
-    return switch (T) {
+    late final filter = switch (T) {
       const (GsWish) => ScreenFilter<GsWish>([
           FilterSection.item((item) => item.isWeapon),
           FilterSection.rarity((item) => item.rarity, 3),
@@ -470,6 +472,8 @@ class ScreenFilters {
         ]),
       _ => null,
     } as ScreenFilter<T>?;
+
+    return (_filters[T] ??= filter) as ScreenFilter<T>?;
   }
 }
 
