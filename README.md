@@ -20,9 +20,9 @@ Here are some images of the app.<br>
 
 Currently the whole app re-renders when the user saves. I intend to change this in the future but because it is a core functionality of the app it will take a lot of time.
 
-There should be some not translated string in the app.
+There can be some not translated string in the app.
 
-The save is written to a json file, so better keep that file save somewhere.
+The save is written to a json file, so better keep that file safe somewhere.
 
 ## How to install
 
