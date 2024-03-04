@@ -14,19 +14,7 @@ _Sometimes I fell a bit burned out from genshin so if the data is not up-to-date
 
 Here are some images of the app.<br>
 
-<img style="width:300px" src="data/images/home.png">
-<img style="width:300px" src="data/images/wishes.png">
-<img style="width:300px" src="data/images/achievements.png">
-<img style="width:300px" src="data/images/characters.png">
-<img style="width:300px" src="data/images/recipes.png">
-<img style="width:300px" src="data/images/remarkable_chests.png">
-<img style="width:300px" src="data/images/crystals.png">
-<img style="width:300px" src="data/images/sets.png">
-<img style="width:300px" src="data/images/artifacts.png">
-<img style="width:300px" src="data/images/namecards.png">
-<img style="width:300px" src="data/images/enemies.png">
-<img style="width:300px" src="data/images/materials.png">
-<img style="width:300px" src="data/images/weapons.png">
+![app](data/image.png)
 
 ## Known issues
 
