@@ -32,8 +32,9 @@
 /build/
 
 # Custom ignore...
-/data/
+/data/db/*
 /lib/_testing/
+!data/db/data.json
 
 # Web related
 lib/generated_plugin_registrant.dart
