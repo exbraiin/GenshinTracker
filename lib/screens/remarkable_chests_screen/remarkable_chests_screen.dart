@@ -14,7 +14,7 @@ class RemarkableChestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsFurnitureChest>(
-      icon: menuIconRecipes,
+      icon: menuIconMap,
       title: context.fromLabel(Labels.remarkableChests),
       items: (db) => db.infoOf<GsFurnitureChest>().items,
       itemBuilder: (context, state) => RemarkableChestListItem(
