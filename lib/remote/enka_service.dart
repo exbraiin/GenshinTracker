@@ -11,6 +11,7 @@ class EnkaService {
 
   final _namecards = <String, dynamic>{};
   final _characters = <String, dynamic>{};
+  final _profilePics = <String, dynamic>{};
   EnkaService._();
 
   Future<EnkaPlayerInfo> getPlayerInfo(String uid) async {
@@ -42,6 +43,18 @@ class EnkaService {
     return '$_apiBaseUrl/ui/$alias.png';
   }
 
+  Future<String> getProfilePictureUrl(String pictureId) async {
+    if (_profilePics.isEmpty) {
+      const url = '$_gitBaseUrl/API-docs/master/store/pfps.json';
+      final data = await _downloadFile(url);
+      _profilePics
+        ..clear()
+        ..addAll(jsonDecode(data) as Map<String, dynamic>);
+    }
+    final alias = _profilePics[pictureId]?['iconPath'];
+    return '$_apiBaseUrl/ui/$alias.png';
+  }
+
   Future<String> _downloadFile(String url) {
     final client = HttpClient();
     try {
@@ -57,7 +70,7 @@ class EnkaService {
 
 class EnkaPlayerInfo {
   final String uid;
-  final String avatarId;
+  final String pfpId;
   final String nickname;
   final String signature;
   final int level;
@@ -70,7 +83,7 @@ class EnkaPlayerInfo {
 
   EnkaPlayerInfo._({
     required this.uid,
-    required this.avatarId,
+    required this.pfpId,
     required this.nickname,
     required this.signature,
     required this.level,
@@ -83,16 +96,15 @@ class EnkaPlayerInfo {
   });
 
   factory EnkaPlayerInfo._fromMap(Map<String, dynamic> json) {
-    // final m = JsonData(json);
     final info = (json['playerInfo'] as Map? ?? {}).cast<String, dynamic>();
     final avtInfo =
         (info['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
-    final avtId = (avtInfo['avatarId'] as int? ?? 0).toString();
+    final avtId = (avtInfo['id'] as int? ?? 0).toString();
     final avatars = (info['showAvatarInfoList'] as List? ?? [])
         .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
       uid: json['uid'] as String? ?? '',
-      avatarId: avtId,
+      pfpId: avtId,
       nickname: info['nickname'] as String? ?? '',
       signature: info['signature'] as String? ?? '',
       level: info['level'] as int? ?? 0,

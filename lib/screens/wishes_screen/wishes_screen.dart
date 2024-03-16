@@ -4,11 +4,11 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
-import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
 import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
@@ -16,6 +16,7 @@ import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 const _bannerType = [
   GeBannerType.character,
   GeBannerType.weapon,
+  GeBannerType.chronicled,
   GeBannerType.standard,
   GeBannerType.beginner,
 ];
@@ -91,22 +92,13 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   .geReleasedInfoBannerByType(bannerType)
                   .lastOrNull;
 
-              GsWish? getData(String? id) =>
-                  GsUtils.items.getItemDataOrNull(id);
-
-              final item = switch (bannerType) {
-                GeBannerType.character => getData(banner?.feature5.firstOrNull),
-                GeBannerType.weapon => getData(banner?.feature5.firstOrNull),
-                GeBannerType.standard => getData(GsUtils.details.standardChar),
-                GeBannerType.beginner => getData(GsUtils.details.beginnerChar),
-              };
-
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: ItemGridWidget(
-                  rarity: item?.rarity ?? 1,
-                  size: ItemSize.medium,
-                  urlImage: item?.image ?? '',
+              return Container(
+                width: 100,
+                height: 56,
+                margin: const EdgeInsets.only(bottom: 4),
+                child: CachedImageWidget(
+                  banner?.image,
+                  alignment: Alignment.bottomCenter,
                 ),
               );
             });
@@ -127,6 +119,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                               const EdgeInsets.symmetric(horizontal: 4),
                           tabAlignment: TabAlignment.center,
                           indicatorColor: Colors.white,
+                          dividerColor: Colors.transparent,
                           indicator: UnderlineTabIndicator(
                             insets: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                             borderRadius: BorderRadius.circular(100),

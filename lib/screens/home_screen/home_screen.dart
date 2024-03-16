@@ -111,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: <Widget>[
               const HomeWishesValues(banner: GeBannerType.character),
+              const HomeWishesValues(banner: GeBannerType.chronicled),
               const HomeWishesValues(banner: GeBannerType.beginner),
               const HomeAchievementsWidget(),
               const HomeRemarkableChestsWidget(),

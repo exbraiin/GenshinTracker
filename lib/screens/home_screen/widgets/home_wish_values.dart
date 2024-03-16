@@ -38,6 +38,7 @@ class HomeWishesValues extends StatelessWidget {
       GeBannerType.standard => Labels.stndWishes,
       GeBannerType.beginner => Labels.noviceWishes,
       GeBannerType.character => Labels.charWishes,
+      GeBannerType.chronicled => Labels.chronicledWishes,
     };
 
     return GsDataBox.info(

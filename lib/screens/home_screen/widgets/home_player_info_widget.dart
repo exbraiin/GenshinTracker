@@ -87,10 +87,6 @@ class HomePlayerInfoWidget extends StatelessWidget {
   }
 
   Widget _getWidgetContent(BuildContext context, GiPlayerInfo info) {
-    final char = Database.instance
-        .infoOf<GsCharacter>()
-        .items
-        .firstOrNullWhere((c) => c.enkaId == info.avatarId);
     final child = DefaultTextStyle(
       style: context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
           const TextStyle(color: Colors.white),
@@ -98,10 +94,26 @@ class HomePlayerInfoWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              ItemGridWidget(
-                rarity: char?.rarity ?? 4,
-                size: ItemSize.large,
-                urlImage: GsUtils.characters.getImage(char?.id ?? ''),
+              FutureBuilder(
+                future: EnkaService.i.getProfilePictureUrl(info.avatarId),
+                builder: (context, snapshot) {
+                  return Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    foregroundDecoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 2,
+                        color: context.themeColors.almostWhite,
+                      ),
+                    ),
+                    child: ItemGridWidget(
+                      rarity: 0,
+                      size: ItemSize.large,
+                      urlImage: snapshot.data ?? '',
+                    ),
+                  );
+                },
               ),
               const SizedBox(width: kSeparator8),
               Expanded(
@@ -213,7 +225,7 @@ Future<void> _fetchAndInsert(String uid) async {
   final item = GiPlayerInfo(
     id: GsUtils.playerConfigs.kPlayerInfo,
     uid: uid,
-    avatarId: player.avatarId,
+    avatarId: player.pfpId,
     nickname: player.nickname,
     signature: player.signature,
     level: player.level,

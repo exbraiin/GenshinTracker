@@ -19,6 +19,9 @@ class Labels {
 	/// Beginners' Wishes
 	static const noviceWishes = 'novice_wishes';
 
+	/// Chronicled Wish
+	static const chronicledWishes = 'chronicled_wishes';
+
 	/// Serenitea Sets
 	static const sereniteaSets = 'serenitea_sets';
 
