@@ -52,7 +52,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
               builder: (context, snapshot) {
                 if (snapshot.data != true) return const SizedBox();
                 final data = Database.instance.infoOf<GsAchievementGroup>();
-                final groups = data.items.toList();
+                final groups = data.items.sortedBy((e) => e.order);
                 final total = GsUtils.achievements.countTotal();
                 final saved = GsUtils.achievements.countSaved();
 
