@@ -34,14 +34,9 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
         final characters = Database.instance
             .infoOf<GsCharacter>()
             .items
-            .where(
-              (e) =>
-                  GsUtils.characters.hasCaracter(e.id) &&
-                  !GsUtils.characters.isCharMaxAscended(e.id),
-            )
-            .sortedBy((e) => GsUtils.characters.getCharAscension(e.id))
-            .thenByDescending((e) => e.rarity)
-            .thenBy((e) => e.name);
+            .where(GsUtils.characters.isCharAscendable)
+            .sortedByDescending((e) => e.rarity)
+            .thenBy((e) => e.id);
 
         if (characters.isEmpty) {
           return GsDataBox.info(

@@ -372,7 +372,7 @@ class _Materials {
       return element.group == material.group &&
           element.region == material.region &&
           element.subgroup == material.subgroup;
-    });
+    }).sortedBy((element) => element.rarity);
   }
 
   Iterable<GsMaterial> getGroupMaterialsById(String id) {
@@ -411,6 +411,11 @@ class _Characters {
   /// Whether the character is fully ascended or not.
   bool isCharMaxAscended(String id) {
     return !(getCharAscension(id) < 6);
+  }
+
+  /// Whether the character is owned and not fully ascended.
+  bool isCharAscendable(GsCharacter char) {
+    return hasCaracter(char.id) && !isCharMaxAscended(char.id);
   }
 
   /// Gets the character current constellations amount or null.

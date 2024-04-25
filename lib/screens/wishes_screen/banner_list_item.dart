@@ -97,8 +97,7 @@ class BannerListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                if ([GeBannerType.weapon, GeBannerType.character]
-                    .contains(banner.type))
+                if (!banner.type.isPermanent)
                   Align(
                     alignment: Alignment.bottomRight,
                     child: GsItemCardLabel(

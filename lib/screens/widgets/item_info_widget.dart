@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -157,10 +158,12 @@ class ItemGridWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         borderRadius: kGridRadius,
-        image: DecorationImage(
-          image: AssetImage(getRarityBgImage(rarity)),
-          fit: BoxFit.cover,
-        ),
+        image: rarity.between(1, 5)
+            ? DecorationImage(
+                image: AssetImage(getRarityBgImage(rarity)),
+                fit: BoxFit.cover,
+              )
+            : null,
       ),
       child: child,
     );
