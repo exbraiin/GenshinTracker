@@ -13,18 +13,112 @@ class CharactersTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final builders = [
+      _TableItem(
+        label: 'Icon',
+        builder: (char, info) => ItemCircleWidget(
+          image: info.iconImage,
+          size: ItemSize.large,
+          rarity: char.rarity,
+        ),
+        allowTap: true,
+        onTap: (char, info) => Navigator.of(context).pushNamed(
+          CharacterDetailsScreen.id,
+          arguments: char,
+        ),
+      ),
+      _TableItem(
+        label: 'Element',
+        builder: (char, info) => ItemCircleWidget.element(
+          char.element,
+          size: ItemSize.medium,
+        ),
+      ),
+      _TableItem(
+        label: 'Name',
+        builder: (char, info) => Text(char.name),
+        expand: true,
+      ),
+      _TableItem(
+        label: 'Friendship',
+        builder: (char, info) => Text(
+          info.isOwned ? '${info.friendship}' : '-',
+          textAlign: TextAlign.center,
+        ),
+        onTap: (char, info) =>
+            GsUtils.characters.increaseFriendshipCharacter(char.id),
+      ),
+      _TableItem(
+        label: 'Ascension',
+        builder: (char, info) => Text(
+          info.isOwned ? '${info.ascension} ✦' : '-',
+          textAlign: TextAlign.center,
+        ),
+        onTap: (char, info) => GsUtils.characters.increaseAscension(char.id),
+      ),
+      _TableItem(
+        label: 'Constellations',
+        builder: (char, info) => Text.rich(
+          info.isOwned
+              ? TextSpan(
+                  children: [
+                    TextSpan(text: 'C${info.constellations}'),
+                    if (info.extraConstellations > 0)
+                      TextSpan(
+                        text: ' (+${info.extraConstellations})',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                  ],
+                )
+              : const TextSpan(text: '-'),
+          textAlign: TextAlign.center,
+        ),
+      ),
+      _TableItem(
+        label: 'Tal. A',
+        builder: (char, info) => Text(
+          info.talent1?.toString() ?? '-',
+          textAlign: TextAlign.center,
+        ),
+        onTap: (char, info) => GsUtils.characters.increaseTalent1(char.id),
+      ),
+      _TableItem(
+        label: 'Tal. E',
+        builder: (char, info) => Text(
+          info.talent2?.toString() ?? '-',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: info.hasCons3 ? Colors.lightBlue : null,
+          ),
+        ),
+        onTap: (char, info) => GsUtils.characters.increaseTalent2(char.id),
+      ),
+      _TableItem(
+        label: 'Tal. Q',
+        builder: (char, info) => Text(
+          info.talent3?.toString() ?? '-',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: info.hasCons5 ? Colors.lightBlue : null,
+          ),
+        ),
+        onTap: (char, info) => GsUtils.characters.increaseTalent3(char.id),
+      ),
+    ];
+
     return SingleChildScrollView(
       child: Table(
-        columnWidths: const {
-          0: IntrinsicColumnWidth(),
-          1: IntrinsicColumnWidth(),
-          2: FlexColumnWidth(),
-          3: IntrinsicColumnWidth(),
-          4: IntrinsicColumnWidth(),
-          5: IntrinsicColumnWidth(),
-          6: IntrinsicColumnWidth(),
-          7: IntrinsicColumnWidth(),
-        },
+        columnWidths: Map.fromEntries(
+          builders.mapIndexed(
+            (i, e) => MapEntry(
+              i,
+              e.expand ? const FlexColumnWidth() : const IntrinsicColumnWidth(),
+            ),
+          ),
+        ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.symmetric(
           inside: BorderSide(
@@ -33,24 +127,15 @@ class CharactersTable extends StatelessWidget {
         ),
         children: [
           TableRow(
-            children: [
-              'Icon',
-              'Element',
-              'Name',
-              'Ascension',
-              'Constellations',
-              'Tal. A',
-              'Tal. E',
-              'Tal. Q',
-            ].mapIndexed((i, e) {
+            children: builders.map((e) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: kSeparator8,
                   vertical: kSeparator4,
+                  horizontal: kSeparator8,
                 ),
                 child: Text(
-                  e,
-                  textAlign: i != 2 ? TextAlign.center : null,
+                  e.label,
+                  textAlign: !e.expand ? TextAlign.center : null,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               );
@@ -58,96 +143,27 @@ class CharactersTable extends StatelessWidget {
           ),
           ...characters.map((char) {
             final info = GsUtils.characters.getCharInfo(char.id);
-
             return TableRow(
-              children: [
-                InkWell(
-                  onTap: () => Navigator.of(context).pushNamed(
-                    CharacterDetailsScreen.id,
-                    arguments: char,
-                  ),
-                  child: ItemCircleWidget(
-                    image: info.iconImage,
-                    size: ItemSize.large,
-                    rarity: char.rarity,
-                  ),
-                ),
-                ItemCircleWidget.element(
-                  char.element,
-                  size: ItemSize.medium,
-                ),
-                Text(char.name),
-                InkWell(
-                  onTap: info.isOwned
-                      ? () => GsUtils.characters.increaseAscension(char.id)
-                      : null,
-                  child: Text(
-                    info.isOwned ? '${info.ascension} ✦' : '-',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Text.rich(
-                  info.isOwned
-                      ? TextSpan(
-                          children: [
-                            TextSpan(text: 'C${info.constellations}'),
-                            if (info.extraConstellations > 0)
-                              TextSpan(
-                                text: ' (+${info.extraConstellations})',
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                          ],
-                        )
-                      : const TextSpan(text: '-'),
-                  textAlign: TextAlign.center,
-                ),
-                InkWell(
-                  onTap: info.isOwned
-                      ? () => GsUtils.characters.increaseTalent1(char.id)
-                      : null,
-                  child: Text(
-                    info.talent1?.toString() ?? '-',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                InkWell(
-                  onTap: info.isOwned
-                      ? () => GsUtils.characters.increaseTalent2(char.id)
-                      : null,
-                  child: Text(
-                    info.talent2?.toString() ?? '-',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: info.hasCons3 ? Colors.lightBlue : null,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: info.isOwned
-                      ? () => GsUtils.characters.increaseTalent3(char.id)
-                      : null,
-                  child: Text(
-                    info.talent3?.toString() ?? '-',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: info.hasCons5 ? Colors.lightBlue : null,
-                    ),
-                  ),
-                ),
-              ].map((e) {
-                return Padding(
+              children: builders.map<Widget>((e) {
+                final child = Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: kSeparator8,
                     vertical: kSeparator4,
+                    horizontal: kSeparator8,
                   ),
                   child: Opacity(
                     opacity: info.isOwned ? 1 : kDisableOpacity,
-                    child: e,
+                    child: e.builder(char, info),
                   ),
                 );
+
+                if (e.onTap != null && (e.allowTap || info.isOwned)) {
+                  return InkWell(
+                    onTap: () => e.onTap!(char, info),
+                    child: child,
+                  );
+                }
+
+                return child;
               }).toList(),
             );
           }),
@@ -155,4 +171,21 @@ class CharactersTable extends StatelessWidget {
       ),
     );
   }
+}
+
+class _TableItem {
+  final String label;
+  final bool expand;
+  final bool allowTap;
+  final void Function(GsCharacter char, CharInfo info)? onTap;
+
+  final Widget Function(GsCharacter char, CharInfo info) builder;
+
+  _TableItem({
+    required this.label,
+    required this.builder,
+    this.onTap,
+    this.expand = false,
+    this.allowTap = false,
+  });
 }

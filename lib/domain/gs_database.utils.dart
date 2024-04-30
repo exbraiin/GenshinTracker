@@ -415,9 +415,9 @@ class CharInfo {
     required int talent1,
     required int talent2,
     required int talent3,
-  })  : _talent1 = talent1,
-        _talent2 = talent2,
-        _talent3 = talent3;
+  })  : _talent1 = talent1.clamp(1, 10),
+        _talent2 = talent2.clamp(1, 10),
+        _talent3 = talent3.clamp(1, 10);
 }
 
 class _Characters {
