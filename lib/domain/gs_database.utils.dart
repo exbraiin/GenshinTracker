@@ -382,10 +382,45 @@ class _Materials {
   }
 }
 
-class _Characters {
-  static GiCharacter _fallChar(String id) =>
-      GiCharacter(id: id, owned: 0, outfit: '', ascension: 0, friendship: 1);
+class CharInfo {
+  final bool isOwned;
+  final bool hasOutfit;
+  final int ascension;
+  final int friendship;
+  final int totalConstellations;
+  final String iconImage;
+  final String wishImage;
+  final int _talent1, _talent2, _talent3;
 
+  bool get isMaxAscension => ascension >= 6;
+  bool get isAscendable => isOwned && !isMaxAscension;
+  int get constellations => totalConstellations.clamp(0, 6);
+  int get extraConstellations => totalConstellations - constellations;
+
+  bool get hasCons3 => totalConstellations > 2;
+  bool get hasCons5 => totalConstellations > 4;
+
+  int? get talent1 => isOwned ? _talent1 : null;
+  int? get talent2 => isOwned ? _talent2 + (hasCons3 ? 3 : 0) : null;
+  int? get talent3 => isOwned ? _talent3 + (hasCons5 ? 3 : 0) : null;
+
+  CharInfo._({
+    required this.isOwned,
+    required this.hasOutfit,
+    required this.ascension,
+    required this.friendship,
+    required this.totalConstellations,
+    required this.iconImage,
+    required this.wishImage,
+    required int talent1,
+    required int talent2,
+    required int talent3,
+  })  : _talent1 = talent1,
+        _talent2 = talent2,
+        _talent3 = talent3;
+}
+
+class _Characters {
   /// Whether the user has this character or not.
   bool hasCaracter(String id) {
     final owned = _svCharacter.getItem(id)?.owned ?? 0;
@@ -445,12 +480,35 @@ class _Characters {
     return url.isNotEmpty ? url : charImg;
   }
 
+  CharInfo getCharInfo(String id) {
+    final info = _svCharacter.getItem(id) ?? GiCharacter(id: id);
+
+    final wishes = GsUtils.wishes.countItem(id);
+    final owned = wishes + info.owned;
+    final constellations = owned > 0 ? (owned - 1) : 0;
+    final iconImage = getImage(id);
+    final wishImage = getFullImage(id);
+
+    return CharInfo._(
+      isOwned: info.owned > 0 || wishes > 0,
+      hasOutfit: _ifCharactersSkin.items.any((e) => e.character == id),
+      ascension: info.ascension.clamp(0, 6),
+      friendship: info.friendship.clamp(1, 10),
+      totalConstellations: constellations,
+      iconImage: iconImage,
+      wishImage: wishImage,
+      talent1: info.talent1,
+      talent2: info.talent2,
+      talent3: info.talent3,
+    );
+  }
+
   /// Sets the character outfit
   ///
   /// {@macro db_update}
   void setCharOutfit(String id, String outfit) {
     final char = _svCharacter.getItem(id);
-    final item = (char ?? _fallChar(id)).copyWith(outfit: outfit);
+    final item = (char ?? GiCharacter(id: id)).copyWith(outfit: outfit);
     if (item.outfit != char?.outfit) _svCharacter.setItem(item);
   }
 
@@ -460,7 +518,7 @@ class _Characters {
   void setCharFriendship(String id, int friendship) {
     final char = _svCharacter.getItem(id);
     final friend = friendship.clamp(1, 10);
-    final item = (char ?? _fallChar(id)).copyWith(friendship: friend);
+    final item = (char ?? GiCharacter(id: id)).copyWith(friendship: friend);
     if (item.friendship != char?.friendship) {
       _svCharacter.setItem(item);
     }
@@ -474,7 +532,7 @@ class _Characters {
     final wishes = GsUtils.wishes.countItem(id);
     var cOwned = char?.owned ?? 0;
     cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
-    final item = (char ?? _fallChar(id)).copyWith(owned: cOwned);
+    final item = (char ?? GiCharacter(id: id)).copyWith(owned: cOwned);
     _svCharacter.setItem(item);
   }
 
@@ -485,7 +543,8 @@ class _Characters {
     final char = _svCharacter.getItem(id);
     var cFriendship = char?.friendship ?? 1;
     cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
-    final item = (char ?? _fallChar(id)).copyWith(friendship: cFriendship);
+    final item =
+        (char ?? GiCharacter(id: id)).copyWith(friendship: cFriendship);
     _svCharacter.setItem(item);
   }
 
@@ -496,8 +555,51 @@ class _Characters {
     final char = _svCharacter.getItem(id);
     var cAscension = char?.ascension ?? 0;
     cAscension = (cAscension + 1) % 7;
-    final item = (char ?? _fallChar(id)).copyWith(ascension: cAscension);
+    final item = (char ?? GiCharacter(id: id)).copyWith(ascension: cAscension);
     _svCharacter.setItem(item);
+  }
+
+  void _increaseTalent(
+    String id, {
+    required int Function(GiCharacter char) getTalent,
+    required GiCharacter Function(GiCharacter char, int tal) setTalent,
+  }) {
+    final char = _svCharacter.getItem(id) ?? GiCharacter(id: id);
+    final cTalent = ((getTalent(char) + 1) % 11).coerceAtLeast(1);
+    _svCharacter.setItem(setTalent(char, cTalent));
+  }
+
+  /// Increases the character 1st talent
+  ///
+  /// {@macro db_update}
+  void increaseTalent1(String id) {
+    _increaseTalent(
+      id,
+      getTalent: (char) => char.talent1,
+      setTalent: (char, tal) => char.copyWith(talent1: tal),
+    );
+  }
+
+  /// Increases the character 2nd talent
+  ///
+  /// {@macro db_update}
+  void increaseTalent2(String id) {
+    _increaseTalent(
+      id,
+      getTalent: (char) => char.talent2,
+      setTalent: (char, tal) => char.copyWith(talent2: tal),
+    );
+  }
+
+  /// Increases the character 3rd talent
+  ///
+  /// {@macro db_update}
+  void increaseTalent3(String id) {
+    _increaseTalent(
+      id,
+      getTalent: (char) => char.talent3,
+      setTalent: (char, tal) => char.copyWith(talent3: tal),
+    );
   }
 }
 

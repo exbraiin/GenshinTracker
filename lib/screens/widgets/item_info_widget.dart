@@ -314,7 +314,7 @@ class ItemCircleWidget extends StatelessWidget {
     String label = '',
   }) {
     return ItemCircleWidget(
-      size: ItemSize.small,
+      size: size,
       asset: element.assetPath,
       label: label,
     );

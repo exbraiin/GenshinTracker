@@ -4,6 +4,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
+import 'package:tracker/screens/characters_screen/characters_table.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class CharactersScreen extends StatelessWidget {
@@ -37,6 +38,7 @@ class CharactersScreen extends StatelessWidget {
         showExtra: state.filter!.hasExtra('info'),
         onTap: () => _onCharacterTap(context, state.item),
       ),
+      tableBuilder: (context, list) => CharactersTable(characters: list),
     );
   }
 

@@ -37,6 +37,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final Widget? itemCardFooter;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
   final Widget Function(BuildContext context, ItemState<T> state) itemBuilder;
+  final Widget Function(BuildContext context, List<T> state)? tableBuilder;
 
   const InventoryListPage({
     super.key,
@@ -49,6 +50,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     required this.title,
     required this.items,
     required this.itemBuilder,
+    this.tableBuilder,
   });
 
   @override
@@ -72,7 +74,34 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
             final sorted = filter.match(items).toList();
             final hasExtra = filter.hasExtra;
             final other = actions?.call(hasExtra, toggle) ?? const [];
-            return _list(sorted, [...other, button], filter);
+
+            final buttons = [
+              if (tableBuilder != null)
+                IconButton(
+                  onPressed: () => toggle('__table'),
+                  icon: hasExtra('__table')
+                      ? const Icon(Icons.grid_view_rounded)
+                      : const Icon(Icons.view_list_rounded),
+                  color: Colors.white.withOpacity(0.5),
+                ),
+              ...other,
+              button,
+            ];
+
+            if (filter.hasExtra('__table') && tableBuilder != null) {
+              return InventoryPage(
+                appBar: InventoryAppBar(
+                  label: title,
+                  iconAsset: icon,
+                  actions: buttons.separate(const SizedBox(width: 2)),
+                ),
+                child: InventoryBox(
+                  child: tableBuilder!(context, sorted),
+                ),
+              );
+            }
+
+            return _list(sorted, buttons, filter);
           },
         );
       },
