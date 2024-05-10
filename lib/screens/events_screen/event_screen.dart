@@ -154,6 +154,7 @@ class EventsScrollView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: kSeparator6),
                                 Text(
                                   e.dateEnd
                                       .difference(now)
@@ -191,9 +192,8 @@ class EventsScrollView extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: date.isAtSameDayAs(now)
                                   ? BoxDecoration(
-                                      color: context.themeColors.mainColor0,
+                                      color: context.themeColors.primary80,
                                       shape: BoxShape.circle,
-                                      boxShadow: kMainShadow,
                                     )
                                   : null,
                               child: Text(

@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
@@ -17,11 +18,17 @@ class HomeCalendarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GsDataBox.info(
       title: const Text('Calendar'),
-      child: Center(
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Column(children: _getItems(context).toList()),
-        ),
+      child: Column(
+        children: [
+          Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(children: _getItems(context).toList()),
+            ),
+          ),
+          const SizedBox(height: kSeparator8),
+          const EventsScrollView(),
+        ],
       ),
     );
   }
