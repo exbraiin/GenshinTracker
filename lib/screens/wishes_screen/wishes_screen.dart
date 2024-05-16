@@ -95,6 +95,8 @@ class _WishesScreenScreenState extends State<WishesScreen>
               return Container(
                 width: 100,
                 height: 56,
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(borderRadius: kListRadius),
                 margin: const EdgeInsets.only(bottom: 4),
                 child: CachedImageWidget(
                   banner?.image,
