@@ -90,14 +90,19 @@ abstract class GsDatabaseExporter {
         group++;
         bg = !bg;
       }
+
+      final hexColor = switch (item.rarity) {
+        5 => 'FFCC9832',
+        4 => 'FF8A6995',
+        _ => 'FF000000',
+      };
+
+      final fgColor = ExcelColor.fromHexString(hexColor);
+      final bgColor = ExcelColor.fromHexString(bg ? 'FFEEEEEE' : 'none');
       final s = st.copyWith(
-        fontColorHexVal: item.rarity == 5
-            ? 'FFCC9832'
-            : item.rarity == 4
-                ? 'FF8A6995'
-                : 'FF000000',
+        fontColorHexVal: fgColor,
         boldVal: item.rarity > 3,
-        backgroundColorHexVal: bg ? 'FFEEEEEE' : 'none',
+        backgroundColorHexVal: bgColor,
       );
       item.addToSheet(sheet, group, s);
     }

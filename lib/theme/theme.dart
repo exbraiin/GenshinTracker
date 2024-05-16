@@ -6,7 +6,7 @@ final _textStyle = ThemeStyles.defaultTheme(_themeColors);
 final theme = ThemeData(
   extensions: [_themeColors, _textStyle],
   scrollbarTheme: ScrollbarThemeData(
-    thickness: MaterialStateProperty.all(0),
+    thickness: WidgetStateProperty.all(0),
   ),
   fontFamily: defaultFontFamily,
   primarySwatch: Colors.blue,
@@ -16,7 +16,7 @@ final theme = ThemeData(
     backgroundColor: _themeColors.mainColor1,
   ),
   colorScheme: ColorScheme.dark(
-    background: _themeColors.mainColor1,
+    surface: _themeColors.mainColor1,
   ),
   tooltipTheme: TooltipThemeData(
     preferBelow: false,
