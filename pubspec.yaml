@@ -32,11 +32,11 @@ dependencies:
   dartx: ^1.2.0
   excel: ^4.0.2
   cached_network_image: ^3.2.1
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
   bitsdojo_window: ^0.1.5
   gsdatabase:
     git:
-      url: https://github.com/exbraiin/gsdatabase
+      url: https://github.com/exbraiin/dart-gsdatabase
 
 dev_dependencies:
   flutter_test:
