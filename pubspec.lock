@@ -230,9 +230,11 @@ packages:
   gsdatabase:
     dependency: "direct main"
     description:
-      path: "../GenshinTrackerEditor/packages/gsdatabase"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: f2151f4e2b539aff2437e2ce20df8103cd543165
+      url: "https://github.com/exbraiin/gsdatabase"
+    source: git
     version: "1.0.0"
   http:
     dependency: transitive
