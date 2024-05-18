@@ -222,7 +222,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               children: banners.map((e) {
                 return ItemCircleWidget(
                   image: e.image,
-                  // rarity: e.rarity,
                   tooltip: e.name,
                 );
               }).toList(),

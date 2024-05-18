@@ -135,7 +135,6 @@ class WishListItem extends StatelessWidget {
     final list = _getWishesAround(wish);
     bool? update = false;
     if (list.length > 1) {
-      // ignore: use_build_context_synchronously
       if (!context.mounted) return;
       final title = context.fromLabel(Labels.wishes);
       final subtitle = context.fromLabel(Labels.updateAllWishes, list.length);

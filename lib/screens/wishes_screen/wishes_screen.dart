@@ -194,7 +194,6 @@ class _WishesScreenScreenState extends State<WishesScreen>
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final item = filteredWishes[index];
-              // print(index);
               return WishListItem(
                 pity: item.pity,
                 bannerType: gsBanner,
