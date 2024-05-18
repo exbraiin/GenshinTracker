@@ -195,6 +195,10 @@ class ScreenFilter<I extends GsModel<I>> {
     return items.where((e) => sections.every((s) => s._filter(e)));
   }
 
+  Iterable<T> matchBy<T>(Iterable<T> list, I Function(T) selector) {
+    return list.where((e) => sections.every((s) => s._filter(selector(e))));
+  }
+
   void reset() {
     for (var section in sections) {
       section.enabled.clear();

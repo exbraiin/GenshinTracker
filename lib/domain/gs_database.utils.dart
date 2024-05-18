@@ -145,6 +145,8 @@ class _Cities {
   }
 }
 
+typedef WishListInfo = ({GsWish item, GiWish wish, int pity, WishState state});
+
 class _Wishes {
   /// Gets all released banners by [type]
   Iterable<GsBanner> geReleasedInfoBannerByType(GeBannerType type) {
@@ -241,6 +243,66 @@ class _Wishes {
         .items
         .where((e) => bannerIds.contains(e.bannerId))
         .toList();
+  }
+
+  Iterable<({GsBanner banner, List<WishListInfo> wishes})>
+      getBannersWishesByType(GeBannerType type) {
+    final utils = GsUtils.wishes;
+    final wishes = utils.getSaveWishesByBannerType(type).sorted();
+
+    final banners = utils.geReleasedInfoBannerByType(type);
+    final entries = banners.map((e) => MapEntry(e.id, <WishListInfo>[]));
+    final grouped = Map.fromEntries(entries);
+
+    WishState getWishState(
+      String itemId,
+      WishState lastState,
+      Iterable<String>? featured,
+    ) {
+      if (type.isPermanent || featured == null) return WishState.none;
+      final isFeatured = featured.contains(itemId);
+      if (!isFeatured) return WishState.lost;
+      if (lastState == WishState.lost) return WishState.guaranteed;
+      return WishState.won;
+    }
+
+    var l4 = 0, l5 = 0;
+    var s4 = WishState.none, s5 = WishState.none;
+    for (final wish in wishes) {
+      l4++;
+      l5++;
+      final item = GsUtils.items.getItemData(wish.itemId);
+      late final banner = _db.infoOf<GsBanner>().getItem(wish.bannerId);
+
+      final list = grouped[wish.bannerId];
+      if (list == null) continue;
+
+      if (item.rarity == 5) {
+        final state = getWishState(wish.itemId, s5, banner?.feature5);
+        final tuple = (item: item, wish: wish, state: state, pity: l5);
+        list.add(tuple);
+        l5 = 0;
+        s5 = state;
+      } else if (item.rarity == 4) {
+        final state = getWishState(wish.itemId, s4, banner?.feature4);
+        final tuple = (item: item, wish: wish, state: state, pity: l4);
+        list.add(tuple);
+        l4 = 0;
+        s4 = state;
+      } else {
+        final tuple = (item: item, wish: wish, state: WishState.none, pity: 1);
+        list.add(tuple);
+      }
+    }
+
+    return banners.sortedDescending().map((e) {
+      return (
+        banner: e,
+        wishes: grouped[e.id]!
+            .sortedByDescending((e) => e.wish.number)
+            .thenWith((a, b) => b.wish.compareTo(a.wish)),
+      );
+    });
   }
 
   /// Whether the [banner] has wishes.

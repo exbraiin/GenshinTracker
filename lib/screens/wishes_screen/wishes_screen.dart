@@ -140,13 +140,8 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 child: TabBarView(
                   controller: _controller,
                   children: _bannerType.map((banner) {
-                    final ut = GsUtils.wishes;
-                    final wishes =
-                        ut.getSaveWishesByBannerType(banner).sortedDescending();
-                    final banners =
-                        ut.geReleasedInfoBannerByType(banner).toList();
                     return CustomScrollView(
-                      slivers: _slivers(banner, wishes, banners, filter),
+                      slivers: _slivers(banner, filter),
                     );
                   }).toList(),
                 ),
@@ -158,10 +153,10 @@ class _WishesScreenScreenState extends State<WishesScreen>
     );
   }
 
-  ListType _getListType(List<GiWish> wishes, int index) {
-    late final cWish = wishes.elementAtOrNull(index);
-    late final pWish = wishes.elementAtOrNull(index - 1);
-    late final nWish = wishes.elementAtOrNull(index + 1);
+  ListType _getListType(List<WishListInfo> wishes, int index) {
+    late final cWish = wishes.elementAtOrNull(index)?.wish;
+    late final pWish = wishes.elementAtOrNull(index - 1)?.wish;
+    late final nWish = wishes.elementAtOrNull(index + 1)?.wish;
     if (cWish == null) return ListType.none;
 
     late final isTop = pWish?.date != cWish.date && nWish?.date == cWish.date;
@@ -175,19 +170,14 @@ class _WishesScreenScreenState extends State<WishesScreen>
 
   List<Widget> _slivers(
     GeBannerType gsBanner,
-    List<GiWish> wishesList,
-    List<GsBanner> bannersList,
     ScreenFilter<GiWish> filter,
   ) {
-    final banners = bannersList.sortedDescending();
-    return banners.map(
-      (banner) {
-        final bannerWishes = wishesList.where((e) => e.bannerId == banner.id);
-        final filteredWishes = filter
-            .match(bannerWishes)
-            // This keeps the sorting by number inside the banner.
-            .sortedByDescending((e) => e.number)
-            .thenWith((a, b) => b.compareTo(a));
+    return GsUtils.wishes.getBannersWishesByType(gsBanner).map(
+      (entry) {
+        final banner = entry.banner;
+        final bannerWishes = entry.wishes;
+        final filteredWishes =
+            filter.matchBy(bannerWishes, (e) => e.wish).toList();
 
         final hide = filter.hasExtra('hide_banners');
         final showBanner = !hide || filteredWishes.isNotEmpty;
@@ -198,21 +188,15 @@ class _WishesScreenScreenState extends State<WishesScreen>
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final wish = filteredWishes[index];
-                final pity = GsUtils.wishes.countPity(wishesList, wish);
-                final type = filter.isDefault()
-                    ? _getListType(filteredWishes, index)
-                    : ListType.none;
-
+                final item = filteredWishes[index];
+                // print(index);
                 return WishListItem(
-                  pity: pity,
+                  pity: item.pity,
                   bannerType: gsBanner,
-                  wishState: !gsBanner.isPermanent
-                      ? GsUtils.wishes.getWishState(wishesList, wish)
-                      : WishState.none,
+                  wishState: item.state,
                   index: index,
-                  wish: wish,
-                  type: type,
+                  wish: item.wish,
+                  type: _getListType(filteredWishes, index),
                 );
               },
               childCount: filteredWishes.length,
