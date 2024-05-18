@@ -174,7 +174,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
   ) {
     final banners =
         GsUtils.wishes.geReleasedInfoBannerByType(gsBanner).sortedDescending();
-    final wishes = GsUtils.wishes.getBannersWishesByType(gsBanner);
+    final wishes = GsUtils.wishes.getSaveWishesSummaryByBannerType(gsBanner);
 
     return banners.map((banner) {
       final bannerWishes = wishes

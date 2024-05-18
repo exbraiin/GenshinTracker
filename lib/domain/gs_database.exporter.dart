@@ -32,26 +32,25 @@ abstract class GsDatabaseExporter {
 
   static void writeWishes(Excel excel, String sheetName, GeBannerType type) {
     final db = Database.instance;
-    final list = GsUtils.wishes.getSaveWishesByBannerType(type);
+    final list = GsUtils.wishes.getSaveWishesSummaryByBannerType(type);
     final sheet = excel[sheetName];
 
     final rows = <_Row>[];
     final wishes = list.sortedDescending();
 
-    for (var i = 0; i < wishes.length; ++i) {
-      final wish = wishes[i];
-      final item = GsUtils.items.getItemData(wish.itemId);
-      final banner = db.infoOf<GsBanner>().getItem(wish.bannerId);
-      final pity = GsUtils.wishes.countPity(wishes, wish);
+    for (final wish in wishes) {
+      final item = wish.item;
+      final banner = db.infoOf<GsBanner>().getItem(wish.wish.bannerId);
+      final pity = wish.pity;
 
       if (banner == null) continue;
       final row = _Row(
         type: item.isWeapon ? 'Weapon' : 'Character',
         name: item.name,
-        date: wish.date.format(),
+        date: wish.wish.date.format(),
         rarity: item.rarity,
         pity: pity,
-        roll: wish.number,
+        roll: wish.wish.number,
         banner: banner.name,
       );
       rows.add(row);

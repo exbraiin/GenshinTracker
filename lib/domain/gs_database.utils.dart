@@ -155,55 +155,6 @@ class _Wishes {
         .where((e) => e.type == type && e.dateStart.isBefore(now));
   }
 
-  /// Gets the pity of the given wish in the given wishes list.
-  int countPity(List<GiWish> wishes, GiWish wish) {
-    final item = GsUtils.items.getItemData(wish.itemId);
-    final rarity = item.rarity;
-    if (rarity < 4) return 1;
-    final getItem = GsUtils.items.getItemData;
-    final list = wishes.skipWhile((value) => value != wish).skip(1).toList();
-    final last = list.indexWhere((e) => getItem(e.itemId).rarity == rarity);
-    return last != -1 ? (last + 1).coerceAtLeast(1) : list.length + 1;
-  }
-
-  GiWish? _getLastWish(Iterable<GiWish> wishes, [int rarity = 5]) {
-    final getItem = GsUtils.items.getItemData;
-    return wishes.firstOrNullWhere((e) => getItem(e.itemId).rarity == rarity);
-  }
-
-  /// Checks if the next wish is a guaranteed one in the given wishes list.
-  bool isNextGaranteed(List<GiWish> wishes) {
-    final last = _getLastWish(wishes);
-    if (last == null) return false;
-    final banner = _ifBanners.getItem(last.bannerId);
-    if (banner == null) return false;
-    return !banner.feature5.contains(last.itemId);
-  }
-
-  /// Gets the wish state.
-  WishState getWishState(List<GiWish> wishes, GiWish wish) {
-    final item = GsUtils.items.getItemData(wish.itemId);
-    final rt = item.rarity;
-    if (rt != 5 && rt != 4) return WishState.none;
-
-    late final banner = _ifBanners.getItem(wish.bannerId)!;
-    late final featured = rt == 5 ? banner.feature5 : banner.feature4;
-    late final contained = featured.contains(wish.itemId);
-
-    wishes = wishes.skipWhile((value) => value != wish).skip(1).toList();
-    final lastWish = _getLastWish(wishes, rt);
-    if (lastWish == null) return contained ? WishState.won : WishState.lost;
-
-    final lastBanner = _ifBanners.getItem(lastWish.bannerId)!;
-    final lastFeatured = rt == 5 ? lastBanner.feature5 : lastBanner.feature4;
-    final lastBannerContains = lastFeatured.contains(lastWish.itemId);
-
-    if (lastBannerContains && contained) return WishState.won;
-    if (lastBannerContains && !contained) return WishState.lost;
-    if (!lastBannerContains && contained) return WishState.guaranteed;
-    return WishState.none;
-  }
-
   /// Gets a list of [ItemData] that can be obtained in banners.
   Iterable<GsWish> getBannerItemsData(GsBanner banner) {
     bool filterWp(GsWeapon info) {
@@ -234,20 +185,10 @@ class _Wishes {
   List<GiWish> getBannerWishes(String banner) =>
       _svWish.items.where((e) => e.bannerId == banner).toList();
 
-  /// Gets all saved wishes for a banner [type].
-  List<GiWish> getSaveWishesByBannerType(GeBannerType type) {
-    final banners = GsUtils.wishes.geReleasedInfoBannerByType(type);
-    final bannerIds = banners.map((e) => e.id);
-    return _db
-        .saveOf<GiWish>()
-        .items
-        .where((e) => bannerIds.contains(e.bannerId))
-        .toList();
-  }
-
   /// Gets all saved wishes summary for a banner [type] in ascending order.
-  Iterable<WishSummary> getBannersWishesByType(GeBannerType type) {
-    final wishes = GsUtils.wishes.getSaveWishesByBannerType(type).sorted();
+  Iterable<WishSummary> getSaveWishesSummaryByBannerType(GeBannerType type) {
+    final l = GsUtils.wishes.geReleasedInfoBannerByType(type).map((e) => e.id);
+    final wishes = _svWish.items.where((e) => l.contains(e.bannerId)).sorted();
 
     WishState getWishState(
       String itemId,
@@ -1072,6 +1013,9 @@ typedef WishesInfo = ({
 });
 
 class WishesSummary {
+  final int total;
+  final bool isNext4Guaranteed;
+  final bool isNext5Guaranteed;
   final WishesInfo info4;
   final WishesInfo info5;
   final WishesInfo info4Weapon;
@@ -1080,6 +1024,9 @@ class WishesSummary {
   final WishesInfo info5Character;
 
   WishesSummary({
+    required this.total,
+    required this.isNext4Guaranteed,
+    required this.isNext5Guaranteed,
     required this.info4,
     required this.info5,
     required this.info4Weapon,
@@ -1090,7 +1037,7 @@ class WishesSummary {
 
   factory WishesSummary.fromBannerType(GeBannerType type) {
     final wishes = GsUtils.wishes
-        .getBannersWishesByType(type)
+        .getSaveWishesSummaryByBannerType(type)
         .sortedByDescending((e) => e.wish);
 
     final info4 = <WishSummary>[];
@@ -1102,10 +1049,17 @@ class WishesSummary {
 
     var l4 = 0, l4w = 0, l4c = 0;
     var l5 = 0, l5w = 0, l5c = 0;
+    bool? is4Guaranteed, is5Guaranteed;
 
     for (final item in wishes) {
       if (item.item.rarity == 4) {
         info4.add(item);
+        is4Guaranteed ??= !(_ifBanners
+                .getItem(item.wish.bannerId)
+                ?.feature4
+                .contains(item.wish.itemId) ??
+            true);
+
         if (item.item.isWeapon) {
           info4Weapon.add(item);
         } else {
@@ -1113,6 +1067,11 @@ class WishesSummary {
         }
       } else if (item.item.rarity == 5) {
         info5.add(item);
+        is5Guaranteed ??= !(_ifBanners
+                .getItem(item.wish.bannerId)
+                ?.feature5
+                .contains(item.wish.itemId) ??
+            true);
         if (item.item.isWeapon) {
           info5Weapon.add(item);
         } else {
@@ -1124,7 +1083,6 @@ class WishesSummary {
         if (info4Weapon.isEmpty) l4w++;
         if (info4Character.isEmpty) l4c++;
       }
-
       if (info5.isEmpty) {
         l5++;
         if (info5Weapon.isEmpty) l5w++;
@@ -1143,6 +1101,9 @@ class WishesSummary {
     }
 
     return WishesSummary(
+      total: wishes.length,
+      isNext4Guaranteed: is4Guaranteed ?? false,
+      isNext5Guaranteed: is5Guaranteed ?? false,
       info4: getWishInfo(info4, l4),
       info4Weapon: getWishInfo(info4Weapon, l4w),
       info4Character: getWishInfo(info4Character, l4c),

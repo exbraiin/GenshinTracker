@@ -27,9 +27,6 @@ class HomeWishesValues extends StatelessWidget {
     final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: context.themeColors.almostWhite);
 
-    final sw = GsUtils.wishes;
-    final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
-
     final summary = WishesSummary.fromBannerType(banner);
 
     final maxPity = banner == GeBannerType.weapon ? 80 : 90;
@@ -46,7 +43,7 @@ class HomeWishesValues extends StatelessWidget {
         children: [
           Expanded(child: Text(context.fromLabel(title))),
           Text(
-            (wishes.length * GsUtils.details.primogemsPerWish).format(),
+            (summary.total * GsUtils.details.primogemsPerWish).format(),
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -58,12 +55,11 @@ class HomeWishesValues extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _summary(context, wishes, summary, maxPity),
+          _summary(context, summary, maxPity),
           const SizedBox(height: kSeparator8),
           _getCharGraph(
             context: context,
             summary: summary,
-            wishes: wishes,
             maxPity: maxPity,
           ),
           const SizedBox(height: kSeparator8),
@@ -181,7 +177,6 @@ class HomeWishesValues extends StatelessWidget {
           _getWishesList(
             style: style,
             summary: summary,
-            wishes: wishes,
             maxPity: maxPity,
           ),
         ],
@@ -189,22 +184,16 @@ class HomeWishesValues extends StatelessWidget {
     );
   }
 
-  Row _summary(
-    BuildContext context,
-    List<GiWish> wishes,
-    WishesSummary summary,
-    int maxPity,
-  ) {
+  Row _summary(BuildContext context, WishesSummary summary, int maxPity) {
     final last = summary.info5.last;
     final show = banner == GeBannerType.character;
     final pityColor = context.themeColors.getPityColor(last, maxPity);
-    final guaranteed = show && GsUtils.wishes.isNextGaranteed(wishes);
     return Row(
       children: [
         Expanded(
           child: _summaryContainer(
             context,
-            wishes.length.format(),
+            summary.total.format(),
             context.fromLabel(Labels.lifetimePulls),
             valueColor: context.themeColors.almostWhite,
           ),
@@ -215,7 +204,7 @@ class HomeWishesValues extends StatelessWidget {
             summary.info5.last.format(),
             context.fromLabel(Labels.l5sPity),
             valueColor: pityColor,
-            wasGuaranteed: guaranteed,
+            wasGuaranteed: show && summary.isNext5Guaranteed,
           ),
         ),
         Expanded(
@@ -224,6 +213,7 @@ class HomeWishesValues extends StatelessWidget {
             summary.info4.last.format(),
             context.fromLabel(Labels.l4sPity),
             valueColor: context.themeColors.getRarityColor(4),
+            wasGuaranteed: show && summary.isNext4Guaranteed,
           ),
         ),
       ],
@@ -233,7 +223,6 @@ class HomeWishesValues extends StatelessWidget {
   Widget _getCharGraph({
     required BuildContext context,
     required WishesSummary summary,
-    required List<GiWish> wishes,
     required int maxPity,
   }) {
     if (summary.info5.wishes.isEmpty) return const SizedBox();
@@ -319,7 +308,6 @@ class HomeWishesValues extends StatelessWidget {
   Widget _getWishesList({
     required TextStyle style,
     required WishesSummary summary,
-    required List<GiWish> wishes,
     required int maxPity,
   }) {
     if (summary.info5.total == 0) return const SizedBox();
