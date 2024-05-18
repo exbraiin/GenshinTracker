@@ -153,7 +153,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
     );
   }
 
-  ListType _getListType(List<WishListInfo> wishes, int index) {
+  ListType _getListType(List<WishSummary> wishes, int index) {
     late final cWish = wishes.elementAtOrNull(index)?.wish;
     late final pWish = wishes.elementAtOrNull(index - 1)?.wish;
     late final nWish = wishes.elementAtOrNull(index + 1)?.wish;
@@ -172,39 +172,43 @@ class _WishesScreenScreenState extends State<WishesScreen>
     GeBannerType gsBanner,
     ScreenFilter<GiWish> filter,
   ) {
-    return GsUtils.wishes.getBannersWishesByType(gsBanner).map(
-      (entry) {
-        final banner = entry.banner;
-        final bannerWishes = entry.wishes;
-        final filteredWishes =
-            filter.matchBy(bannerWishes, (e) => e.wish).toList();
+    final banners =
+        GsUtils.wishes.geReleasedInfoBannerByType(gsBanner).sortedDescending();
+    final wishes = GsUtils.wishes.getBannersWishesByType(gsBanner);
 
-        final hide = filter.hasExtra('hide_banners');
-        final showBanner = !hide || filteredWishes.isNotEmpty;
-        return SliverStickyHeader(
-          header: showBanner
-              ? BannerListItem(banner: banner, rolls: bannerWishes.length)
-              : const SizedBox(),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = filteredWishes[index];
-                // print(index);
-                return WishListItem(
-                  pity: item.pity,
-                  bannerType: gsBanner,
-                  wishState: item.state,
-                  index: index,
-                  wish: item.wish,
-                  type: _getListType(filteredWishes, index),
-                );
-              },
-              childCount: filteredWishes.length,
-            ),
+    return banners.map((banner) {
+      final bannerWishes = wishes
+          .where((e) => e.wish.bannerId == banner.id)
+          .sortedByDescending((e) => e.wish.number)
+          .thenWith((a, b) => b.wish.compareTo(a.wish));
+      final filteredWishes =
+          filter.matchBy(bannerWishes, (e) => e.wish).toList();
+
+      final hide = filter.hasExtra('hide_banners');
+      final showBanner = !hide || filteredWishes.isNotEmpty;
+      return SliverStickyHeader(
+        header: showBanner
+            ? BannerListItem(banner: banner, rolls: bannerWishes.length)
+            : const SizedBox(),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final item = filteredWishes[index];
+              // print(index);
+              return WishListItem(
+                pity: item.pity,
+                bannerType: gsBanner,
+                wishState: item.state,
+                index: index,
+                wish: item.wish,
+                type: _getListType(filteredWishes, index),
+              );
+            },
+            childCount: filteredWishes.length,
           ),
-        );
-      },
-    ).toList();
+        ),
+      );
+    }).toList();
   }
 
   Widget _header(BuildContext context) {

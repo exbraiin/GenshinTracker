@@ -145,7 +145,7 @@ class _Cities {
   }
 }
 
-typedef WishListInfo = ({GsWish item, GiWish wish, int pity, WishState state});
+typedef WishSummary = ({GsWish item, GiWish wish, int pity, WishState state});
 
 class _Wishes {
   /// Gets all released banners by [type]
@@ -245,14 +245,9 @@ class _Wishes {
         .toList();
   }
 
-  Iterable<({GsBanner banner, List<WishListInfo> wishes})>
-      getBannersWishesByType(GeBannerType type) {
-    final utils = GsUtils.wishes;
-    final wishes = utils.getSaveWishesByBannerType(type).sorted();
-
-    final banners = utils.geReleasedInfoBannerByType(type);
-    final entries = banners.map((e) => MapEntry(e.id, <WishListInfo>[]));
-    final grouped = Map.fromEntries(entries);
+  /// Gets all saved wishes summary for a banner [type] in ascending order.
+  Iterable<WishSummary> getBannersWishesByType(GeBannerType type) {
+    final wishes = GsUtils.wishes.getSaveWishesByBannerType(type).sorted();
 
     WishState getWishState(
       String itemId,
@@ -268,14 +263,12 @@ class _Wishes {
 
     var l4 = 0, l5 = 0;
     var s4 = WishState.none, s5 = WishState.none;
+    final list = <WishSummary>[];
     for (final wish in wishes) {
       l4++;
       l5++;
       final item = GsUtils.items.getItemData(wish.itemId);
       late final banner = _db.infoOf<GsBanner>().getItem(wish.bannerId);
-
-      final list = grouped[wish.bannerId];
-      if (list == null) continue;
 
       if (item.rarity == 5) {
         final state = getWishState(wish.itemId, s5, banner?.feature5);
@@ -295,14 +288,7 @@ class _Wishes {
       }
     }
 
-    return banners.sortedDescending().map((e) {
-      return (
-        banner: e,
-        wishes: grouped[e.id]!
-            .sortedByDescending((e) => e.wish.number)
-            .thenWith((a, b) => b.wish.compareTo(a.wish)),
-      );
-    });
+    return list;
   }
 
   /// Whether the [banner] has wishes.
@@ -1077,13 +1063,21 @@ Map<String, int> _getMaterials<T>(
 
 // === OLD ===
 
+typedef WishesInfo = ({
+  int last,
+  int total,
+  double average,
+  double percentage,
+  List<WishSummary> wishes,
+});
+
 class WishesSummary {
-  final WishInfo info4;
-  final WishInfo info5;
-  final WishInfo info4Weapon;
-  final WishInfo info4Character;
-  final WishInfo info5Weapon;
-  final WishInfo info5Character;
+  final WishesInfo info4;
+  final WishesInfo info5;
+  final WishesInfo info4Weapon;
+  final WishesInfo info4Character;
+  final WishesInfo info5Weapon;
+  final WishesInfo info5Character;
 
   WishesSummary({
     required this.info4,
@@ -1094,67 +1088,67 @@ class WishesSummary {
     required this.info5Character,
   });
 
-  factory WishesSummary.fromList(List<GiWish> wishes) {
+  factory WishesSummary.fromBannerType(GeBannerType type) {
+    final wishes = GsUtils.wishes
+        .getBannersWishesByType(type)
+        .sortedByDescending((e) => e.wish);
+
+    final info4 = <WishSummary>[];
+    final info4Weapon = <WishSummary>[];
+    final info4Character = <WishSummary>[];
+    final info5 = <WishSummary>[];
+    final info5Weapon = <WishSummary>[];
+    final info5Character = <WishSummary>[];
+
+    var l4 = 0, l4w = 0, l4c = 0;
+    var l5 = 0, l5w = 0, l5c = 0;
+
+    for (final item in wishes) {
+      if (item.item.rarity == 4) {
+        info4.add(item);
+        if (item.item.isWeapon) {
+          info4Weapon.add(item);
+        } else {
+          info4Character.add(item);
+        }
+      } else if (item.item.rarity == 5) {
+        info5.add(item);
+        if (item.item.isWeapon) {
+          info5Weapon.add(item);
+        } else {
+          info5Character.add(item);
+        }
+      }
+      if (info4.isEmpty) {
+        l4++;
+        if (info4Weapon.isEmpty) l4w++;
+        if (info4Character.isEmpty) l4c++;
+      }
+
+      if (info5.isEmpty) {
+        l5++;
+        if (info5Weapon.isEmpty) l5w++;
+        if (info5Character.isEmpty) l5c++;
+      }
+    }
+
+    WishesInfo getWishInfo(List<WishSummary> list, int last) {
+      return (
+        last: last,
+        total: list.length,
+        average: list.isNotEmpty ? list.averageBy((e) => e.pity) : 0.0,
+        percentage: list.length * 100 / wishes.length.coerceAtLeast(1),
+        wishes: list,
+      );
+    }
+
     return WishesSummary(
-      info4: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 4,
-      ),
-      info5: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 5,
-      ),
-      info4Weapon: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 4 && item.isWeapon,
-      ),
-      info4Character: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 4 && item.isCharacter,
-      ),
-      info5Weapon: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 5 && item.isWeapon,
-      ),
-      info5Character: WishInfo.fromSelector(
-        wishes,
-        (item) => item.rarity == 5 && item.isCharacter,
-      ),
-    );
-  }
-}
-
-class WishInfo {
-  final int last;
-  final int total;
-  final double average;
-  final double percentage;
-  final List<GiWish> wishes;
-
-  WishInfo({
-    required this.last,
-    required this.total,
-    required this.average,
-    required this.percentage,
-    required this.wishes,
-  });
-
-  factory WishInfo.fromSelector(
-    List<GiWish> wishes,
-    bool Function(GsWish item) selector,
-  ) {
-    final pity = GsUtils.wishes.countPity;
-    final getItem = GsUtils.items.getItemData;
-    final g = wishes.where((e) => selector(getItem(e.itemId)));
-    final lst = wishes.takeWhile((e) => !selector(getItem(e.itemId))).length;
-    final avg = g.isNotEmpty ? g.averageBy((e) => pity(wishes, e)) : 0.0;
-    final per = g.length * 100 / wishes.length.coerceAtLeast(1);
-    return WishInfo(
-      last: lst,
-      total: g.length,
-      average: avg,
-      percentage: per,
-      wishes: g.toList(),
+      info4: getWishInfo(info4, l4),
+      info4Weapon: getWishInfo(info4Weapon, l4w),
+      info4Character: getWishInfo(info4Character, l4c),
+      info5: getWishInfo(info5, l5),
+      info5Weapon: getWishInfo(info5Weapon, l5w),
+      info5Character: getWishInfo(info5Character, l5c),
     );
   }
 }

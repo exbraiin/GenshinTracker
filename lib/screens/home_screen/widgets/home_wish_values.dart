@@ -30,7 +30,7 @@ class HomeWishesValues extends StatelessWidget {
     final sw = GsUtils.wishes;
     final wishes = sw.getSaveWishesByBannerType(banner).sortedDescending();
 
-    final summary = WishesSummary.fromList(wishes);
+    final summary = WishesSummary.fromBannerType(banner);
 
     final maxPity = banner == GeBannerType.weapon ? 80 : 90;
     final title = switch (banner) {
@@ -239,7 +239,7 @@ class HomeWishesValues extends StatelessWidget {
     if (summary.info5.wishes.isEmpty) return const SizedBox();
     final map = <int, int>{};
     for (final wish in summary.info5.wishes) {
-      final pity = GsUtils.wishes.countPity(wishes, wish);
+      final pity = wish.pity;
       if (pity > maxPity) continue;
       map[pity] = (map[pity] ?? 0) + 1;
     }
@@ -357,13 +357,9 @@ class HomeWishesValues extends StatelessWidget {
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: summary.info5.wishes.reversed.map((wish) {
-                    final item = GsUtils.items.getItemData(wish.itemId);
-                    final pity = GsUtils.wishes.countPity(wishes, wish);
-                    final showState = banner == GeBannerType.character ||
-                        banner == GeBannerType.weapon;
-                    final state = showState
-                        ? GsUtils.wishes.getWishState(wishes, wish)
-                        : WishState.none;
+                    final item = wish.item;
+                    final pity = wish.pity;
+                    final state = wish.state;
                     final pityColor =
                         context.themeColors.getPityColor(pity, maxPity);
 
@@ -530,7 +526,7 @@ class HomeWishesValues extends StatelessWidget {
 
   Widget _getPullInfo(
     BuildContext context,
-    WishInfo info,
+    WishesInfo info,
     String label,
     Color color,
   ) {
@@ -544,14 +540,13 @@ class HomeWishesValues extends StatelessWidget {
 
   Widget _getWonInfo(
     BuildContext context,
-    WishInfo info,
+    WishesInfo info,
     String label,
     Color color,
   ) {
     final total = info.wishes
-        .map((e) => MapEntry(e, GsUtils.wishes.getWishState(info.wishes, e)))
-        .where((e) => e.value == WishState.won || e.value == WishState.lost);
-    final won = total.count((e) => e.value == WishState.won);
+        .where((e) => e.state == WishState.won || e.state == WishState.lost);
+    final won = total.count((e) => e.state == WishState.won);
     final percent = won / total.length.coerceAtLeast(1) * 100;
     return _getInfo(
       context,
