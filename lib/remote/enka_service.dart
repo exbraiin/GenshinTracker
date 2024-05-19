@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/utils/network.dart';
 
 const _apiBaseUrl = 'https://enka.network';
 const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
@@ -16,7 +16,7 @@ class EnkaService {
 
   Future<EnkaPlayerInfo> getPlayerInfo(String uid) async {
     final url = '$_apiBaseUrl/api/uid/$uid?info';
-    final data = await _downloadFile(url);
+    final data = await Network.downloadFile(url);
     final info = jsonDecode(data) as Map<String, dynamic>;
     return EnkaPlayerInfo._fromMap(info);
   }
@@ -24,7 +24,7 @@ class EnkaService {
   Future<String> getNamecardUrl(int namecardId) async {
     if (_namecards.isEmpty) {
       const url = '$_gitBaseUrl/API-docs/master/store/namecards.json';
-      final data = await _downloadFile(url);
+      final data = await Network.downloadFile(url);
       _namecards.clear();
       _namecards.addAll(jsonDecode(data) as Map<String, dynamic>);
     }
@@ -35,7 +35,7 @@ class EnkaService {
   Future<String> getCharacterUrl(int characterId) async {
     if (_characters.isEmpty) {
       const url = '$_gitBaseUrl/API-docs/master/store/characters.json';
-      final data = await _downloadFile(url);
+      final data = await Network.downloadFile(url);
       _characters.clear();
       _characters.addAll(jsonDecode(data) as Map<String, dynamic>);
     }
@@ -46,25 +46,13 @@ class EnkaService {
   Future<String> getProfilePictureUrl(String pictureId) async {
     if (_profilePics.isEmpty) {
       const url = '$_gitBaseUrl/API-docs/master/store/pfps.json';
-      final data = await _downloadFile(url);
+      final data = await Network.downloadFile(url);
       _profilePics
         ..clear()
         ..addAll(jsonDecode(data) as Map<String, dynamic>);
     }
     final alias = _profilePics[pictureId]?['iconPath'];
     return '$_apiBaseUrl/ui/$alias.png';
-  }
-
-  Future<String> _downloadFile(String url) {
-    final client = HttpClient();
-    try {
-      return client
-          .getUrl(Uri.parse(url))
-          .then((value) => value.close())
-          .then((value) => value.transform(utf8.decoder).join());
-    } finally {
-      client.close();
-    }
   }
 }
 
