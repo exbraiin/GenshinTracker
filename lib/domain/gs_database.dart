@@ -46,10 +46,9 @@ class Database {
   }
 
   Future<void> _tryUpdateDataFile() async {
-    const gitBaseUrl =
-        'https://raw.githubusercontent.com/exbraiin/GenshinTrackerEditor';
-    const gitDataUrl = '$gitBaseUrl/main/Release/data.json';
-    const gitVersionUrl = '$gitBaseUrl/main/Release/version.txt';
+    const git = 'https://raw.githubusercontent.com/exbraiin';
+    const gitDataUrl = '$git/GenshinTrackerEditor/main/Release/gsdata';
+    const gitVersionUrl = '$git/GenshinTrackerEditor/main/Release/gsversion';
     const defaultTTL = Duration(days: 1);
 
     final versionFile = File(versPath);
