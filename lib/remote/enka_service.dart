@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/utils/network.dart';
 
@@ -14,10 +15,15 @@ class EnkaService {
   final _profilePics = <String, dynamic>{};
   EnkaService._();
 
+  JsonMap _decodeJson(String? data) {
+    if (data == null) return const {};
+    return jsonDecode(data) as JsonMap;
+  }
+
   Future<EnkaPlayerInfo> getPlayerInfo(String uid) async {
     final url = '$_apiBaseUrl/api/uid/$uid?info';
     final data = await Network.downloadFile(url);
-    final info = jsonDecode(data) as Map<String, dynamic>;
+    final info = _decodeJson(data);
     return EnkaPlayerInfo._fromMap(info);
   }
 
@@ -26,7 +32,7 @@ class EnkaService {
       const url = '$_gitBaseUrl/API-docs/master/store/namecards.json';
       final data = await Network.downloadFile(url);
       _namecards.clear();
-      _namecards.addAll(jsonDecode(data) as Map<String, dynamic>);
+      _namecards.addAll(_decodeJson(data));
     }
     final alias = _namecards[namecardId.toString()]?['icon'];
     return '$_apiBaseUrl/ui/$alias.png';
@@ -37,7 +43,7 @@ class EnkaService {
       const url = '$_gitBaseUrl/API-docs/master/store/characters.json';
       final data = await Network.downloadFile(url);
       _characters.clear();
-      _characters.addAll(jsonDecode(data) as Map<String, dynamic>);
+      _characters.addAll(_decodeJson(data));
     }
     final alias = _characters[characterId.toString()]?['SideIconName'];
     return '$_apiBaseUrl/ui/$alias.png';
@@ -49,7 +55,7 @@ class EnkaService {
       final data = await Network.downloadFile(url);
       _profilePics
         ..clear()
-        ..addAll(jsonDecode(data) as Map<String, dynamic>);
+        ..addAll(_decodeJson(data));
     }
     final alias = _profilePics[pictureId]?['iconPath'];
     return '$_apiBaseUrl/ui/$alias.png';
