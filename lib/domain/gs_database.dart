@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tracker/common/utils/network.dart';
@@ -65,11 +66,11 @@ class Database {
     final versionCache = versionJson['version'] as String? ?? '';
     final versionExpire = versionDate?.add(versionTTL);
     if (versionExpire != null && versionExpire.isAfter(DateTime.now())) {
-      print('Skipping version check!');
+      if (kDebugMode) print('Skipping version check!');
       return;
     }
 
-    print('Downloading version file...');
+    if (kDebugMode) print('Downloading version file...');
     final version = await Network.downloadFile(gitVersionUrl);
     await versionFile.writeAsString(
       jsonEncode({
@@ -91,7 +92,7 @@ class Database {
     }
 
     if (shouldSkipVersion()) {
-      print('Skipping version $version!');
+      if (kDebugMode) print('Skipping version $version!');
       return;
     }
 

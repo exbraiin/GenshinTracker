@@ -10,54 +10,44 @@ const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
 class EnkaService {
   static final i = EnkaService._();
 
-  final _namecards = <String, dynamic>{};
-  final _characters = <String, dynamic>{};
-  final _profilePics = <String, dynamic>{};
-  EnkaService._();
+  final cache = <String, JsonMap>{};
 
-  JsonMap _decodeJson(String? data) {
-    if (data == null) return const {};
-    return jsonDecode(data) as JsonMap;
-  }
+  EnkaService._();
 
   Future<EnkaPlayerInfo> getPlayerInfo(String uid) async {
     final url = '$_apiBaseUrl/api/uid/$uid?info';
     final data = await Network.downloadFile(url);
-    final info = _decodeJson(data);
+    final info = data != null ? jsonDecode(data) : const {};
     return EnkaPlayerInfo._fromMap(info);
   }
 
-  Future<String> getNamecardUrl(int namecardId) async {
-    if (_namecards.isEmpty) {
-      const url = '$_gitBaseUrl/API-docs/master/store/namecards.json';
+  Future<JsonMap> _getCache(String url) async {
+    if (cache[url] == null) {
+      cache[url] = <String, dynamic>{};
       final data = await Network.downloadFile(url);
-      _namecards.clear();
-      _namecards.addAll(_decodeJson(data));
+      if (data != null) cache[url]?.addAll(jsonDecode(data));
     }
-    final alias = _namecards[namecardId.toString()]?['icon'];
+    return cache[url]!;
+  }
+
+  Future<String> getNamecardUrl(int namecardId) async {
+    const url = '$_gitBaseUrl/API-docs/master/store/namecards.json';
+    final cache = await _getCache(url);
+    final alias = cache[namecardId.toString()]?['icon'];
     return '$_apiBaseUrl/ui/$alias.png';
   }
 
   Future<String> getCharacterUrl(int characterId) async {
-    if (_characters.isEmpty) {
-      const url = '$_gitBaseUrl/API-docs/master/store/characters.json';
-      final data = await Network.downloadFile(url);
-      _characters.clear();
-      _characters.addAll(_decodeJson(data));
-    }
-    final alias = _characters[characterId.toString()]?['SideIconName'];
+    const url = '$_gitBaseUrl/API-docs/master/store/characters.json';
+    final cache = await _getCache(url);
+    final alias = cache[characterId.toString()]?['SideIconName'];
     return '$_apiBaseUrl/ui/$alias.png';
   }
 
   Future<String> getProfilePictureUrl(String pictureId) async {
-    if (_profilePics.isEmpty) {
-      const url = '$_gitBaseUrl/API-docs/master/store/pfps.json';
-      final data = await Network.downloadFile(url);
-      _profilePics
-        ..clear()
-        ..addAll(_decodeJson(data));
-    }
-    final alias = _profilePics[pictureId]?['iconPath'];
+    const url = '$_gitBaseUrl/API-docs/master/store/pfps.json';
+    final cache = await _getCache(url);
+    final alias = cache[pictureId]?['iconPath'];
     return '$_apiBaseUrl/ui/$alias.png';
   }
 }
