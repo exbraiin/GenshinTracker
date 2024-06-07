@@ -11,6 +11,28 @@
                 "${workspaceFolder}/assets/lang/generate.dart"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "Zip for Release",
+            "dependsOn": [
+                "copy_gifs",
+                "zip_release"
+            ],
+            "problemMatcher": [],
+        },
+        {
+            "hide": true,
+            "label": "copy_gifs",
+            "type": "shell",
+            "command": "xcopy /s /y \"${workspaceFolder}\\assets\\image\\backgrounds\\static\\\" \"${workspaceFolder}\\build\\windows\\x64\\runner\\Release\\data\\flutter_assets\\assets\\image\\backgrounds\\\"",
+            "problemMatcher": []
+        },
+        {
+            "hide": true,
+            "label": "zip_release",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}\\build\\windows\\x64\\runner\\Release\\ && tar -a -c -f \"${workspaceFolder}\\data\\Release.zip\" *",
+            "problemMatcher": [],
         }
     ]
 }
