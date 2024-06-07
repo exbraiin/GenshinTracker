@@ -32,9 +32,10 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       child: ItemDetailsCardContent.generate(context, [
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.duration),
-          description:
-              '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
-              '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})',
+          description: item.dateStart.year != 0 && item.dateEnd.year != 0
+              ? '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
+                  '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
+              : context.fromLabel(Labels.itemUpcoming),
         ),
         ItemDetailsCardContent(
           label: context.fromLabel(Labels.version),
