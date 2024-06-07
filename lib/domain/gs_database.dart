@@ -15,6 +15,7 @@ class Database {
   static const savePath = 'data/db/save.json';
   static const versPath = 'data/db/vers.json';
 
+  String _version = '';
   bool _dataLoaded = false;
   bool _saveLoaded = false;
   final _dbInfo = GsDatabase.info(loadJson: dataPath);
@@ -25,6 +26,7 @@ class Database {
   final _loaded = BehaviorSubject<bool>();
   final _saving = BehaviorSubject<bool>.seeded(false);
 
+  String get version => _version;
   ValueStream<bool> get loaded => _loaded;
   ValueStream<bool> get saving => _saving;
 
@@ -64,6 +66,7 @@ class Database {
         ? Duration(milliseconds: versionJson['ttl']!)
         : defaultTTL;
     final versionCache = versionJson['version'] as String? ?? '';
+    _version = versionCache;
     final versionExpire = versionDate?.add(versionTTL);
     if (versionExpire != null && versionExpire.isAfter(DateTime.now())) {
       if (kDebugMode) print('Skipping version check!');
@@ -72,6 +75,7 @@ class Database {
 
     if (kDebugMode) print('Downloading version file...');
     final version = await Network.downloadFile(gitVersionUrl);
+    _version = version ?? '';
     await versionFile.writeAsString(
       jsonEncode({
         'ttl': defaultTTL.inMilliseconds,

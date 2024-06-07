@@ -67,7 +67,10 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
         };
 
         final filter = ScreenFilters.of<T>();
-        if (filter == null) return _list(items, [], null);
+        if (filter == null) {
+          final buttons = actions?.call((t) => false, (t) => 0) ?? [];
+          return _list(items, buttons, null);
+        }
 
         return ScreenFilterBuilder<T>(
           builder: (context, filter, button, toggle) {
