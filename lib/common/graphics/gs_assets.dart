@@ -36,4 +36,4 @@ const atkIcon = 'assets/image/weapon_stat/atk.png';
 const kMainBgDecoration = BoxDecoration();
 
 String getRarityBgImage(int rarity) =>
-    'assets/image/rarity/Item_${rarity}_Star.png';
+    'assets/image/rarity/Item_${rarity.clamp(1, 5).toInt()}_Star.png';

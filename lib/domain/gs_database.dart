@@ -50,7 +50,7 @@ class Database {
     const git = 'https://raw.githubusercontent.com/exbraiin';
     const gitDataUrl = '$git/GenshinTrackerEditor/main/Release/gsdata';
     const gitVersionUrl = '$git/GenshinTrackerEditor/main/Release/gsversion';
-    const defaultTTL = Duration(days: 1);
+    const defaultTTL = Duration(hours: 1);
 
     final versionFile = File(versPath);
     if (!await versionFile.parent.exists()) await versionFile.parent.create();

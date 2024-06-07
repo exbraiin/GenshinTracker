@@ -66,8 +66,8 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           child: ItemDetailsCardContent.generate(context, [
             if (item.effectName.isNotEmpty) _getInfoEffect(context, item),
             ItemDetailsCardContent(description: item.desc),
-            _getInfoAscension(context, item),
-            _getWeaponMats(context, item),
+            if (item.rarity.between(1, 5)) _getInfoAscension(context, item),
+            if (item.rarity.between(1, 5)) _getWeaponMats(context, item),
           ]),
         );
       },
