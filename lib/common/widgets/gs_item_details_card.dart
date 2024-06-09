@@ -201,8 +201,11 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                           );
                         }
                         if (widget.image != null) {
-                          return CachedImageWidget(
-                            widget.image!.call(context, value),
+                          return AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedImageWidget(
+                              widget.image!.call(context, value),
+                            ),
                           );
                         }
                         return const SizedBox();

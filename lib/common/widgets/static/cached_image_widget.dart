@@ -32,8 +32,8 @@ class CachedImageWidget extends StatelessWidget {
           imageUrl: _getScaleUrl(layout.biggest),
           fit: fit,
           alignment: alignment,
-          memCacheWidth: layout.biggest.toCacheWidth,
-          memCacheHeight: layout.biggest.toCacheHeight,
+          // memCacheWidth: layout.biggest.toCacheWidth,
+          // memCacheHeight: layout.biggest.toCacheHeight,
           placeholder: showPlaceholder ? (ctx, url) => placeholder : null,
           errorWidget: showPlaceholder ? (ctx, url, err) => placeholder : null,
         );
