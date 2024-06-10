@@ -232,10 +232,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f2151f4e2b539aff2437e2ce20df8103cd543165
+      resolved-ref: d29b4771adc182556d75d79dd15ec5d38a6009b3
       url: "https://github.com/exbraiin/dart-gsdatabase"
     source: git
-    version: "1.0.0"
+    version: "1.0.1"
   http:
     dependency: transitive
     description:
@@ -344,10 +344,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: a248d8146ee5983446bf03ed5ea8f6533129a12b11f12057ad1b4a67a2b3b41d
+      sha256: "9c96da072b421e98183f9ea7464898428e764bc0ce5567f27ec8693442e72514"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.2.5"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -587,4 +587,4 @@ packages:
     version: "6.5.0"
 sdks:
   dart: ">=3.4.0 <4.0.0"
-  flutter: ">=3.18.0-18.0.pre.54"
+  flutter: ">=3.22.0"

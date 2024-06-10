@@ -24,6 +24,7 @@ extension GsBannerTypeExt on GeBannerType {
 
 extension GeWeaponTypeExt on GeWeaponType {
   String get label => switch (this) {
+        GeWeaponType.none => Labels.wsNone,
         GeWeaponType.bow => Labels.wpBow,
         GeWeaponType.sword => Labels.wpSword,
         GeWeaponType.polearm => Labels.wpPolearm,
@@ -61,6 +62,7 @@ extension GeAchievementTypeExt on GeAchievementType {
 
 extension GeItemSourceTypeExt on GeItemSourceType {
   String get label => switch (this) {
+        GeItemSourceType.none => Labels.wsNone,
         GeItemSourceType.shop => Labels.wsNone,
         GeItemSourceType.event => Labels.wsNone,
         GeItemSourceType.fishing => Labels.wsNone,
@@ -75,6 +77,7 @@ extension GeItemSourceTypeExt on GeItemSourceType {
 
 extension GeElementTypeExt on GeElementType {
   Color get color => switch (this) {
+        GeElementType.none => Colors.grey,
         GeElementType.anemo => const Color(0xFF33CCB3),
         GeElementType.geo => const Color(0xFFCFA726),
         GeElementType.electro => const Color(0xFFD376F0),
@@ -85,6 +88,7 @@ extension GeElementTypeExt on GeElementType {
       };
 
   String get label => switch (this) {
+        GeElementType.none => Labels.wsNone,
         GeElementType.anemo => Labels.elAnemo,
         GeElementType.geo => Labels.elGeo,
         GeElementType.electro => Labels.elElectro,
@@ -100,6 +104,7 @@ extension GeElementTypeExt on GeElementType {
 
 extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
   String get label => switch (this) {
+        GeCharacterAscStatType.none => Labels.wsNone,
         GeCharacterAscStatType.anemoDmgBonus => Labels.wsAnemoDmg,
         GeCharacterAscStatType.geoDmgBonus => Labels.wsGeoBonus,
         GeCharacterAscStatType.electroDmgBonus => Labels.wsElectroBonus,
@@ -119,6 +124,7 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
       };
 
   String get assetPath => switch (this) {
+        GeCharacterAscStatType.none => iconMissing,
         GeCharacterAscStatType.anemoDmgBonus => '$_ep/anemo.png',
         GeCharacterAscStatType.geoDmgBonus => '$_ep/geo.png',
         GeCharacterAscStatType.electroDmgBonus => '$_ep/electro.png',
@@ -154,6 +160,7 @@ extension GeEnemyFamilyTypeExt on GeEnemyFamilyType {
 
 extension GeEventTypeExt on GeEventType {
   String get label => switch (this) {
+        GeEventType.none => Labels.wsNone,
         GeEventType.event => Labels.eventNormal,
         GeEventType.login => Labels.eventLogin,
         GeEventType.flagship => Labels.eventFlagship,
@@ -162,6 +169,7 @@ extension GeEventTypeExt on GeEventType {
 
 extension GeRecipeTypeExt on GeRecipeType {
   String get label => switch (this) {
+        GeRecipeType.none => Labels.wsNone,
         GeRecipeType.event => Labels.recipeEvent,
         GeRecipeType.permanent => Labels.recipePermanent,
       };
@@ -169,16 +177,19 @@ extension GeRecipeTypeExt on GeRecipeType {
 
 extension GeSereniteaSetTypeExt on GeSereniteaSetType {
   Color get color => switch (this) {
+        GeSereniteaSetType.none => Colors.grey,
         GeSereniteaSetType.indoor => const Color(0xFFA01F2E),
         GeSereniteaSetType.outdoor => const Color(0xFF303671),
       };
 
   String get label => switch (this) {
+        GeSereniteaSetType.none => Labels.wsNone,
         GeSereniteaSetType.indoor => Labels.indoor,
         GeSereniteaSetType.outdoor => Labels.outdoor,
       };
 
   String get asset => switch (this) {
+        GeSereniteaSetType.none => iconMissing,
         GeSereniteaSetType.indoor => imageIndoorSet,
         GeSereniteaSetType.outdoor => imageOutdoorSet,
       };
@@ -202,6 +213,7 @@ extension GeMaterialTypeExt on GeMaterialType {
 
 extension GeNamecardTypeExt on GeNamecardType {
   String get label => switch (this) {
+        GeNamecardType.none => Labels.wsNone,
         GeNamecardType.defaults => Labels.namecardDefault,
         GeNamecardType.achievement => Labels.namecardAchievement,
         GeNamecardType.battlepass => Labels.namecardBattlepass,
@@ -212,6 +224,7 @@ extension GeNamecardTypeExt on GeNamecardType {
       };
 
   String get asset => switch (this) {
+        GeNamecardType.none => iconMissing,
         GeNamecardType.defaults => menuIconWish,
         GeNamecardType.achievement => menuIconAchievements,
         GeNamecardType.battlepass => menuIconWeapons,
@@ -224,6 +237,7 @@ extension GeNamecardTypeExt on GeNamecardType {
 
 extension GeRecipeEffectTypeExt on GeRecipeEffectType {
   String get label => switch (this) {
+        GeRecipeEffectType.none => Labels.wsNone,
         GeRecipeEffectType.revive => Labels.rbRevive,
         GeRecipeEffectType.adventure => Labels.rbAdventure,
         GeRecipeEffectType.defBoost => Labels.rbDef,
