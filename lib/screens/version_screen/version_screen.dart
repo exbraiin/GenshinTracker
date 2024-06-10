@@ -22,9 +22,38 @@ class VersionScreen extends StatelessWidget {
       items: (db) => db.infoOf<GsVersion>().items,
       actions: (hasExtra, toggle) {
         return [
+          _TimeBuilder(
+            builder: (context, child) {
+              final seconds = Database.instance.cooldown.inSeconds;
+              final disabled = seconds > 0;
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    onPressed: !disabled ? Database.instance.fetchRemote : null,
+                    icon: Icon(
+                      Icons.refresh_rounded,
+                      color: Colors.white.withOpacity(
+                        disabled ? 0.05 : kDisableOpacity,
+                      ),
+                    ),
+                  ),
+                  if (disabled)
+                    Text(
+                      '${seconds}s',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(kDisableOpacity),
+                        fontSize: 10,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                ],
+              );
+            },
+          ),
           Text(
             'v${Database.instance.version}',
-            style: TextStyle(color: Colors.white.withOpacity(0.4)),
+            style: TextStyle(color: Colors.white.withOpacity(kDisableOpacity)),
           ),
           const SizedBox(width: kSeparator4),
         ];
@@ -39,5 +68,50 @@ class VersionScreen extends StatelessWidget {
         key: ValueKey(item.id),
       ),
     );
+  }
+}
+
+class _TimeBuilder extends StatefulWidget {
+  final TransitionBuilder builder;
+
+  const _TimeBuilder({
+    required this.builder,
+  });
+
+  @override
+  State<_TimeBuilder> createState() => _TimeBuilderState();
+}
+
+class _TimeBuilderState extends State<_TimeBuilder>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )
+      ..forward()
+      ..addStatusListener((status) {
+        if (status != AnimationStatus.completed) return;
+        setState(() {
+          _controller
+            ..reset()
+            ..forward();
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context, null);
   }
 }

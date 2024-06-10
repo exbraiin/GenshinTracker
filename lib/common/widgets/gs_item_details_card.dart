@@ -113,7 +113,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Text(
-                      widget.name,
+                      '${widget.name} ',
                       maxLines: 1,
                       style: const TextStyle(
                         color: Colors.white,
