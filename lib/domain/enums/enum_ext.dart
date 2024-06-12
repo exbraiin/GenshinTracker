@@ -75,6 +75,20 @@ extension GeItemSourceTypeExt on GeItemSourceType {
       };
 }
 
+extension GeArkheTypeExt on GeArkheType {
+  Color get color => switch (this) {
+        GeArkheType.none => Colors.grey,
+        GeArkheType.ousia => const Color(0xFF7F7EDB),
+        GeArkheType.pneuma => const Color(0xFFE9DBA5),
+      };
+
+  String get label => switch (this) {
+        GeArkheType.none => Labels.wsNone,
+        GeArkheType.ousia => Labels.arkheOusia,
+        GeArkheType.pneuma => Labels.arkhePneuma,
+      };
+}
+
 extension GeElementTypeExt on GeElementType {
   Color get color => switch (this) {
         GeElementType.none => Colors.grey,

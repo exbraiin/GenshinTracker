@@ -561,6 +561,7 @@ class CharacterDetailsScreen extends StatelessWidget {
         if (info.region != GeRegionType.none)
           context.fromLabel(info.region.label),
         context.fromLabel(info.element.label),
+        context.fromLabel(info.arkhe.label),
         context.fromLabel(info.ascStatType.label),
       ]
           .map<Widget>((e) => GsItemCardLabel(label: e))

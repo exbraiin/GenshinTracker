@@ -96,7 +96,9 @@ final class _Downloader {
 
     try {
       _busy = true;
-      final localVersion = await _loadFileVersion();
+      final localVersion = await File(_kDataPath).exists()
+          ? await _loadFileVersion()
+          : _Version();
 
       // Check if we can skip the version check
       if (localVersion.shouldSkip) {

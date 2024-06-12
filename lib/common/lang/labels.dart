@@ -775,6 +775,12 @@ class Labels {
 	/// Flagship
 	static const eventFlagship = 'event_flagship';
 
+	/// Ousia
+	static const arkheOusia = 'arkhe_ousia';
+
+	/// Pneuma
+	static const arkhePneuma = 'arkhe_pneuma';
+
 	/// discard_label
 	static const discard = '_discard';
 }
