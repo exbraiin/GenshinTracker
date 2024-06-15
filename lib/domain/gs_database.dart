@@ -161,14 +161,18 @@ final class _Downloader {
     final version = await Network.downloadFile(url);
     if (version == null) return _Version();
     final model = _Version(version);
-    await File(_kVersPath).writeAsString(jsonEncode(model.toJson()));
+    final versionFile = File(_kVersPath);
+    if (!await versionFile.parent.exists()) await versionFile.parent.create();
+    await versionFile.writeAsString(jsonEncode(model.toJson()));
     return model;
   }
 
   Future<void> _downloadDatabase(String url) async {
     final data = await Network.downloadFile(url);
     if (data == null) return;
-    await File(_kDataPath).writeAsString(data);
+    final dataFile = File(_kDataPath);
+    if (!await dataFile.parent.exists()) await dataFile.parent.create();
+    await dataFile.writeAsString(data);
   }
 }
 
