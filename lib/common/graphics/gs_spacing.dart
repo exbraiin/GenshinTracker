@@ -15,9 +15,9 @@ const kMainShadowText = [
   ),
 ];
 
-const kListPadding = EdgeInsets.all(6);
-const kGridSeparator = 6.0;
-const kListSeparator = 3.0;
+const kListPadding = EdgeInsets.all(4);
+const kGridSeparator = 4.0;
+const kListSeparator = 2.0;
 const kGridRadius = BorderRadius.all(Radius.circular(4));
 const kListRadius = BorderRadius.all(Radius.circular(4));
 
