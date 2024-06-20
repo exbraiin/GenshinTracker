@@ -6,6 +6,7 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
@@ -301,22 +302,6 @@ class _RectClipperBuilder extends CustomClipper<Rect> {
   }
 }
 
-class _PathClipperBuilder extends CustomClipper<Path> {
-  final Path Function(Size size) clipper;
-
-  _PathClipperBuilder(this.clipper);
-
-  @override
-  Path getClip(Size size) {
-    return clipper(size);
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}
-
 class _BannerInfo {
   final bool src, end;
   final Color color;
@@ -388,32 +373,13 @@ class _ImagesTooltip extends StatelessWidget {
                   bottom: null,
                   child: CachedImageWidget(image0, fit: BoxFit.fitWidth),
                 ),
-              if (image0 != null && image1 != null) ...[
+              if (image0 != null && image1 != null)
                 Positioned.fill(
-                  child: ClipPath(
-                    clipper: _PathClipperBuilder(
-                      (size) => Path()
-                        ..moveTo(0, 0)
-                        ..lineTo(size.width, 0)
-                        ..lineTo(0, size.height)
-                        ..lineTo(0, 0),
-                    ),
-                    child: CachedImageWidget(image0, fit: BoxFit.cover),
+                  child: SwapWidgets(
+                    child0: CachedImageWidget(image0, fit: BoxFit.cover),
+                    child1: CachedImageWidget(image1, fit: BoxFit.cover),
                   ),
                 ),
-                Positioned.fill(
-                  child: ClipPath(
-                    clipper: _PathClipperBuilder(
-                      (size) => Path()
-                        ..moveTo(size.width, 0)
-                        ..lineTo(size.width, size.height)
-                        ..lineTo(0, size.height)
-                        ..lineTo(size.width, 0),
-                    ),
-                    child: CachedImageWidget(image1, fit: BoxFit.cover),
-                  ),
-                ),
-              ],
               if (message != null)
                 Positioned.fill(
                   top: null,
