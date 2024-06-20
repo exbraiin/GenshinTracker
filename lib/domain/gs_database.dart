@@ -55,7 +55,9 @@ class Database {
 
   Future<void> fetchRemote() async {
     final success = await _downloader.forceUpdate();
-    if (success) await _dbInfo.load();
+    if (!success) return;
+    await _dbInfo.load();
+    _loaded.add(true);
   }
 
   Future<void> _loadData() async {
@@ -141,6 +143,7 @@ final class _Downloader {
       }
 
       if (kDebugMode) print('Downloading database file...');
+      _version = remoteVersion;
       await _downloadDatabase(_kGitDataUrl);
       return true;
     } finally {
