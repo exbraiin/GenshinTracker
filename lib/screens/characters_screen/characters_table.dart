@@ -91,7 +91,7 @@ class CharactersTable extends StatelessWidget {
           info.talent2?.toString() ?? '-',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: info.hasCons3 ? Colors.lightBlue : null,
+            color: (info.talent2 ?? 0) > 10 ? Colors.lightBlue : null,
           ),
         ),
         onTap: (char, info) => GsUtils.characters.increaseTalent2(char.id),
@@ -102,7 +102,7 @@ class CharactersTable extends StatelessWidget {
           info.talent3?.toString() ?? '-',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: info.hasCons5 ? Colors.lightBlue : null,
+            color: (info.talent3 ?? 0) > 10 ? Colors.lightBlue : null,
           ),
         ),
         onTap: (char, info) => GsUtils.characters.increaseTalent3(char.id),

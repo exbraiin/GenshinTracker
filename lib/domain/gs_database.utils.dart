@@ -386,12 +386,9 @@ class CharInfo {
   int get constellations => totalConstellations.clamp(0, 6);
   int get extraConstellations => totalConstellations - constellations;
 
-  bool get hasCons3 => totalConstellations > 2;
-  bool get hasCons5 => totalConstellations > 4;
-
   int? get talent1 => isOwned ? _talent1 : null;
-  int? get talent2 => isOwned ? _talent2 + (hasCons3 ? 3 : 0) : null;
-  int? get talent3 => isOwned ? _talent3 + (hasCons5 ? 3 : 0) : null;
+  int? get talent2 => isOwned ? _talent2 : null;
+  int? get talent3 => isOwned ? _talent3 : null;
 
   CharInfo._({
     required this.isOwned,
@@ -405,8 +402,8 @@ class CharInfo {
     required int talent2,
     required int talent3,
   })  : _talent1 = talent1.clamp(1, 10),
-        _talent2 = talent2.clamp(1, 10),
-        _talent3 = talent3.clamp(1, 10);
+        _talent2 = talent2.clamp(1, 13),
+        _talent3 = talent3.clamp(1, 13);
 }
 
 class _Characters {
@@ -550,11 +547,12 @@ class _Characters {
 
   void _increaseTalent(
     String id, {
+    int cap = 13,
     required int Function(GiCharacter char) getTalent,
     required GiCharacter Function(GiCharacter char, int tal) setTalent,
   }) {
     final char = _svCharacter.getItem(id) ?? GiCharacter(id: id);
-    final cTalent = ((getTalent(char) + 1) % 11).coerceAtLeast(1);
+    final cTalent = ((getTalent(char) + 1) % (cap + 1)).coerceAtLeast(1);
     _svCharacter.setItem(setTalent(char, cTalent));
   }
 
@@ -564,6 +562,7 @@ class _Characters {
   void increaseTalent1(String id) {
     _increaseTalent(
       id,
+      cap: 10,
       getTalent: (char) => char.talent1,
       setTalent: (char, tal) => char.copyWith(talent1: tal),
     );
