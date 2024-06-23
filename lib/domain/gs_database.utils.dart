@@ -389,6 +389,7 @@ class CharInfo {
   int? get talent1 => isOwned ? _talent1 : null;
   int? get talent2 => isOwned ? _talent2 : null;
   int? get talent3 => isOwned ? _talent3 : null;
+  int? get talents => isOwned ? (_talent1 + _talent2 + _talent3) : null;
 
   CharInfo._({
     required this.isOwned,

@@ -212,6 +212,7 @@ extension GeSereniteaSetTypeExt on GeSereniteaSetType {
 extension GeMaterialTypeExt on GeMaterialType {
   String get label => switch (this) {
         GeMaterialType.none => Labels.wsNone,
+        GeMaterialType.oculi => Labels.matOculi,
         GeMaterialType.ascensionGems => Labels.matAscensionGems,
         GeMaterialType.normalBossDrops => Labels.matNormalBossDrops,
         GeMaterialType.normalDrops => Labels.matNormalDrops,

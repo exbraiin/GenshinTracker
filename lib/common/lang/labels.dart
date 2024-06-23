@@ -436,6 +436,9 @@ class Labels {
 	/// Category
 	static const category = 'category';
 
+	/// Oculi
+	static const matOculi = 'mat_oculi';
+
 	/// Ascension Gems
 	static const matAscensionGems = 'mat_ascension_gems';
 

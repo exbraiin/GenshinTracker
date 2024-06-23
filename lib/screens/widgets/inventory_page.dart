@@ -37,7 +37,11 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final Widget? itemCardFooter;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
   final Widget Function(BuildContext context, ItemState<T> state) itemBuilder;
-  final Widget Function(BuildContext context, List<T> state)? tableBuilder;
+  final Widget Function(
+    BuildContext context,
+    List<T> state,
+    bool Function(String),
+  )? tableBuilder;
 
   const InventoryListPage({
     super.key,
@@ -99,7 +103,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
                   actions: buttons.separate(const SizedBox(width: 2)),
                 ),
                 child: InventoryBox(
-                  child: tableBuilder!(context, sorted),
+                  child: tableBuilder!(context, sorted, hasExtra),
                 ),
               );
             }

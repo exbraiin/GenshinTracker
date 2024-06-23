@@ -38,7 +38,10 @@ class CharactersScreen extends StatelessWidget {
         showExtra: state.filter!.hasExtra('info'),
         onTap: () => _onCharacterTap(context, state.item),
       ),
-      tableBuilder: (context, list) => CharactersTable(characters: list),
+      tableBuilder: (context, list, hasExtra) => CharactersTable(
+        characters: list,
+        showTodo: hasExtra('info'),
+      ),
     );
   }
 
