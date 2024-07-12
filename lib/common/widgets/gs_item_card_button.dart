@@ -37,6 +37,7 @@ class GsItemBanner {
 class GsItemCardButton extends StatelessWidget {
   final int? rarity;
   final String label;
+  final Color? imageColor;
   final GsItemBanner banner;
   final bool shadow;
   final bool disable;
@@ -54,6 +55,7 @@ class GsItemCardButton extends StatelessWidget {
   const GsItemCardButton({
     super.key,
     this.onTap,
+    this.imageColor,
     this.rarity,
     this.child,
     this.width,
@@ -123,6 +125,9 @@ class GsItemCardButton extends StatelessWidget {
                 image: rarity != null
                     ? DecorationImage(
                         fit: BoxFit.cover,
+                        colorFilter: imageColor != null
+                            ? ColorFilter.mode(imageColor!, BlendMode.modulate)
+                            : null,
                         image: AssetImage(
                           getRarityBgImage(rarity!),
                         ),

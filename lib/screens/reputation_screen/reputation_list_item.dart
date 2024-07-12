@@ -1,162 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/lang/lang.dart';
-import 'package:tracker/common/widgets/gs_number_field.dart';
-import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/common/widgets/gs_item_card_button.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 
-class ReputationListItem extends StatefulWidget {
-  final GsRegion city;
+class ReputationListItem extends StatelessWidget {
+  final bool selected;
+  final GsRegion item;
+  final VoidCallback? onTap;
 
-  const ReputationListItem(this.city, {super.key});
-
-  @override
-  State<ReputationListItem> createState() => _ReputationListItemState();
-}
-
-class _ReputationListItemState extends State<ReputationListItem> {
-  final _notifier = ValueNotifier<int>(0);
-
-  @override
-  void dispose() {
-    _notifier.dispose();
-    super.dispose();
-  }
+  const ReputationListItem(
+    this.item, {
+    super.key,
+    this.selected = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final utils = GsUtils.cities;
-    final rp = utils.getSavedReputation(widget.city.id);
-    final pRep = utils.getCityPreviousXpValue(widget.city.id);
-    final nRep = utils.getCityNextXpValue(widget.city.id);
-    final nextLvlWeeks = utils.getCityNextLevelWeeks(widget.city.id);
-    final lastLvlWeeks = utils.getCityMaxLevelWeeks(widget.city.id);
-
-    final current = rp - pRep;
-    final total = nRep - pRep;
-    final pg = total < 1 ? 1.0 : (current / total).clamp(0.0, 1.0);
-
-    return Container(
-      width: 300,
-      height: 100,
-      decoration: BoxDecoration(
-        color: context.themeColors.mainColor0,
-        borderRadius: kGridRadius,
-        boxShadow: kMainShadow,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ItemCircleWidget.city(widget.city),
-                      const SizedBox(width: kGridSeparator),
-                      Text(
-                        widget.city.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: kSeparator4),
-                    child: GsNumberField(
-                      onDbUpdate: () =>
-                          GsUtils.cities.getSavedReputation(widget.city.id),
-                      onUpdate: (amount) {
-                        final saved =
-                            GsUtils.cities.getSavedReputation(widget.city.id);
-                        if (saved == amount) return;
-                        GsUtils.cities.updateReputation(widget.city.id, amount);
-                      },
-                    ),
-                  ),
-                  LinearProgressIndicator(
-                    value: pg,
-                    minHeight: 2,
-                    color: context.themeColors.primary,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        pRep.format(),
-                        style: context.textTheme.titleSmall!.copyWith(
-                          fontSize: 10,
-                          color: context.themeColors.almostWhite,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (nRep != -1)
-                        Text(
-                          nRep.toString(),
-                          style: context.textTheme.titleSmall!.copyWith(
-                            fontSize: 10,
-                            color: context.themeColors.almostWhite,
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            width: 100,
-            decoration: BoxDecoration(
-              color: context.themeColors.mainColor1.withOpacity(0.4),
-              borderRadius: BorderRadius.horizontal(
-                right: kGridRadius.topRight,
-              ),
-            ),
-            child: Center(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: context.fromLabel(Labels.levelShort),
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: Colors.white, fontSize: 16),
-                    ),
-                    TextSpan(
-                      text: utils.getCityLevel(widget.city.id).toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: Colors.white, fontSize: 26),
-                    ),
-                    TextSpan(
-                      text: nextLvlWeeks != lastLvlWeeks
-                          ? '\n${Lang.of(context).getValue(
-                              Labels.nnWeeks,
-                              nargs: {'from': nextLvlWeeks, 'to': lastLvlWeeks},
-                            )}'
-                          : lastLvlWeeks != 0
-                              ? '\n${context.fromLabel(Labels.nWeeks, lastLvlWeeks)}'
-                              : '',
-                      style: context.textTheme.titleSmall!
-                          .copyWith(color: Colors.white, fontSize: 10),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+    return GsItemCardButton(
+      rarity: 1,
+      label: item.name,
+      imageColor: item.element.color,
+      imageUrlPath: item.image,
+      selected: selected,
+      onTap: onTap,
     );
   }
 }

@@ -78,7 +78,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                           GsNumberField(
                             onUpdate: _setProficiency,
                             onDbUpdate: _getProficiency,
-                            fontSize: 14,
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             '${context.fromLabel(Labels.proficiency)} '

@@ -251,9 +251,9 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                         fontSize: 16,
                         shadows: const [
                           BoxShadow(
-                            color: Colors.black45,
-                            offset: Offset(1, 1),
-                            blurRadius: 1,
+                            color: Colors.black,
+                            offset: Offset(0, 2),
+                            blurRadius: 2,
                           ),
                         ],
                       ),

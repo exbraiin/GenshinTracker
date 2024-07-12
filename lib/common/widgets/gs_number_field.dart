@@ -9,8 +9,8 @@ class GsNumberField extends StatefulWidget {
   final int length;
   final bool enabled;
   final bool hideText;
-  final double fontSize;
   final TextAlign align;
+  final TextStyle style;
   final int Function()? onDbUpdate;
   final void Function(int)? onUpdate;
 
@@ -19,8 +19,8 @@ class GsNumberField extends StatefulWidget {
     this.length = 0,
     this.enabled = true,
     this.hideText = false,
-    this.fontSize = 12,
     this.align = TextAlign.center,
+    this.style = const TextStyle(fontSize: 12),
     this.onUpdate,
     this.onDbUpdate,
   });
@@ -77,13 +77,18 @@ class _GsNumberFieldState extends State<GsNumberField> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = context.themeStyles.label16n.merge(widget.style);
+    final hintColor = textStyle.color?.withOpacity(kDisableOpacity);
+    final hintStyle = textStyle.copyWith(color: hintColor);
+
     return TextFormField(
       controller: _controller,
       enabled: widget.enabled,
       focusNode: _node,
-      style: context.themeStyles.label16n.copyWith(fontSize: widget.fontSize),
+      style: textStyle,
       textAlign: widget.align,
       obscureText: widget.hideText,
+      cursorColor: textStyle.color,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         if (widget.length != 0) LengthLimitingTextInputFormatter(widget.length),
@@ -92,10 +97,7 @@ class _GsNumberFieldState extends State<GsNumberField> {
         isDense: true,
         border: InputBorder.none,
         hintText: '0',
-        hintStyle: context.themeStyles.label16n.copyWith(
-          fontSize: widget.fontSize,
-          color: Colors.white.withOpacity(0.4),
-        ),
+        hintStyle: hintStyle,
         contentPadding: const EdgeInsets.all(kSeparator4),
       ),
     );

@@ -518,6 +518,13 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor0,
         borderRadius: kGridRadius,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 10,
+            offset: Offset(0, 4),
+            color: Colors.black,
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
