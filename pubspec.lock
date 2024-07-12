@@ -232,10 +232,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0e4840f5ac39a8539c1959069970f0a469eaf7d2"
+      resolved-ref: ff5fa0fff19fc12c59e32ea8b7ceb854654f491b
       url: "https://github.com/exbraiin/dart-gsdatabase"
     source: git
-    version: "1.0.5"
+    version: "1.0.6"
   http:
     dependency: transitive
     description:
@@ -525,10 +525,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: "814e9e88f21a176ae1359149021870e87f7cddaf633ab678a5d2b0bff7fd1ba8"
+      sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.0"
+    version: "4.4.2"
   value_layout_builder:
     dependency: transitive
     description:

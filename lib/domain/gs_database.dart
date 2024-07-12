@@ -22,7 +22,7 @@ class Database {
   bool _dataLoaded = false;
   bool _saveLoaded = false;
   final _dbInfo = GsDatabase.info();
-  final _dbSave = GsDatabase.save(allowWrite: true);
+  final _dbSave = GsDatabase.save();
   Items<T> infoOf<T extends GsModel<T>>() => _dbInfo.of<T>();
   Items<T> saveOf<T extends GsModel<T>>() => _dbSave.of<T>();
 
@@ -56,7 +56,7 @@ class Database {
   Future<void> fetchRemote() async {
     final success = await _downloader.forceUpdate();
     if (!success) return;
-    await _dbInfo.load(loadJson: _kDataPath);
+    await _dbInfo.load(path: _kDataPath);
     _loaded.add(true);
   }
 
@@ -64,13 +64,13 @@ class Database {
     if (_dataLoaded) return;
     _dataLoaded = true;
     await _downloader.tryUpdateDatabase();
-    await _dbInfo.load(loadJson: _kDataPath);
+    await _dbInfo.load(path: _kDataPath);
   }
 
   Future<void> _loadSave() async {
     if (_saveLoaded) return;
     _saveLoaded = true;
-    await _dbSave.load(loadJson: _kSavePath);
+    await _dbSave.load(path: _kSavePath);
     _dbSave.didUpdate.listen((_) {
       Database.instance._loaded.add(true);
       Database.instance._saving.add(true);
@@ -79,7 +79,7 @@ class Database {
 
   Future<void> _saveAll() async {
     _saving.add(false);
-    await _dbSave.save(loadJson: _kSavePath);
+    await _dbSave.save(path: _kSavePath);
   }
 }
 
