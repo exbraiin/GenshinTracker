@@ -304,20 +304,6 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
         : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     return !percentage.contains(this) ? str : '$str%';
   }
-
-  static Set<GeWeaponAscStatType> get weaponStats {
-    return {
-      GeWeaponAscStatType.none,
-      GeWeaponAscStatType.hpPercent,
-      GeWeaponAscStatType.atkPercent,
-      GeWeaponAscStatType.defPercent,
-      GeWeaponAscStatType.critDmg,
-      GeWeaponAscStatType.critRate,
-      GeWeaponAscStatType.physicalDmg,
-      GeWeaponAscStatType.energyRecharge,
-      GeWeaponAscStatType.elementalMastery,
-    };
-  }
 }
 
 extension GeRegionTypeExt on GeRegionType {

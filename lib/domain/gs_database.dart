@@ -114,7 +114,7 @@ final class _Downloader {
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
 
       // Check if we can skip the version
-      if (remoteVersion.isAfter(localVersion) ?? false) {
+      if (localVersion >= remoteVersion ?? false) {
         if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
         _version = remoteVersion;
         return;
@@ -137,7 +137,8 @@ final class _Downloader {
       _busy = true;
       final localVersion = await _loadFileVersion();
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
-      if (remoteVersion.isAfter(localVersion) ?? false) {
+
+      if (localVersion >= remoteVersion ?? false) {
         if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
         return false;
       }
@@ -202,17 +203,20 @@ class _Version {
             ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
             : DateTime(0);
 
-  /// Checks if this version if after [other].
-  /// Return null on check fail.
-  bool? isAfter(_Version other) {
+  bool? _compare(_Version a, _Version b, bool Function(int a, int b) v) {
     try {
-      final v0 = other.version.split('.').map(int.parse);
-      final v1 = version.split('.').map(int.parse);
-      return !v0.zip(v1, (a, b) => (a, b)).any((e) => e.$2 > e.$1);
+      final va = a.version.split('.').map(int.parse);
+      final vb = b.version.split('.').map(int.parse);
+      return va.zip(vb, (a, b) => (a, b)).all((e) => v(e.$1, e.$2));
     } catch (error) {
       return null;
     }
   }
+
+  bool? operator >(_Version other) => _compare(this, other, (a, b) => a > b);
+  bool? operator <(_Version other) => _compare(this, other, (a, b) => a < b);
+  bool? operator >=(_Version other) => _compare(this, other, (a, b) => a >= b);
+  bool? operator <=(_Version other) => _compare(this, other, (a, b) => a <= b);
 
   JsonMap toJson() => {
         'version': version,
