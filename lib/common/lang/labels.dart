@@ -778,6 +778,9 @@ class Labels {
 	/// Flagship
 	static const eventFlagship = 'event_flagship';
 
+	/// Ousia & Pneuma
+	static const arkheBoth = 'arkhe_both';
+
 	/// Ousia
 	static const arkheOusia = 'arkhe_ousia';
 

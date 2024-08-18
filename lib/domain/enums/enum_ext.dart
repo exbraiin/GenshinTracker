@@ -80,12 +80,14 @@ extension GeArkheTypeExt on GeArkheType {
         GeArkheType.none => Colors.grey,
         GeArkheType.ousia => const Color(0xFF7F7EDB),
         GeArkheType.pneuma => const Color(0xFFE9DBA5),
+        GeArkheType.both => const Color(0xFFB4ADC0),
       };
 
   String get label => switch (this) {
         GeArkheType.none => Labels.wsNone,
         GeArkheType.ousia => Labels.arkheOusia,
         GeArkheType.pneuma => Labels.arkhePneuma,
+        GeArkheType.both => Labels.arkheBoth,
       };
 }
 
