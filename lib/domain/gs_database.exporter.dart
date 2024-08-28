@@ -129,8 +129,8 @@ abstract class GsDatabaseExporter {
     final sheet = excel[sheetName];
 
     sheet.merge(CellIndex.indexByString('A1'), CellIndex.indexByString('B1'));
-    sheet.appendRow([const TextCellValue('Paimon.moe Wish History Export')]);
-    sheet.appendRow([const TextCellValue('Version'), const IntCellValue(3)]);
+    sheet.appendRow([TextCellValue('Paimon.moe Wish History Export')]);
+    sheet.appendRow([TextCellValue('Version'), const IntCellValue(3)]);
     sheet.appendRow(
       ['Export Date', DateTime.now().format()].map(TextCellValue.new).toList(),
     );

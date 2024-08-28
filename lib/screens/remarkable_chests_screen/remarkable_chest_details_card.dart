@@ -52,7 +52,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                     Padding(
                       padding: const EdgeInsets.only(left: kSeparator8),
                       child: Text(
-                        context.fromLabel(item.type.label),
+                        context.fromLabel(item.region.label),
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
