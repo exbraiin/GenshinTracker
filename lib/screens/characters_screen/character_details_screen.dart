@@ -153,8 +153,6 @@ class CharacterDetailsScreen extends StatelessWidget {
                     GsItemCardLabel(
                       asset: info.element.assetPath,
                       label: constellation != null ? 'C$constellation' : null,
-                      onTap: () =>
-                          GsUtils.characters.increaseOwnedCharacter(info.id),
                     ),
                     const SizedBox(width: kSeparator4),
                     if (hasChar)

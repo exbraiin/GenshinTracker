@@ -9,7 +9,6 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
@@ -27,8 +26,8 @@ class HomeCalendarWidget extends StatelessWidget {
               child: Column(children: _getItems(context).toList()),
             ),
           ),
-          const SizedBox(height: kSeparator8),
-          const EventsScrollView(),
+          // const SizedBox(height: kSeparator8),
+          // const EventsScrollView(),
         ],
       ),
     );

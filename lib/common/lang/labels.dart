@@ -763,11 +763,17 @@ class Labels {
 	/// 4th Ascension Passive
 	static const charTal4a = 'char_tal_4a';
 
+	/// Night Realm's Gift Passive
+	static const charTalNr = 'char_tal_nr';
+
 	/// Utility Passive
 	static const charTalUp = 'char_tal_up';
 
 	/// Duration
 	static const duration = 'duration';
+
+	/// Quest
+	static const eventQuest = 'event_quest';
 
 	/// Login
 	static const eventLogin = 'event_login';
@@ -777,6 +783,9 @@ class Labels {
 
 	/// Flagship
 	static const eventFlagship = 'event_flagship';
+
+	/// Permanent
+	static const eventPermanent = 'event_permanent';
 
 	/// Ousia & Pneuma
 	static const arkheBoth = 'arkhe_both';

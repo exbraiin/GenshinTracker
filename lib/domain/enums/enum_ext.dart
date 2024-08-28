@@ -177,9 +177,11 @@ extension GeEnemyFamilyTypeExt on GeEnemyFamilyType {
 extension GeEventTypeExt on GeEventType {
   String get label => switch (this) {
         GeEventType.none => Labels.wsNone,
+        GeEventType.quest => Labels.eventQuest,
         GeEventType.event => Labels.eventNormal,
         GeEventType.login => Labels.eventLogin,
         GeEventType.flagship => Labels.eventFlagship,
+        GeEventType.permanent => Labels.eventPermanent,
       };
 }
 
@@ -340,6 +342,7 @@ extension GeCharTalentTypeExt on GeCharTalentType {
         GeCharTalentType.alternateSprint => Labels.charTalAs,
         GeCharTalentType.ascension1stPassive => Labels.charTal1a,
         GeCharTalentType.ascension4thPassive => Labels.charTal4a,
+        GeCharTalentType.nightRealmPassive => Labels.charTalNr,
         GeCharTalentType.utilityPassive => Labels.charTalUp,
       };
 }

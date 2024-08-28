@@ -30,7 +30,7 @@ class EventScreen extends StatelessWidget {
         selected: state.selected,
       ),
       itemCardBuilder: (context, item) => EventDetailsCard(item),
-      itemCardFooter: const EventsScrollView(),
+      // itemCardFooter: const EventsScrollView(),
     );
   }
 }
@@ -44,6 +44,7 @@ class EventsScrollView extends StatelessWidget {
     final events = Database.instance
         .infoOf<GsEvent>()
         .items
+        .where((e) => e.dateEnd.difference(e.dateStart).inDays < 60)
         .where(
           (e) =>
               now.difference(e.dateStart).inDays.abs() < 5 ||

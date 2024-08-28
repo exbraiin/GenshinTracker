@@ -17,6 +17,8 @@ final _ifMaterials = _db.infoOf<GsMaterial>();
 final _ifVersions = _db.infoOf<GsVersion>();
 final _ifCharactersSkin = _db.infoOf<GsCharacterSkin>();
 final _ifWeapons = _db.infoOf<GsWeapon>();
+final _ifEvents = _db.infoOf<GsEvent>();
+//
 final _svAchievement = _db.saveOf<GiAchievement>();
 final _svWish = _db.saveOf<GiWish>();
 final _svRecipe = _db.saveOf<GiRecipe>();
@@ -27,6 +29,7 @@ final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
 final _svFurnishing = _db.saveOf<GiFurnishing>();
 final _svSpincrystal = _db.saveOf<GiSpincrystal>();
 final _svPlayerInfo = _db.saveOf<GiPlayerInfo>();
+final _svEvents = _db.saveOf<GiEventRewards>();
 
 class GsUtils {
   GsUtils._();
@@ -34,6 +37,7 @@ class GsUtils {
   static final items = _Items();
   static final cities = _Cities();
   static final wishes = _Wishes();
+  static final events = _Events();
   static final details = _Details();
   static final recipes = _Recipes();
   static final weapons = _Weapons();
@@ -289,6 +293,62 @@ class _Wishes {
   }
 }
 
+class _Events {
+  /// Gets the event characters
+  List<GsCharacter> getEventCharacters(String id) {
+    final list = _ifEvents.getItem(id)?.rewardsCharacters;
+    if (list == null) return const [];
+    return list.map(_ifCharacters.getItem).whereNotNull().toList();
+  }
+
+  /// Gets the event weapons
+  List<GsWeapon> getEventWeapons(String id) {
+    final list = _ifEvents.getItem(id)?.rewardsWeapons;
+    if (list == null) return const [];
+    return list.map(_ifWeapons.getItem).whereNotNull().toList();
+  }
+
+  /// Whether the user collected the [eventId] weapon or not.
+  bool ownsWeapon(String eventId, String id) {
+    return _svEvents.getItem(eventId)?.obtainedWeapons.contains(id) ?? false;
+  }
+
+  /// Whether the user collected the [eventId] character or not.
+  bool ownsCharacter(String eventId, String id) {
+    return _svEvents.getItem(eventId)?.obtainedCharacters.contains(id) ?? false;
+  }
+
+  /// Adds or removes the given [id] from the given [eventId].
+  ///
+  /// {@macro db_update}
+  void toggleObtainedtWeapon(String eventId, String id) {
+    final saved =
+        _svEvents.getItem(eventId) ?? GiEventRewards.fromJson({'id': eventId});
+    final list = saved.obtainedWeapons.toList();
+    if (list.contains(id)) {
+      list.remove(id);
+    } else {
+      list.add(id);
+    }
+    _svEvents.setItem(saved.copyWith(obtainedWeapons: list));
+  }
+
+  /// Adds or removes the given [id] from the given [eventId].
+  ///
+  /// {@macro db_update}
+  void toggleObtainedCharacter(String eventId, String id) {
+    final saved =
+        _svEvents.getItem(eventId) ?? GiEventRewards.fromJson({'id': eventId});
+    final list = saved.obtainedCharacters.toList();
+    if (list.contains(id)) {
+      list.remove(id);
+    } else {
+      list.add(id);
+    }
+    _svEvents.setItem(saved.copyWith(obtainedCharacters: list));
+  }
+}
+
 class _Details {
   final cityXpPerWeek = 420;
   final primogemsPerWish = 160;
@@ -325,7 +385,11 @@ class _Recipes {
 
 class _Weapons {
   bool hasWeapon(String id) {
-    return _svWish.items.any((e) => e.itemId == id);
+    return _svWish.items.any((e) => e.itemId == id) || eventWeapons(id) > 0;
+  }
+
+  int eventWeapons(String id) {
+    return _svEvents.items.count((e) => e.obtainedWeapons.contains(id));
   }
 }
 
@@ -410,8 +474,12 @@ class CharInfo {
 class _Characters {
   /// Whether the user has this character or not.
   bool hasCaracter(String id) {
-    final owned = _svCharacter.getItem(id)?.owned ?? 0;
+    final owned = eventCharacters(id);
     return owned > 0 || _svWish.items.any((e) => e.itemId == id);
+  }
+
+  int eventCharacters(String id) {
+    return _svEvents.items.count((e) => e.obtainedCharacters.contains(id));
   }
 
   /// Whether the character with the given [id] has outfits or not.
@@ -447,9 +515,8 @@ class _Characters {
 
   /// Gets the character total constellations amount or null.
   int? getTotalCharConstellations(String id) {
-    final char = _svCharacter.getItem(id);
     final total = GsUtils.wishes.countItem(id);
-    final sum = total + (char?.owned ?? 0);
+    final sum = total + eventCharacters(id);
     return sum > 0 ? (sum - 1) : null;
   }
 
@@ -471,13 +538,13 @@ class _Characters {
     final info = _svCharacter.getItem(id) ?? GiCharacter(id: id);
 
     final wishes = GsUtils.wishes.countItem(id);
-    final owned = wishes + info.owned;
+    final owned = wishes + eventCharacters(id);
     final constellations = owned > 0 ? (owned - 1) : 0;
     final iconImage = getImage(id);
     final wishImage = getFullImage(id);
 
     return CharInfo._(
-      isOwned: info.owned > 0 || wishes > 0,
+      isOwned: owned > 0,
       hasOutfit: _ifCharactersSkin.items.any((e) => e.character == id),
       ascension: info.ascension.clamp(0, 6),
       friendship: info.friendship.clamp(1, 10),
@@ -509,18 +576,6 @@ class _Characters {
     if (item.friendship != char?.friendship) {
       _svCharacter.setItem(item);
     }
-  }
-
-  /// Increases the amount of owned characters
-  ///
-  /// {@macro db_update}
-  void increaseOwnedCharacter(String id) {
-    final char = _svCharacter.getItem(id);
-    final wishes = GsUtils.wishes.countItem(id);
-    var cOwned = char?.owned ?? 0;
-    cOwned = cOwned + 1 + wishes > 7 ? 0 : cOwned + 1;
-    final item = (char ?? GiCharacter(id: id)).copyWith(owned: cOwned);
-    _svCharacter.setItem(item);
   }
 
   /// Increases the character friendship
