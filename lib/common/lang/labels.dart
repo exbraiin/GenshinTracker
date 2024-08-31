@@ -430,6 +430,9 @@ class Labels {
 	/// Stamina Reduction
 	static const rbStaminaReduction = 'rb_stamina_reduction';
 
+	/// Special
+	static const rbSpecial = 'rb_special';
+
 	/// Materials
 	static const materials = 'materials';
 

@@ -266,6 +266,7 @@ extension GeRecipeEffectTypeExt on GeRecipeEffectType {
         GeRecipeEffectType.recoveryHPAll => Labels.rbHpAllRecovery,
         GeRecipeEffectType.staminaReduction => Labels.rbStaminaReduction,
         GeRecipeEffectType.staminaIncrease => Labels.rbStaminaIncrease,
+        GeRecipeEffectType.special => Labels.rbSpecial,
       };
 
   String get assetPath => 'assets/image/recipe_buff/$id.png';
