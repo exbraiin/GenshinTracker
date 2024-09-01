@@ -153,7 +153,7 @@ typedef WishSummary = ({GsWish item, GiWish wish, int pity, WishState state});
 
 class _Wishes {
   /// Gets all released banners by [type]
-  Iterable<GsBanner> geReleasedInfoBannerByType(GeBannerType type) {
+  Iterable<GsBanner> getReleasedInfoBannerByType(GeBannerType type) {
     final now = DateTime.now();
     return _ifBanners.items
         .where((e) => e.type == type && e.dateStart.isBefore(now));
@@ -191,7 +191,7 @@ class _Wishes {
 
   /// Gets all saved wishes summary for a banner [type] in ascending order.
   Iterable<WishSummary> getSaveWishesSummaryByBannerType(GeBannerType type) {
-    final l = GsUtils.wishes.geReleasedInfoBannerByType(type).map((e) => e.id);
+    final l = GsUtils.wishes.getReleasedInfoBannerByType(type).map((e) => e.id);
     final wishes = _svWish.items.where((e) => l.contains(e.bannerId)).sorted();
 
     WishState getWishState(

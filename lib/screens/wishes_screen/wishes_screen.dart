@@ -89,7 +89,9 @@ class _WishesScreenScreenState extends State<WishesScreen>
 
             final tabs = _bannerType.map((bannerType) {
               final banner = GsUtils.wishes
-                  .geReleasedInfoBannerByType(bannerType)
+                  .getReleasedInfoBannerByType(bannerType)
+                  .sortedBy((e) => e.dateStart)
+                  .thenByDescending((e) => e.subtype)
                   .lastOrNull;
 
               return Container(
@@ -175,8 +177,10 @@ class _WishesScreenScreenState extends State<WishesScreen>
     GeBannerType gsBanner,
     ScreenFilter<GiWish> filter,
   ) {
-    final banners =
-        GsUtils.wishes.geReleasedInfoBannerByType(gsBanner).sortedDescending();
+    final banners = GsUtils.wishes
+        .getReleasedInfoBannerByType(gsBanner)
+        .sortedByDescending((e) => e.dateStart)
+        .thenBy((e) => e.subtype);
     final wishes = GsUtils.wishes.getSaveWishesSummaryByBannerType(gsBanner);
 
     return banners.map((banner) {
