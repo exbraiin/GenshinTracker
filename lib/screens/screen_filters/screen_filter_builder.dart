@@ -258,6 +258,7 @@ class ScreenFilters {
             (item) => GsUtils.achievements.isObtainable(item.id),
             (c) => c.fromLabel(Labels.status),
             (c, e) => c.fromLabel(e ? Labels.obtainable : Labels.owned),
+            key: 'obtain',
           ),
           FilterSection.version((item) => item.version),
         ]),

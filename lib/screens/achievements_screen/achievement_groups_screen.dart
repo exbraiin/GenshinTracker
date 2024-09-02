@@ -92,11 +92,26 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                   ),
             )
             .sorted();
+
+        final enabled = filter.sections
+                .firstOrNullWhere((s) => s.key == 'obtain')
+                ?.enabled ??
+            const {};
+
+        final a = GsUtils.achievements;
+        final aGroup = enabled.length == 1 && enabled.contains(true)
+            ? groups.where((item) {
+                final saved = a.countSaved((e) => e.group == item.id);
+                final total = a.countTotal((e) => e.group == item.id);
+                return saved != total;
+              }).toList()
+            : groups;
+
         return Row(
           children: [
             Expanded(
               flex: 2,
-              child: _getGroupsList(groups),
+              child: _getGroupsList(aGroup),
             ),
             const SizedBox(width: kGridSeparator),
             Expanded(
@@ -207,8 +222,9 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
         borderRadius: kGridRadius,
         border: Border.all(
           color: selected
-              ? context.themeColors.almostWhite.withOpacity(0.4)
+              ? const Color(0xFFd8c090).withOpacity(0.8)
               : Colors.transparent,
+          width: 2,
         ),
       ),
       child: InkWell(
@@ -241,6 +257,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                   ),
                   const SizedBox(height: kSeparator6),
                   _progressBar(percentage),
+                  const SizedBox(height: kSeparator4),
                 ],
               ),
             ),
