@@ -99,7 +99,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     GsWeapon info,
   ) {
     final im = Database.instance.infoOf<GsMaterial>();
-    final iw = GsUtils.weaponMaterials;
+    const iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
     return ItemDetailsCardContent(
       label: context.fromLabel(Labels.materials),

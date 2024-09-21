@@ -18,7 +18,7 @@ class HomeAchievementsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final info = GsUtils.achievements;
+        const info = GsUtils.achievements;
         final itotal = info.countTotalRewards();
         final isaved = info.countSavedRewards();
 

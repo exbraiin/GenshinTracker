@@ -23,7 +23,7 @@ class CharacterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chars = GsUtils.characters;
+    const chars = GsUtils.characters;
     final friend = chars.getCharFriendship(item.id);
     final ascension = chars.getCharAscension(item.id);
     final charConsTotal = chars.getTotalCharConstellations(item.id);

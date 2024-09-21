@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/common/graphics/gs_spacing.dart';
 
 const defaultFontFamily = 'Comfortaa';
 final _themeColors = ThemeColors.defaultTheme();
@@ -26,7 +27,7 @@ final theme = ThemeData(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     decoration: BoxDecoration(
       color: _themeColors.almostWhite,
-      borderRadius: BorderRadius.circular(1000),
+      borderRadius: BorderRadius.circular(kSeparator4),
       boxShadow: const [
         BoxShadow(
           color: Colors.black,

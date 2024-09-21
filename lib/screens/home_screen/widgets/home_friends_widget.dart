@@ -18,7 +18,7 @@ class HomeFriendsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final chars = GsUtils.characters;
+        const chars = GsUtils.characters;
         final db = Database.instance;
         final characters = db
             .infoOf<GsCharacter>()

@@ -45,7 +45,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           );
         }
 
-        final chars = GsUtils.characters;
+        const chars = GsUtils.characters;
         return GsDataBox.info(
           title: Text(context.fromLabel(Labels.ascension)),
           child: LayoutBuilder(
@@ -93,7 +93,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
       return MapEntry(first.key, valid.sumBy((e) => e.value).toInt());
     }
 
-    final db = GsUtils.characterMaterials;
+    const db = GsUtils.characterMaterials;
     final materials = characters
         .expand((e) => db.getCharNextAscensionMats(e.id))
         .groupBy((e) => e.key?.id)

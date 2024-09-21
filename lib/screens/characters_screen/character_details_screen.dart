@@ -461,7 +461,7 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget _getAllMaterials(BuildContext context, GsCharacter info) {
     final im = Database.instance.infoOf<GsMaterial>();
-    final ic = GsUtils.characterMaterials;
+    const ic = GsUtils.characterMaterials;
     final tltMats = ic.getTalentMaterials(info.id);
     final ascMats = ic.getAscensionMaterials(info.id);
     final allMats = [...tltMats.entries, ...ascMats.entries]

@@ -98,7 +98,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 ?.enabled ??
             const {};
 
-        final a = GsUtils.achievements;
+        const a = GsUtils.achievements;
         final aGroup = enabled.length == 1 && enabled.contains(true)
             ? groups.where((item) {
                 final saved = a.countSaved((e) => e.group == item.id);

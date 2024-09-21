@@ -30,7 +30,7 @@ class HomeReputationWidget extends StatelessWidget {
                 .items
                 .where((e) => GsUtils.cities.getCityMaxLevel(e.id) > 1)
                 .map((city) {
-              final utils = GsUtils.cities;
+              const utils = GsUtils.cities;
               final maxLvl = utils.getCityMaxLevelWeeks(city.id);
               final nextLvl = utils.getCityNextLevelWeeks(city.id);
               final nColor = nextLvl > 0 ? badColor : Colors.white;

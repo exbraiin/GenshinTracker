@@ -7,6 +7,7 @@ import 'package:tracker/domain/gs_database.dart';
 /// Updates db collection
 /// {@endtemplate}
 final _db = Database.instance;
+//
 final _ifAchievements = _db.infoOf<GsAchievement>();
 final _ifSereniteas = _db.infoOf<GsSereniteaSet>();
 final _ifBanners = _db.infoOf<GsBanner>();
@@ -34,28 +35,30 @@ final _svEvents = _db.saveOf<GiEventRewards>();
 class GsUtils {
   GsUtils._();
 
-  static final items = _Items();
-  static final cities = _Cities();
-  static final wishes = _Wishes();
-  static final events = _Events();
-  static final details = _Details();
-  static final recipes = _Recipes();
-  static final weapons = _Weapons();
-  static final versions = _Versions();
-  static final materials = _Materials();
-  static final characters = _Characters();
-  static final achievements = _Achievements();
-  static final spincrystals = _Spincrystals();
-  static final playerConfigs = _PlayerConfigs();
-  static final sereniteaSets = _SereniteaSets();
-  static final weaponMaterials = _WeaponMaterials();
-  static final remarkableChests = _RemarkableChests();
-  static final characterMaterials = _CharactersMaterials();
+  static const items = _Items();
+  static const cities = _Cities();
+  static const wishes = _Wishes();
+  static const events = _Events();
+  static const details = _Details();
+  static const recipes = _Recipes();
+  static const weapons = _Weapons();
+  static const versions = _Versions();
+  static const materials = _Materials();
+  static const characters = _Characters();
+  static const achievements = _Achievements();
+  static const spincrystals = _Spincrystals();
+  static const playerConfigs = _PlayerConfigs();
+  static const sereniteaSets = _SereniteaSets();
+  static const weaponMaterials = _WeaponMaterials();
+  static const remarkableChests = _RemarkableChests();
+  static const characterMaterials = _CharactersMaterials();
 }
 
 enum WishState { none, won, lost, guaranteed }
 
 class _Items {
+  const _Items();
+
   /// Gets a weapon or a character by the given [id].
   GsWish getItemData(String id) {
     final weapon = _idWeapons.getItem(id);
@@ -94,6 +97,8 @@ class _Items {
 }
 
 class _Cities {
+  const _Cities();
+
   /// Gets the city max level
   int getCityMaxLevel(String id) =>
       _ifRegions.getItem(id)?.reputation.length ?? 0;
@@ -152,11 +157,22 @@ class _Cities {
 typedef WishSummary = ({GsWish item, GiWish wish, int pity, WishState state});
 
 class _Wishes {
+  const _Wishes();
+
   /// Gets all released banners by [type]
   Iterable<GsBanner> getReleasedInfoBannerByType(GeBannerType type) {
     final now = DateTime.now();
     return _ifBanners.items
         .where((e) => e.type == type && e.dateStart.isBefore(now));
+  }
+
+  /// Gets all released banners by [types]
+  Iterable<GsBanner> getReleasedInfoBannerByTypes(
+    Set<GeBannerType> types,
+  ) sync* {
+    for (final type in types) {
+      yield* getReleasedInfoBannerByType(type);
+    }
   }
 
   /// Gets a list of [ItemData] that can be obtained in banners.
@@ -294,6 +310,8 @@ class _Wishes {
 }
 
 class _Events {
+  const _Events();
+
   /// Gets the event characters
   List<GsCharacter> getEventCharacters(String id) {
     final list = _ifEvents.getItem(id)?.rewardsCharacters;
@@ -350,6 +368,7 @@ class _Events {
 }
 
 class _Details {
+  const _Details();
   final cityXpPerWeek = 420;
   final primogemsPerWish = 160;
   final primogemsPerCharSet = 20;
@@ -361,6 +380,8 @@ class _Details {
 }
 
 class _Recipes {
+  const _Recipes();
+
   /// Updates the recipe as [own] or the recipe [proficiency].
   ///
   /// {@macro db_update}
@@ -384,6 +405,7 @@ class _Recipes {
 }
 
 class _Weapons {
+  const _Weapons();
   bool hasWeapon(String id) {
     return _svWish.items.any((e) => e.itemId == id) || eventWeapons(id) > 0;
   }
@@ -394,6 +416,7 @@ class _Weapons {
 }
 
 class _Versions {
+  const _Versions();
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
     final current = _ifVersions.items
@@ -420,6 +443,7 @@ class _Versions {
 }
 
 class _Materials {
+  const _Materials();
   Iterable<GsMaterial> getGroupMaterials(GsMaterial material) {
     return _ifMaterials.items.where((element) {
       return element.group == material.group &&
@@ -472,6 +496,8 @@ class CharInfo {
 }
 
 class _Characters {
+  const _Characters();
+
   /// Whether the user has this character or not.
   bool hasCaracter(String id) {
     final owned = eventCharacters(id);
@@ -648,6 +674,7 @@ class _Characters {
 }
 
 class _Achievements {
+  const _Achievements();
   int countTotal([bool Function(GsAchievement)? test]) {
     var items = _ifAchievements.items;
     if (test != null) items = items.where(test);
@@ -700,6 +727,8 @@ class _Achievements {
 }
 
 class _Spincrystals {
+  const _Spincrystals();
+
   /// Updates the spincrystal as owned or not.
   ///
   /// {@macro db_update}
@@ -715,6 +744,7 @@ class _Spincrystals {
 }
 
 class _PlayerConfigs {
+  const _PlayerConfigs();
   final kPlayerInfo = 'player_info';
   GiPlayerInfo? getPlayerInfo() {
     return _svPlayerInfo.getItem(kPlayerInfo);
@@ -726,6 +756,7 @@ class _PlayerConfigs {
 }
 
 class _SereniteaSets {
+  const _SereniteaSets();
   bool isObtainable(String set) {
     final item = _ifSereniteas.getItem(set);
     if (item == null) return false;
@@ -778,6 +809,7 @@ class _SereniteaSets {
 }
 
 class _WeaponMaterials {
+  const _WeaponMaterials();
   List<WeaponAsc> weaponAscension(int r) => WeaponAsc.values[r - 1];
 
   /// Gets all weapon ascension materials at level.
@@ -805,6 +837,8 @@ class _WeaponMaterials {
 }
 
 class _RemarkableChests {
+  const _RemarkableChests();
+
   /// Updates the remarkable chest as obtained or not.
   ///
   /// {@macro db_update}
@@ -819,6 +853,7 @@ class _RemarkableChests {
 }
 
 class _CharactersMaterials {
+  const _CharactersMaterials();
   List<CharacterTal> characterTalents() => CharacterTal.values;
   List<CharacterAsc> characterAscension() => CharacterAsc.values;
 

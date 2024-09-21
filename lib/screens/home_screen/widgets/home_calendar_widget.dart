@@ -350,7 +350,7 @@ class _ImagesTooltip extends StatelessWidget {
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: context.themeColors.almostWhite,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(kSeparator4),
         boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 62, 59, 59),
@@ -364,7 +364,9 @@ class _ImagesTooltip extends StatelessWidget {
           width: size.width,
           height: size.height,
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(kSeparator4),
+          ),
           child: Stack(
             children: [
               if (image0 != null && image1 == null)

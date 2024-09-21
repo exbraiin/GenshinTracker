@@ -180,19 +180,26 @@ class HomePlayerInfoWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: kSeparator8),
-          Wrap(
-            spacing: kGridSeparator,
-            runSpacing: kGridSeparator,
-            alignment: WrapAlignment.center,
-            children: info.avatars.entries.map((e) {
-              final char = Database.instance
-                  .infoOf<GsCharacter>()
-                  .items
-                  .firstOrNullWhere((c) => c.enkaId == e.key);
-              if (char == null) return const SizedBox();
-              return ItemGridWidget.character(char, size: ItemSize.small);
-            }).toList(),
-          ),
+          ...info.avatars.entries.chunked(6).map<Widget>((list) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: list
+                  .map((e) {
+                    final char = Database.instance
+                        .infoOf<GsCharacter>()
+                        .items
+                        .firstOrNullWhere((c) => c.enkaId == e.key);
+                    if (char == null) return const SizedBox();
+                    return ItemGridWidget.character(
+                      char,
+                      size: ItemSize.medium,
+                    );
+                  })
+                  .separate(const SizedBox(width: kGridSeparator))
+                  .toList(),
+            );
+          }).separate(const SizedBox(height: kGridSeparator)),
         ],
       ),
     );

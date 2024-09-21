@@ -138,7 +138,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
                   final item = db.getItem(e.id);
                   if (item == null) return const ItemGridWidget();
 
-                  final utils = GsUtils.sereniteaSets;
+                  const utils = GsUtils.sereniteaSets;
                   final owned = utils.getFurnishingAmount(item.id);
                   final hasFurnishing = owned > 0;
 

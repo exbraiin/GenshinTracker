@@ -20,7 +20,7 @@ class ReputationDetailsCard extends StatelessWidget {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final utils = GsUtils.cities;
+        const utils = GsUtils.cities;
         final rp = utils.getSavedReputation(item.id);
         final pRep = utils.getCityPreviousXpValue(item.id);
         final nRep = utils.getCityNextXpValue(item.id);

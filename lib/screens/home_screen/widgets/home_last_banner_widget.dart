@@ -13,9 +13,9 @@ class HomeLastBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const type = GeBannerType.character;
+    const types = {GeBannerType.character, GeBannerType.chronicled};
     const source = GeItemSourceType.wishesCharacterBanner;
-    final banners = GsUtils.wishes.getReleasedInfoBannerByType(type);
+    final banners = GsUtils.wishes.getReleasedInfoBannerByTypes(types);
     final characters = Database.instance
         .infoOf<GsCharacter>()
         .items
