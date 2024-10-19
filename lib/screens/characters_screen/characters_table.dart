@@ -23,6 +23,7 @@ class CharactersTable extends StatefulWidget {
 class _CharactersTableState extends State<CharactersTable> {
   var _sorter = false;
   _TableItem? _sortItem;
+  var _idSortedList = <String>[];
   late final List<_TableItem> _builders;
 
   @override
@@ -65,6 +66,7 @@ class _CharactersTableState extends State<CharactersTable> {
                             _sorter = true;
                             _sortItem = null;
                           }
+                          _idSortedList = _getCharsIdsSorted();
                         });
                       }
                     : null,
@@ -260,16 +262,23 @@ class _CharactersTableState extends State<CharactersTable> {
   Iterable<_CharData> _getCharsSorted() {
     final info = GsUtils.characters.getCharInfo;
     var chars = widget.characters.map((e) => (char: e, info: info(e.id)));
-    if (_sortItem != null) {
-      chars = _sorter
-          ? chars
-              .sortedBy((e) => _sortItem!.sortBy?.call(e) ?? 0)
-              .thenBy((e) => e.char.name)
-          : chars
-              .sortedByDescending((e) => _sortItem!.sortBy?.call(e) ?? 0)
-              .thenBy((e) => e.char.name);
+    if (_idSortedList.isNotEmpty) {
+      chars = chars.sortedBy((e) => _idSortedList.indexOf(e.char.id));
     }
     return chars;
+  }
+
+  List<String> _getCharsIdsSorted() {
+    if (_sortItem == null) return const [];
+
+    final info = GsUtils.characters.getCharInfo;
+    final chars = widget.characters.map((e) => (char: e, info: info(e.id)));
+    final sorted = _sorter ? chars.sortedBy : chars.sortedByDescending;
+
+    return sorted((e) => _sortItem!.sortBy?.call(e) ?? 0)
+        .thenBy((e) => e.char.name)
+        .map((e) => e.char.id)
+        .toList();
   }
 }
 
