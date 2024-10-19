@@ -114,7 +114,9 @@ class WishListItem extends StatelessWidget {
               : const SizedBox(),
           Text(item.rarity.toString(), style: style),
           Text(
-            context.fromLabel(item.isWeapon ? Labels.weapon : Labels.character),
+            item.isWeapon
+                ? context.labels.weapon()
+                : context.labels.character(),
             style: style,
           ),
           Text(wish.number.toString(), style: style),
@@ -136,8 +138,8 @@ class WishListItem extends StatelessWidget {
     bool? update = false;
     if (list.length > 1) {
       if (!context.mounted) return;
-      final title = context.fromLabel(Labels.wishes);
-      final subtitle = context.fromLabel(Labels.updateAllWishes, list.length);
+      final title = context.labels.wishes();
+      final subtitle = context.labels.updateAllWishes(list.length);
       update = await GsConfirmDialog.show(context, title, subtitle);
       if (update == null) return;
     }

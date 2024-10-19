@@ -22,17 +22,17 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       child: (ctx, piece) => ItemDetailsCardContent.generate(context, [
         if (item.pc1.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.nPieceBonus, 1),
+            label: context.labels.nPieceBonus(1),
             description: item.pc1,
           ),
         if (item.pc2.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.nPieceBonus, 2),
+            label: context.labels.nPieceBonus(2),
             description: item.pc2,
           ),
         if (item.pc4.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.nPieceBonus, 4),
+            label: context.labels.nPieceBonus(4),
             description: item.pc4,
           ),
         if (item.pieces[piece].desc.isNotEmpty)
@@ -41,7 +41,7 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (item.domain.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.source),
+            label: context.labels.source(),
             description: item.domain,
           ),
       ]),

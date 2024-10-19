@@ -15,7 +15,7 @@ class ReputationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsRegion>(
       icon: menuIconReputation,
-      title: context.fromLabel(Labels.reputation),
+      title: context.labels.reputation(),
       items: (db) => db.infoOf<GsRegion>().items,
       itemBuilder: (context, state) => ReputationListItem(
         state.item,

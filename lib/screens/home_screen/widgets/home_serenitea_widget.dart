@@ -34,7 +34,7 @@ class HomeSereniteaWidget extends StatelessWidget {
         return GsDataBox.info(
           title: Row(
             children: [
-              Expanded(child: Text(context.fromLabel(Labels.sereniteaSets))),
+              Expanded(child: Text(context.labels.sereniteaSets())),
               Text(
                 totalOwned < totalObtain
                     ? '${(totalOwned * primogems).format()} / '
@@ -52,10 +52,10 @@ class HomeSereniteaWidget extends StatelessWidget {
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(context.fromLabel(Labels.type)),
-                HomeRow.header(context.fromLabel(Labels.owned)),
-                HomeRow.header(context.fromLabel(Labels.obtainable)),
-                HomeRow.header(context.fromLabel(Labels.total)),
+                HomeRow.header(context.labels.type()),
+                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.obtainable()),
+                HomeRow.header(context.labels.total()),
               ],
               rows: [
                 ...GeSereniteaSetType.values.map((e) {
@@ -72,7 +72,7 @@ class HomeSereniteaWidget extends StatelessWidget {
                   });
 
                   return [
-                    HomeRow(context.fromLabel(e.label)),
+                    HomeRow(e.label(context)),
                     HomeRow.missing(context, owned.length, obtainable.length),
                     HomeRow(obtainable.length.format()),
                     HomeRow(total.length.format()),
@@ -80,7 +80,7 @@ class HomeSereniteaWidget extends StatelessWidget {
                 }),
                 List.generate(4, (i) => const Divider()),
                 [
-                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow(context.labels.total()),
                   HomeRow.missing(context, totalOwned, totalObtain),
                   HomeRow(totalObtain.format()),
                   HomeRow(totalTotal.format()),

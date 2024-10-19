@@ -35,12 +35,12 @@ class AscensionTable extends StatelessWidget {
             ((l) => GsUtils.weaponMaterials.getAscensionMaterials(item.id, l)),
         _statsBuilder = [
           (
-            label: (ctx) => ctx.fromLabel(Labels.wsAtk),
+            label: (ctx) => ctx.labels.wsAtk(),
             value: (ctx, l) => item.ascAtkValues.split(',').elementAtOrNull(l),
           ),
           if (item.statType != GeWeaponAscStatType.none)
             (
-              label: (ctx) => ctx.fromLabel(item.statType.label),
+              label: (ctx) => item.statType.label(ctx),
               value: (ctx, l) =>
                   item.ascStatValues.split(',').elementAtOrNull(l),
             ),
@@ -59,19 +59,19 @@ class AscensionTable extends StatelessWidget {
             GsUtils.characterMaterials.getAscensionMaterials(item.id, l)),
         _statsBuilder = [
           (
-            label: (ctx) => ctx.fromLabel(Labels.wsHp),
+            label: (ctx) => ctx.labels.wsHp(),
             value: (ctx, l) => item.ascHpValues.split(',').elementAtOrNull(l),
           ),
           (
-            label: (ctx) => ctx.fromLabel(Labels.wsAtk),
+            label: (ctx) => ctx.labels.wsAtk(),
             value: (ctx, l) => item.ascAtkValues.split(',').elementAtOrNull(l),
           ),
           (
-            label: (ctx) => ctx.fromLabel(Labels.wsDef),
+            label: (ctx) => ctx.labels.wsDef(),
             value: (ctx, l) => item.ascDefValues.split(',').elementAtOrNull(l),
           ),
           (
-            label: (ctx) => ctx.fromLabel(item.ascStatType.label),
+            label: (ctx) => item.ascStatType.label(ctx),
             value: (ctx, l) => item.ascStatValues.split(',').elementAtOrNull(l),
           ),
         ];
@@ -84,7 +84,7 @@ class AscensionTable extends StatelessWidget {
     final header = style.copyWith(fontWeight: FontWeight.bold);
     final painter = TextPainter(
       text: TextSpan(
-        text: context.fromLabel(Labels.level),
+        text: context.labels.level(),
         style: header,
       ),
       textDirection: TextDirection.rtl,
@@ -118,7 +118,7 @@ class AscensionTable extends StatelessWidget {
                   decoration: decor(),
                   padding: const EdgeInsets.all(kSeparator4),
                   child: Text(
-                    context.fromLabel(Labels.level),
+                    context.labels.level(),
                     style: header,
                     textAlign: TextAlign.center,
                   ),
@@ -144,7 +144,7 @@ class AscensionTable extends StatelessWidget {
                       decoration: decor(endCol: true),
                       padding: const EdgeInsets.all(kSeparator4),
                       child: Text(
-                        context.fromLabel(Labels.materials),
+                        context.labels.materials(),
                         style: header,
                         textAlign: TextAlign.center,
                       ),

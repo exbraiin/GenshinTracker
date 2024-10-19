@@ -24,7 +24,7 @@ class SpincrystalDetailsCard extends StatelessWidget
         final db = Database.instance.saveOf<GiSpincrystal>();
         final owned = db.getItem(item.id)?.obtained ?? false;
         return ItemDetailsCard.single(
-          name: context.fromLabel(Labels.radiantSpincrystal, item.number),
+          name: context.labels.radiantSpincrystal(item.number),
           rarity: 4,
           asset: spincrystalAsset,
           banner: GsItemBanner.fromVersion(context, item.version),
@@ -52,11 +52,11 @@ class SpincrystalDetailsCard extends StatelessWidget
           child: ItemDetailsCardContent.generate(context, [
             if (region != null)
               ItemDetailsCardContent(
-                label: context.fromLabel(Labels.region),
+                label: context.labels.region(),
                 description: region.name,
               ),
             ItemDetailsCardContent(
-              label: context.fromLabel(Labels.source),
+              label: context.labels.source(),
               description: item.source,
             ),
           ]),

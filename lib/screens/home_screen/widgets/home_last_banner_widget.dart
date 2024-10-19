@@ -24,7 +24,7 @@ class HomeLastBannerWidget extends StatelessWidget {
         .where((e) => e.value.inDays > 0)
         .sortedByDescending((e) => e.value);
     return GsDataBox.info(
-      title: Text(context.fromLabel(Labels.lastBanner)),
+      title: Text(context.labels.lastBanner()),
       child: LayoutBuilder(
         builder: (context, layout) {
           final itemSize = ItemSize.small.gridSize + kGridSeparator;
@@ -63,7 +63,7 @@ class HomeLastBannerWidget extends StatelessWidget {
   ) {
     return ItemGridWidget.character(
       entry.key,
-      label: context.fromLabel(Labels.shortDay, entry.value.inDays),
+      label: context.labels.shortDay(entry.value.inDays),
     );
   }
 }

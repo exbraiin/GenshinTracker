@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
@@ -60,7 +59,7 @@ class HomeCalendarWidget extends StatelessWidget {
                 color: context.themeColors.mainColor1,
               ),
               child: Text(
-                context.fromLabel('weekday_$i').substring(0, 3),
+                DateLabels.humanizedWeekday(context, i).substring(0, 3),
                 style: context.themeStyles.label14n,
                 strutStyle: context.themeStyles.label14n.toStrut(),
               ),

@@ -18,7 +18,7 @@ class VersionScreen extends StatelessWidget {
       childSize: const Size(126 * 2 + 6, 160),
       icon: menuIconBook,
       sortOrder: SortOrder.descending,
-      title: context.fromLabel(Labels.version),
+      title: context.labels.version(),
       items: (db) => db.infoOf<GsVersion>().items,
       actions: (hasExtra, toggle) {
         return [

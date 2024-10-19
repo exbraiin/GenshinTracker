@@ -41,7 +41,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
               height: 32,
             ),
             const SizedBox(width: kSeparator4),
-            Text(context.fromLabel(item.category.label)),
+            Text(item.category.label(context)),
           ],
         ),
       ),
@@ -55,12 +55,12 @@ class SereniteaSetDetailsCard extends StatelessWidget
     return ItemDetailsCardContent.generate(context, [
       if (item.energy > 0)
         ItemDetailsCardContent(
-          label: context.fromLabel(item.category.label),
-          description: context.fromLabel(Labels.energyN, item.energy.format()),
+          label: item.category.label(context),
+          description: context.labels.energyN(item.energy.format()),
         ),
       if (item.chars.isNotEmpty)
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.characters),
+          label: context.labels.characters(),
           content: ValueStreamBuilder<bool>(
             stream: Database.instance.loaded,
             builder: (context, snapshot) {
@@ -125,7 +125,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
         ),
       if (item.furnishing.isNotEmpty)
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.matFurnishing),
+          label: context.labels.matFurnishing(),
           content: ValueStreamBuilder<bool>(
             stream: Database.instance.loaded,
             builder: (context, snapshot) {

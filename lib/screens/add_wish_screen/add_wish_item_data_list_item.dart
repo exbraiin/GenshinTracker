@@ -21,7 +21,7 @@ class AddWishItemDataListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       banner: isItemFeatured
-          ? GsItemBanner(text: context.fromLabel(Labels.featured))
+          ? GsItemBanner(text: context.labels.featured())
           : const GsItemBanner(text: ''),
       imageUrlPath: item.image,
       onTap: onAdd,

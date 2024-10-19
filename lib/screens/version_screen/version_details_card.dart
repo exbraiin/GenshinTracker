@@ -103,12 +103,12 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       context,
       [
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.version),
+          label: context.labels.version(),
           description: item.id,
         ),
         if (characters.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.characters),
+            label: context.labels.characters(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -124,7 +124,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (outfits.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.outfits),
+            label: context.labels.outfits(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -139,7 +139,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (weapons.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.weapons),
+            label: context.labels.weapons(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -155,7 +155,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (materials.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.materials),
+            label: context.labels.materials(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -170,7 +170,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (recipes.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.recipes),
+            label: context.labels.recipes(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -185,7 +185,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (sets.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.sereniteaSets),
+            label: context.labels.sereniteaSets(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -200,7 +200,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (crystals.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.spincrystals),
+            label: context.labels.spincrystals(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -215,7 +215,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (banners.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.wishes),
+            label: context.labels.wishes(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -229,7 +229,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (chests.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.remarkableChests),
+            label: context.labels.remarkableChests(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -244,7 +244,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (enemies.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.enemies),
+            label: context.labels.enemies(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,
@@ -260,7 +260,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (namecards.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.namecards),
+            label: context.labels.namecards(),
             content: Wrap(
               spacing: kSeparator2,
               runSpacing: kSeparator2,

@@ -16,7 +16,7 @@ class SereniteaSetsScreen extends StatelessWidget {
     return InventoryListPage<GsSereniteaSet>(
       childSize: const Size(126 * 2 + 6, 160),
       icon: menuIconSereniteaPot,
-      title: context.fromLabel(Labels.sereniteaSets),
+      title: context.labels.sereniteaSets(),
       items: (db) => db.infoOf<GsSereniteaSet>().items,
       itemBuilder: (context, state) => SereniteaSetListItem(
         state.item,

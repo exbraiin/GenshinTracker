@@ -15,7 +15,7 @@ class EnemyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsEnemy>(
       icon: menuIconEnemies,
-      title: context.fromLabel(Labels.enemies),
+      title: context.labels.enemies(),
       items: (db) => db.infoOf<GsEnemy>().items,
       itemBuilder: (context, state) => EnemyListItem(
         state.item,

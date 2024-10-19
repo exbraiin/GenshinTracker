@@ -45,7 +45,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       height: 24,
                     ),
                     const SizedBox(width: kSeparator4),
-                    Text(context.fromLabel(item.effect.label)),
+                    Text(item.effect.label(context)),
                   ],
                 ),
                 const Spacer(),
@@ -81,8 +81,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                             style: const TextStyle(fontSize: 14),
                           ),
                           Text(
-                            '${context.fromLabel(Labels.proficiency)} '
-                            '${context.fromLabel(Labels.maxProficiency, item.maxProficiency.format())}',
+                            '${context.labels.proficiency()} '
+                            '${context.labels.maxProficiency(item.maxProficiency.format())}',
                             style: const TextStyle(fontSize: 14),
                           ),
                           SizedBox(
@@ -139,13 +139,13 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
     return ItemDetailsCardContent.generate(context, [
       ItemDetailsCardContent(
-        label: context.fromLabel(item.effect.label),
+        label: item.effect.label(context),
         description: item.effectDesc,
       ),
       ItemDetailsCardContent(description: item.desc),
       if (item.ingredients.isNotEmpty)
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.ingredients),
+          label: context.labels.ingredients(),
           content: Wrap(
             spacing: kSeparator4,
             runSpacing: kSeparator4,

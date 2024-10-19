@@ -31,7 +31,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
             return GsDataBox.info(
               title: Row(
                 children: [
-                  Text(context.fromLabel(Labels.cardPlayerInfo)),
+                  Text(context.labels.cardPlayerInfo()),
                   Expanded(
                     child: GsNumberField(
                       enabled: !busy,
@@ -130,8 +130,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${context.fromLabel(Labels.cardPlayerAr, info.level)}  |  '
-                      '${context.fromLabel(Labels.cardPlayerWl, info.worldLevel)}',
+                      '${context.labels.cardPlayerAr(info.level)}  |  '
+                      '${context.labels.cardPlayerWl(info.worldLevel)}',
                       maxLines: 1,
                       style: TextStyle(
                         color: context.themeColors.dimWhite,
@@ -152,8 +152,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          '${context.fromLabel(Labels.cardPlayerAchievements)}   ',
+                      text: '${context.labels.cardPlayerAchievements()}   ',
                       style: TextStyle(
                         color: context.themeColors.dimWhite,
                       ),
@@ -162,8 +161,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text:
-                              '\n${context.fromLabel(Labels.cardPlayerAbyss)}    ',
+                          text: '\n${context.labels.cardPlayerAbyss()}    ',
                           style: TextStyle(
                             color: context.themeColors.dimWhite,
                           ),

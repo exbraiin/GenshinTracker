@@ -16,10 +16,10 @@ class CharactersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsCharacter>(
       icon: menuIconCharacters,
-      title: context.fromLabel(Labels.characters),
+      title: context.labels.characters(),
       actions: (hasExtra, toggle) => [
         Tooltip(
-          message: context.fromLabel(Labels.showExtraInfo),
+          message: context.labels.showExtraInfo(),
           child: IconButton(
             icon: Icon(
               hasExtra('info')

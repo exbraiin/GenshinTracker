@@ -80,14 +80,13 @@ class BannerListItem extends StatelessWidget {
                         ),
                         TextSpan(
                           text: '\n   '
-                              '${context.fromLabel(Labels.bannerNRolls, rolls)} - ',
+                              '${context.labels.bannerNRolls(rolls)} - ',
                           style:
                               TextStyle(color: context.themeColors.almostWhite),
                         ),
                         const WidgetSpan(child: PrimogemIcon()),
                         TextSpan(
-                          text: context.fromLabel(
-                            Labels.bannerNPrimogems,
+                          text: context.labels.bannerNPrimogems(
                             (rolls * GsUtils.details.primogemsPerWish).format(),
                           ),
                           style:

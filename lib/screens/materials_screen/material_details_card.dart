@@ -29,8 +29,8 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   String _getLabel(BuildContext context) {
-    late final group = context.fromLabel(item.group.label);
-    late final ingredient = context.fromLabel(Labels.ingredients);
+    late final group = item.group.label(context);
+    late final ingredient = context.labels.ingredients();
 
     if (item.ingredient) {
       return item.group == GeMaterialType.none
@@ -55,7 +55,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         ),
       if (item.weekdays.isNotEmpty)
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.weeklyTasks),
+          label: context.labels.weeklyTasks(),
           description: item.weekdays
               .sortedBy((element) => element.index)
               .map((element) => element.getLabel(context))
@@ -63,7 +63,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         ),
       if (mats.length > 1 && item.group != GeMaterialType.none)
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.materials),
+          label: context.labels.materials(),
           content: Wrap(
             spacing: kSeparator4,
             runSpacing: kSeparator4,

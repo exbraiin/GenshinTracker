@@ -99,6 +99,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   }
 
   Widget _getInfo(BuildContext context, GsCharacter info) {
+    final labels = context.labels;
     final ascension = GsUtils.characters.getCharAscension(info.id);
     final friendship = GsUtils.characters.getCharFriendship(info.id);
     final constellation = GsUtils.characters.getCharConstellations(info.id);
@@ -118,18 +119,18 @@ class CharacterDetailsScreen extends StatelessWidget {
                 rarity: info.rarity,
               ),
               const SizedBox(height: kSeparator8),
-              ...{
-                Labels.attributes: _attributes,
-                Labels.ascension: _ascension,
-                Labels.talents: _talents,
-                Labels.constellations: _constellation,
-                Labels.materials: _materials,
-              }.entries.map((e) {
+              ...[
+                (label: labels.attributes, key: _attributes),
+                (label: labels.ascension, key: _ascension),
+                (label: labels.talents, key: _talents),
+                (label: labels.constellations, key: _constellation),
+                (label: labels.materials, key: _materials),
+              ].map((tuple) {
                 return _getTextButton(
                   context,
-                  context.fromLabel(e.key),
+                  tuple.label(),
                   () => Scrollable.ensureVisible(
-                    e.value.currentContext!,
+                    tuple.key.currentContext!,
                     duration: const Duration(milliseconds: 400),
                     curve: Curves.easeOut,
                   ),
@@ -206,7 +207,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _attributes,
       bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.attributes)),
+      title: Text(context.labels.attributes()),
       children: [
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -223,9 +224,9 @@ class CharacterDetailsScreen extends StatelessWidget {
           children: [
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.name), style: stLabel),
+                Text(context.labels.name(), style: stLabel),
                 Text(info.name, style: stStyle),
-                Text(context.fromLabel(Labels.birthday), style: stLabel),
+                Text(context.labels.birthday(), style: stLabel),
                 Text(
                   info.birthday.toPrettyDate(context),
                   style: stStyle,
@@ -239,9 +240,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.constellation), style: stLabel),
+                Text(context.labels.constellation(), style: stLabel),
                 Text(info.constellation, style: stStyle),
-                Text(context.fromLabel(Labels.title), style: stLabel),
+                Text(context.labels.title(), style: stLabel),
                 Text(info.title, style: stStyle),
               ].map((e) {
                 return Padding(
@@ -252,9 +253,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.element), style: stLabel),
-                Text(context.fromLabel(info.element.label), style: stStyle),
-                Text(context.fromLabel(Labels.affiliation), style: stLabel),
+                Text(context.labels.element(), style: stLabel),
+                Text(info.element.label(context), style: stStyle),
+                Text(context.labels.affiliation(), style: stLabel),
                 Text(info.affiliation, style: stStyle),
               ].map((e) {
                 return Padding(
@@ -265,9 +266,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.weapon), style: stLabel),
-                Text(context.fromLabel(info.weapon.label), style: stStyle),
-                Text(context.fromLabel(Labels.version), style: stLabel),
+                Text(context.labels.weapon(), style: stLabel),
+                Text(info.weapon.label(context), style: stStyle),
+                Text(context.labels.version(), style: stLabel),
                 Text(info.version, style: stStyle),
               ].map((e) {
                 return Padding(
@@ -278,7 +279,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             ),
             TableRow(
               children: [
-                Text(context.fromLabel(Labels.specialDish), style: stLabel),
+                Text(context.labels.specialDish(), style: stLabel),
                 dish != null
                     ? Row(
                         children: [
@@ -287,8 +288,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                           Text(dish.name, style: stStyle),
                         ],
                       )
-                    : Text(context.fromLabel(Labels.wsNone), style: stStyle),
-                Text(context.fromLabel(Labels.releaseDate), style: stLabel),
+                    : Text(context.labels.wsNone(), style: stStyle),
+                Text(context.labels.releaseDate(), style: stLabel),
                 Text(
                   info.releaseDate.toPrettyDate(context),
                   style: stStyle,
@@ -303,7 +304,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             if (GsUtils.characters.hasOutfits(info.id))
               TableRow(
                 children: [
-                  Text(context.fromLabel(Labels.outfits), style: stLabel),
+                  Text(context.labels.outfits(), style: stLabel),
                   Wrap(
                     spacing: kSeparator4,
                     runSpacing: kSeparator4,
@@ -349,7 +350,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _ascension,
       bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.ascension)),
+      title: Text(context.labels.ascension()),
       child: AscensionTable.character(info),
     );
   }
@@ -365,7 +366,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(context.fromLabel(Labels.talents)),
+              Text(context.labels.talents()),
               const SizedBox(height: kSeparator6),
               Row(
                 children: info.talents
@@ -393,7 +394,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: kSeparator8),
                   Text(
-                    '(${context.fromLabel(selected.type.label)})',
+                    '(${selected.type.label(context)})',
                     style: context.themeStyles.label12i,
                   ),
                 ],
@@ -422,7 +423,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(context.fromLabel(Labels.constellation)),
+              Text(context.labels.constellation()),
               const SizedBox(height: kSeparator6),
               Row(
                 children: info.constellations
@@ -518,7 +519,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     return GsDataBox.info(
       key: _materials,
       bgColor: bgColor,
-      title: Text(context.fromLabel(Labels.materials)),
+      title: Text(context.labels.materials()),
       child: Table(
         columnWidths: const {
           0: IntrinsicColumnWidth(),
@@ -532,17 +533,17 @@ class CharacterDetailsScreen extends StatelessWidget {
         ),
         children: [
           getTableRow(
-            context.fromLabel(Labels.ascension),
+            context.labels.ascension(),
             ascMats,
             (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
           getTableRow(
-            context.fromLabel(Labels.talents),
+            context.labels.talents(),
             tltMats,
             (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
           getTableRow(
-            context.fromLabel(Labels.total),
+            context.labels.total(),
             allMats,
             (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
           ),
@@ -554,13 +555,12 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget _getTags(BuildContext context, GsCharacter info) {
     return Row(
       children: [
-        context.fromLabel(Labels.rarityStar, info.rarity),
-        context.fromLabel(info.weapon.label),
-        if (info.region != GeRegionType.none)
-          context.fromLabel(info.region.label),
-        context.fromLabel(info.element.label),
-        if (info.arkhe != GeArkheType.none) context.fromLabel(info.arkhe.label),
-        context.fromLabel(info.ascStatType.label),
+        context.labels.rarityStar(info.rarity),
+        info.weapon.label(context),
+        if (info.region != GeRegionType.none) info.region.label(context),
+        info.element.label(context),
+        if (info.arkhe != GeArkheType.none) info.arkhe.label(context),
+        info.ascStatType.label(context),
       ]
           .map<Widget>((e) => GsItemCardLabel(label: e))
           .separate(const SizedBox(width: kSeparator4))

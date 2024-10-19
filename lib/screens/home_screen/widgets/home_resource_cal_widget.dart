@@ -32,12 +32,12 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
     final textTheme = Theme.of(context).textTheme;
     final style = textTheme.titleSmall!.copyWith(color: Colors.white);
     return GsDataBox.info(
-      title: Text(context.fromLabel(Labels.resourceCalculator)),
+      title: Text(context.labels.resourceCalculator()),
       children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            context.fromLabel(Labels.required),
+            context.labels.required(),
             style: style.copyWith(fontSize: 14),
           ),
         ),
@@ -57,7 +57,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            context.fromLabel(Labels.owned),
+            context.labels.owned(),
             style: style.copyWith(fontSize: 14),
           ),
         ),
@@ -90,7 +90,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                context.fromLabel(Labels.craftable),
+                context.labels.craftable(),
                 style: style.copyWith(fontSize: 14),
               ),
             ),
@@ -109,7 +109,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                context.fromLabel(Labels.missing),
+                context.labels.missing(),
                 style: style.copyWith(fontSize: 14),
               ),
             ),

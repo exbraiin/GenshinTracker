@@ -10,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryPage(
-      appBar: InventoryAppBar(label: context.fromLabel(Labels.settings)),
+      appBar: InventoryAppBar(label: context.labels.settings()),
       child: const InventoryBox(width: double.infinity, child: SizedBox()),
     );
   }

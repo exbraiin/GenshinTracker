@@ -15,7 +15,7 @@ class MaterialsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsMaterial>(
       icon: menuIconMaterials,
-      title: context.fromLabel(Labels.materials),
+      title: context.labels.materials(),
       items: (db) => db.infoOf<GsMaterial>().items,
       itemBuilder: (context, state) => MaterialListItem(
         state.item,

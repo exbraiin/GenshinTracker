@@ -40,14 +40,14 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
 
         if (characters.isEmpty) {
           return GsDataBox.info(
-            title: Text(context.fromLabel(Labels.ascension)),
+            title: Text(context.labels.ascension()),
             child: const GsNoResultsState.small(),
           );
         }
 
         const chars = GsUtils.characters;
         return GsDataBox.info(
-          title: Text(context.fromLabel(Labels.ascension)),
+          title: Text(context.labels.ascension()),
           child: LayoutBuilder(
             builder: (context, layout) {
               final itemSize = ItemSize.small.gridSize + kGridSeparator;

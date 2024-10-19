@@ -56,7 +56,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 final total = GsUtils.achievements.countTotal();
                 final saved = GsUtils.achievements.countSaved();
 
-                final title = context.fromLabel(Labels.achievements);
+                final title = context.labels.achievements();
                 return InventoryPage(
                   appBar: InventoryAppBar(
                     iconAsset: menuIconAchievements,
@@ -141,7 +141,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
               style: const TextStyle(fontSize: 16),
               maxLines: 1,
               decoration: InputDecoration.collapsed(
-                hintText: context.fromLabel(Labels.hintSearch),
+                hintText: context.labels.hintSearch(),
               ),
               onChanged: (value) => queryNotifier.value = value,
             ),

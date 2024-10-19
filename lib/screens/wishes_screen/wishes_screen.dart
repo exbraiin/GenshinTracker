@@ -56,10 +56,10 @@ class _WishesScreenScreenState extends State<WishesScreen>
           builder: (context, filter, button, toggle) {
             PreferredSizeWidget appBar = InventoryAppBar(
               iconAsset: menuIconWish,
-              label: context.fromLabel(Labels.wishes),
+              label: context.labels.wishes(),
               actions: [
                 Tooltip(
-                  message: context.fromLabel(Labels.hideEmptyBanners),
+                  message: context.labels.hideEmptyBanners(),
                   child: IconButton(
                     icon: Icon(
                       filter.hasExtra('hide_banners')
@@ -225,13 +225,13 @@ class _WishesScreenScreenState extends State<WishesScreen>
       child: WishListInfoWidget(
         children: [
           Text(
-            context.fromLabel(Labels.time),
+            context.labels.time(),
             textAlign: TextAlign.center,
             style: textStyle,
             strutStyle: strutStyle,
           ),
           Text(
-            context.fromLabel(Labels.pity),
+            context.labels.pity(),
             textAlign: TextAlign.center,
             style: textStyle,
             strutStyle: strutStyle,
@@ -239,7 +239,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
           Padding(
             padding: const EdgeInsets.only(left: 60),
             child: Text(
-              context.fromLabel(Labels.name),
+              context.labels.name(),
               textAlign: TextAlign.left,
               style: textStyle,
               strutStyle: strutStyle,
@@ -247,19 +247,19 @@ class _WishesScreenScreenState extends State<WishesScreen>
           ),
           const SizedBox(),
           Text(
-            context.fromLabel(Labels.rarity),
+            context.labels.rarity(),
             textAlign: TextAlign.center,
             style: textStyle,
             strutStyle: strutStyle,
           ),
           Text(
-            context.fromLabel(Labels.type),
+            context.labels.type(),
             textAlign: TextAlign.center,
             style: textStyle,
             strutStyle: strutStyle,
           ),
           Text(
-            context.fromLabel(Labels.roll),
+            context.labels.roll(),
             textAlign: TextAlign.center,
             style: textStyle,
             strutStyle: strutStyle,

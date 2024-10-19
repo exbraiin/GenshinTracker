@@ -26,11 +26,11 @@ class AchievementListItem extends StatelessWidget {
           const SizedBox(width: kSeparator8),
           const Spacer(),
           if (item.hidden) ...[
-            GsItemCardLabel.chip(label: context.fromLabel(Labels.achHidden)),
+            GsItemCardLabel.chip(label: context.labels.achHidden()),
             const SizedBox(width: kSeparator4),
           ],
           if (item.type != GeAchievementType.none) ...[
-            GsItemCardLabel.chip(label: context.fromLabel(item.type.label)),
+            GsItemCardLabel.chip(label: item.type.label(context)),
             const SizedBox(width: kSeparator4),
           ],
           GsItemCardLabel.chip(label: item.version),

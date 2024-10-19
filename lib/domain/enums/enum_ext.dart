@@ -9,70 +9,75 @@ const _wp = 'assets/image/weapon_stat';
 const _ep = 'assets/image/element';
 
 extension GsBannerTypeExt on GeBannerType {
-  String getWonLabel(int rarity) {
+  String getWonLabel(BuildContext ctx, int rarity) {
     return this == GeBannerType.weapon && rarity == 5
-        ? Labels.won7525
-        : Labels.won5050;
+        ? ctx.labels.won7525()
+        : ctx.labels.won5050();
   }
 
-  String getLostLabel(int rarity) {
+  String getLostLabel(BuildContext ctx, int rarity) {
     return this == GeBannerType.weapon && rarity == 5
-        ? Labels.lost7525
-        : Labels.lost5050;
+        ? ctx.labels.lost7525()
+        : ctx.labels.lost5050();
   }
 }
 
 extension GeWeaponTypeExt on GeWeaponType {
-  String get label => switch (this) {
-        GeWeaponType.none => Labels.wsNone,
-        GeWeaponType.bow => Labels.wpBow,
-        GeWeaponType.sword => Labels.wpSword,
-        GeWeaponType.polearm => Labels.wpPolearm,
-        GeWeaponType.catalyst => Labels.wpCatalyst,
-        GeWeaponType.claymore => Labels.wpClaymore,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeWeaponType.none => ctx.labels.wsNone(),
+      GeWeaponType.bow => ctx.labels.wpBow(),
+      GeWeaponType.sword => ctx.labels.wpSword(),
+      GeWeaponType.polearm => ctx.labels.wpPolearm(),
+      GeWeaponType.catalyst => ctx.labels.wpCatalyst(),
+      GeWeaponType.claymore => ctx.labels.wpClaymore(),
+    };
+  }
 
   String get assetPath => 'assets/image/weapon_type/$id.png';
 }
 
 extension GeWeekdayTypeExt on GeWeekdayType {
-  String getLabel(BuildContext context) {
-    final label = switch (this) {
-      GeWeekdayType.sunday => Labels.weekday7,
-      GeWeekdayType.monday => Labels.weekday1,
-      GeWeekdayType.tuesday => Labels.weekday2,
-      GeWeekdayType.wednesday => Labels.weekday3,
-      GeWeekdayType.thursday => Labels.weekday4,
-      GeWeekdayType.friday => Labels.weekday5,
-      GeWeekdayType.saturday => Labels.weekday6,
+  String getLabel(BuildContext ctx) {
+    return switch (this) {
+      GeWeekdayType.sunday => ctx.labels.weekday7(),
+      GeWeekdayType.monday => ctx.labels.weekday1(),
+      GeWeekdayType.tuesday => ctx.labels.weekday2(),
+      GeWeekdayType.wednesday => ctx.labels.weekday3(),
+      GeWeekdayType.thursday => ctx.labels.weekday4(),
+      GeWeekdayType.friday => ctx.labels.weekday5(),
+      GeWeekdayType.saturday => ctx.labels.weekday6(),
     };
-    return context.fromLabel(label);
   }
 }
 
 extension GeAchievementTypeExt on GeAchievementType {
-  String get label => switch (this) {
-        GeAchievementType.none => Labels.achTypeNone,
-        GeAchievementType.boss => Labels.achTypeBoss,
-        GeAchievementType.quest => Labels.achTypeQuest,
-        GeAchievementType.commission => Labels.achTypeCommission,
-        GeAchievementType.exploration => Labels.achTypeExploration,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeAchievementType.none => ctx.labels.achTypeNone(),
+      GeAchievementType.boss => ctx.labels.achTypeBoss(),
+      GeAchievementType.quest => ctx.labels.achTypeQuest(),
+      GeAchievementType.commission => ctx.labels.achTypeCommission(),
+      GeAchievementType.exploration => ctx.labels.achTypeExploration(),
+    };
+  }
 }
 
 extension GeItemSourceTypeExt on GeItemSourceType {
-  String get label => switch (this) {
-        GeItemSourceType.none => Labels.wsNone,
-        GeItemSourceType.shop => Labels.wsNone,
-        GeItemSourceType.event => Labels.wsNone,
-        GeItemSourceType.fishing => Labels.wsNone,
-        GeItemSourceType.forging => Labels.wsNone,
-        GeItemSourceType.battlepass => Labels.wsNone,
-        GeItemSourceType.exploration => Labels.wsNone,
-        GeItemSourceType.wishesStandard => Labels.wsNone,
-        GeItemSourceType.wishesWeaponBanner => Labels.wsNone,
-        GeItemSourceType.wishesCharacterBanner => Labels.wsNone,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeItemSourceType.none => ctx.labels.wsNone(),
+      GeItemSourceType.shop => ctx.labels.wsNone(),
+      GeItemSourceType.event => ctx.labels.wsNone(),
+      GeItemSourceType.fishing => ctx.labels.wsNone(),
+      GeItemSourceType.forging => ctx.labels.wsNone(),
+      GeItemSourceType.battlepass => ctx.labels.wsNone(),
+      GeItemSourceType.exploration => ctx.labels.wsNone(),
+      GeItemSourceType.wishesStandard => ctx.labels.wsNone(),
+      GeItemSourceType.wishesWeaponBanner => ctx.labels.wsNone(),
+      GeItemSourceType.wishesCharacterBanner => ctx.labels.wsNone(),
+    };
+  }
 }
 
 extension GeArkheTypeExt on GeArkheType {
@@ -83,12 +88,14 @@ extension GeArkheTypeExt on GeArkheType {
         GeArkheType.both => const Color(0xFFB4ADC0),
       };
 
-  String get label => switch (this) {
-        GeArkheType.none => Labels.wsNone,
-        GeArkheType.ousia => Labels.arkheOusia,
-        GeArkheType.pneuma => Labels.arkhePneuma,
-        GeArkheType.both => Labels.arkheBoth,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeArkheType.none => ctx.labels.wsNone(),
+      GeArkheType.ousia => ctx.labels.arkheOusia(),
+      GeArkheType.pneuma => ctx.labels.arkhePneuma(),
+      GeArkheType.both => ctx.labels.arkheBoth(),
+    };
+  }
 }
 
 extension GeElementTypeExt on GeElementType {
@@ -103,41 +110,46 @@ extension GeElementTypeExt on GeElementType {
         GeElementType.cryo => const Color(0xFF98C8E8),
       };
 
-  String get label => switch (this) {
-        GeElementType.none => Labels.wsNone,
-        GeElementType.anemo => Labels.elAnemo,
-        GeElementType.geo => Labels.elGeo,
-        GeElementType.electro => Labels.elElectro,
-        GeElementType.dendro => Labels.elDendro,
-        GeElementType.hydro => Labels.elHydro,
-        GeElementType.pyro => Labels.elPyro,
-        GeElementType.cryo => Labels.elCryo,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeElementType.none => ctx.labels.wsNone(),
+      GeElementType.anemo => ctx.labels.elAnemo(),
+      GeElementType.geo => ctx.labels.elGeo(),
+      GeElementType.electro => ctx.labels.elElectro(),
+      GeElementType.dendro => ctx.labels.elDendro(),
+      GeElementType.hydro => ctx.labels.elHydro(),
+      GeElementType.pyro => ctx.labels.elPyro(),
+      GeElementType.cryo => ctx.labels.elCryo(),
+    };
+  }
 
   String get assetPath => 'assets/image/element/$id.png';
   String get assetBgPath => 'assets/image/backgrounds/$id.gif';
 }
 
 extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
-  String get label => switch (this) {
-        GeCharacterAscStatType.none => Labels.wsNone,
-        GeCharacterAscStatType.anemoDmgBonus => Labels.wsAnemoDmg,
-        GeCharacterAscStatType.geoDmgBonus => Labels.wsGeoBonus,
-        GeCharacterAscStatType.electroDmgBonus => Labels.wsElectroBonus,
-        GeCharacterAscStatType.dendroDmgBonus => Labels.wsDendroBonus,
-        GeCharacterAscStatType.hydroDmgBonus => Labels.wsHydroBonus,
-        GeCharacterAscStatType.pyroDmgBonus => Labels.wsPyroBonus,
-        GeCharacterAscStatType.cryoDmgBonus => Labels.wsCryoBonus,
-        GeCharacterAscStatType.hpPercent => Labels.wsHpPercent,
-        GeCharacterAscStatType.atkPercent => Labels.wsAtkPercent,
-        GeCharacterAscStatType.defPercent => Labels.wsDefPercent,
-        GeCharacterAscStatType.critDmg => Labels.wsCritdmg,
-        GeCharacterAscStatType.critRate => Labels.wsCritrate,
-        GeCharacterAscStatType.healing => Labels.wsHealing,
-        GeCharacterAscStatType.physicalDmg => Labels.wsPhysicaldmg,
-        GeCharacterAscStatType.energyRecharge => Labels.wsEnergyrecharge,
-        GeCharacterAscStatType.elementalMastery => Labels.wsElementalmastery,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeCharacterAscStatType.none => ctx.labels.wsNone(),
+      GeCharacterAscStatType.anemoDmgBonus => ctx.labels.wsAnemoDmg(),
+      GeCharacterAscStatType.geoDmgBonus => ctx.labels.wsGeoBonus(),
+      GeCharacterAscStatType.electroDmgBonus => ctx.labels.wsElectroBonus(),
+      GeCharacterAscStatType.dendroDmgBonus => ctx.labels.wsDendroBonus(),
+      GeCharacterAscStatType.hydroDmgBonus => ctx.labels.wsHydroBonus(),
+      GeCharacterAscStatType.pyroDmgBonus => ctx.labels.wsPyroBonus(),
+      GeCharacterAscStatType.cryoDmgBonus => ctx.labels.wsCryoBonus(),
+      GeCharacterAscStatType.hpPercent => ctx.labels.wsHpPercent(),
+      GeCharacterAscStatType.atkPercent => ctx.labels.wsAtkPercent(),
+      GeCharacterAscStatType.defPercent => ctx.labels.wsDefPercent(),
+      GeCharacterAscStatType.critDmg => ctx.labels.wsCritdmg(),
+      GeCharacterAscStatType.critRate => ctx.labels.wsCritrate(),
+      GeCharacterAscStatType.healing => ctx.labels.wsHealing(),
+      GeCharacterAscStatType.physicalDmg => ctx.labels.wsPhysicaldmg(),
+      GeCharacterAscStatType.energyRecharge => ctx.labels.wsEnergyrecharge(),
+      GeCharacterAscStatType.elementalMastery =>
+        ctx.labels.wsElementalmastery(),
+    };
+  }
 
   String get assetPath => switch (this) {
         GeCharacterAscStatType.none => iconMissing,
@@ -161,36 +173,42 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
 }
 
 extension GeEnemyFamilyTypeExt on GeEnemyFamilyType {
-  String get label => switch (this) {
-        GeEnemyFamilyType.none => Labels.wsNone,
-        GeEnemyFamilyType.elemetalLifeform => Labels.efElementalLifeform,
-        GeEnemyFamilyType.hilichurl => Labels.efHilichurl,
-        GeEnemyFamilyType.abyss => Labels.efAbyss,
-        GeEnemyFamilyType.fatui => Labels.efFatui,
-        GeEnemyFamilyType.automaton => Labels.efAutomaton,
-        GeEnemyFamilyType.humanFaction => Labels.efHumanFaction,
-        GeEnemyFamilyType.mysticalBeast => Labels.efMysticalBeast,
-        GeEnemyFamilyType.weeklyBoss => Labels.efWeeklyBoss,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeEnemyFamilyType.none => ctx.labels.wsNone(),
+      GeEnemyFamilyType.elemetalLifeform => ctx.labels.efElementalLifeform(),
+      GeEnemyFamilyType.hilichurl => ctx.labels.efHilichurl(),
+      GeEnemyFamilyType.abyss => ctx.labels.efAbyss(),
+      GeEnemyFamilyType.fatui => ctx.labels.efFatui(),
+      GeEnemyFamilyType.automaton => ctx.labels.efAutomaton(),
+      GeEnemyFamilyType.humanFaction => ctx.labels.efHumanFaction(),
+      GeEnemyFamilyType.mysticalBeast => ctx.labels.efMysticalBeast(),
+      GeEnemyFamilyType.weeklyBoss => ctx.labels.efWeeklyBoss(),
+    };
+  }
 }
 
 extension GeEventTypeExt on GeEventType {
-  String get label => switch (this) {
-        GeEventType.none => Labels.wsNone,
-        GeEventType.quest => Labels.eventQuest,
-        GeEventType.event => Labels.eventNormal,
-        GeEventType.login => Labels.eventLogin,
-        GeEventType.flagship => Labels.eventFlagship,
-        GeEventType.permanent => Labels.eventPermanent,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeEventType.none => ctx.labels.wsNone(),
+      GeEventType.quest => ctx.labels.eventQuest(),
+      GeEventType.event => ctx.labels.eventNormal(),
+      GeEventType.login => ctx.labels.eventLogin(),
+      GeEventType.flagship => ctx.labels.eventFlagship(),
+      GeEventType.permanent => ctx.labels.eventPermanent(),
+    };
+  }
 }
 
 extension GeRecipeTypeExt on GeRecipeType {
-  String get label => switch (this) {
-        GeRecipeType.none => Labels.wsNone,
-        GeRecipeType.event => Labels.recipeEvent,
-        GeRecipeType.permanent => Labels.recipePermanent,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeRecipeType.none => ctx.labels.wsNone(),
+      GeRecipeType.event => ctx.labels.recipeEvent(),
+      GeRecipeType.permanent => ctx.labels.recipePermanent(),
+    };
+  }
 }
 
 extension GeSereniteaSetTypeExt on GeSereniteaSetType {
@@ -200,11 +218,13 @@ extension GeSereniteaSetTypeExt on GeSereniteaSetType {
         GeSereniteaSetType.outdoor => const Color(0xFF303671),
       };
 
-  String get label => switch (this) {
-        GeSereniteaSetType.none => Labels.wsNone,
-        GeSereniteaSetType.indoor => Labels.indoor,
-        GeSereniteaSetType.outdoor => Labels.outdoor,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeSereniteaSetType.none => ctx.labels.wsNone(),
+      GeSereniteaSetType.indoor => ctx.labels.indoor(),
+      GeSereniteaSetType.outdoor => ctx.labels.outdoor(),
+    };
+  }
 
   String get asset => switch (this) {
         GeSereniteaSetType.none => iconMissing,
@@ -214,33 +234,37 @@ extension GeSereniteaSetTypeExt on GeSereniteaSetType {
 }
 
 extension GeMaterialTypeExt on GeMaterialType {
-  String get label => switch (this) {
-        GeMaterialType.none => Labels.wsNone,
-        GeMaterialType.oculi => Labels.matOculi,
-        GeMaterialType.ascensionGems => Labels.matAscensionGems,
-        GeMaterialType.normalBossDrops => Labels.matNormalBossDrops,
-        GeMaterialType.normalDrops => Labels.matNormalDrops,
-        GeMaterialType.eliteDrops => Labels.matEliteDrops,
-        GeMaterialType.forging => Labels.matForging,
-        GeMaterialType.furnishing => Labels.matFurnishing,
-        GeMaterialType.weeklyBossDrops => Labels.matWeeklyBossDrops,
-        GeMaterialType.regionMaterials => Labels.matLocalSpecialties,
-        GeMaterialType.weaponMaterials => Labels.matWeaponMaterials,
-        GeMaterialType.talentMaterials => Labels.matTalentMaterials,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeMaterialType.none => ctx.labels.wsNone(),
+      GeMaterialType.oculi => ctx.labels.matOculi(),
+      GeMaterialType.ascensionGems => ctx.labels.matAscensionGems(),
+      GeMaterialType.normalBossDrops => ctx.labels.matNormalBossDrops(),
+      GeMaterialType.normalDrops => ctx.labels.matNormalDrops(),
+      GeMaterialType.eliteDrops => ctx.labels.matEliteDrops(),
+      GeMaterialType.forging => ctx.labels.matForging(),
+      GeMaterialType.furnishing => ctx.labels.matFurnishing(),
+      GeMaterialType.weeklyBossDrops => ctx.labels.matWeeklyBossDrops(),
+      GeMaterialType.regionMaterials => ctx.labels.matLocalSpecialties(),
+      GeMaterialType.weaponMaterials => ctx.labels.matWeaponMaterials(),
+      GeMaterialType.talentMaterials => ctx.labels.matTalentMaterials(),
+    };
+  }
 }
 
 extension GeNamecardTypeExt on GeNamecardType {
-  String get label => switch (this) {
-        GeNamecardType.none => Labels.wsNone,
-        GeNamecardType.defaults => Labels.namecardDefault,
-        GeNamecardType.achievement => Labels.namecardAchievement,
-        GeNamecardType.battlepass => Labels.namecardBattlepass,
-        GeNamecardType.character => Labels.namecardCharacter,
-        GeNamecardType.event => Labels.namecardEvent,
-        GeNamecardType.offering => Labels.namecardOffering,
-        GeNamecardType.reputation => Labels.namecardReputation,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeNamecardType.none => ctx.labels.wsNone(),
+      GeNamecardType.defaults => ctx.labels.namecardDefault(),
+      GeNamecardType.achievement => ctx.labels.namecardAchievement(),
+      GeNamecardType.battlepass => ctx.labels.namecardBattlepass(),
+      GeNamecardType.character => ctx.labels.namecardCharacter(),
+      GeNamecardType.event => ctx.labels.namecardEvent(),
+      GeNamecardType.offering => ctx.labels.namecardOffering(),
+      GeNamecardType.reputation => ctx.labels.namecardReputation(),
+    };
+  }
 
   String get asset => switch (this) {
         GeNamecardType.none => iconMissing,
@@ -255,35 +279,39 @@ extension GeNamecardTypeExt on GeNamecardType {
 }
 
 extension GeRecipeEffectTypeExt on GeRecipeEffectType {
-  String get label => switch (this) {
-        GeRecipeEffectType.none => Labels.wsNone,
-        GeRecipeEffectType.revive => Labels.rbRevive,
-        GeRecipeEffectType.adventure => Labels.rbAdventure,
-        GeRecipeEffectType.defBoost => Labels.rbDef,
-        GeRecipeEffectType.atkBoost => Labels.rbAtk,
-        GeRecipeEffectType.atkCritBoost => Labels.rbAtkCrit,
-        GeRecipeEffectType.recoveryHP => Labels.rbHpRecovery,
-        GeRecipeEffectType.recoveryHPAll => Labels.rbHpAllRecovery,
-        GeRecipeEffectType.staminaReduction => Labels.rbStaminaReduction,
-        GeRecipeEffectType.staminaIncrease => Labels.rbStaminaIncrease,
-        GeRecipeEffectType.special => Labels.rbSpecial,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeRecipeEffectType.none => ctx.labels.wsNone(),
+      GeRecipeEffectType.revive => ctx.labels.rbRevive(),
+      GeRecipeEffectType.adventure => ctx.labels.rbAdventure(),
+      GeRecipeEffectType.defBoost => ctx.labels.rbDef(),
+      GeRecipeEffectType.atkBoost => ctx.labels.rbAtk(),
+      GeRecipeEffectType.atkCritBoost => ctx.labels.rbAtkCrit(),
+      GeRecipeEffectType.recoveryHP => ctx.labels.rbHpRecovery(),
+      GeRecipeEffectType.recoveryHPAll => ctx.labels.rbHpAllRecovery(),
+      GeRecipeEffectType.staminaReduction => ctx.labels.rbStaminaReduction(),
+      GeRecipeEffectType.staminaIncrease => ctx.labels.rbStaminaIncrease(),
+      GeRecipeEffectType.special => ctx.labels.rbSpecial(),
+    };
+  }
 
   String get assetPath => 'assets/image/recipe_buff/$id.png';
 }
 
 extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
-  String get label => switch (this) {
-        GeWeaponAscStatType.none => Labels.wsNone,
-        GeWeaponAscStatType.critDmg => Labels.wsCritdmg,
-        GeWeaponAscStatType.critRate => Labels.wsCritrate,
-        GeWeaponAscStatType.physicalDmg => Labels.wsPhysicaldmg,
-        GeWeaponAscStatType.elementalMastery => Labels.wsElementalmastery,
-        GeWeaponAscStatType.energyRecharge => Labels.wsEnergyrecharge,
-        GeWeaponAscStatType.hpPercent => Labels.wsHpPercent,
-        GeWeaponAscStatType.atkPercent => Labels.wsAtkPercent,
-        GeWeaponAscStatType.defPercent => Labels.wsDefPercent,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeWeaponAscStatType.none => ctx.labels.wsNone(),
+      GeWeaponAscStatType.critDmg => ctx.labels.wsCritdmg(),
+      GeWeaponAscStatType.critRate => ctx.labels.wsCritrate(),
+      GeWeaponAscStatType.physicalDmg => ctx.labels.wsPhysicaldmg(),
+      GeWeaponAscStatType.elementalMastery => ctx.labels.wsElementalmastery(),
+      GeWeaponAscStatType.energyRecharge => ctx.labels.wsEnergyrecharge(),
+      GeWeaponAscStatType.hpPercent => ctx.labels.wsHpPercent(),
+      GeWeaponAscStatType.atkPercent => ctx.labels.wsAtkPercent(),
+      GeWeaponAscStatType.defPercent => ctx.labels.wsDefPercent(),
+    };
+  }
 
   String get assetPath => switch (this) {
         GeWeaponAscStatType.none => '',
@@ -312,38 +340,44 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
 }
 
 extension GeRegionTypeExt on GeRegionType {
-  String get label => switch (this) {
-        GeRegionType.none => Labels.regionNone,
-        GeRegionType.mondstadt => Labels.regionMondstadt,
-        GeRegionType.liyue => Labels.regionLiyue,
-        GeRegionType.inazuma => Labels.regionInazuma,
-        GeRegionType.sumeru => Labels.regionSumeru,
-        GeRegionType.fontaine => Labels.regionFontaine,
-        GeRegionType.natlan => Labels.regionNatlan,
-        GeRegionType.snezhnaya => Labels.regionSnezhnaya,
-        GeRegionType.khaenriah => Labels.regionKhaenriah,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeRegionType.none => ctx.labels.regionNone(),
+      GeRegionType.mondstadt => ctx.labels.regionMondstadt(),
+      GeRegionType.liyue => ctx.labels.regionLiyue(),
+      GeRegionType.inazuma => ctx.labels.regionInazuma(),
+      GeRegionType.sumeru => ctx.labels.regionSumeru(),
+      GeRegionType.fontaine => ctx.labels.regionFontaine(),
+      GeRegionType.natlan => ctx.labels.regionNatlan(),
+      GeRegionType.snezhnaya => ctx.labels.regionSnezhnaya(),
+      GeRegionType.khaenriah => ctx.labels.regionKhaenriah(),
+    };
+  }
 }
 
 extension GeEnemyTypeExt on GeEnemyType {
-  String get label => switch (this) {
-        GeEnemyType.none => Labels.wsNone,
-        GeEnemyType.common => Labels.etCommon,
-        GeEnemyType.elite => Labels.etElite,
-        GeEnemyType.normalBoss => Labels.etNormalBoss,
-        GeEnemyType.weeklyBoss => Labels.etWeeklyBoss,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeEnemyType.none => ctx.labels.wsNone(),
+      GeEnemyType.common => ctx.labels.etCommon(),
+      GeEnemyType.elite => ctx.labels.etElite(),
+      GeEnemyType.normalBoss => ctx.labels.etNormalBoss(),
+      GeEnemyType.weeklyBoss => ctx.labels.etWeeklyBoss(),
+    };
+  }
 }
 
 extension GeCharTalentTypeExt on GeCharTalentType {
-  String get label => switch (this) {
-        GeCharTalentType.normalAttack => Labels.charTalNa,
-        GeCharTalentType.elementalSkill => Labels.charTalEs,
-        GeCharTalentType.elementalBurst => Labels.charTalEb,
-        GeCharTalentType.alternateSprint => Labels.charTalAs,
-        GeCharTalentType.ascension1stPassive => Labels.charTal1a,
-        GeCharTalentType.ascension4thPassive => Labels.charTal4a,
-        GeCharTalentType.nightRealmPassive => Labels.charTalNr,
-        GeCharTalentType.utilityPassive => Labels.charTalUp,
-      };
+  String label(BuildContext ctx) {
+    return switch (this) {
+      GeCharTalentType.normalAttack => ctx.labels.charTalNa(),
+      GeCharTalentType.elementalSkill => ctx.labels.charTalEs(),
+      GeCharTalentType.elementalBurst => ctx.labels.charTalEb(),
+      GeCharTalentType.alternateSprint => ctx.labels.charTalAs(),
+      GeCharTalentType.ascension1stPassive => ctx.labels.charTal1a(),
+      GeCharTalentType.ascension4thPassive => ctx.labels.charTal4a(),
+      GeCharTalentType.nightRealmPassive => ctx.labels.charTalNr(),
+      GeCharTalentType.utilityPassive => ctx.labels.charTalUp(),
+    };
+  }
 }

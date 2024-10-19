@@ -15,7 +15,7 @@ class ArtifactsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsArtifact>(
       icon: menuIconArtifacts,
-      title: context.fromLabel(Labels.artifacts),
+      title: context.labels.artifacts(),
       items: (db) => db.infoOf<GsArtifact>().items,
       itemBuilder: (context, state) => ArtifactListItem(
         state.item,

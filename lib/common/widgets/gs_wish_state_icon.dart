@@ -35,9 +35,9 @@ class GsWishStateIcon extends StatelessWidget {
   }
 
   ({String msg, IconData icon})? _getState(BuildContext context) {
-    late final wonLabel = context.fromLabel(banner.getWonLabel(rarity));
-    late final lostLabel = context.fromLabel(banner.getLostLabel(rarity));
-    late final grtdLabel = context.fromLabel(Labels.guaranteed);
+    late final wonLabel = banner.getWonLabel(context, rarity);
+    late final lostLabel = banner.getLostLabel(context, rarity);
+    late final grtdLabel = context.labels.guaranteed();
     return switch (wishState) {
       WishState.won => (msg: wonLabel, icon: Icons.star_rounded),
       WishState.lost => (msg: lostLabel, icon: Icons.star_border_rounded),

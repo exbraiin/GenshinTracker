@@ -15,7 +15,7 @@ class WeaponsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsWeapon>(
       icon: menuIconWeapons,
-      title: context.fromLabel(Labels.weapons),
+      title: context.labels.weapons(),
       items: (db) => db.infoOf<GsWeapon>().items,
       itemBuilder: (context, state) => WeaponListItem(
         showItem: !state.filter!.isSectionEmpty('weekdays'),
@@ -30,7 +30,7 @@ class WeaponsScreen extends StatelessWidget {
       ),
       actions: (hasExtra, toggle) => [
         Tooltip(
-          message: context.fromLabel(Labels.showExtraInfo),
+          message: context.labels.showExtraInfo(),
           child: IconButton(
             icon: Icon(
               hasExtra('info')

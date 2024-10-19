@@ -20,13 +20,13 @@ class GsItemBanner {
   factory GsItemBanner.fromVersion(BuildContext context, String version) {
     if (GsUtils.versions.isUpcomingVersion(version)) {
       return GsItemBanner(
-        text: context.fromLabel(Labels.itemUpcoming),
+        text: context.labels.itemUpcoming(),
         color: Colors.orange,
       );
     }
     if (GsUtils.versions.isCurrentVersion(version)) {
       return GsItemBanner(
-        text: context.fromLabel(Labels.itemNew),
+        text: context.labels.itemNew(),
         color: Colors.lightBlue,
       );
     }

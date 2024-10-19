@@ -46,14 +46,14 @@ class HomeRecipesWidget extends StatelessWidget {
         final tt = total();
 
         return GsDataBox.info(
-          title: Text(context.fromLabel(Labels.recipes)),
+          title: Text(context.labels.recipes()),
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(context.fromLabel(Labels.rarity)),
-                HomeRow.header(context.fromLabel(Labels.master)),
-                HomeRow.header(context.fromLabel(Labels.owned)),
-                HomeRow.header(context.fromLabel(Labels.total)),
+                HomeRow.header(context.labels.rarity()),
+                HomeRow.header(context.labels.master()),
+                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.total()),
               ],
               rows: [
                 ...Iterable.generate(5, (i) {
@@ -70,7 +70,7 @@ class HomeRecipesWidget extends StatelessWidget {
                 }),
                 List.generate(4, (i) => const Divider()),
                 [
-                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow(context.labels.total()),
                   HomeRow.missing(context, tm, to),
                   HomeRow.missing(context, to, tt),
                   HomeRow(tt.format()),

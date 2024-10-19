@@ -32,7 +32,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           info: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(context.fromLabel(Labels.wsAtk)),
+              Text(context.labels.wsAtk()),
               Text(
                 item.atk.toString(),
                 style: TextStyle(
@@ -43,7 +43,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               ),
               if (item.statType != GeWeaponAscStatType.none) ...[
                 const SizedBox(height: kSeparator4),
-                Text(context.fromLabel(item.statType.label)),
+                Text(item.statType.label(context)),
                 Text(
                   item.statType.toIntOrPercentage(item.statValue),
                   style: TextStyle(
@@ -57,7 +57,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               Align(
                 alignment: Alignment.bottomRight,
                 child: GsItemCardLabel(
-                  label: context.fromLabel(Labels.ascension),
+                  label: context.labels.ascension(),
                   onTap: () => nd.value = !nd.value,
                 ),
               ),
@@ -89,7 +89,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     GsWeapon info,
   ) {
     return ItemDetailsCardContent(
-      label: context.fromLabel(Labels.ascension),
+      label: context.labels.ascension(),
       content: AscensionTable.weapon(item),
     );
   }
@@ -102,7 +102,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     const iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
     return ItemDetailsCardContent(
-      label: context.fromLabel(Labels.materials),
+      label: context.labels.materials(),
       content: Wrap(
         spacing: kGridSeparator,
         runSpacing: kGridSeparator,

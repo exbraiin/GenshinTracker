@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tracker/common/lang/labels_methods.dart';
 
-export 'package:tracker/common/lang/labels.dart';
+export 'package:tracker/common/lang/labels_methods.dart';
 
 class Lang {
   static Lang of(BuildContext context) =>
@@ -13,10 +13,11 @@ class Lang {
   static final delegate = _LangDelegate();
 
   final Map<String, String> _map;
+  late final methods = LabelsMethods(getValue);
 
   Lang(this._map);
 
-  String getValue(String key, {Map<String, dynamic> nargs = const {}}) {
+  String getValue(String key, [Map<String, dynamic> nargs = const {}]) {
     var label = _map[key];
     if (label == null) return '##$key##';
     nargs.forEach((k, v) => label = label!.replaceAll('{$k}', '${v ?? '-'}'));
@@ -44,6 +45,9 @@ class _LangDelegate extends LocalizationsDelegate<Lang> {
 }
 
 extension BuildContextExt on BuildContext {
+  LabelsMethods get labels => Lang.of(this).methods;
+
+  @Deprecated('Use \'context.label.*\' instead!')
   String fromLabel(String label, [Object? arg]) {
     final value = Lang.of(this).getValue(label);
     if (arg == null) return value;

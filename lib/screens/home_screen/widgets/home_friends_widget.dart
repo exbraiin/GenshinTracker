@@ -29,13 +29,13 @@ class HomeFriendsWidget extends StatelessWidget {
 
         if (characters.isEmpty) {
           return GsDataBox.info(
-            title: Text(context.fromLabel(Labels.friendship)),
+            title: Text(context.labels.friendship()),
             child: const GsNoResultsState.small(),
           );
         }
 
         return GsDataBox.info(
-          title: Text(context.fromLabel(Labels.friendship)),
+          title: Text(context.labels.friendship()),
           child: LayoutBuilder(
             builder: (context, layout) {
               final itemSize = ItemSize.small.gridSize + kGridSeparator;

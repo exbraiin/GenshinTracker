@@ -15,7 +15,7 @@ class NamecardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsNamecard>(
       icon: menuIconArchive,
-      title: context.fromLabel(Labels.namecards),
+      title: context.labels.namecards(),
       items: (db) => db.infoOf<GsNamecard>().items,
       itemBuilder: (context, state) => NamecardListItem(
         state.item,

@@ -46,13 +46,13 @@ class RemarkableChestDetailsCard extends StatelessWidget
                           height: 32,
                         ),
                         const SizedBox(width: kSeparator4),
-                        Text(context.fromLabel(item.type.label)),
+                        Text(item.type.label(context)),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: kSeparator8),
                       child: Text(
-                        context.fromLabel(item.region.label),
+                        item.region.label(context),
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
@@ -83,8 +83,8 @@ class RemarkableChestDetailsCard extends StatelessWidget
   Widget _content(BuildContext context) {
     return ItemDetailsCardContent.generate(context, [
       ItemDetailsCardContent(
-        label: context.fromLabel(item.type.label),
-        description: context.fromLabel(Labels.energyN, item.energy.format()),
+        label: item.type.label(context),
+        description: context.labels.energyN(item.energy.format()),
       ),
     ]);
   }

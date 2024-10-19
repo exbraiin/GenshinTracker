@@ -80,7 +80,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
               InventoryBox(
                 child: Center(
                   child: Text(
-                    context.fromLabel(Labels.selectDate),
+                    context.labels.selectDate(),
                     style: context.themeStyles.title18n,
                   ),
                 ),
@@ -98,7 +98,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                             padding: const EdgeInsets.only(right: kSeparator4),
                             constraints: const BoxConstraints(minWidth: 56),
                             child: Text(
-                              context.fromLabel(Labels.dateDialogDate),
+                              context.labels.dateDialogDate(),
                               style: style,
                             ),
                           ),
@@ -123,7 +123,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                             padding: const EdgeInsets.only(right: kSeparator4),
                             constraints: const BoxConstraints(minWidth: 56),
                             child: Text(
-                              context.fromLabel(Labels.dateDialogHour),
+                              context.labels.dateDialogHour(),
                               style: style,
                             ),
                           ),
@@ -147,7 +147,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                           const Spacer(),
                           MainButton(
                             color: context.themeColors.goodValue,
-                            label: context.fromLabel(Labels.ok),
+                            label: context.labels.ok(),
                             onPress: () {
                               final date = _getDate();
                               Navigator.of(context).maybePop(date);

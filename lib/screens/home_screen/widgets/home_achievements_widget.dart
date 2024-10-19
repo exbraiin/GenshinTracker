@@ -28,7 +28,7 @@ class HomeAchievementsWidget extends StatelessWidget {
         return GsDataBox.info(
           title: Row(
             children: [
-              Expanded(child: Text(context.fromLabel(Labels.achievements))),
+              Expanded(child: Text(context.labels.achievements())),
               Text(
                 isaved < itotal
                     ? '${isaved.format()} / ${itotal.format()}'
@@ -45,23 +45,23 @@ class HomeAchievementsWidget extends StatelessWidget {
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(context.fromLabel(Labels.type)),
-                HomeRow.header(context.fromLabel(Labels.owned)),
-                HomeRow.header(context.fromLabel(Labels.total)),
+                HomeRow.header(context.labels.type()),
+                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.total()),
               ],
               rows: [
                 ...GeAchievementType.values.map((e) {
                   final saved = info.countSaved((a) => a.type == e);
                   final total = info.countTotal((a) => a.type == e);
                   return [
-                    HomeRow(context.fromLabel(e.label)),
+                    HomeRow(e.label(context)),
                     HomeRow.missing(context, saved, total),
                     HomeRow(total.format()),
                   ];
                 }),
                 List.generate(3, (i) => const Divider()),
                 [
-                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow(context.labels.total()),
                   HomeRow.missing(context, totalSaved, totalTotal),
                   HomeRow(totalTotal.format()),
                 ],

@@ -28,7 +28,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            context.fromLabel(item.type.label),
+            item.type.label(context),
             style: context.themeStyles.title18n,
           ),
         ],
@@ -38,19 +38,19 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       banner: GsItemBanner.fromVersion(context, item.version),
       child: ItemDetailsCardContent.generate(context, [
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.duration),
+          label: context.labels.duration(),
           description: item.dateStart.year != 0 && item.dateEnd.year != 0
               ? '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
                   '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
-              : context.fromLabel(Labels.itemUpcoming),
+              : context.labels.itemUpcoming(),
         ),
         ItemDetailsCardContent(
-          label: context.fromLabel(Labels.version),
+          label: context.labels.version(),
           description: item.version,
         ),
         if (weapons.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.weapons),
+            label: context.labels.weapons(),
             content: ValueStreamBuilder(
               stream: Database.instance.loaded,
               builder: (context, snapshot) {
@@ -76,7 +76,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         if (characters.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.characters),
+            label: context.labels.characters(),
             content: ValueStreamBuilder(
               stream: Database.instance.loaded,
               builder: (context, snapshot) {

@@ -88,7 +88,7 @@ class ReputationDetailsCard extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: context.fromLabel(Labels.levelShort),
+                          text: context.labels.levelShort(),
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!
@@ -103,15 +103,9 @@ class ReputationDetailsCard extends StatelessWidget {
                         ),
                         TextSpan(
                           text: nextLvlWeeks != lastLvlWeeks
-                              ? '\n${Lang.of(context).getValue(
-                                  Labels.nnWeeks,
-                                  nargs: {
-                                    'from': nextLvlWeeks,
-                                    'to': lastLvlWeeks,
-                                  },
-                                )}'
+                              ? '\n${context.labels.nnWeeks(nextLvlWeeks, lastLvlWeeks)}'
                               : lastLvlWeeks != 0
-                                  ? '\n${context.fromLabel(Labels.nWeeks, lastLvlWeeks)}'
+                                  ? '\n${context.labels.nWeeks(lastLvlWeeks)}'
                                   : '',
                           style: context.textTheme.titleSmall!.copyWith(
                             color: Colors.white,

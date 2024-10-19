@@ -31,17 +31,17 @@ class HomeWishesValues extends StatelessWidget {
 
     final maxPity = banner == GeBannerType.weapon ? 80 : 90;
     final title = switch (banner) {
-      GeBannerType.weapon => Labels.weaponWishes,
-      GeBannerType.standard => Labels.stndWishes,
-      GeBannerType.beginner => Labels.noviceWishes,
-      GeBannerType.character => Labels.charWishes,
-      GeBannerType.chronicled => Labels.chronicledWishes,
+      GeBannerType.weapon => context.labels.weaponWishes(),
+      GeBannerType.standard => context.labels.stndWishes(),
+      GeBannerType.beginner => context.labels.noviceWishes(),
+      GeBannerType.character => context.labels.charWishes(),
+      GeBannerType.chronicled => context.labels.chronicledWishes(),
     };
 
     return GsDataBox.info(
       title: Row(
         children: [
-          Expanded(child: Text(context.fromLabel(title))),
+          Expanded(child: Text(title)),
           Text(
             (summary.total * GsUtils.details.primogemsPerWish).format(),
             style: const TextStyle(
@@ -69,7 +69,7 @@ class HomeWishesValues extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    context.fromLabel(Labels.total),
+                    context.labels.total(),
                     style: style,
                   ),
                 ),
@@ -77,7 +77,7 @@ class HomeWishesValues extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    context.fromLabel(Labels.per),
+                    context.labels.per(),
                     style: style,
                   ),
                 ),
@@ -85,7 +85,7 @@ class HomeWishesValues extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    context.fromLabel(Labels.pity),
+                    context.labels.pity(),
                     style: style,
                   ),
                 ),
@@ -100,7 +100,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.info5,
-            context.fromLabel(Labels.rarityStar, 5),
+            context.labels.rarityStar(5),
             context.themeColors.getRarityColor(5),
           ),
           if (banner == GeBannerType.standard) ...[
@@ -112,7 +112,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.info5Character,
-              '   $_arrow ${context.fromLabel(Labels.character)}',
+              '   $_arrow ${context.labels.character()}',
               context.themeColors.getRarityColor(5),
             ),
             Divider(
@@ -123,7 +123,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.info5Weapon,
-              '   $_arrow ${context.fromLabel(Labels.weapon)}',
+              '   $_arrow ${context.labels.weapon()}',
               context.themeColors.getRarityColor(5),
             ),
           ],
@@ -137,7 +137,7 @@ class HomeWishesValues extends StatelessWidget {
             _getWonInfo(
               context,
               summary.info5,
-              '   $_arrow ${context.fromLabel(banner.getWonLabel(5))}',
+              '   $_arrow ${banner.getWonLabel(context, 5)}',
               context.themeColors.getRarityColor(5),
             ),
           ],
@@ -149,7 +149,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.info4,
-            context.fromLabel(Labels.rarityStar, 4),
+            context.labels.rarityStar(4),
             context.themeColors.getRarityColor(4),
           ),
           Divider(
@@ -160,7 +160,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.info4Character,
-            '   $_arrow ${context.fromLabel(Labels.character)}',
+            '   $_arrow ${context.labels.character()}',
             context.themeColors.getRarityColor(4),
           ),
           Divider(
@@ -171,7 +171,7 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.info4Weapon,
-            '   $_arrow ${context.fromLabel(Labels.weapon)}',
+            '   $_arrow ${context.labels.weapon()}',
             context.themeColors.getRarityColor(4),
           ),
           _getWishesList(
@@ -194,7 +194,7 @@ class HomeWishesValues extends StatelessWidget {
           child: _summaryContainer(
             context,
             summary.total.format(),
-            context.fromLabel(Labels.lifetimePulls),
+            context.labels.lifetimePulls(),
             valueColor: context.themeColors.almostWhite,
           ),
         ),
@@ -202,7 +202,7 @@ class HomeWishesValues extends StatelessWidget {
           child: _summaryContainer(
             context,
             summary.info5.last.format(),
-            context.fromLabel(Labels.l5sPity),
+            context.labels.l5sPity(),
             valueColor: pityColor,
             wasGuaranteed: show && summary.isNext5Guaranteed,
           ),
@@ -211,7 +211,7 @@ class HomeWishesValues extends StatelessWidget {
           child: _summaryContainer(
             context,
             summary.info4.last.format(),
-            context.fromLabel(Labels.l4sPity),
+            context.labels.l4sPity(),
             valueColor: context.themeColors.getRarityColor(4),
             wasGuaranteed: show && summary.isNext4Guaranteed,
           ),

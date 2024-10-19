@@ -24,13 +24,13 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         return GsDataBox.info(
-          title: Text(context.fromLabel(Labels.remarkableChests)),
+          title: Text(context.labels.remarkableChests()),
           children: [
             HomeTable(
               headers: [
-                HomeRow.header(context.fromLabel(Labels.source)),
-                HomeRow.header(context.fromLabel(Labels.owned)),
-                HomeRow.header(context.fromLabel(Labels.total)),
+                HomeRow.header(context.labels.source()),
+                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.total()),
               ],
               rows: [
                 ...ic.items
@@ -41,14 +41,14 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
                   final owned = entry.value.count((e) => sc.exists(e.id));
                   final total = entry.value.length;
                   return [
-                    HomeRow(context.fromLabel(entry.key.label)),
+                    HomeRow(entry.key.label(context)),
                     HomeRow.missing(context, owned, total),
                     HomeRow(total.format()),
                   ];
                 }),
                 List.generate(3, (i) => const Divider()),
                 [
-                  HomeRow(context.fromLabel(Labels.total)),
+                  HomeRow(context.labels.total()),
                   HomeRow.missing(context, totalOwned, totalTotal),
                   HomeRow(totalTotal.format()),
                 ],

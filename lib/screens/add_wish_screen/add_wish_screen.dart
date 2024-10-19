@@ -49,7 +49,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
         return InventoryPage(
           appBar: InventoryAppBar(
             iconAsset: menuIconWish,
-            label: context.fromLabel(Labels.addWishes),
+            label: context.labels.addWishes(),
             actions: [button],
           ),
           child: Row(
@@ -154,7 +154,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      '${context.fromLabel(Labels.addWishes)} (x${list.length})',
+                      '${context.labels.addWishes()} (x${list.length})',
                       style: context.textTheme.titleSmall!
                           .copyWith(color: Colors.white),
                     ),

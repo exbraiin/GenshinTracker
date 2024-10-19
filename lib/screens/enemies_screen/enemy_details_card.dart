@@ -23,7 +23,7 @@ class EnemyDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            context.fromLabel(item.family.label),
+            item.family.label(context),
             style: context.themeStyles.title18n,
           ),
           const SizedBox(height: kListSeparator),
@@ -39,7 +39,7 @@ class EnemyDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       child: ItemDetailsCardContent.generate(context, [
         if (item.drops.isNotEmpty)
           ItemDetailsCardContent(
-            label: context.fromLabel(Labels.materials),
+            label: context.labels.materials(),
             content: Wrap(
               spacing: kSeparator4,
               runSpacing: kSeparator4,

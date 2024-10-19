@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
-import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
@@ -161,102 +160,83 @@ class _MainScreenState extends State<MainScreen> {
 
 final _menus = [
   _Menu(
-    label: Labels.home,
     icon: imageAppIconSmall,
     initialPage: HomeScreen.id,
   ),
   _Menu(
-    label: Labels.wishes,
     icon: menuIconWish,
     initialPage: WishesScreen.id,
   ),
   _Menu(
-    label: Labels.achievements,
     icon: menuIconAchievements,
     initialPage: AchievementGroupsScreen.id,
   ),
   _Menu(
-    label: Labels.characters,
     icon: menuIconCharacters,
     initialPage: CharactersScreen.id,
   ),
   _Menu(
-    label: Labels.weapons,
     icon: menuIconWeapons,
     initialPage: WeaponsScreen.id,
   ),
   _Menu(
-    label: Labels.recipes,
     icon: menuIconRecipes,
     initialPage: RecipesScreen.id,
   ),
   _Menu(
-    label: Labels.remarkableChests,
     icon: menuIconMap,
     initialPage: RemarkableChestsScreen.id,
   ),
   _Menu(
-    label: Labels.spincrystals,
     icon: menuIconInventory,
     initialPage: SpincrystalsScreen.id,
   ),
   _Menu(
-    label: Labels.sereniteaSets,
     icon: menuIconSereniteaPot,
     initialPage: SereniteaSetsScreen.id,
   ),
   _Menu(
-    label: Labels.reputation,
     icon: menuIconReputation,
     initialPage: ReputationScreen.id,
   ),
   _Menu(
-    label: Labels.artifacts,
     icon: menuIconArtifacts,
     initialPage: ArtifactsScreen.id,
   ),
   _Menu(
-    label: Labels.namecards,
     icon: menuIconArchive,
     initialPage: NamecardScreen.id,
   ),
   _Menu(
-    label: Labels.enemies,
     icon: menuIconEnemies,
     initialPage: EnemyScreen.id,
   ),
   _Menu(
-    label: Labels.materials,
     icon: menuIconMaterials,
     initialPage: MaterialsScreen.id,
   ),
   _Menu(
-    label: Labels.recipeEvent,
     icon: menuIconEvent,
     initialPage: EventScreen.id,
   ),
   _Menu(
-    label: Labels.version,
     icon: menuIconFeedback,
     initialPage: VersionScreen.id,
   ),
   if (!kReleaseMode)
     _Menu(
-      label: Labels.settings,
       icon: menuIconFeedback,
       initialPage: SettingsScreen.id,
     ),
 ];
 
 class _Menu {
-  final String label;
   final String icon;
   final String initialPage;
   final Object? initialArgument;
   final Navigator navigator;
 
   _Menu({
-    required this.label,
     required this.icon,
     required this.initialPage,
     this.initialArgument,

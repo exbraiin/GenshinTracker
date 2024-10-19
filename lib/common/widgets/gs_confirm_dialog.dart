@@ -64,13 +64,13 @@ class GsConfirmDialog extends StatelessWidget {
                       children: [
                         MainButton(
                           color: context.themeColors.setIndoor,
-                          label: context.fromLabel(Labels.buttonNo),
+                          label: context.labels.buttonNo(),
                           onPress: () => Navigator.of(context).maybePop(false),
                         ),
                         const SizedBox(width: kGridSeparator),
                         MainButton(
                           color: context.themeColors.goodValue,
-                          label: context.fromLabel(Labels.buttonYes),
+                          label: context.labels.buttonYes(),
                           onPress: () => Navigator.of(context).maybePop(true),
                         ),
                       ],

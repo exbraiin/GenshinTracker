@@ -36,27 +36,27 @@ class HomeSpincrystalsWidget extends StatelessWidget {
         final totalTotal = spins.length;
 
         return GsDataBox.info(
-          title: Text(context.fromLabel(Labels.spincrystals)),
+          title: Text(context.labels.spincrystals()),
           child: HomeTable(
             headers: [
-              HomeRow.header(context.fromLabel(Labels.source)),
-              HomeRow.header(context.fromLabel(Labels.owned)),
-              HomeRow.header(context.fromLabel(Labels.total)),
+              HomeRow.header(context.labels.source()),
+              HomeRow.header(context.labels.owned()),
+              HomeRow.header(context.labels.total()),
             ],
             rows: [
               [
-                HomeRow(context.fromLabel(Labels.world)),
+                HomeRow(context.labels.world()),
                 HomeRow.missing(context, ownedWorld, totalWorld),
                 HomeRow('$totalWorld'),
               ],
               [
-                HomeRow(context.fromLabel(Labels.chubby)),
+                HomeRow(context.labels.chubby()),
                 HomeRow.missing(context, ownedChubby, totalChubby),
                 HomeRow('$totalChubby'),
               ],
               List.generate(3, (i) => const Divider()),
               [
-                HomeRow(context.fromLabel(Labels.total)),
+                HomeRow(context.labels.total()),
                 HomeRow.missing(context, totalOwned, totalTotal),
                 HomeRow(totalTotal.format()),
               ],

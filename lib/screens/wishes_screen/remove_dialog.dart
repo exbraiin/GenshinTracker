@@ -36,7 +36,7 @@ class RemoveDialog extends StatelessWidget {
               InventoryBox(
                 child: Center(
                   child: Text(
-                    context.fromLabel(Labels.youSure),
+                    context.labels.youSure(),
                     style: context.themeStyles.title18n,
                   ),
                 ),
@@ -47,8 +47,7 @@ class RemoveDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      Lang.of(context)
-                          .getValue(Labels.removeWish, nargs: {'name': name}),
+                      context.labels.removeWish(name),
                       textAlign: TextAlign.center,
                       style: context.textTheme.titleMedium!
                           .copyWith(color: Colors.white),
@@ -56,7 +55,7 @@ class RemoveDialog extends StatelessWidget {
                     const SizedBox(height: kGridSeparator * 2),
                     MainButton(
                       color: context.themeColors.setIndoor,
-                      label: context.fromLabel(Labels.remove).toUpperCase(),
+                      label: context.labels.remove().toUpperCase(),
                       onPress: () => Navigator.of(context).maybePop(true),
                     ),
                   ],

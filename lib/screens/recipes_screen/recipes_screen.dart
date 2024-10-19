@@ -17,7 +17,7 @@ class RecipesScreen extends StatelessWidget {
     final saveRecipes = Database.instance.saveOf<GiRecipe>();
     return InventoryListPage<GsRecipe>(
       icon: menuIconRecipes,
-      title: context.fromLabel(Labels.recipes),
+      title: context.labels.recipes(),
       items: (db) => db.infoOf<GsRecipe>().items,
       itemBuilder: (context, state) => RecipesListItem(
         recipe: state.item,

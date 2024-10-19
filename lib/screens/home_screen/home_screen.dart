@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return InventoryPage(
       appBar: InventoryAppBar(
         iconAsset: imageAppIcon,
-        label: context.fromLabel(Labels.home),
+        label: context.labels.home(),
         actions: [
           ValueListenableBuilder<bool>(
             valueListenable: _notifier,
