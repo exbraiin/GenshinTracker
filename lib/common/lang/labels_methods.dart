@@ -994,6 +994,26 @@ final class LabelsMethods {
 		return transformer('card_player_abyss');
 	}
 
+	/// Theater
+	String cardPlayerTheater() {
+		return transformer('card_player_theater');
+	}
+
+	/// {value}
+	String cardPlayerAchievementsValue(dynamic value) {
+		return transformer('card_player_achievements_value', {'value': value});
+	}
+
+	/// {floor}-{chamber} • {stars}★
+	String cardPlayerAbyssValue(dynamic floor, dynamic chamber, dynamic stars) {
+		return transformer('card_player_abyss_value', {'floor': floor, 'chamber': chamber, 'stars': stars});
+	}
+
+	/// Act {act} • {stars}★
+	String cardPlayerTheaterValue(dynamic act, dynamic stars) {
+		return transformer('card_player_theater_value', {'act': act, 'stars': stars});
+	}
+
 	/// Radiant Spincrystal {number}
 	String radiantSpincrystal(dynamic number) {
 		return transformer('radiant_spincrystal', {'number': number});

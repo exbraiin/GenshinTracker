@@ -148,33 +148,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: kSeparator8),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${context.labels.cardPlayerAchievements()}   ',
-                      style: TextStyle(
-                        color: context.themeColors.dimWhite,
-                      ),
-                    ),
-                    TextSpan(text: info.achievements.format()),
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '\n${context.labels.cardPlayerAbyss()}    ',
-                          style: TextStyle(
-                            color: context.themeColors.dimWhite,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${info.towerFloor}-${info.towerChamber}',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                textAlign: TextAlign.end,
-              ),
+              _playerInfoTable(context, info),
             ],
           ),
           const SizedBox(height: kSeparator8),
@@ -223,6 +197,76 @@ class HomePlayerInfoWidget extends StatelessWidget {
       },
     );
   }
+
+  Widget _playerInfoTable(BuildContext context, GiPlayerInfo info) {
+    final labelStyle = TextStyle(color: context.themeColors.dimWhite);
+    const valueStyle = TextStyle(
+      shadows: [BoxShadow(blurRadius: 2, offset: Offset(2, 2))],
+    );
+
+    return Table(
+      columnWidths: const {
+        0: IntrinsicColumnWidth(),
+        1: FixedColumnWidth(kSeparator8),
+        2: IntrinsicColumnWidth(),
+      },
+      children: [
+        TableRow(
+          children: [
+            Text(
+              context.labels.cardPlayerAchievements(),
+              textAlign: TextAlign.end,
+              style: labelStyle,
+            ),
+            const SizedBox.shrink(),
+            Text(
+              context.labels
+                  .cardPlayerAchievementsValue(info.achievements.format()),
+              textAlign: TextAlign.end,
+              style: valueStyle,
+            ),
+          ],
+        ),
+        TableRow(
+          children: [
+            Text(
+              context.labels.cardPlayerAbyss(),
+              textAlign: TextAlign.end,
+              style: labelStyle,
+            ),
+            const SizedBox.shrink(),
+            Text(
+              context.labels.cardPlayerAbyssValue(
+                info.towerFloor,
+                info.towerChamber,
+                info.towerStars,
+              ),
+              textAlign: TextAlign.end,
+              style: valueStyle,
+            ),
+          ],
+        ),
+        TableRow(
+          children: [
+            Text(
+              context.labels.cardPlayerTheater(),
+              textAlign: TextAlign.end,
+              style: labelStyle,
+            ),
+            const SizedBox.shrink(),
+            Text(
+              context.labels.cardPlayerTheaterValue(
+                info.theaterAct,
+                info.theaterStars,
+              ),
+              textAlign: TextAlign.end,
+              style: valueStyle,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 Future<void> _fetchAndInsert(String uid) async {
@@ -239,6 +283,10 @@ Future<void> _fetchAndInsert(String uid) async {
     achievements: player.achievements,
     towerFloor: player.towerFloor,
     towerChamber: player.towerChamber,
+    towerStars: player.towerStar,
+    theaterAct: player.theaterAct,
+    theaterMode: player.theaterMode,
+    theaterStars: player.theaterStar,
     avatars: player.avatars,
   );
   Database.instance.saveOf<GiPlayerInfo>().setItem(item);

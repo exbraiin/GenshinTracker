@@ -61,8 +61,8 @@ class EnkaPlayerInfo {
   final int worldLevel;
   final int namecardId;
   final int achievements;
-  final int towerFloor;
-  final int towerChamber;
+  final int towerFloor, towerChamber, towerStar;
+  final int theaterAct, theaterMode, theaterStar;
   final Map<String, int> avatars;
 
   EnkaPlayerInfo._({
@@ -76,6 +76,10 @@ class EnkaPlayerInfo {
     required this.achievements,
     required this.towerFloor,
     required this.towerChamber,
+    required this.towerStar,
+    required this.theaterAct,
+    required this.theaterMode,
+    required this.theaterStar,
     required this.avatars,
   });
 
@@ -83,24 +87,38 @@ class EnkaPlayerInfo {
     final info = (json['playerInfo'] as Map? ?? {}).cast<String, dynamic>();
     final avtInfo =
         (info['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
-    final avtId = (avtInfo['id'] as int? ?? 0).toString();
+    final avtId = avtInfo.getString('id');
     final avatars = (info['showAvatarInfoList'] as List? ?? [])
         .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
-      uid: json['uid'] as String? ?? '',
+      uid: json.getString('uid'),
       pfpId: avtId,
-      nickname: info['nickname'] as String? ?? '',
-      signature: info['signature'] as String? ?? '',
-      level: info['level'] as int? ?? 0,
-      worldLevel: info['worldLevel'] as int? ?? 0,
-      namecardId: info['nameCardId'] as int? ?? 0,
-      achievements: info['finishAchievementNum'] as int? ?? 0,
-      towerFloor: info['towerFloorIndex'] as int? ?? 0,
-      towerChamber: info['towerLevelIndex'] as int? ?? 0,
+      nickname: info.getString('nickname'),
+      signature: info.getString('signature'),
+      level: info.getInt('level'),
+      worldLevel: info.getInt('worldLevel'),
+      namecardId: info.getInt('nameCardId'),
+      achievements: info.getInt('finishAchievementNum'),
+      towerFloor: info.getInt('towerFloorIndex'),
+      towerChamber: info.getInt('towerLevelIndex'),
+      towerStar: info.getInt('towerStarIndex'),
+      theaterAct: info.getInt('theaterActIndex'),
+      theaterMode: info.getInt('theaterModeIndex'),
+      theaterStar: info.getInt('theaterStarIndex'),
       avatars: avatars.toMap(
-        (e) => (e['avatarId'] as int? ?? 0).toString(),
-        (e) => e['level'] as int? ?? 0,
+        (e) => e.getString('avatarId'),
+        (e) => e.getInt('level'),
       ),
     );
+  }
+}
+
+extension on JsonMap {
+  int getInt(String key, [int fallback = 0]) {
+    return (this[key] as num?)?.toInt() ?? fallback;
+  }
+
+  String getString(String key, [String fallback = '']) {
+    return this[key]?.toString() ?? fallback;
   }
 }
