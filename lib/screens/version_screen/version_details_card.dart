@@ -88,11 +88,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    final enemies = Database.instance
-        .infoOf<GsEnemy>()
-        .items
-        .where((element) => element.version == item.id)
-        .sortedBy((element) => element.name);
     final namecards = Database.instance
         .infoOf<GsNamecard>()
         .items
@@ -238,22 +233,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   image: e.image,
                   rarity: e.rarity,
                   tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (enemies.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.enemies(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: enemies.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarityByType,
-                  tooltip: e.name,
-                  padding: EdgeInsets.zero,
                 );
               }).toList(),
             ),

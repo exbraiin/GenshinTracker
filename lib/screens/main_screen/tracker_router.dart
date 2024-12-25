@@ -4,7 +4,6 @@ import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
-import 'package:tracker/screens/enemies_screen/enemy_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
@@ -33,7 +32,6 @@ class TrackerRouter {
     CharactersScreen.id: () => const CharactersScreen(),
     NamecardScreen.id: () => const NamecardScreen(),
     MaterialsScreen.id: () => const MaterialsScreen(),
-    EnemyScreen.id: () => const EnemyScreen(),
     EventScreen.id: () => const EventScreen(),
     ReputationScreen.id: () => const ReputationScreen(),
     SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),

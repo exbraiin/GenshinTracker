@@ -49,6 +49,28 @@ extension GeWeekdayTypeExt on GeWeekdayType {
       GeWeekdayType.saturday => ctx.labels.weekday6(),
     };
   }
+
+  bool get isMonOrThu =>
+      this == GeWeekdayType.monday || this == GeWeekdayType.thursday;
+  bool get isTueOrFri =>
+      this == GeWeekdayType.tuesday || this == GeWeekdayType.friday;
+  bool get isWedOrSat =>
+      this == GeWeekdayType.wednesday || this == GeWeekdayType.saturday;
+}
+
+extension GeWeekdayTypeListExt on List<GeWeekdayType> {
+  GeWeekdayType get today {
+    return switch (DateTime.now().weekday) {
+      DateTime.sunday => GeWeekdayType.sunday,
+      DateTime.monday => GeWeekdayType.monday,
+      DateTime.tuesday => GeWeekdayType.tuesday,
+      DateTime.wednesday => GeWeekdayType.wednesday,
+      DateTime.thursday => GeWeekdayType.thursday,
+      DateTime.friday => GeWeekdayType.friday,
+      DateTime.saturday => GeWeekdayType.saturday,
+      _ => throw (),
+    };
+  }
 }
 
 extension GeAchievementTypeExt on GeAchievementType {

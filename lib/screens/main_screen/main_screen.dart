@@ -8,7 +8,6 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
-import 'package:tracker/screens/enemies_screen/enemy_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
@@ -206,10 +205,6 @@ final _menus = [
   _Menu(
     icon: menuIconArchive,
     initialPage: NamecardScreen.id,
-  ),
-  _Menu(
-    icon: menuIconEnemies,
-    initialPage: EnemyScreen.id,
   ),
   _Menu(
     icon: menuIconMaterials,

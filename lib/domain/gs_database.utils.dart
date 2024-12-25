@@ -30,6 +30,7 @@ final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
 final _svFurnishing = _db.saveOf<GiFurnishing>();
 final _svSpincrystal = _db.saveOf<GiSpincrystal>();
 final _svPlayerInfo = _db.saveOf<GiPlayerInfo>();
+final _svAccountInfo = _db.saveOf<GiAccountInfo>();
 final _svEvents = _db.saveOf<GiEventRewards>();
 
 class GsUtils {
@@ -746,12 +747,44 @@ class _Spincrystals {
 class _PlayerConfigs {
   const _PlayerConfigs();
   final kPlayerInfo = 'player_info';
+  final kAccountInfo = 'account_info';
+
   GiPlayerInfo? getPlayerInfo() {
     return _svPlayerInfo.getItem(kPlayerInfo);
   }
 
   void deletePlayerInfo() {
     _svPlayerInfo.removeItem(kPlayerInfo);
+  }
+
+  GiAccountInfo getAccountInfo() {
+    return _svAccountInfo.getItem(kAccountInfo) ??
+        GiAccountInfo(id: kAccountInfo);
+  }
+
+  void deleteAccountInfo() {
+    _svAccountInfo.removeItem(kAccountInfo);
+  }
+
+  void setAccountChar(GeWeekdayType day, String charId) {
+    final info = getAccountInfo();
+    switch (day) {
+      case GeWeekdayType.monday:
+      case GeWeekdayType.thursday:
+        final nInfo = info.copyWith(monThuChar: charId);
+        _svAccountInfo.setItem(nInfo);
+        break;
+      case GeWeekdayType.tuesday:
+      case GeWeekdayType.friday:
+        final nInfo = info.copyWith(tueFriChar: charId);
+        _svAccountInfo.setItem(nInfo);
+      case GeWeekdayType.wednesday:
+      case GeWeekdayType.saturday:
+        final nInfo = info.copyWith(wedSatChar: charId);
+        _svAccountInfo.setItem(nInfo);
+      default:
+        break;
+    }
   }
 }
 

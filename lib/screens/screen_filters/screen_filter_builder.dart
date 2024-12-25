@@ -262,21 +262,6 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
         ]),
-      const (GsEnemy) => ScreenFilter<GsEnemy>([
-          FilterSection<GeEnemyType, GsEnemy>(
-            GeEnemyType.values.toSet(),
-            (item) => item.type,
-            (c) => c.labels.type(),
-            (c, i) => i.label(c),
-          ),
-          FilterSection<GeEnemyFamilyType, GsEnemy>(
-            GeEnemyFamilyType.values.toSet(),
-            (item) => item.family,
-            (c) => c.labels.family(),
-            (c, i) => i.label(c),
-          ),
-          FilterSection.version((item) => item.version),
-        ]),
       const (GsEvent) => ScreenFilter<GsEvent>([
           FilterSection.version((item) => item.version),
           FilterSection<GeEventType, GsEvent>(
