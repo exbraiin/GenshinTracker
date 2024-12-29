@@ -21,6 +21,7 @@ const menuIconArchive = 'assets/image/icons/menu_icon_archive.webp';
 const menuIconAchievements = 'assets/image/icons/menu_icon_achievements.webp';
 const menuIconFeedback = 'assets/image/icons/menu_icon_feedback.webp';
 const menuIconMap = 'assets/image/icons/menu_icon_map.webp';
+const menuIconEchos = 'assets/image/icons/menu_envisaged_echoes.webp';
 const menuIconEnemies = 'assets/image/icons/menu_icon_enemies.webp';
 const menuIconEvent = 'assets/image/icons/menu_icon_event.webp';
 const iconMissing = 'assets/image/icons/missing_icon.png';

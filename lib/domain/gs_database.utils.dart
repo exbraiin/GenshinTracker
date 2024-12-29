@@ -21,6 +21,7 @@ final _ifWeapons = _db.infoOf<GsWeapon>();
 final _ifEvents = _db.infoOf<GsEvent>();
 //
 final _svAchievement = _db.saveOf<GiAchievement>();
+final _svEchoes = _db.saveOf<GiEnvisagedEcho>();
 final _svWish = _db.saveOf<GiWish>();
 final _svRecipe = _db.saveOf<GiRecipe>();
 final _svFurnitureChest = _db.saveOf<GiFurnitureChest>();
@@ -37,6 +38,7 @@ class GsUtils {
   GsUtils._();
 
   static const items = _Items();
+  static const echos = _Echoes();
   static const cities = _Cities();
   static const wishes = _Wishes();
   static const events = _Events();
@@ -94,6 +96,26 @@ class _Items {
           (e) => _ifMaterials.getItem(e.key)!,
           (e) => e.value.map((e) => getItemData(e.key)).toList(),
         );
+  }
+}
+
+class _Echoes {
+  const _Echoes();
+
+  /// Whether the item exists or not.
+  bool hasItem(String id) {
+    return _svEchoes.exists(id);
+  }
+
+  /// Updates the echo as [own].
+  ///
+  /// {@macro db_update}
+  void update(String id, bool own) {
+    if (own) {
+      _svEchoes.setItem(GiEnvisagedEcho(id: id));
+    } else {
+      _svEchoes.removeItem(id);
+    }
   }
 }
 

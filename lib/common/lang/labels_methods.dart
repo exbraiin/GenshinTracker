@@ -64,6 +64,11 @@ final class LabelsMethods {
 		return transformer('remarkable_chests');
 	}
 
+	/// Envisaged Echoes
+	String envisagedEchoes() {
+		return transformer('envisaged_echoes');
+	}
+
 	/// Weapon
 	String weapon() {
 		return transformer('weapon');

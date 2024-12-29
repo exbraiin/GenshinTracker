@@ -4,6 +4,7 @@ import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/character_details_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
+import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
@@ -27,6 +28,7 @@ class TrackerRouter {
     AddWishScreen.id: () => const AddWishScreen(),
     RecipesScreen.id: () => const RecipesScreen(),
     RemarkableChestsScreen.id: () => const RemarkableChestsScreen(),
+    EnvisagedEchoScreen.id: () => const EnvisagedEchoScreen(),
     WeaponsScreen.id: () => const WeaponsScreen(),
     ArtifactsScreen.id: () => const ArtifactsScreen(),
     CharactersScreen.id: () => const CharactersScreen(),

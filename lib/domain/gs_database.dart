@@ -13,7 +13,7 @@ const _kDataPath = 'data/db/data.json';
 const _kSavePath = 'data/db/save.json';
 const _kVersPath = 'data/db/vers.json';
 const _kGit = 'https://raw.githubusercontent.com/exbraiin';
-const _kGitDataUrl = '$_kGit/GenshinTrackerEditor/main/Release/gsdata';
+const _kGitDataUrl = '$_kGit/GenshinTrackerEditor/main/Release/gsdatab';
 const _kGitVersionUrl = '$_kGit/GenshinTrackerEditor/main/Release/gsversion';
 
 class Database {
@@ -172,11 +172,14 @@ final class _Downloader {
   }
 
   Future<void> _downloadDatabase(String url) async {
-    final data = await Network.downloadFile(url);
-    if (data == null) return;
+    final bytes = await Network.downloadBytes(url);
+    if (bytes == null) return;
     final dataFile = File(_kDataPath);
     if (!await dataFile.parent.exists()) await dataFile.parent.create();
-    await dataFile.writeAsString(data);
+
+    final eUtf8 = gzip.decode(bytes);
+    final eJson = utf8.decode(eUtf8);
+    await dataFile.writeAsString(eJson);
   }
 }
 

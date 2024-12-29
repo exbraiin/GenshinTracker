@@ -8,6 +8,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
+import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
@@ -185,6 +186,10 @@ final _menus = [
   _Menu(
     icon: menuIconMap,
     initialPage: RemarkableChestsScreen.id,
+  ),
+  _Menu(
+    icon: menuIconEchos,
+    initialPage: EnvisagedEchoScreen.id,
   ),
   _Menu(
     icon: menuIconInventory,
