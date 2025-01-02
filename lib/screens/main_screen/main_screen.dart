@@ -17,7 +17,6 @@ import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
-import 'package:tracker/screens/reputation_screen/reputation_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/settings_screen/settings_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
@@ -198,10 +197,6 @@ final _menus = [
   _Menu(
     icon: menuIconSereniteaPot,
     initialPage: SereniteaSetsScreen.id,
-  ),
-  _Menu(
-    icon: menuIconReputation,
-    initialPage: ReputationScreen.id,
   ),
   _Menu(
     icon: menuIconArtifacts,

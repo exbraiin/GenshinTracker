@@ -284,6 +284,11 @@ final class LabelsMethods {
 		return transformer('add_wishes');
 	}
 
+	/// No Wishes
+	String noWishes() {
+		return transformer('no_wishes');
+	}
+
 	/// No Results Found!
 	String noResults() {
 		return transformer('no_results');

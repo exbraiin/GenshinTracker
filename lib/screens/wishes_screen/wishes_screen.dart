@@ -1,6 +1,5 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
@@ -9,9 +8,8 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/screens/wishes_screen/banner_details_card.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
-import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
-import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
 
 const _bannerType = [
   GeBannerType.character,
@@ -78,13 +76,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
               preferredSize: Size.fromHeight(
                 appBar.preferredSize.height + 34 + kGridSeparator,
               ),
-              child: Column(
-                children: [
-                  appBar,
-                  const SizedBox(height: kGridSeparator),
-                  _header(context),
-                ],
-              ),
+              child: appBar,
             );
 
             final tabs = _bannerType.map((bannerType) {
@@ -115,7 +107,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 preferredSize: appBar.preferredSize,
                 child: Stack(
                   children: [
-                    appBar,
+                    Positioned.fill(child: appBar),
                     Positioned.fill(
                       child: Center(
                         child: TabBar(
@@ -141,131 +133,47 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   ],
                 ),
               ),
-              child: InventoryBox(
-                child: TabBarView(
-                  controller: _controller,
-                  children: _bannerType.map((banner) {
-                    return CustomScrollView(
-                      slivers: _slivers(banner, filter),
+              child: TabBarView(
+                controller: _controller,
+                children: _bannerType.map((banner) {
+                  final banners = GsUtils.wishes
+                      .getReleasedInfoBannerByType(banner)
+                      .sortedByDescending((e) => e.dateStart)
+                      .thenBy((e) => e.subtype)
+                      .toList();
+
+                  final hide = filter.hasExtra('hide_banners');
+                  if (hide) {
+                    banners.removeWhere(
+                      (e) => !GsUtils.wishes.bannerHasWishes(e.id),
                     );
-                  }).toList(),
-                ),
+                  }
+
+                  return InventoryGridPage.builder(
+                    childWidth: 126 * 2 + 6,
+                    childHeight: 160,
+                    padding: EdgeInsets.zero,
+                    scrollableCard: false,
+                    itemCount: banners.length,
+                    itemBuilder: (context, state) {
+                      final banner = banners[state.index];
+                      return BannerListItem(
+                        banner,
+                        onTap: state.onSelect,
+                        selected: state.selected,
+                        disabled: !GsUtils.wishes.bannerHasWishes(banner.id),
+                      );
+                    },
+                    itemCardBuilder: (context, index) {
+                      return BannerDetailsCard(banners[index], filter);
+                    },
+                  );
+                }).toList(),
               ),
             );
           },
         );
       },
-    );
-  }
-
-  ListType _getListType(List<WishSummary> wishes, int index) {
-    late final cWish = wishes.elementAtOrNull(index)?.wish;
-    late final pWish = wishes.elementAtOrNull(index - 1)?.wish;
-    late final nWish = wishes.elementAtOrNull(index + 1)?.wish;
-    if (cWish == null) return ListType.none;
-
-    late final isTop = pWish?.date != cWish.date && nWish?.date == cWish.date;
-    late final isMid = pWish?.date == cWish.date && nWish?.date == cWish.date;
-    late final isBot = pWish?.date == cWish.date && nWish?.date != cWish.date;
-    if (isTop) return ListType.top;
-    if (isMid) return ListType.middle;
-    if (isBot) return ListType.bottom;
-    return ListType.none;
-  }
-
-  List<Widget> _slivers(
-    GeBannerType gsBanner,
-    ScreenFilter<GiWish> filter,
-  ) {
-    final banners = GsUtils.wishes
-        .getReleasedInfoBannerByType(gsBanner)
-        .sortedByDescending((e) => e.dateStart)
-        .thenBy((e) => e.subtype);
-    final wishes = GsUtils.wishes.getSaveWishesSummaryByBannerType(gsBanner);
-
-    return banners.map((banner) {
-      final bannerWishes = wishes
-          .where((e) => e.wish.bannerId == banner.id)
-          .sortedByDescending((e) => e.wish.number)
-          .thenWith((a, b) => b.wish.compareTo(a.wish));
-      final filteredWishes =
-          filter.matchBy(bannerWishes, (e) => e.wish).toList();
-
-      final hide = filter.hasExtra('hide_banners');
-      final showBanner = !hide || filteredWishes.isNotEmpty;
-      return SliverStickyHeader(
-        header: showBanner
-            ? BannerListItem(banner: banner, rolls: bannerWishes.length)
-            : const SizedBox(),
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final item = filteredWishes[index];
-              return WishListItem(
-                pity: item.pity,
-                bannerType: gsBanner,
-                wishState: item.state,
-                index: index,
-                wish: item.wish,
-                type: _getListType(filteredWishes, index),
-              );
-            },
-            childCount: filteredWishes.length,
-          ),
-        ),
-      );
-    }).toList();
-  }
-
-  Widget _header(BuildContext context) {
-    final textStyle = context.themeStyles.label14n;
-    final strutStyle = textStyle.toStrut();
-    return SizedBox(
-      height: 32,
-      child: WishListInfoWidget(
-        children: [
-          Text(
-            context.labels.time(),
-            textAlign: TextAlign.center,
-            style: textStyle,
-            strutStyle: strutStyle,
-          ),
-          Text(
-            context.labels.pity(),
-            textAlign: TextAlign.center,
-            style: textStyle,
-            strutStyle: strutStyle,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 60),
-            child: Text(
-              context.labels.name(),
-              textAlign: TextAlign.left,
-              style: textStyle,
-              strutStyle: strutStyle,
-            ),
-          ),
-          const SizedBox(),
-          Text(
-            context.labels.rarity(),
-            textAlign: TextAlign.center,
-            style: textStyle,
-            strutStyle: strutStyle,
-          ),
-          Text(
-            context.labels.type(),
-            textAlign: TextAlign.center,
-            style: textStyle,
-            strutStyle: strutStyle,
-          ),
-          Text(
-            context.labels.roll(),
-            textAlign: TextAlign.center,
-            style: textStyle,
-            strutStyle: strutStyle,
-          ),
-        ],
-      ),
     );
   }
 }

@@ -116,7 +116,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   }
 
   Widget _list(List<T> list, List<Widget> buttons, ScreenFilter<T>? filter) {
-    return _InventoryGridPage.builder(
+    return InventoryGridPage.builder(
       childWidth: childSize.width,
       childHeight: childSize.height,
       appBar: InventoryAppBar(
@@ -150,19 +150,21 @@ class InventoryRow {
 
 class InventoryPage extends StatelessWidget {
   final PreferredSizeWidget? appBar;
+  final EdgeInsetsGeometry padding;
   final Widget? child;
 
   const InventoryPage({
     super.key,
     this.appBar,
     this.child,
+    this.padding = const EdgeInsets.all(kGridSeparator),
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: context.themeColors.mainColor0,
-      padding: const EdgeInsets.all(kGridSeparator),
+      padding: padding,
       child: Column(
         children: [
           if (appBar != null)
@@ -178,34 +180,39 @@ class InventoryPage extends StatelessWidget {
   }
 }
 
-class _InventoryGridPage extends StatefulWidget {
+class InventoryGridPage extends StatefulWidget {
   final double childWidth;
   final double childHeight;
   final int itemCount;
+  final bool scrollableCard;
   final PreferredSizeWidget? appBar;
   final ItemBuilder itemBuilder;
   final Widget? itemCardFooter;
+  final EdgeInsetsGeometry padding;
   final IndexedWidgetBuilder? itemCardBuilder;
 
-  const _InventoryGridPage.builder({
+  const InventoryGridPage.builder({
+    super.key,
     this.appBar,
     this.childWidth = 126,
     this.childHeight = 160,
+    this.scrollableCard = true,
     this.itemCardBuilder,
     this.itemCardFooter,
+    this.padding = const EdgeInsets.all(kGridSeparator),
     required this.itemCount,
     required this.itemBuilder,
   });
 
   @override
-  State<_InventoryGridPage> createState() => _InventoryGridPageState();
+  State<InventoryGridPage> createState() => _InventoryGridPageState();
 }
 
-class _InventoryGridPageState extends State<_InventoryGridPage> {
+class _InventoryGridPageState extends State<InventoryGridPage> {
   var _selectedIndex = 0;
 
   @override
-  void didUpdateWidget(covariant _InventoryGridPage oldWidget) {
+  void didUpdateWidget(covariant InventoryGridPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.itemCount == widget.itemCount) return;
     _selectedIndex = 0;
@@ -213,7 +220,12 @@ class _InventoryGridPageState extends State<_InventoryGridPage> {
 
   @override
   Widget build(BuildContext context) {
+    late final Widget? card = widget.itemCount > 0
+        ? widget.itemCardBuilder!(context, _selectedIndex)
+        : null;
+
     return InventoryPage(
+      padding: widget.padding,
       appBar: widget.appBar,
       child: Row(
         children: [
@@ -246,12 +258,13 @@ class _InventoryGridPageState extends State<_InventoryGridPage> {
                     width: 400,
                     height: double.infinity,
                     margin: const EdgeInsets.only(left: kGridSeparator),
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: widget.itemCount > 0
-                          ? widget.itemCardBuilder!(context, _selectedIndex)
-                          : null,
-                    ),
+                    child: widget.scrollableCard
+                        ? SingleChildScrollView(
+                            key: ValueKey('card_$_selectedIndex'),
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: card,
+                          )
+                        : card,
                   ),
                 ),
                 if (widget.itemCardFooter != null)

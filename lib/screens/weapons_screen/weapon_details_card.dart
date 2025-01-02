@@ -11,7 +11,6 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/widgets/ascension_table.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/theme.dart';
 
@@ -64,9 +63,8 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             ],
           ),
           child: ItemDetailsCardContent.generate(context, [
-            if (item.effectName.isNotEmpty) _getInfoEffect(context, item),
             ItemDetailsCardContent(description: item.desc),
-            if (item.rarity.between(1, 5)) _getInfoAscension(context, item),
+            if (item.effectName.isNotEmpty) _getInfoEffect(context, item),
             if (item.rarity.between(1, 5)) _getWeaponMats(context, item),
           ]),
         );
@@ -81,16 +79,6 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ItemDetailsCardContent(
       label: info.effectName,
       content: TextParserWidget(_getEffectTextAll(info.effectDesc)),
-    );
-  }
-
-  ItemDetailsCardContent _getInfoAscension(
-    BuildContext context,
-    GsWeapon info,
-  ) {
-    return ItemDetailsCardContent(
-      label: context.labels.ascension(),
-      content: AscensionTable.weapon(item),
     );
   }
 

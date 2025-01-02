@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -8,7 +9,6 @@ import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/wishes_screen/widgets/wish_list_info_widget.dart';
 
 enum ListType { none, top, middle, bottom }
 
@@ -36,90 +36,104 @@ class WishListItem extends StatelessWidget {
     final color = context.themeColors.getRarityColor(item.rarity);
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
 
+    Widget wishPity() {
+      final pityWidget = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(pity.toString(), style: style),
+          GsWishStateIcon(
+            wishState,
+            rarity: item.rarity,
+            banner: bannerType,
+          ),
+        ],
+      );
+
+      if (type == ListType.none) {
+        return SizedBox(
+          width: 44,
+          height: 44,
+          child: Center(child: pityWidget),
+        );
+      }
+
+      final side = BorderSide(
+        color: Colors.white.withOpacity(kDisableOpacity),
+        width: 2,
+      );
+
+      return SizedBox(
+        width: 44,
+        height: 44,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              left: null,
+              child: Container(
+                width: 22,
+                margin: EdgeInsets.only(
+                  top: type == ListType.top ? kSeparator6 : 0,
+                  bottom: type == ListType.bottom ? kSeparator6 : 0,
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: type == ListType.top ? side : BorderSide.none,
+                    right: side,
+                    bottom: type == ListType.bottom ? side : BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            Center(child: pityWidget),
+          ],
+        ),
+      );
+    }
+
     return Container(
       height: 44,
-      margin: EdgeInsets.only(
-        top: index == 0 ? kListSeparator : 0,
-        bottom: kListSeparator,
-      ),
+      margin: const EdgeInsets.only(bottom: kListSeparator),
       decoration: BoxDecoration(
         color: color.withOpacity(0.75),
         borderRadius: kListRadius,
       ),
-      child: WishListInfoWidget(
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: InkWell(
-              onTap: () => _updateDate(context),
-              child: Text(
-                wish.date.format().replaceAll(' ', '\n'),
-                textAlign: TextAlign.center,
-                style: style.copyWith(fontSize: 12),
+          SizedBox(
+            width: 80,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: InkWell(
+                onTap: () => _updateDate(context),
+                child: Text(
+                  wish.date.format().replaceAll(' ', '\n'),
+                  textAlign: TextAlign.center,
+                  style: style.copyWith(fontSize: 11),
+                ),
               ),
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(pity.toString(), style: style),
-              GsWishStateIcon(
-                wishState,
-                rarity: item.rarity,
-                banner: bannerType,
-              ),
-            ],
+          wishPity(),
+          Container(
+            width: 44,
+            margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
+            child: CachedImageWidget(
+              item.image,
+              fit: BoxFit.cover,
+            ),
           ),
-          Row(
-            children: [
-              Container(
-                width: 44,
-                margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
-                child: CachedImageWidget(
-                  item.image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(item.name, style: style),
-            ],
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(item.name),
           ),
-          type != ListType.none
-              ? Container(
-                  margin: EdgeInsets.only(
-                    top: type == ListType.top ? 20 : 0,
-                    bottom: type == ListType.bottom ? 20 : 0,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: type == ListType.top
-                          ? BorderSide(
-                              color: context.themeColors.almostWhite,
-                              width: 2,
-                            )
-                          : BorderSide.none,
-                      right: BorderSide(
-                        color: context.themeColors.almostWhite,
-                        width: 2,
-                      ),
-                      bottom: type == ListType.bottom
-                          ? BorderSide(
-                              color: context.themeColors.almostWhite,
-                              width: 2,
-                            )
-                          : BorderSide.none,
-                    ),
-                  ),
-                )
-              : const SizedBox(),
-          Text(item.rarity.toString(), style: style),
-          Text(
-            item.isWeapon
-                ? context.labels.weapon()
-                : context.labels.character(),
-            style: style,
+          SizedBox(
+            width: 44,
+            child: Text(
+              wish.number.toString(),
+              style: style,
+              textAlign: TextAlign.center,
+            ),
           ),
-          Text(wish.number.toString(), style: style),
         ],
       ),
     );
@@ -163,12 +177,21 @@ class WishListItem extends StatelessWidget {
       if (idxWish.date != sorted[i].date) break;
       list.add(sorted[i]);
     }
-    /*
-    for (var i = index - 1; i >= 0; --i) {
-      if (idxWish.date != sorted[i].date) break;
-      list.add(sorted[i]);
-    }
-    */
     return list;
+  }
+
+  static ListType getListType(List<WishSummary> wishes, int index) {
+    late final cWish = wishes.elementAtOrNull(index)?.wish;
+    late final pWish = wishes.elementAtOrNull(index - 1)?.wish;
+    late final nWish = wishes.elementAtOrNull(index + 1)?.wish;
+    if (cWish == null) return ListType.none;
+
+    late final isTop = pWish?.date != cWish.date && nWish?.date == cWish.date;
+    late final isMid = pWish?.date == cWish.date && nWish?.date == cWish.date;
+    late final isBot = pWish?.date == cWish.date && nWish?.date != cWish.date;
+    if (isTop) return ListType.top;
+    if (isMid) return ListType.middle;
+    if (isBot) return ListType.bottom;
+    return ListType.none;
   }
 }

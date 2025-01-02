@@ -102,6 +102,17 @@ class _Items {
 class _Echoes {
   const _Echoes();
 
+  int get owned {
+    final info = _db.infoOf<GsEnvisagedEcho>();
+    final save = _db.saveOf<GiEnvisagedEcho>();
+    return info.items.count((e) => save.exists(e.id));
+  }
+
+  int get total {
+    final info = _db.infoOf<GsEnvisagedEcho>();
+    return info.length;
+  }
+
   /// Whether the item exists or not.
   bool hasItem(String id) {
     return _svEchoes.exists(id);
@@ -404,6 +415,34 @@ class _Details {
 
 class _Recipes {
   const _Recipes();
+
+  int get owned {
+    final info = _db.infoOf<GsRecipe>();
+    final save = _db.saveOf<GiRecipe>();
+    return info.items.count(
+      (e) =>
+          e.baseRecipe.isEmpty &&
+          e.type == GeRecipeType.permanent &&
+          save.getItem(e.id) != null,
+    );
+  }
+
+  int get mastered {
+    final info = _db.infoOf<GsRecipe>();
+    final save = _db.saveOf<GiRecipe>();
+    return info.items.count(
+      (e) =>
+          e.baseRecipe.isEmpty &&
+          e.type == GeRecipeType.permanent &&
+          (save.getItem(e.id)?.proficiency ?? 0) >= e.maxProficiency,
+    );
+  }
+
+  int get total {
+    final info = _db.infoOf<GsRecipe>();
+    return info.items
+        .count((e) => e.baseRecipe.isEmpty && e.type == GeRecipeType.permanent);
+  }
 
   /// Updates the recipe as [own] or the recipe [proficiency].
   ///
@@ -752,6 +791,17 @@ class _Achievements {
 class _Spincrystals {
   const _Spincrystals();
 
+  int get owned {
+    final info = _db.infoOf<GsSpincrystal>();
+    final save = _db.saveOf<GiSpincrystal>();
+    return info.items.count((e) => save.exists(e.id));
+  }
+
+  int get total {
+    final info = _db.infoOf<GsSpincrystal>();
+    return info.length;
+  }
+
   /// Updates the spincrystal as owned or not.
   ///
   /// {@macro db_update}
@@ -812,6 +862,22 @@ class _PlayerConfigs {
 
 class _SereniteaSets {
   const _SereniteaSets();
+
+  int get owned {
+    final info = _db.infoOf<GsSereniteaSet>();
+    final save = _db.saveOf<GiSereniteaSet>();
+    return info.items.expand((e) {
+      final saved = save.getItem(e.id);
+      return e.chars.where((c) => saved?.chars.contains(c) ?? false);
+    }).length;
+  }
+
+  int get total {
+    final info = _db.infoOf<GsSereniteaSet>();
+    final hasChar = GsUtils.characters.hasCaracter;
+    return info.items.expand((e) => e.chars.where(hasChar)).length;
+  }
+
   bool isObtainable(String set) {
     final item = _ifSereniteas.getItem(set);
     if (item == null) return false;
@@ -893,6 +959,17 @@ class _WeaponMaterials {
 
 class _RemarkableChests {
   const _RemarkableChests();
+
+  int get owned {
+    final info = _db.infoOf<GsFurnitureChest>();
+    final save = _db.saveOf<GiFurnitureChest>();
+    return info.items.count((e) => save.exists(e.id));
+  }
+
+  int get total {
+    final info = _db.infoOf<GsFurnitureChest>();
+    return info.length;
+  }
 
   /// Updates the remarkable chest as obtained or not.
   ///

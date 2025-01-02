@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/characters_screen/character_details_screen.dart';
+import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class CharactersTable extends StatefulWidget {
@@ -139,10 +139,7 @@ class _CharactersTableState extends State<CharactersTable> {
           rarity: char.rarity,
         ),
         allowTap: true,
-        onTap: (char, info) => Navigator.of(context).pushNamed(
-          CharacterDetailsScreen.id,
-          arguments: char,
-        ),
+        onTap: (char, info) => CharacterDetailsCard(char).show(context),
       ),
       _TableItem(
         label: 'Element',

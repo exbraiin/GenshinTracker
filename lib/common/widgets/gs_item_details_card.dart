@@ -12,6 +12,11 @@ class ItemDetailsCard extends StatefulWidget {
   final int rarity;
   final int pages;
   final String name;
+  final DecorationImage? contentImage;
+  final EdgeInsetsGeometry infoPadding;
+  final EdgeInsetsGeometry contentPadding;
+  final bool flexContent;
+  final bool showRarityStars;
   final GsItemBanner? banner;
   final Action<Widget>? info;
   final Action<String>? asset;
@@ -24,6 +29,11 @@ class ItemDetailsCard extends StatefulWidget {
     this.name = '',
     this.rarity = 0,
     this.banner,
+    this.contentImage,
+    this.flexContent = false,
+    this.showRarityStars = true,
+    this.infoPadding = const EdgeInsets.all(kSeparator8),
+    this.contentPadding = const EdgeInsets.all(kSeparator8),
     Widget? info,
     String? asset,
     String? image,
@@ -47,6 +57,11 @@ class ItemDetailsCard extends StatefulWidget {
     this.image,
     this.fgImage,
     this.child,
+    this.contentImage,
+    this.flexContent = false,
+    this.showRarityStars = true,
+    this.infoPadding = const EdgeInsets.all(kSeparator8),
+    this.contentPadding = const EdgeInsets.all(kSeparator8),
   });
 
   @override
@@ -82,7 +97,9 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
       children: [
         _headerTitle(context),
         _headerInfo(context),
-        _content(context),
+        widget.flexContent
+            ? Flexible(child: _content(context))
+            : _content(context),
       ],
     );
   }
@@ -241,7 +258,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
             ),
           Positioned.fill(
             child: Padding(
-              padding: const EdgeInsets.all(kSeparator8),
+              padding: widget.infoPadding,
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -265,24 +282,25 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 0,
-                    bottom: 0,
-                    child: Row(
-                      children: List.generate(
-                        widget.rarity,
-                        (i) => Transform.translate(
-                          offset: Offset(i * -6, 0),
-                          child: const Icon(
-                            Icons.star_rounded,
-                            size: 30,
-                            color: Colors.yellow,
-                            shadows: kMainShadow,
+                  if (widget.showRarityStars)
+                    Positioned(
+                      left: 0,
+                      bottom: 0,
+                      child: Row(
+                        children: List.generate(
+                          widget.rarity,
+                          (i) => Transform.translate(
+                            offset: Offset(i * -6, 0),
+                            child: const Icon(
+                              Icons.star_rounded,
+                              size: 30,
+                              color: Colors.yellow,
+                              shadows: kMainShadow,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -336,14 +354,12 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
   Widget _content(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        vertical: kSeparator8,
-        horizontal: kSeparator8 * 2,
-      ),
-      decoration: const BoxDecoration(
-        color: Color(0xFFEDE5D8),
+      padding: widget.contentPadding,
+      decoration: BoxDecoration(
+        color: widget.contentImage != null ? null : const Color(0xFFEDE5D8),
+        image: widget.contentImage,
         border: Border(
-          bottom: BorderSide(color: Color(0xFFDDDAC2), width: 4),
+          bottom: BorderSide(color: Colors.black.withOpacity(0.2), width: 4),
         ),
       ),
       child: ValueListenableBuilder<int>(
@@ -359,11 +375,13 @@ class ItemDetailsCardContent {
   final String? label;
   final Widget? content;
   final bool useMarkdown;
+  final TextStyle? style;
   final String? description;
 
   ItemDetailsCardContent({
     this.label,
     this.content,
+    this.style,
     this.description,
     this.useMarkdown = false,
   });
@@ -380,8 +398,9 @@ class ItemDetailsCardContent {
       fontWeight: FontWeight.bold,
     );
 
-    final style = TextStyle(fontSize: 14, color: Colors.grey[600]);
+    final gstyle = TextStyle(fontSize: 14, color: Colors.grey[600]);
     for (var item in items) {
+      final style = item.style ?? gstyle;
       if (item.label != null) {
         if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
         texts.add(TextSpan(text: '${item.label}\n', style: labelStyle));
