@@ -59,7 +59,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 final title = context.labels.achievements();
                 return InventoryPage(
                   appBar: InventoryAppBar(
-                    iconAsset: menuIconAchievements,
+                    iconAsset: GsAssets.menuAchvmnt,
                     label: '$title  ($saved/$total)',
                     actions: [button],
                   ),
@@ -214,7 +214,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 fit: BoxFit.cover,
                 opacity: 0.2,
                 alignment: Alignment.centerRight,
-                image: AssetImage(getRarityBgImage(1)),
+                image: AssetImage(GsAssets.getRarityBgImage(1)),
               ),
         borderRadius: kGridRadius,
       ),

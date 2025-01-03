@@ -12,7 +12,6 @@ final _ifAchievements = _db.infoOf<GsAchievement>();
 final _ifSereniteas = _db.infoOf<GsSereniteaSet>();
 final _ifBanners = _db.infoOf<GsBanner>();
 final _idWeapons = _db.infoOf<GsWeapon>();
-final _ifRegions = _db.infoOf<GsRegion>();
 final _ifCharacters = _db.infoOf<GsCharacter>();
 final _ifMaterials = _db.infoOf<GsMaterial>();
 final _ifVersions = _db.infoOf<GsVersion>();
@@ -26,7 +25,6 @@ final _svWish = _db.saveOf<GiWish>();
 final _svRecipe = _db.saveOf<GiRecipe>();
 final _svFurnitureChest = _db.saveOf<GiFurnitureChest>();
 final _svCharacter = _db.saveOf<GiCharacter>();
-final _svReputation = _db.saveOf<GiReputation>();
 final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
 final _svFurnishing = _db.saveOf<GiFurnishing>();
 final _svSpincrystal = _db.saveOf<GiSpincrystal>();
@@ -39,7 +37,6 @@ class GsUtils {
 
   static const items = _Items();
   static const echos = _Echoes();
-  static const cities = _Cities();
   static const wishes = _Wishes();
   static const events = _Events();
   static const details = _Details();
@@ -127,64 +124,6 @@ class _Echoes {
     } else {
       _svEchoes.removeItem(id);
     }
-  }
-}
-
-class _Cities {
-  const _Cities();
-
-  /// Gets the city max level
-  int getCityMaxLevel(String id) =>
-      _ifRegions.getItem(id)?.reputation.length ?? 0;
-
-  /// Gets the user saved city current level.
-  int getCityLevel(String id) {
-    final sRp = getSavedReputation(id);
-    final rep = _ifRegions.getItem(id)?.reputation ?? [];
-    return rep.lastIndexWhere((e) => e <= sRp) + 1;
-  }
-
-  /// Gets the previous level max xp value.
-  int getCityPreviousXpValue(String id) {
-    final sRP = getSavedReputation(id);
-    final rep = _ifRegions.getItem(id)?.reputation ?? [];
-    return rep.lastWhere((e) => e <= sRP, orElse: () => 0);
-  }
-
-  /// Gets the current level max xp value.
-  int getCityNextXpValue(String id) {
-    final sRP = getSavedReputation(id);
-    final rep = _ifRegions.getItem(id)?.reputation ?? [];
-    return rep.firstWhere((e) => e > sRP, orElse: () => -1);
-  }
-
-  /// Gets the amount of weeks required to reach the next level based on bounties and quests.
-  int getCityNextLevelWeeks(String id) {
-    final sRp = getSavedReputation(id);
-    final rep = _ifRegions.getItem(id)?.reputation ?? [];
-    final idx = rep.lastIndexWhere((e) => e <= sRp);
-    final next = idx + 1 < rep.length ? rep[idx + 1] : rep.last;
-    final xp = next - sRp;
-    return (xp / GsUtils.details.cityXpPerWeek).ceil().coerceAtLeast(0);
-  }
-
-  /// Gets the amount of weeks required to reach the max level based on bounties and quests.
-  int getCityMaxLevelWeeks(String id) {
-    final rep = _ifRegions.getItem(id)?.reputation ?? [];
-    final xp = rep.last - getSavedReputation(id);
-    return (xp / GsUtils.details.cityXpPerWeek).ceil().coerceAtLeast(0);
-  }
-
-  /// Gets the user saved reputation xp
-  int getSavedReputation(String id) =>
-      _svReputation.getItem(id)?.reputation ?? 0;
-
-  /// Sets the user saved reputation xp
-  ///
-  /// {@macro db_update}
-  void updateReputation(String id, int reputation) {
-    final item = GiReputation(id: id, reputation: reputation);
-    _svReputation.setItem(item);
   }
 }
 
@@ -297,9 +236,6 @@ class _Wishes {
   /// Counts the obtained amount of [itemId].
   int countItem(String itemId) =>
       _svWish.items.count((e) => e.itemId == itemId);
-
-  /// Whether the [itemId] was obtained.
-  bool hasItem(String itemId) => _svWish.items.any((e) => e.itemId == itemId);
 
   /// Removes the [bannerId] last wish
   ///

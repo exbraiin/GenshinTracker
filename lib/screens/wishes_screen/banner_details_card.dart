@@ -100,7 +100,7 @@ class BannerDetailsCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(fischlEmote, width: 60, height: 60),
+                  Image.asset(GsAssets.fischlEmote, width: 60, height: 60),
                   const SizedBox(height: kSeparator4),
                   Text(
                     context.labels.noWishes(),

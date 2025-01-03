@@ -26,7 +26,7 @@ class WeaponListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final owned = GsUtils.wishes.hasItem(item.id);
+    final owned = GsUtils.weapons.hasWeapon(item.id);
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
@@ -66,8 +66,8 @@ class WeaponListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   GsItemCardLabel(
-                    label: '${item.atk}',
-                    asset: atkIcon,
+                    label: '${item.ascAtkValue}',
+                    asset: GsAssets.atkIcon,
                   ),
                   if (item.statType != GeWeaponAscStatType.none)
                     Padding(
@@ -75,8 +75,8 @@ class WeaponListItem extends StatelessWidget {
                       child: Tooltip(
                         message: item.statType.label(context),
                         child: GsItemCardLabel(
-                          label:
-                              item.statType.toIntOrPercentage(item.statValue),
+                          label: item.statType
+                              .toIntOrPercentage(item.ascStatValue),
                           asset: item.statType.assetPath,
                         ),
                       ),

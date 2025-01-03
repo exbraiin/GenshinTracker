@@ -52,6 +52,7 @@
     "name": "Name",
     "version": "Version",
     "proficiency": "Proficiency",
+    "progress": "Progress",
     "nd_stat": "2nd Stat",
     "add_wish": "Add Wish",
     "add_wishes": "Add Wishes",

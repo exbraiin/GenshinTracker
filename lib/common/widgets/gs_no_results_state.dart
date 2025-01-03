@@ -17,7 +17,7 @@ class GsNoResultsState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(fischlEmote, width: size, height: size),
+            Image.asset(GsAssets.fischlEmote, width: size, height: size),
             const SizedBox(height: kSeparator4),
             Text(
               context.labels.noResults(),

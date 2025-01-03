@@ -68,7 +68,7 @@ class AchievementListItem extends StatelessWidget {
                     ),
                     GsItemCardLabel(
                       label: e.reward.format(),
-                      asset: imagePrimogem,
+                      asset: GsAssets.imagePrimogem,
                     ),
                   ],
                 ),

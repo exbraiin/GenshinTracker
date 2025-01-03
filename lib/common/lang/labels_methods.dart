@@ -269,6 +269,11 @@ final class LabelsMethods {
 		return transformer('proficiency');
 	}
 
+	/// Progress
+	String progress() {
+		return transformer('progress');
+	}
+
 	/// 2nd Stat
 	String ndStat() {
 		return transformer('nd_stat');

@@ -161,7 +161,7 @@ class ItemGridWidget extends StatelessWidget {
         borderRadius: kGridRadius,
         image: rarity.between(1, 5)
             ? DecorationImage(
-                image: AssetImage(getRarityBgImage(rarity)),
+                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
                 fit: BoxFit.cover,
               )
             : null,
@@ -332,15 +332,15 @@ class ItemCircleWidget extends StatelessWidget {
     );
   }
 
-  factory ItemCircleWidget.city(
-    GsRegion city, {
+  factory ItemCircleWidget.region(
+    GeRegionType type, {
     ItemSize size = ItemSize.medium,
   }) {
     return ItemCircleWidget(
       rarity: 1,
       size: size,
-      image: city.image,
-      bgColor: city.element.color,
+      asset: GsAssets.iconRegionType(type),
+      bgColor: type.color,
     );
   }
 
@@ -351,7 +351,7 @@ class ItemCircleWidget extends StatelessWidget {
     return ItemCircleWidget(
       rarity: 1,
       size: size,
-      asset: info.asset,
+      asset: GsAssets.iconSetType(info),
       bgColor: info.color,
     );
   }
@@ -407,7 +407,7 @@ class ItemCircleWidget extends StatelessWidget {
         shape: BoxShape.circle,
         image: 1 <= rarity && rarity <= 5
             ? DecorationImage(
-                image: AssetImage(getRarityBgImage(rarity)),
+                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
                 colorFilter: bgColor != null
                     ? ColorFilter.mode(bgColor!, BlendMode.softLight)
                     : null,

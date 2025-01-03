@@ -1,5 +1,4 @@
 import 'package:dartx/dartx.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
@@ -18,7 +17,6 @@ import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
-import 'package:tracker/screens/settings_screen/settings_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
@@ -159,70 +157,65 @@ class _MainScreenState extends State<MainScreen> {
 
 final _menus = [
   _Menu(
-    icon: imageAppIconSmall,
+    icon: GsAssets.imageAppIconSmall,
     initialPage: HomeScreen.id,
   ),
   _Menu(
-    icon: menuIconWish,
+    icon: GsAssets.menuWish,
     initialPage: WishesScreen.id,
   ),
   _Menu(
-    icon: menuIconAchievements,
+    icon: GsAssets.menuAchvmnt,
     initialPage: AchievementGroupsScreen.id,
   ),
   _Menu(
-    icon: menuIconCharacters,
+    icon: GsAssets.menuCharacters,
     initialPage: CharactersScreen.id,
   ),
   _Menu(
-    icon: menuIconWeapons,
+    icon: GsAssets.menuWeapons,
     initialPage: WeaponsScreen.id,
   ),
   _Menu(
-    icon: menuIconRecipes,
+    icon: GsAssets.menuRecipes,
     initialPage: RecipesScreen.id,
   ),
   _Menu(
-    icon: menuIconMap,
+    icon: GsAssets.menuMap,
     initialPage: RemarkableChestsScreen.id,
   ),
   _Menu(
-    icon: menuIconEchos,
+    icon: GsAssets.menuEchos,
     initialPage: EnvisagedEchoScreen.id,
   ),
   _Menu(
-    icon: menuIconInventory,
+    icon: GsAssets.menuInventory,
     initialPage: SpincrystalsScreen.id,
   ),
   _Menu(
-    icon: menuIconSereniteaPot,
+    icon: GsAssets.menuPot,
     initialPage: SereniteaSetsScreen.id,
   ),
   _Menu(
-    icon: menuIconArtifacts,
+    icon: GsAssets.menuArtifacts,
     initialPage: ArtifactsScreen.id,
   ),
   _Menu(
-    icon: menuIconArchive,
+    icon: GsAssets.menuArchive,
     initialPage: NamecardScreen.id,
   ),
   _Menu(
-    icon: menuIconMaterials,
+    icon: GsAssets.menuMaterials,
     initialPage: MaterialsScreen.id,
   ),
   _Menu(
-    icon: menuIconEvent,
+    icon: GsAssets.menuEvent,
     initialPage: EventScreen.id,
   ),
   _Menu(
-    icon: menuIconFeedback,
+    icon: GsAssets.menuFeedback,
     initialPage: VersionScreen.id,
   ),
-  if (!kReleaseMode)
-    _Menu(
-      icon: menuIconFeedback,
-      initialPage: SettingsScreen.id,
-    ),
 ];
 
 class _Menu {

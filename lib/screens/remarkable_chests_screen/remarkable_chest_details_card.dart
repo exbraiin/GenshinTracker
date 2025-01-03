@@ -39,9 +39,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                     Row(
                       children: [
                         Image.asset(
-                          item.type == GeSereniteaSetType.indoor
-                              ? imageIndoorSet
-                              : imageOutdoorSet,
+                          GsAssets.iconSetType(item.type),
                           width: 32,
                           height: 32,
                         ),

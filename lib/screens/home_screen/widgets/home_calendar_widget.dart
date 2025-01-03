@@ -158,8 +158,9 @@ class HomeCalendarWidget extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image:
-                                        AssetImage(getRarityBgImage(e.rarity)),
+                                    image: AssetImage(
+                                      GsAssets.getRarityBgImage(e.rarity),
+                                    ),
                                   ),
                                 ),
                                 child: CachedImageWidget(e.image),

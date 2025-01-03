@@ -11,7 +11,6 @@ import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
-import 'package:tracker/screens/settings_screen/settings_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
@@ -36,7 +35,6 @@ class TrackerRouter {
     SereniteaSetsScreen.id: () => const SereniteaSetsScreen(),
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
     VersionScreen.id: () => const VersionScreen(),
-    SettingsScreen.id: () => const SettingsScreen(),
     AchievementGroupsScreen.id: () => const AchievementGroupsScreen(),
   };
 

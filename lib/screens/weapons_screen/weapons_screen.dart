@@ -14,7 +14,7 @@ class WeaponsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsWeapon>(
-      icon: menuIconWeapons,
+      icon: GsAssets.menuWeapons,
       title: context.labels.weapons(),
       items: (db) => db.infoOf<GsWeapon>().items,
       itemBuilder: (context, state) => WeaponListItem(

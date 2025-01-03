@@ -129,7 +129,7 @@ class GsItemCardButton extends StatelessWidget {
                             ? ColorFilter.mode(imageColor!, BlendMode.modulate)
                             : null,
                         image: AssetImage(
-                          getRarityBgImage(rarity!),
+                          GsAssets.getRarityBgImage(rarity!),
                         ),
                       )
                     : null,

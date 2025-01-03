@@ -28,7 +28,6 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/image/bg.jpg
     - assets/image/rarity/
     - assets/image/element/
     - assets/image/icons/
@@ -37,6 +36,7 @@ flutter:
     - assets/image/weapon_type/
     - assets/image/weapon_stat/
     - assets/image/illustrations/
+    - assets/image/regions/
     - assets/lang/en.json
 
   fonts:

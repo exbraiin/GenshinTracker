@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_assets.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
@@ -16,7 +16,7 @@ class RecipesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final saveRecipes = Database.instance.saveOf<GiRecipe>();
     return InventoryListPage<GsRecipe>(
-      icon: menuIconRecipes,
+      icon: GsAssets.menuRecipes,
       title: context.labels.recipes(),
       items: (db) => db.infoOf<GsRecipe>().items,
       itemBuilder: (context, state) => RecipesListItem(

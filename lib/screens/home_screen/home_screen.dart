@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return InventoryPage(
       appBar: InventoryAppBar(
-        iconAsset: imageAppIcon,
+        iconAsset: GsAssets.imageAppIcon,
         label: context.labels.home(),
         actions: [
           ValueListenableBuilder<bool>(

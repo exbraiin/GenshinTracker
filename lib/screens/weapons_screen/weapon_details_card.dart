@@ -33,7 +33,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             children: [
               Text(context.labels.wsAtk()),
               Text(
-                item.atk.toString(),
+                item.ascAtkValue.toString(),
                 style: TextStyle(
                   color: context.themeColors.almostWhite,
                   fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 const SizedBox(height: kSeparator4),
                 Text(item.statType.label(context)),
                 Text(
-                  item.statType.toIntOrPercentage(item.statValue),
+                  item.statType.toIntOrPercentage(item.ascStatValue),
                   style: TextStyle(
                     color: context.themeColors.almostWhite,
                     fontWeight: FontWeight.bold,

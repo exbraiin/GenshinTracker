@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -50,22 +49,11 @@ class AscensionStatus extends StatelessWidget {
     GsCharacter item,
   ) {
     return {
-      context.labels.wsHp(): item.ascHpValue,
-      context.labels.wsAtk(): item.ascAtkValue,
-      context.labels.wsDef(): item.ascDefValue,
-      item.ascStatType.label(context): item.ascStatValue,
+      context.labels.wsHp(): item.ascHpValue.toString(),
+      context.labels.wsAtk(): item.ascAtkValue.toString(),
+      context.labels.wsDef(): item.ascDefValue.toString(),
+      item.ascStatType.label(context):
+          item.ascStatType.toIntOrPercentage(item.ascStatValue),
     };
   }
-}
-
-String _getValue(String value) {
-  final asStr = value.split(',').lastOrNull ?? '';
-  return int.tryParse(asStr)?.format() ?? asStr;
-}
-
-extension on GsCharacter {
-  String get ascHpValue => _getValue(ascHpValues);
-  String get ascAtkValue => _getValue(ascAtkValues);
-  String get ascDefValue => _getValue(ascDefValues);
-  String get ascStatValue => _getValue(ascStatValues);
 }

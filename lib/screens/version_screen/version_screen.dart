@@ -16,7 +16,7 @@ class VersionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsVersion>(
       childSize: const Size(126 * 2 + 6, 160),
-      icon: menuIconBook,
+      icon: GsAssets.menuBook,
       sortOrder: SortOrder.descending,
       title: context.labels.version(),
       items: (db) => db.infoOf<GsVersion>().items,

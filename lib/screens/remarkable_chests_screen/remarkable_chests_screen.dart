@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_assets.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chest_details_card.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_list_item.dart';
@@ -14,7 +14,7 @@ class RemarkableChestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsFurnitureChest>(
-      icon: menuIconMap,
+      icon: GsAssets.menuMap,
       title: context.labels.remarkableChests(),
       items: (db) => db.infoOf<GsFurnitureChest>().items,
       itemBuilder: (context, state) => RemarkableChestListItem(

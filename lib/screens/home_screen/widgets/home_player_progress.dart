@@ -16,47 +16,46 @@ class HomePlayerProgress extends StatelessWidget {
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         return GsDataBox.info(
-          // TODO label it...
-          title: const Text('Progress'),
+          title: Text(context.labels.progress()),
           children: <Widget>[
             _ProgressInfo(
-              menuIconAchievements,
+              GsAssets.menuAchvmnt,
               context.labels.achievements(),
               GsUtils.achievements.countSaved(),
               GsUtils.achievements.countTotal(),
             ),
             _ProgressInfo(
-              menuIconRecipes,
+              GsAssets.menuRecipes,
               context.labels.recipes(),
               GsUtils.recipes.owned,
               GsUtils.recipes.total,
             ),
-             _ProgressInfo(
-              menuIconRecipes,
+            _ProgressInfo(
+              GsAssets.menuRecipes,
               context.labels.proficiency(),
               GsUtils.recipes.mastered,
               GsUtils.recipes.owned,
             ),
             _ProgressInfo(
-              menuIconMap,
+              GsAssets.menuMap,
               context.labels.remarkableChests(),
               GsUtils.remarkableChests.owned,
               GsUtils.remarkableChests.total,
             ),
             _ProgressInfo(
-              menuIconEchos,
+              GsAssets.menuEchos,
               context.labels.envisagedEchoes(),
               GsUtils.echos.owned,
               GsUtils.echos.total,
             ),
             _ProgressInfo(
-              menuIconInventory,
+              GsAssets.menuInventory,
               context.labels.spincrystals(),
               GsUtils.spincrystals.owned,
               GsUtils.spincrystals.total,
             ),
             _ProgressInfo(
-              menuIconSereniteaPot,
+              GsAssets.menuPot,
               context.labels.sereniteaSets(),
               GsUtils.sereniteaSets.owned,
               GsUtils.sereniteaSets.total,

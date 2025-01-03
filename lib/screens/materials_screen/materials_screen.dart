@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_assets.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_list_item.dart';
@@ -14,7 +14,7 @@ class MaterialsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsMaterial>(
-      icon: menuIconMaterials,
+      icon: GsAssets.menuMaterials,
       title: context.labels.materials(),
       items: (db) => db.infoOf<GsMaterial>().items,
       itemBuilder: (context, state) => MaterialListItem(

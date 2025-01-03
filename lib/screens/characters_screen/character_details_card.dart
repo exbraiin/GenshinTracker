@@ -55,7 +55,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               const SizedBox(width: kSeparator4),
               if (hasChar)
                 GsItemCardLabel(
-                  asset: imageXp,
+                  asset: GsAssets.imageXp,
                   label: friendship.toString(),
                   onTap: () =>
                       GsUtils.characters.increaseFriendshipCharacter(item.id),

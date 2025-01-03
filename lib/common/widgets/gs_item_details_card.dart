@@ -129,8 +129,8 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                   alignment: Alignment.centerLeft,
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
-                    child: Text(
-                      '${widget.name} ',
+                    child: SelectableText(
+                      widget.name.isNotEmpty ? widget.name : ' ',
                       maxLines: 1,
                       style: const TextStyle(
                         color: Colors.white,
@@ -202,7 +202,7 @@ class _ItemDetailsCardState extends State<ItemDetailsCard> {
                     },
                     blendMode: BlendMode.dstOut,
                     child: Image.asset(
-                      getRarityBgImage(widget.rarity.coerceAtLeast(1)),
+                      GsAssets.getRarityBgImage(widget.rarity.coerceAtLeast(1)),
                       alignment: Alignment.centerRight,
                       fit: BoxFit.fitHeight,
                     ),

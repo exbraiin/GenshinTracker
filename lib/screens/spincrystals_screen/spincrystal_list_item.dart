@@ -22,7 +22,6 @@ class SpincrystalListItem extends StatelessWidget {
     final table = Database.instance.saveOf<GiSpincrystal>();
     final save = table.getItem(item.id);
     final owned = save?.obtained ?? false;
-    final region = Database.instance.infoOf<GsRegion>().getItem(item.region.id);
     return GsItemCardButton(
       label: item.name,
       rarity: 4,
@@ -30,7 +29,7 @@ class SpincrystalListItem extends StatelessWidget {
       disable: !owned,
       selected: selected,
       banner: GsItemBanner.fromVersion(context, item.version),
-      imageAssetPath: spincrystalAsset,
+      imageAssetPath: GsAssets.spincrystal,
       child: Stack(
         children: [
           Positioned(
@@ -41,11 +40,11 @@ class SpincrystalListItem extends StatelessWidget {
               child: Center(child: Text(item.number.toString())),
             ),
           ),
-          if (region != null)
+          if (item.region != GeRegionType.none)
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemCircleWidget.city(region),
+              child: ItemCircleWidget.region(item.region),
             ),
         ],
       ),

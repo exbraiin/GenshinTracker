@@ -54,7 +54,7 @@ class CachedImageWidget extends StatelessWidget {
 
   Widget _placeholderImageWidget() {
     return Image.asset(
-      iconMissing,
+      GsAssets.iconMissing,
       fit: BoxFit.contain,
     );
   }

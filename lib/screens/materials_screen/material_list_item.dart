@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
-import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class MaterialListItem extends StatelessWidget {
@@ -19,7 +18,6 @@ class MaterialListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final region = Database.instance.infoOf<GsRegion>().getItem(item.region.id);
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
@@ -29,11 +27,11 @@ class MaterialListItem extends StatelessWidget {
       imageUrlPath: item.image,
       child: Stack(
         children: [
-          if (region != null)
+          if (item.region != GeRegionType.none)
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemCircleWidget.city(region),
+              child: ItemCircleWidget.region(item.region),
             ),
         ],
       ),

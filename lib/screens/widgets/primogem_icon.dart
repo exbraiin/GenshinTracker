@@ -18,7 +18,7 @@ class PrimogemIcon extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 4),
         child: Image.asset(
-          imagePrimogem,
+          GsAssets.imagePrimogem,
           width: size,
           height: size,
           fit: BoxFit.fitHeight,

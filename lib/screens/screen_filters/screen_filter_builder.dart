@@ -338,7 +338,7 @@ class ScreenFilters {
           FilterSection.weapon((item) => item.type),
           FilterSection.rarity((item) => item.rarity),
           FilterSection.version((item) => item.version),
-          FilterSection.owned((item) => GsUtils.wishes.hasItem(item.id)),
+          FilterSection.owned((item) => GsUtils.weapons.hasWeapon(item.id)),
           FilterSection<GeWeekdayType, GsWeapon>.raw(
             _weekdays,
             (item, enabled) {

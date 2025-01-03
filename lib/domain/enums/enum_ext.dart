@@ -102,24 +102,6 @@ extension GeItemSourceTypeExt on GeItemSourceType {
   }
 }
 
-extension GeArkheTypeExt on GeArkheType {
-  Color get color => switch (this) {
-        GeArkheType.none => Colors.grey,
-        GeArkheType.ousia => const Color(0xFF7F7EDB),
-        GeArkheType.pneuma => const Color(0xFFE9DBA5),
-        GeArkheType.both => const Color(0xFFB4ADC0),
-      };
-
-  String label(BuildContext ctx) {
-    return switch (this) {
-      GeArkheType.none => ctx.labels.wsNone(),
-      GeArkheType.ousia => ctx.labels.arkheOusia(),
-      GeArkheType.pneuma => ctx.labels.arkhePneuma(),
-      GeArkheType.both => ctx.labels.arkheBoth(),
-    };
-  }
-}
-
 extension GeElementTypeExt on GeElementType {
   Color get color => switch (this) {
         GeElementType.none => Colors.grey,
@@ -174,7 +156,7 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
   }
 
   String get assetPath => switch (this) {
-        GeCharacterAscStatType.none => iconMissing,
+        GeCharacterAscStatType.none => GsAssets.iconMissing,
         GeCharacterAscStatType.anemoDmgBonus => '$_ep/anemo.png',
         GeCharacterAscStatType.geoDmgBonus => '$_ep/geo.png',
         GeCharacterAscStatType.electroDmgBonus => '$_ep/electro.png',
@@ -192,21 +174,18 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
         GeCharacterAscStatType.energyRecharge => '$_wp/energyRecharge.png',
         GeCharacterAscStatType.elementalMastery => '$_wp/elementalMastery.png',
       };
-}
 
-extension GeEnemyFamilyTypeExt on GeEnemyFamilyType {
-  String label(BuildContext ctx) {
-    return switch (this) {
-      GeEnemyFamilyType.none => ctx.labels.wsNone(),
-      GeEnemyFamilyType.elemetalLifeform => ctx.labels.efElementalLifeform(),
-      GeEnemyFamilyType.hilichurl => ctx.labels.efHilichurl(),
-      GeEnemyFamilyType.abyss => ctx.labels.efAbyss(),
-      GeEnemyFamilyType.fatui => ctx.labels.efFatui(),
-      GeEnemyFamilyType.automaton => ctx.labels.efAutomaton(),
-      GeEnemyFamilyType.humanFaction => ctx.labels.efHumanFaction(),
-      GeEnemyFamilyType.mysticalBeast => ctx.labels.efMysticalBeast(),
-      GeEnemyFamilyType.weeklyBoss => ctx.labels.efWeeklyBoss(),
-    };
+  String toIntOrPercentage(double value, {bool format = true}) {
+    final percentage = GeCharacterAscStatType.values.except({
+      GeCharacterAscStatType.none,
+      GeCharacterAscStatType.elementalMastery,
+    });
+
+    late final dc = value.toStringAsFixed(1).split('.').last;
+    final str = format
+        ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
+        : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    return !percentage.contains(this) ? str : '$str%';
   }
 }
 
@@ -247,12 +226,6 @@ extension GeSereniteaSetTypeExt on GeSereniteaSetType {
       GeSereniteaSetType.outdoor => ctx.labels.outdoor(),
     };
   }
-
-  String get asset => switch (this) {
-        GeSereniteaSetType.none => iconMissing,
-        GeSereniteaSetType.indoor => imageIndoorSet,
-        GeSereniteaSetType.outdoor => imageOutdoorSet,
-      };
 }
 
 extension GeMaterialTypeExt on GeMaterialType {
@@ -287,17 +260,6 @@ extension GeNamecardTypeExt on GeNamecardType {
       GeNamecardType.reputation => ctx.labels.namecardReputation(),
     };
   }
-
-  String get asset => switch (this) {
-        GeNamecardType.none => iconMissing,
-        GeNamecardType.defaults => menuIconWish,
-        GeNamecardType.achievement => menuIconAchievements,
-        GeNamecardType.battlepass => menuIconWeapons,
-        GeNamecardType.character => menuIconCharacters,
-        GeNamecardType.event => menuIconFeedback,
-        GeNamecardType.offering => menuIconQuest,
-        GeNamecardType.reputation => menuIconReputation,
-      };
 }
 
 extension GeRecipeEffectTypeExt on GeRecipeEffectType {
@@ -375,31 +337,16 @@ extension GeRegionTypeExt on GeRegionType {
       GeRegionType.khaenriah => ctx.labels.regionKhaenriah(),
     };
   }
-}
 
-extension GeEnemyTypeExt on GeEnemyType {
-  String label(BuildContext ctx) {
-    return switch (this) {
-      GeEnemyType.none => ctx.labels.wsNone(),
-      GeEnemyType.common => ctx.labels.etCommon(),
-      GeEnemyType.elite => ctx.labels.etElite(),
-      GeEnemyType.normalBoss => ctx.labels.etNormalBoss(),
-      GeEnemyType.weeklyBoss => ctx.labels.etWeeklyBoss(),
-    };
-  }
-}
-
-extension GeCharTalentTypeExt on GeCharTalentType {
-  String label(BuildContext ctx) {
-    return switch (this) {
-      GeCharTalentType.normalAttack => ctx.labels.charTalNa(),
-      GeCharTalentType.elementalSkill => ctx.labels.charTalEs(),
-      GeCharTalentType.elementalBurst => ctx.labels.charTalEb(),
-      GeCharTalentType.alternateSprint => ctx.labels.charTalAs(),
-      GeCharTalentType.ascension1stPassive => ctx.labels.charTal1a(),
-      GeCharTalentType.ascension4thPassive => ctx.labels.charTal4a(),
-      GeCharTalentType.nightRealmPassive => ctx.labels.charTalNr(),
-      GeCharTalentType.utilityPassive => ctx.labels.charTalUp(),
-    };
-  }
+  Color get color => switch (this) {
+        GeRegionType.none => Colors.grey,
+        GeRegionType.mondstadt => const Color(0xFF33CCB3),
+        GeRegionType.liyue => const Color(0xFFCFA726),
+        GeRegionType.inazuma => const Color(0xFFD376F0),
+        GeRegionType.sumeru => const Color(0xFF77AD2D),
+        GeRegionType.fontaine => const Color(0xFF1C72FD),
+        GeRegionType.natlan => const Color(0xFFE2311D),
+        GeRegionType.snezhnaya => const Color(0xFF98C8E8),
+        GeRegionType.khaenriah => Colors.grey,
+      };
 }

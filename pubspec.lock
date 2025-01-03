@@ -204,7 +204,7 @@ packages:
       path: "../../Dart/dart-gsdatabase"
       relative: true
     source: path
-    version: "1.2.1"
+    version: "1.2.2"
   http:
     dependency: transitive
     description:

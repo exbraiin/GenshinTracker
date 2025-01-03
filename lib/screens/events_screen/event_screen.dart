@@ -19,7 +19,7 @@ class EventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsEvent>(
-      icon: menuIconEvent,
+      icon: GsAssets.menuEvent,
       sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
       title: context.labels.recipeEvent(),

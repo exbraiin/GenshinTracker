@@ -48,7 +48,7 @@ class GsRarityItemCard extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(getRarityBgImage(rarity)),
+            image: AssetImage(GsAssets.getRarityBgImage(rarity)),
             fit: BoxFit.cover,
           ),
         ),

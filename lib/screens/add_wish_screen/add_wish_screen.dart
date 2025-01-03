@@ -48,7 +48,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
 
         return InventoryPage(
           appBar: InventoryAppBar(
-            iconAsset: menuIconWish,
+            iconAsset: GsAssets.menuWish,
             label: context.labels.addWishes(),
             actions: [button],
           ),

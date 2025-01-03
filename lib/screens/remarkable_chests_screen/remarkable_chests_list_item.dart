@@ -21,7 +21,6 @@ class RemarkableChestListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final db = Database.instance;
     final owned = db.saveOf<GiFurnitureChest>().exists(item.id);
-    final region = db.infoOf<GsRegion>().getItem(item.region.id);
 
     return GsItemCardButton(
       label: item.name,
@@ -41,11 +40,11 @@ class RemarkableChestListItem extends StatelessWidget {
               size: ItemSize.small,
             ),
           ),
-          if (region != null)
+          if (item.region != GeRegionType.none)
             Positioned(
               right: kSeparator2,
               bottom: kSeparator2,
-              child: ItemCircleWidget.city(region),
+              child: ItemCircleWidget.region(item.region),
             ),
         ],
       ),

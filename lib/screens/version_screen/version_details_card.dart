@@ -201,7 +201,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               runSpacing: kSeparator2,
               children: crystals.map((e) {
                 return ItemCircleWidget(
-                  asset: spincrystalAsset,
+                  asset: GsAssets.spincrystal,
                   rarity: 4,
                   label: '${e.number} ${e.name}',
                 );

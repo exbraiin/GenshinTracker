@@ -53,7 +53,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
         return ScreenFilterBuilder<GiWish>(
           builder: (context, filter, button, toggle) {
             PreferredSizeWidget appBar = InventoryAppBar(
-              iconAsset: menuIconWish,
+              iconAsset: GsAssets.menuWish,
               label: context.labels.wishes(),
               actions: [
                 Tooltip(

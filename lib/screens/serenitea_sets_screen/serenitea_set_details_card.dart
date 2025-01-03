@@ -34,9 +34,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
         child: Row(
           children: [
             Image.asset(
-              item.category == GeSereniteaSetType.indoor
-                  ? imageIndoorSet
-                  : imageOutdoorSet,
+              GsAssets.iconSetType(item.category),
               width: 32,
               height: 32,
             ),
