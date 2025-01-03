@@ -23,21 +23,31 @@ class AchievementGroupsScreen extends StatefulWidget {
 }
 
 class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
-  late final ValueNotifier<String> queryNotifier;
+  final _queryController = TextEditingController();
   late final ValueNotifier<GsAchievementGroup?> groupNotifier;
 
   @override
   void initState() {
     super.initState();
-    queryNotifier = ValueNotifier('');
     groupNotifier = ValueNotifier(null);
   }
 
   @override
   void dispose() {
-    queryNotifier.dispose();
     groupNotifier.dispose();
     super.dispose();
+  }
+
+  Iterable<GsAchievement> _getAchievements(
+    GsAchievementGroup group,
+    String query,
+  ) {
+    final items = Database.instance.infoOf<GsAchievement>().items;
+    return items.where(
+      (item) =>
+          item.group == group.id &&
+          item.name.toLowerCase().contains(query.toLowerCase()),
+    );
   }
 
   @override
@@ -45,14 +55,17 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     return ScreenFilterBuilder<GsAchievement>(
       builder: (context, filter, button, toggle) {
         return ValueListenableBuilder(
-          valueListenable: queryNotifier,
-          builder: (context, query, child) {
+          valueListenable: _queryController,
+          builder: (context, value, child) {
+            final query = value.text;
             return ValueStreamBuilder<bool>(
               stream: Database.instance.loaded,
               builder: (context, snapshot) {
                 if (snapshot.data != true) return const SizedBox();
                 final data = Database.instance.infoOf<GsAchievementGroup>();
-                final groups = data.items.sortedBy((e) => e.order);
+                final groups = data.items
+                    .where((e) => _getAchievements(e, query).isNotEmpty)
+                    .sortedBy((e) => e.order);
                 final total = GsUtils.achievements.countTotal();
                 final saved = GsUtils.achievements.countSaved();
 
@@ -63,9 +76,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                     label: '$title  ($saved/$total)',
                     actions: [button],
                   ),
-                  child: groups.isEmpty
-                      ? const GsNoResultsState()
-                      : _getAchievementsBody(filter, groups, query),
+                  child: _getAchievementsBody(filter, groups, query),
                 );
               },
             );
@@ -84,15 +95,9 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     return ValueListenableBuilder(
       valueListenable: groupNotifier,
       builder: (context, item, child) {
-        final data = Database.instance.infoOf<GsAchievement>();
-        final aList = filter
-            .match(
-              data.items.where((e) => e.group == item!.id).where(
-                    (element) => element.name.toLowerCase().contains(query),
-                  ),
-            )
-            .sorted();
-
+        final aList = item != null
+            ? filter.match(_getAchievements(item, query)).sorted()
+            : const <GsAchievement>[];
         final enabled = filter.sections
                 .firstOrNullWhere((s) => s.key == 'obtain')
                 ?.enabled ??
@@ -130,20 +135,32 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     return Column(
       children: [
         InventoryBox(
-          child: Container(
+          child: SizedBox(
             height: 36,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(
-              vertical: kSeparator4,
-              horizontal: kSeparator8,
-            ).copyWith(top: 8),
-            child: TextField(
-              style: const TextStyle(fontSize: 16),
-              maxLines: 1,
-              decoration: InputDecoration.collapsed(
-                hintText: context.labels.hintSearch(),
-              ),
-              onChanged: (value) => queryNotifier.value = value,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(kSeparator8)
+                        .copyWith(bottom: kSeparator4),
+                    child: TextField(
+                      style: const TextStyle(fontSize: 16),
+                      maxLines: 1,
+                      controller: _queryController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: context.labels.hintSearch(),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => _queryController.text = '',
+                  padding: const EdgeInsets.all(4),
+                  constraints: const BoxConstraints.tightFor(),
+                  icon: const Icon(Icons.clear_rounded),
+                ),
+                const SizedBox(width: kSeparator4),
+              ],
             ),
           ),
         ),
@@ -203,7 +220,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
           const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8 * 2),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
-        image: namecard != null
+        image: namecard != null && namecard.fullImage.isNotEmpty
             ? DecorationImage(
                 fit: BoxFit.cover,
                 opacity: 0.4,
