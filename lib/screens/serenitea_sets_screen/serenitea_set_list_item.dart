@@ -54,7 +54,7 @@ class SereniteaSetListItem extends StatelessWidget {
                   right: kSeparator2 + i * kSeparator8 * 2,
                   bottom: kSeparator2,
                   child: ItemCircleWidget(
-                    image: GsUtils.characters.getImage(e.id),
+                    image: e.image,
                     rarity: e.rarity,
                   ),
                 ),

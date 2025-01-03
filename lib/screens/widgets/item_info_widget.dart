@@ -5,7 +5,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
-import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
@@ -116,7 +115,7 @@ class ItemGridWidget extends StatelessWidget {
     ContextCallback<GsCharacter>? onTap = _callCharacter,
   })  : rarity = info.rarity,
         tooltip = info.name,
-        urlImage = GsUtils.characters.getImage(info.id),
+        urlImage = info.image,
         assetImage = '',
         onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 

@@ -43,7 +43,7 @@ class EnvisagedEchoListItem extends StatelessWidget {
             right: kSeparator2,
             bottom: kSeparator2,
             child: ItemCircleWidget(
-              image: GsUtils.characters.getImage(char?.id ?? ''),
+              image: char?.image ?? '',
               rarity: char?.rarity ?? 1,
               padding: EdgeInsets.zero,
             ),

@@ -544,28 +544,13 @@ class _Characters {
     return sum > 0 ? (sum - 1) : null;
   }
 
-  String getImage(String id) {
-    final outfit = _svCharacter.getItem(id)?.outfit ?? '';
-    final url = _ifCharactersSkin.getItem(outfit)?.image ?? '';
-    late final charImg = _ifCharacters.getItem(id)?.image ?? '';
-    return url.isNotEmpty ? url : charImg;
-  }
-
-  String getFullImage(String id) {
-    final outfit = _svCharacter.getItem(id)?.outfit ?? '';
-    final url = _ifCharactersSkin.getItem(outfit)?.fullImage ?? '';
-    late final charImg = _ifCharacters.getItem(id)?.fullImage ?? '';
-    return url.isNotEmpty ? url : charImg;
-  }
-
   CharInfo getCharInfo(String id) {
+    final item = _ifCharacters.getItem(id);
     final info = _svCharacter.getItem(id) ?? GiCharacter(id: id);
 
     final wishes = GsUtils.wishes.countItem(id);
     final owned = wishes + eventCharacters(id);
     final constellations = owned > 0 ? (owned - 1) : 0;
-    final iconImage = getImage(id);
-    final wishImage = getFullImage(id);
 
     return CharInfo._(
       isOwned: owned > 0,
@@ -573,21 +558,12 @@ class _Characters {
       ascension: info.ascension.clamp(0, 6),
       friendship: info.friendship.clamp(1, 10),
       totalConstellations: constellations,
-      iconImage: iconImage,
-      wishImage: wishImage,
+      iconImage: item?.image ?? '',
+      wishImage: item?.fullImage ?? '',
       talent1: info.talent1,
       talent2: info.talent2,
       talent3: info.talent3,
     );
-  }
-
-  /// Sets the character outfit
-  ///
-  /// {@macro db_update}
-  void setCharOutfit(String id, String outfit) {
-    final char = _svCharacter.getItem(id);
-    final item = (char ?? GiCharacter(id: id)).copyWith(outfit: outfit);
-    if (item.outfit != char?.outfit) _svCharacter.setItem(item);
   }
 
   /// Sets the character friendship
@@ -744,7 +720,7 @@ class _Spincrystals {
   void update(int number, {required bool obtained}) {
     final id = number.toString();
     if (obtained) {
-      final spin = GiSpincrystal(id: id, obtained: obtained);
+      final spin = GiSpincrystal(id: id);
       _svSpincrystal.setItem(spin);
     } else {
       _svSpincrystal.removeItem(id);
@@ -912,7 +888,7 @@ class _RemarkableChests {
   /// {@macro db_update}
   void update(String id, {required bool obtained}) {
     if (obtained) {
-      final item = GiFurnitureChest(id: id, obtained: obtained);
+      final item = GiFurnitureChest(id: id);
       _svFurnitureChest.setItem(item);
     } else {
       _svFurnitureChest.removeItem(id);

@@ -22,7 +22,7 @@ class SpincrystalDetailsCard extends StatelessWidget
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         final db = Database.instance.saveOf<GiSpincrystal>();
-        final owned = db.getItem(item.id)?.obtained ?? false;
+        final owned = db.exists(item.id);
         return ItemDetailsCard.single(
           name: context.labels.radiantSpincrystal(item.number),
           rarity: 4,
